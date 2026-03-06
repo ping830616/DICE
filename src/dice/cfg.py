@@ -13,8 +13,25 @@ TIER1_CORE_FIELDS = [
     "package_power_w", "soc_power_w", "processor_power_w",
     "cpu_avg_freq_mhz", "cpu_avg_freq_ghz",
     "gpu_avg_freq_mhz", "gpu_avg_freq_ghz",
+    "cpu_temp_c", "soc_temp_c",
     "interrupts_per_s", "wakeups_per_s", "timer_wakeups_per_s",
     "thermal_level", "thermal_pressure",
+]
+
+TIER1_ALT_CORE_FIELDS = [
+    "cpu_power_w",
+    "gpu_power_w",
+    "ane_power_w",
+    "cpu_temp_c",
+    "gpu_temp_c",
+    "soc_temp_c",
+    "cpu_avg_freq_mhz",
+    "gpu_avg_freq_mhz",
+    "cpu_usage_pct",
+    "gpu_usage_pct",
+    "cpu_residency_active_pct",
+    "gpu_residency_active_pct",
+    "fan_rpm",
 ]
 
 TIER2_DEFAULT_TEMPLATE = "Time Profiler"

@@ -1,4 +1,5 @@
 import argparse
+import contextlib
 import json
 import platform
 import subprocess
@@ -10,6 +11,12 @@ from .cfg import all_cases, case_id, HZ, SEED, TIER2_DEFAULT_TEMPLATE
 from .workloads import run_workload, run_stressor
 from .tier0_collect_schema import build_and_save_global_schema, load_schema, collect_with_schema
 from .powermetrics_parse_full import build_global_schema as build_tier1_global_schema, parse_with_schema as parse_tier1_with_schema
+from .tier1_alt_macmon import (
+    build_global_schema as build_tier1_alt_global_schema,
+    collect_samples_to_jsonl as collect_tier1_alt_samples,
+    convert_powermetrics_raw_to_jsonl as convert_tier1_alt_from_powermetrics,
+    parse_with_schema as parse_tier1_alt_with_schema,
+)
 from .tier2_xctrace_parse import build_global_schema as build_tier2_global_schema, parse_with_schema as parse_tier2_with_schema
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -46,6 +53,61 @@ def ensure_xctrace_ready():
         "Tier-2 requires xctrace to be available and licensed. "
         f"Current error: {msg}"
     )
+
+
+@contextlib.contextmanager
+def sudo_keepalive(required: bool):
+    """
+    Keep sudo timestamp fresh during long-running collection jobs.
+    """
+    if not required:
+        yield
+        return
+
+    try:
+        check = subprocess.run(
+            ["sudo", "-n", "-v"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            text=True,
+        )
+    except (FileNotFoundError, PermissionError) as e:
+        raise RuntimeError(
+            "Unable to execute sudo for powermetrics collection. "
+            f"Error: {e}"
+        ) from e
+    if check.returncode != 0:
+        try:
+            prompt = subprocess.run(["sudo", "-v"], text=True)
+        except (FileNotFoundError, PermissionError) as e:
+            raise RuntimeError(
+                "Unable to execute sudo for powermetrics collection. "
+                f"Error: {e}"
+            ) from e
+        if prompt.returncode != 0:
+            raise RuntimeError(
+                "sudo authentication failed. Please run 'sudo -v' in this terminal "
+                "and enter your password, then rerun the command."
+            )
+
+    stop_evt = threading.Event()
+
+    def _refresh():
+        while not stop_evt.wait(60):
+            subprocess.run(
+                ["sudo", "-n", "-v"],
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                text=True,
+            )
+
+    th = threading.Thread(target=_refresh, daemon=True)
+    th.start()
+    try:
+        yield
+    finally:
+        stop_evt.set()
+        th.join(timeout=2)
 
 
 def run_case_tier0(
@@ -135,20 +197,38 @@ def run_case_tier1(
     th_w.start(); th_s.start()
 
     cmd = ["bash", str(powermetrics_script), str(raw_txt), str(samples_target), "200"]
-    with (logs / "tier1_collect.log").open("w") as lf:
-        p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT)
+    with sudo_keepalive(required=True):
+        with (logs / "tier1_collect.log").open("w") as lf:
+            p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT)
 
-    try:
-        p.wait(timeout=duration_s + 240)
-    except subprocess.TimeoutExpired:
         try:
-            p.terminate(); p.wait(timeout=10)
-        except Exception:
-            try: p.kill()
-            except Exception: pass
+            p.wait(timeout=duration_s + 240)
+        except subprocess.TimeoutExpired:
+            try:
+                p.terminate(); p.wait(timeout=10)
+            except Exception:
+                try: p.kill()
+                except Exception: pass
 
     stop_evt.set()
     th_w.join(timeout=3); th_s.join(timeout=3)
+
+    if p.returncode not in (0, None):
+        raw_err = Path(f"{raw_txt}.stderr.log")
+        raise RuntimeError(
+            f"Tier-1 collection failed for {cid}. "
+            f"See logs: {logs / 'tier1_collect.log'}"
+            + (f" and {raw_err}" if raw_err.exists() else "")
+        )
+
+    if (not raw_txt.exists()) or raw_txt.stat().st_size < 5000:
+        raw_err = Path(f"{raw_txt}.stderr.log")
+        raise RuntimeError(
+            f"Tier-1 raw capture is missing/too small for {cid}. "
+            f"raw={raw_txt} size={raw_txt.stat().st_size if raw_txt.exists() else 0} bytes. "
+            f"See logs: {logs / 'tier1_collect.log'}"
+            + (f" and {raw_err}" if raw_err.exists() else "")
+        )
 
     # build tier1 schema once
     if not tier1_schema.exists():
@@ -166,6 +246,169 @@ def run_case_tier1(
         "tier1_core_csv": str(out_core), "tier1_full_csv": str(out_full),
         "tier1_raw_txt": str(raw_txt),
         "tier1_schema": str(tier1_schema),
+        "meta_json": str(meta_path),
+    })
+
+
+def run_case_tier1_alt(
+    w: str,
+    s: str,
+    label: str,
+    duration_s: int,
+    out_root: Path = DEFAULT_OUT,
+    scripts_dir: Path = DEFAULT_SCRIPTS,
+    tier1_alt_schema_path: Optional[Path] = None,
+    macmon_bin: str = "macmon",
+):
+    out_root = Path(out_root)
+    scripts_dir = Path(scripts_dir)
+    tier1_alt_schema = (
+        Path(tier1_alt_schema_path)
+        if tier1_alt_schema_path
+        else out_root / "tier1_alt_schema_global.json"
+    )
+    powermetrics_script = scripts_dir / "03_powermetrics_collect_5hz.sh"
+
+    cid = case_id(w, s)
+    out_dir = out_root / "tier1_alt" / cid
+    meta_dir = out_root / "meta" / cid
+    logs = out_root / "logs" / cid
+    for d in [out_dir, meta_dir, logs]:
+        mkdirp(d)
+
+    samples_target = HZ * duration_s
+    raw_jsonl = out_dir / "macmon_raw.jsonl"
+
+    meta = {
+        "case_id": cid,
+        "workload": w,
+        "stressor": s,
+        "label": label,
+        "duration_s": duration_s,
+        "hz": HZ,
+        "seed": SEED,
+        "platform": platform.platform(),
+        "phase": "tier1_alt",
+        "tier1_alt_schema": str(tier1_alt_schema),
+        "tier1_alt_collector": "macmon",
+        "macmon_bin": macmon_bin,
+    }
+
+    stop_evt = threading.Event()
+    th_w = threading.Thread(target=run_workload, args=(w, stop_evt), daemon=True)
+    th_s = threading.Thread(target=run_stressor, args=(s, stop_evt), daemon=True)
+    th_w.start()
+    th_s.start()
+
+    collect_err = None
+    try:
+        collect_tier1_alt_samples(
+            str(raw_jsonl),
+            hz=HZ,
+            duration_s=duration_s,
+            macmon_bin=macmon_bin,
+        )
+    except Exception as e:
+        collect_err = e
+    finally:
+        stop_evt.set()
+        th_w.join(timeout=3)
+        th_s.join(timeout=3)
+
+    if collect_err is not None:
+        if not powermetrics_script.exists():
+            raise RuntimeError(
+                f"Tier-1-alt collection failed for {cid} using macmon. "
+                f"raw={raw_jsonl}. Error: {collect_err}. "
+                f"Fallback script is missing: {powermetrics_script}"
+            )
+
+        fallback_raw_txt = out_dir / "powermetrics_fallback_raw.txt"
+        stop_evt_fb = threading.Event()
+        th_w_fb = threading.Thread(target=run_workload, args=(w, stop_evt_fb), daemon=True)
+        th_s_fb = threading.Thread(target=run_stressor, args=(s, stop_evt_fb), daemon=True)
+        th_w_fb.start()
+        th_s_fb.start()
+
+        cmd = ["bash", str(powermetrics_script), str(fallback_raw_txt), str(samples_target), "200"]
+        with sudo_keepalive(required=True):
+            with (logs / "tier1_alt_collect_fallback.log").open("w") as lf:
+                p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT)
+
+            try:
+                p.wait(timeout=duration_s + 240)
+            except subprocess.TimeoutExpired:
+                try:
+                    p.terminate()
+                    p.wait(timeout=10)
+                except Exception:
+                    try:
+                        p.kill()
+                    except Exception:
+                        pass
+
+        stop_evt_fb.set()
+        th_w_fb.join(timeout=3)
+        th_s_fb.join(timeout=3)
+
+        if p.returncode not in (0, None):
+            fallback_err = Path(f"{fallback_raw_txt}.stderr.log")
+            raise RuntimeError(
+                f"Tier-1-alt collection failed for {cid}. "
+                f"macmon error: {collect_err}. "
+                f"Fallback powermetrics also failed. "
+                f"See logs: {logs / 'tier1_alt_collect_fallback.log'}"
+                + (f" and {fallback_err}" if fallback_err.exists() else "")
+            )
+
+        if (not fallback_raw_txt.exists()) or fallback_raw_txt.stat().st_size < 5000:
+            raise RuntimeError(
+                f"Tier-1-alt collection failed for {cid}. "
+                f"macmon error: {collect_err}. "
+                f"Fallback powermetrics raw capture is missing/too small: {fallback_raw_txt}"
+            )
+
+        convert_tier1_alt_from_powermetrics(
+            raw_txt=str(fallback_raw_txt),
+            out_jsonl=str(raw_jsonl),
+            hz=HZ,
+            duration_s=duration_s,
+        )
+        meta["tier1_alt_collector"] = "powermetrics_fallback"
+        meta["tier1_alt_fallback_reason"] = str(collect_err)
+        meta["tier1_alt_fallback_raw_txt"] = str(fallback_raw_txt)
+
+    if (not raw_jsonl.exists()) or raw_jsonl.stat().st_size < 1000:
+        raise RuntimeError(
+            f"Tier-1-alt raw capture is missing/too small for {cid}. "
+            f"raw={raw_jsonl} size={raw_jsonl.stat().st_size if raw_jsonl.exists() else 0} bytes."
+        )
+
+    if not tier1_alt_schema.exists():
+        build_tier1_alt_global_schema(str(raw_jsonl), str(tier1_alt_schema), max_keys=300)
+
+    out_core = out_dir / "tier1_alt_core_5hz.csv"
+    out_full = out_dir / "tier1_alt_full_5hz.csv"
+    parse_tier1_alt_with_schema(
+        str(raw_jsonl),
+        str(out_core),
+        str(out_full),
+        str(tier1_alt_schema),
+        samples_target=samples_target,
+    )
+
+    meta_path = meta_dir / "meta_tier1_alt.json"
+    meta_path.write_text(json.dumps(meta, indent=2))
+    append_manifest(out_root / "manifest_tier1_alt.csv", {
+        "case_id": cid,
+        "workload": w,
+        "stressor": s,
+        "label": label,
+        "duration_s": duration_s,
+        "tier1_alt_core_csv": str(out_core),
+        "tier1_alt_full_csv": str(out_full),
+        "tier1_alt_raw_jsonl": str(raw_jsonl),
+        "tier1_alt_schema": str(tier1_alt_schema),
         "meta_json": str(meta_path),
     })
 
@@ -276,22 +519,25 @@ def run_case_tier2(
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--phase", choices=["tier0", "tier1", "tier2"], required=True)
+    ap.add_argument("--phase", choices=["tier0", "tier1", "tier1_alt", "tier2"], required=True)
     ap.add_argument("--duration_s", "--duration-s", dest="duration_s", type=int, default=1000)
     ap.add_argument("--out_dir", "--out-dir", dest="out_dir", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--scripts_dir", "--scripts-dir", dest="scripts_dir", type=Path, default=DEFAULT_SCRIPTS)
     ap.add_argument("--tier2_template", "--tier2-template", dest="tier2_template", default=TIER2_DEFAULT_TEMPLATE)
+    ap.add_argument("--tier1_alt_bin", "--tier1-alt-bin", dest="tier1_alt_bin", default="macmon")
     args = ap.parse_args()
 
     out_root = Path(args.out_dir)
     scripts_dir = Path(args.scripts_dir)
     tier0_schema = out_root / "tier0_schema_global.json"
     tier1_schema = out_root / "tier1_schema_global.json"
+    tier1_alt_schema = out_root / "tier1_alt_schema_global.json"
     tier2_schema = out_root / "tier2_schema_global.json"
 
     mkdirp(out_root)
     mkdirp(out_root / "tier0")
     mkdirp(out_root / "tier1")
+    mkdirp(out_root / "tier1_alt")
     mkdirp(out_root / "tier2")
     mkdirp(out_root / "meta")
     mkdirp(out_root / "logs")
@@ -319,6 +565,18 @@ def main():
                 out_root=out_root,
                 scripts_dir=scripts_dir,
                 tier1_schema_path=tier1_schema,
+            )
+            continue
+        if args.phase == "tier1_alt":
+            run_case_tier1_alt(
+                c.workload,
+                c.stressor,
+                c.label,
+                args.duration_s,
+                out_root=out_root,
+                scripts_dir=scripts_dir,
+                tier1_alt_schema_path=tier1_alt_schema,
+                macmon_bin=args.tier1_alt_bin,
             )
             continue
         run_case_tier2(

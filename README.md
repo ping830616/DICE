@@ -25,6 +25,14 @@ Core narrative pages:
 - [docs/tier1.md](docs/tier1.md)
 - [docs/tier2.md](docs/tier2.md)
 
+## Dataset Release
+
+Recommended release dataset (harmonized for consistent Tier-1-alt features):
+
+- `dataset/ITC_2026_M2Pro_DATA_clean_tier1_consistent/`
+- Data card: `dataset/ITC_2026_M2Pro_DATA_clean_tier1_consistent/README.md`
+- Coverage/imputation report: `dataset/ITC_2026_M2Pro_DATA_clean_tier1_consistent/no_nan_report.json`
+
 ## Quick Start
 
 ```bash

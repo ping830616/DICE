@@ -4,5 +4,5 @@ __pycache__/
 *.pyc
 
 data/
+data_clean_no_nan*/
 *.log
-

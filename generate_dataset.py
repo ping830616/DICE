@@ -7,7 +7,13 @@ REPO_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from dice.cfg import all_cases
-from dice.run_itc_two_phase import run_case_tier0, run_case_tier1, run_case_tier2, ensure_xctrace_ready
+from dice.run_itc_two_phase import (
+    run_case_tier0,
+    run_case_tier1,
+    run_case_tier1_alt,
+    run_case_tier2,
+    ensure_xctrace_ready,
+)
 
 
 def mkdirp(p: Path):
@@ -16,17 +22,19 @@ def mkdirp(p: Path):
 
 def main():
     ap = argparse.ArgumentParser(description="Generate ITC dataset across Tier-0/Tier-1/Tier-2 phases.")
-    ap.add_argument("--phase", choices=["tier0", "tier1", "tier2", "both", "all"], default="both")
+    ap.add_argument("--phase", choices=["tier0", "tier1", "tier1_alt", "tier2", "both", "all"], default="both")
     ap.add_argument("--duration_s", "--duration-s", dest="duration_s", type=int, default=1000)
     ap.add_argument("--out_dir", "--out-dir", dest="out_dir", type=Path, default=REPO_ROOT / "data")
     ap.add_argument("--scripts_dir", "--scripts-dir", dest="scripts_dir", type=Path, default=REPO_ROOT / "scripts")
     ap.add_argument("--tier2_template", "--tier2-template", dest="tier2_template", default="Time Profiler")
+    ap.add_argument("--tier1_alt_bin", "--tier1-alt-bin", dest="tier1_alt_bin", default="macmon")
     args = ap.parse_args()
 
     out_root = Path(args.out_dir)
     scripts_dir = Path(args.scripts_dir)
     mkdirp(out_root / "tier0")
     mkdirp(out_root / "tier1")
+    mkdirp(out_root / "tier1_alt")
     mkdirp(out_root / "tier2")
     mkdirp(out_root / "meta")
     mkdirp(out_root / "logs")
@@ -54,6 +62,19 @@ def main():
                 args.duration_s,
                 out_root=out_root,
                 scripts_dir=scripts_dir,
+            )
+
+    if args.phase == "tier1_alt":
+        print(f"[DICE] Generating Tier-1-alt (macmon) for {len(cases)} cases...")
+        for c in cases:
+            run_case_tier1_alt(
+                c.workload,
+                c.stressor,
+                c.label,
+                args.duration_s,
+                out_root=out_root,
+                scripts_dir=scripts_dir,
+                macmon_bin=args.tier1_alt_bin,
             )
 
     if args.phase in ("tier2", "all"):
