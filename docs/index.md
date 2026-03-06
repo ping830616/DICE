@@ -9,6 +9,13 @@ This site documents the end-to-end data generation pipeline used in the DICE pap
 
 The documentation is organized so that readers can start with the dataset narrative, then move to the execution methodology, feature-level tier details, and operational validation steps.
 
+## Start Here
+
+1. Read [Data Description](data-description.md) for scope, workloads, anomalies, and evaluation framing.
+2. Check [Current Dataset Status](current-dataset-status.md) for what is fully exposed by this Mac.
+3. Open [Dataset Feature Map (Clean Tier1 Consistent)](dataset-feature-map-clean-tier1-consistent.md) for the exact released columns.
+4. Run collection with [End-to-End User Guide](end-to-end.md).
+
 ## Scope
 
 - Platform: macOS (Apple Silicon recommended)
@@ -61,6 +68,7 @@ python generate_dataset.py --phase all --duration_s 1000 --out_dir ./data --tier
 
 - [Data Description](data-description.md)
 - [Current Dataset Status](current-dataset-status.md)
+- [Dataset Feature Map (Clean Tier1 Consistent)](dataset-feature-map-clean-tier1-consistent.md)
 - [End-to-End User Guide](end-to-end.md)
 - [Feature Dictionary](feature-dictionary.md)
 - [Methodology](methodology.md)

@@ -60,3 +60,4 @@ This keeps column alignment stable across cases and imputes residual missing val
 For this repository, the harmonized release copy is stored at:
 
 - `dataset/ITC_2026_M2Pro_DATA_clean_tier1_consistent/`
+- Feature map for this exact release: [Dataset Feature Map (Clean Tier1 Consistent)](dataset-feature-map-clean-tier1-consistent.md)

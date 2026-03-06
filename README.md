@@ -7,6 +7,13 @@ DICE provides an end-to-end pipeline to generate case-aligned telemetry data for
 - `Tier-1` (legacy): direct `powermetrics` telemetry with global full schema and dense core features.
 - `Tier-2`: `xctrace` telemetry export and parsing into core/full CSV outputs.
 
+## Start Here
+
+1. Read the dataset narrative and assumptions: [docs/data-description.md](docs/data-description.md)
+2. Check the current release status and known platform limits: [docs/current-dataset-status.md](docs/current-dataset-status.md)
+3. Follow the runbook for full collection and validation: [docs/end-to-end.md](docs/end-to-end.md)
+4. Use the dataset-specific feature map for the released clean copy: [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
+
 ## GitHub Pages Documentation
 
 For the full Tier-0 to Tier-2 methodology and publish guide:
@@ -18,6 +25,7 @@ Core narrative pages:
 
 - [docs/data-description.md](docs/data-description.md)
 - [docs/current-dataset-status.md](docs/current-dataset-status.md)
+- [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
 - [docs/end-to-end.md](docs/end-to-end.md)
 - [docs/feature-dictionary.md](docs/feature-dictionary.md)
 - [docs/methodology.md](docs/methodology.md)
