@@ -25,10 +25,24 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Tier-0 + Tier-1 baseline:
+Recommended publication profile (`tier0 + tier1_alt + tier2`):
+
+```bash
+python generate_dataset.py --phase tier0 --duration_s 1000 --out_dir ./data
+python generate_dataset.py --phase tier1_alt --duration_s 1000 --out_dir ./data --tier1_alt_bin macmon
+python generate_dataset.py --phase tier2 --duration_s 1000 --out_dir ./data --tier2_template "Time Profiler"
+```
+
+Legacy Tier-0 + Tier-1 baseline:
 
 ```bash
 python generate_dataset.py --phase both --duration_s 1000 --out_dir ./data
+```
+
+Tier-1 alternative (`macmon`) only:
+
+```bash
+python generate_dataset.py --phase tier1_alt --duration_s 1000 --out_dir ./data --tier1_alt_bin macmon
 ```
 
 Tier-2 only:
@@ -46,6 +60,7 @@ python generate_dataset.py --phase all --duration_s 1000 --out_dir ./data --tier
 ## Documentation Map
 
 - [Data Description](data-description.md)
+- [Current Dataset Status](current-dataset-status.md)
 - [End-to-End User Guide](end-to-end.md)
 - [Feature Dictionary](feature-dictionary.md)
 - [Methodology](methodology.md)

@@ -31,16 +31,23 @@ pip install torch
 - Standard run duration: `1000 s`
 - Samples per run: `5000` (`5001` lines with header)
 
-## 3. Run Tier-0 and Tier-1 (Baseline)
+## 3. Run Recommended Profile (Tier-0 + Tier-1-alt)
+
+```bash
+python generate_dataset.py --phase tier0 --duration_s 1000 --out_dir ./data
+python generate_dataset.py --phase tier1_alt --duration_s 1000 --out_dir ./data --tier1_alt_bin macmon
+```
+
+This profile uses:
+
+1. Tier-0 host telemetry collection.
+2. Tier-1-alt collection on Apple Silicon (`macmon` source with automatic fallback when needed).
+
+Legacy baseline (optional):
 
 ```bash
 python generate_dataset.py --phase both --duration_s 1000 --out_dir ./data
 ```
-
-This command performs a two-pass baseline collection:
-
-1. Tier-0 host telemetry collection.
-2. Tier-1 powermetrics collection and parsing.
 
 ## 4. Run Tier-2 (Optional)
 
@@ -67,16 +74,16 @@ python generate_dataset.py --phase all --duration_s 1000 --out_dir ./data --tier
 
 ## 6. Validate Outputs
 
-Tier-0 and Tier-1:
+Recommended Tier-0 + Tier-1-alt + Tier-2 profile:
 
 ```bash
-python tools/validate_itc_dataset.py --root ./data
+python tools/validate_itc_dataset.py --root ./data --tier1_mode alt --check_tier2
 ```
 
-Tier-0 through Tier-2:
+Legacy Tier-0 + Tier-1 + Tier-2 profile:
 
 ```bash
-python tools/validate_itc_dataset.py --root ./data --check_tier2
+python tools/validate_itc_dataset.py --root ./data --tier1_mode powermetrics --check_tier2
 ```
 
 ## 7. Repair and Rerun
@@ -84,17 +91,18 @@ python tools/validate_itc_dataset.py --root ./data --check_tier2
 Rebuild manifests from existing files:
 
 ```bash
-python tools/repair_itc_dataset.py --root ./data
+python tools/repair_itc_dataset.py --root ./data --tier1_mode alt
 ```
 
-Rerun selected Tier-1 cases:
+Rerun selected Tier-1-alt cases:
 
 ```bash
 python tools/rerun_cases.py \
-  --phase tier1 \
+  --phase tier1_alt \
   --duration_s 1000 \
   --out_dir ./data \
   --scripts_dir ./scripts \
+  --tier1_alt_bin macmon \
   --cases BROWSER__CACHE PY_AI__TLB
 ```
 
@@ -115,6 +123,9 @@ python tools/rerun_cases.py \
 ```text
 data/
   tier0/<CASE_ID>/tier0_full_5hz.csv
+  tier1_alt/<CASE_ID>/macmon_raw.jsonl
+  tier1_alt/<CASE_ID>/tier1_alt_core_5hz.csv
+  tier1_alt/<CASE_ID>/tier1_alt_full_5hz.csv
   tier1/<CASE_ID>/powermetrics_raw.txt
   tier1/<CASE_ID>/tier1_core_5hz.csv
   tier1/<CASE_ID>/tier1_full_5hz.csv
@@ -122,12 +133,14 @@ data/
   tier2/<CASE_ID>/xctrace_export.xml
   tier2/<CASE_ID>/tier2_core_5hz.csv
   tier2/<CASE_ID>/tier2_full_5hz.csv
-  meta/<CASE_ID>/meta_tier{0,1,2}.json
+  meta/<CASE_ID>/meta_tier{0,1,1_alt,2}.json
   logs/<CASE_ID>/*.log
   manifest_tier0.csv
+  manifest_tier1_alt.csv
   manifest_tier1.csv
   manifest_tier2.csv
   tier0_schema_global.json
+  tier1_alt_schema_global.json
   tier1_schema_global.json
   tier2_schema_global.json
 ```

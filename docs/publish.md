@@ -52,6 +52,10 @@ In `ping830616/DICE`:
 Confirm these pages load:
 
 - `/DICE/`
+- `/DICE/current-dataset-status`
+- `/DICE/data-description`
+- `/DICE/end-to-end`
+- `/DICE/feature-dictionary`
 - `/DICE/methodology`
 - `/DICE/workloads-anomalies`
 - `/DICE/tier0`

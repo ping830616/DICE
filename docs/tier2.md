@@ -7,7 +7,7 @@ title: Tier-2 Data
 
 ## Purpose
 
-Tier-2 adds trace-based signals from Instruments (`xctrace`) for deeper runtime behavior.
+Tier-2 adds trace-based evidence from Instruments (`xctrace`) for deeper runtime behavior.
 
 ## Source and Requirements
 
@@ -36,17 +36,19 @@ Global:
 
 ## Tier-2 Core Fields
 
-- `cpu_usage_pct`
-- `cpu_time_ms`
-- `thread_count`
-- `wakeups_per_s`
-- `context_switches_per_s`
-- `page_faults_per_s`
-- `phys_mem_bytes`
-- `virt_mem_bytes`
-- `io_read_Bps`
-- `io_write_Bps`
-- `energy_impact`
+Current release schema (example):
+
+- `samples_per_bucket`
+- `unique_process_count`
+- `unique_thread_count`
+- `avg_core_id`
+- `max_core_id`
+- `total_weight_ns`
+- `avg_weight_ns`
+- `running_fraction`
+- `sentinel_count`
+
+Legacy parser versions may emit a CPU/memory/IO-oriented core schema (`cpu_usage_pct`, `cpu_time_ms`, `thread_count`, etc.).
 
 ## Command
 

@@ -23,7 +23,7 @@ Each anomaly subclass stresses a distinct mechanism. `ATOMIC` increases synchron
 
 ## Tier Definitions
 
-Tier-0 is host-level operating-system telemetry collected through `psutil`. It captures counters such as CPU utilization breakdowns, memory and swap behavior, disk and network rates, load averages, and process-level system statistics. Tier-1 is power-and-frequency telemetry parsed from `powermetrics`. Tier-2 is trace-based telemetry parsed from `xctrace` exports.
+Tier-0 is host-level operating-system telemetry collected through `psutil`. It captures counters such as CPU utilization breakdowns, memory and swap behavior, disk and network rates, load averages, and process-level system statistics. Tier-1 for this Apple dataset is primarily represented by `tier1_alt` (Apple Silicon telemetry path with fallback support), while legacy `tier1` refers to direct `powermetrics` parsing. Tier-2 is trace-based telemetry parsed from `xctrace` exports.
 
 ## Why Tier-0 Matters
 

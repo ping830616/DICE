@@ -127,11 +127,13 @@ Tier-1 outputs are `tier1_core_5hz.csv` and `tier1_full_5hz.csv`. Full-schema ke
 | `cpu_avg_freq_ghz` | GHz | CPU average frequency in GHz. |
 | `gpu_avg_freq_mhz` | MHz | GPU active frequency. |
 | `gpu_avg_freq_ghz` | GHz | GPU active frequency in GHz. |
+| `cpu_temp_c` | degC | CPU temperature when exported by `powermetrics` (optional). |
+| `soc_temp_c` | degC | SoC temperature when exported by `powermetrics` (optional). |
 | `interrupts_per_s` | 1/s | Interrupt rate (if exported). |
 | `wakeups_per_s` | 1/s | Wakeup rate (if exported). |
 | `timer_wakeups_per_s` | 1/s | Timer wakeup rate (if exported). |
-| `thermal_level` | numeric | Thermal severity indicator (if exported). |
-| `thermal_pressure` | numeric | Thermal pressure indicator (if exported). |
+| `thermal_level` | numeric | Thermal pressure code (Nominal=0, Fair=1, Serious=2, Critical=3) when textual pressure is exported. |
+| `thermal_pressure` | numeric | Thermal pressure code (Nominal=0, Fair=1, Serious=2, Critical=3) when textual pressure is exported. |
 
 ### Tier-1 Full Features
 
@@ -143,27 +145,55 @@ Tier-1 full features depend on the host and `powermetrics` export content. Commo
 - Power rails and combined power summaries.
 - Thermal and scheduler-related counters when available.
 
+### Tier-1-alt Core Features (`macmon`)
+
+When using `--phase tier1_alt`, core fields are:
+
+| Feature | Type | Meaning |
+|---|---|---|
+| `cpu_power_w` | watts | CPU power estimate from `macmon` stream. |
+| `gpu_power_w` | watts | GPU power estimate from `macmon` stream. |
+| `ane_power_w` | watts | ANE power estimate when available. |
+| `cpu_temp_c` | degC | CPU temperature when available. |
+| `gpu_temp_c` | degC | GPU temperature when available. |
+| `soc_temp_c` | degC | SoC temperature when available. |
+| `cpu_avg_freq_mhz` | MHz | CPU frequency estimate. |
+| `gpu_avg_freq_mhz` | MHz | GPU frequency estimate. |
+| `cpu_usage_pct` | percent | CPU usage estimate. |
+| `gpu_usage_pct` | percent | GPU usage estimate. |
+| `cpu_residency_active_pct` | percent | CPU active residency estimate (if emitted). |
+| `gpu_residency_active_pct` | percent | GPU active residency estimate (if emitted). |
+| `fan_rpm` | rpm | Fan speed estimate if exposed. |
+
+Common on MacBook laptop captures:
+
+- `soc_temp_c` can be unavailable.
+- `fan_rpm` can be unavailable.
+- Frequency and residency signals can be sparse depending on collector availability.
+
 ---
 
 ## Tier-2 Features (xctrace)
 
-Tier-2 outputs are `tier2_core_5hz.csv` and `tier2_full_5hz.csv`. Full-schema keys are discovered from exported trace key-value fields and saved in `tier2_schema_global.json`.
+Tier-2 outputs are `tier2_core_5hz.csv` and `tier2_full_5hz.csv`. Full-schema keys are discovered from exported trace key-value fields and saved in `tier2_schema_global.json`. Core schema depends on parser/release version.
 
 ### Tier-2 Core Features
 
+Current release schema (example fields):
+
 | Feature | Type | Meaning |
 |---|---|---|
-| `cpu_usage_pct` | percent | CPU usage estimate extracted from trace content. |
-| `cpu_time_ms` | ms | CPU time estimate mapped to milliseconds. |
-| `thread_count` | count | Thread-count estimate for current sample block. |
-| `wakeups_per_s` | 1/s | Wakeup rate signal when present in export. |
-| `context_switches_per_s` | 1/s | Context-switch rate signal when present. |
-| `page_faults_per_s` | 1/s | Page-fault rate signal when present. |
-| `phys_mem_bytes` | bytes | Physical/resident memory estimate. |
-| `virt_mem_bytes` | bytes | Virtual memory estimate. |
-| `io_read_Bps` | bytes/s | Read throughput estimate. |
-| `io_write_Bps` | bytes/s | Write throughput estimate. |
-| `energy_impact` | numeric | Exported energy-impact score if present. |
+| `samples_per_bucket` | count | Number of trace samples merged into a 5 Hz bucket. |
+| `unique_process_count` | count | Count of unique processes observed in the bucket. |
+| `unique_thread_count` | count | Count of unique threads observed in the bucket. |
+| `avg_core_id` | numeric | Average CPU core identifier observed in bucket events. |
+| `max_core_id` | numeric | Maximum CPU core identifier observed in bucket events. |
+| `total_weight_ns` | ns | Sum of event execution weight in nanoseconds. |
+| `avg_weight_ns` | ns | Average event execution weight in nanoseconds. |
+| `running_fraction` | fraction | Fraction of events marked as running. |
+| `sentinel_count` | count | Parser sentinel count for bucket completeness. |
+
+Legacy schema (older parser versions) may contain CPU/memory/IO fields such as `cpu_usage_pct`, `cpu_time_ms`, and `energy_impact`.
 
 ### Tier-2 Full Features
 
@@ -176,3 +206,10 @@ Tier-2 full features are parser-discovered numeric keys extracted from XML tags,
 - Tier-0 schema filtering removes fields that are never observed in a probe window.
 - Tier-1 and Tier-2 full schemas are built from observed keys in initial successful captures.
 - Some fields can remain NaN in specific runs if the source tool does not emit those counters under that workload or platform state.
+- For a model-ready no-NaN export, run:
+
+```bash
+python tools/ensure_no_nan_dataset.py --root ./data --tier1_mode alt --out_dir ./data_clean_no_nan --min_coverage_ratio 0.95
+```
+
+This keeps only globally supported features and imputes remaining transient gaps.
