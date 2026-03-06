@@ -17,6 +17,8 @@ Each run is collected for 1,000 seconds at 5 Hz, which yields 5,000 samples per 
 
 `BROWSER` represents interactive and bursty mixed activity. `PY_AI` represents Python AI-style numerical kernels. `PY_STATS` represents Python statistical kernels. `VIDEO_SW` represents software video-processing kernels. Together, these workloads provide varied CPU, memory, and system-pressure profiles.
 
+For workload-by-workload behavior, tier-level dominant signals, and expected anomaly sensitivity, see [Workloads and Anomalies](workloads-anomalies.md).
+
 ## Anomaly Narrative
 
 Each anomaly subclass stresses a distinct mechanism. `ATOMIC` increases synchronization contention. `BRANCH` perturbs control-flow behavior. `CACHE` induces cache-pressure effects. `MEMBW` drives memory-bandwidth pressure. `TLB` increases address-translation pressure.
