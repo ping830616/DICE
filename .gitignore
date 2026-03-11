@@ -7,4 +7,9 @@ data generation/.DS_Store
 data generation/__pycache__/
 data generation/data/
 data generation/data_clean_no_nan*/
+data generation/dataset/*/results_analysis/
+data generation/dataset/*/results_dice_full/
+data generation/dataset/*/results_dice_full_holdout/
+data generation/dataset/*/results_dice_tuning/
+data generation/dataset/*/results_portable/
 *.log

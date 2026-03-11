@@ -12,8 +12,9 @@ DICE provides an end-to-end pipeline to generate case-aligned telemetry data for
 1. Read the dataset narrative and assumptions: [docs/data-description.md](docs/data-description.md)
 2. Check the current release status and known platform limits: [docs/current-dataset-status.md](docs/current-dataset-status.md)
 3. Review the machine-specific constraints and portability notes: [docs/hardware-compatibility.md](docs/hardware-compatibility.md)
-4. Follow the runbook for full collection and validation: [docs/end-to-end.md](docs/end-to-end.md)
-5. Use the legacy clean feature-map reference if you need a harmonized column description: [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
+4. Run the terminal-first results workflow: [docs/results-cli.md](docs/results-cli.md)
+5. Follow the runbook for full collection and validation: [docs/end-to-end.md](docs/end-to-end.md)
+6. Use the legacy clean feature-map reference if you need a harmonized column description: [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
 
 ## GitHub Pages Documentation
 
@@ -27,6 +28,7 @@ Core narrative pages:
 - [docs/data-description.md](docs/data-description.md)
 - [docs/current-dataset-status.md](docs/current-dataset-status.md)
 - [docs/hardware-compatibility.md](docs/hardware-compatibility.md)
+- [docs/results-cli.md](docs/results-cli.md)
 - [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
 - [docs/end-to-end.md](docs/end-to-end.md)
 - [docs/feature-dictionary.md](docs/feature-dictionary.md)
@@ -52,6 +54,13 @@ cd DICE/"data generation"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+```
+
+For reproducible terminal-only regeneration of the released results dataset, install the locked analysis stack and run:
+
+```bash
+pip install -r requirements-results.lock.txt
+python tools/run_results_pipeline.py --root dataset/ITC_M2Pro_DATA
 ```
 
 Recommended publication profile (`tier0 + tier1_alt + tier2`):
