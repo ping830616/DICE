@@ -14,7 +14,8 @@ Target URL:
 If not already pushed:
 
 ```bash
-cd DICE
+cd DICE/"data generation"
+cd ..
 git init
 git add .
 git commit -m "Add DICE Tier-0 to Tier-2 docs site"
@@ -39,7 +40,7 @@ In `ping830616/DICE`:
 2. Under `Build and deployment`, choose:
    - `Source`: `Deploy from a branch`
    - `Branch`: `main`
-   - `Folder`: `/docs`
+   - `Folder`: `/ (root)`
 3. Save.
 
 ## 3. Wait for First Build
@@ -52,14 +53,5 @@ In `ping830616/DICE`:
 Confirm these pages load:
 
 - `/DICE/`
-- `/DICE/current-dataset-status`
-- `/DICE/data-description`
-- `/DICE/end-to-end`
-- `/DICE/feature-dictionary`
-- `/DICE/methodology`
-- `/DICE/workloads-anomalies`
-- `/DICE/tier0`
-- `/DICE/tier1`
-- `/DICE/tier2`
-- `/DICE/validation`
-- `/DICE/publish`
+- `/DICE/data%20generation/docs/index.html`
+- `/DICE/data%20generation/docs/hardware-compatibility.html`

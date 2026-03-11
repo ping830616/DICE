@@ -32,7 +32,7 @@ Legacy Tier-1 (`powermetrics`) remains available for compatibility, but the reco
 ## Standard Terminal Sequence
 
 ```bash
-cd DICE
+cd DICE/"data generation"
 source .venv/bin/activate
 
 # Tier-0

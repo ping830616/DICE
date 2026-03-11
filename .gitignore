@@ -3,6 +3,8 @@
 __pycache__/
 *.pyc
 
-data/
-data_clean_no_nan*/
+data generation/.DS_Store
+data generation/__pycache__/
+data generation/data/
+data generation/data_clean_no_nan*/
 *.log

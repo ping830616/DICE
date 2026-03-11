@@ -10,7 +10,7 @@ This guide is designed for users who want a practical, reproducible workflow fro
 ## 1. Environment Setup
 
 ```bash
-cd DICE
+cd DICE/"data generation"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt

@@ -1,5 +1,5 @@
 title: DICE Dataset Generation
-description: Tier-0 to Tier-2 telemetry data generation workflow for the DICE paper on macOS.
+description: Tier-0 to Tier-2 telemetry data generation workflow for the DICE paper, grouped under the data generation folder.
 url: "https://ping830616.github.io"
 baseurl: "/DICE"
 theme: minima
@@ -8,13 +8,3 @@ plugins:
   - jekyll-seo-tag
 header_pages:
   - index.md
-  - data-description.md
-  - end-to-end.md
-  - feature-dictionary.md
-  - methodology.md
-  - workloads-anomalies.md
-  - tier0.md
-  - tier1.md
-  - tier2.md
-  - validation.md
-  - publish.md

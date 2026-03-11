@@ -57,7 +57,11 @@ python tools/ensure_no_nan_dataset.py \
 
 This keeps column alignment stable across cases and imputes residual missing values.
 
-For this repository, the harmonized release copy is stored at:
+For this repository, the current stored dataset snapshot is:
 
-- `dataset/ITC_2026_M2Pro_DATA_clean_tier1_consistent/`
-- Feature map for this exact release: [Dataset Feature Map (Clean Tier1 Consistent)](dataset-feature-map-clean-tier1-consistent.md)
+- `dataset/ITC_M2Pro_DATA/`
+- Coverage report: `dataset/ITC_M2Pro_DATA/no_nan_report.json`
+
+The older harmonized clean-schema reference remains documented here:
+
+- [Dataset Feature Map (Clean Tier1 Consistent)](dataset-feature-map-clean-tier1-consistent.md)

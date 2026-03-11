@@ -3,9 +3,15 @@ layout: default
 title: Dataset Feature Map (Clean Tier1 Consistent)
 ---
 
-# Dataset Feature Map: `ITC_2026_M2Pro_DATA_clean_tier1_consistent`
+# Dataset Feature Map: legacy clean Tier-1-consistent reference
 
-This page explains the actual columns in the released dataset folder:
+This page explains the harmonized clean-schema reference that was used for an earlier release profile.
+
+The current repository snapshot is stored at:
+
+- `dataset/ITC_M2Pro_DATA/`
+
+The historical clean reference described on this page used:
 
 - `dataset/ITC_2026_M2Pro_DATA_clean_tier1_consistent/`
 
