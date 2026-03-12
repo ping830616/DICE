@@ -1,5 +1,5 @@
-title: DICE Dataset Generation
-description: Tier-0 to Tier-2 telemetry data generation workflow for the DICE paper, grouped under the data generation folder.
+title: DICE
+description: Tier-0 to Tier-2 data generation plus portable analysis and results workflows for the DICE paper.
 url: "https://ping830616.github.io"
 baseurl: "/DICE"
 theme: minima

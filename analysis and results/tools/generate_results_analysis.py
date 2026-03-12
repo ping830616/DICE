@@ -26,7 +26,8 @@ from sklearn.metrics import average_precision_score, roc_auc_score
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_DATASET_ROOT = PROJECT_ROOT / "dataset" / "ITC_M2Pro_DATA"
+REPO_ROOT = PROJECT_ROOT.parent
+DEFAULT_DATASET_ROOT = REPO_ROOT / "data generation" / "dataset" / "ITC_M2Pro_DATA"
 
 
 WORKLOADS = ["BROWSER", "VIDEO_SW", "PY_AI", "PY_STATS"]

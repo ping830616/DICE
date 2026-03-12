@@ -29,7 +29,8 @@ import pandas as pd
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_DATASET_ROOT = PROJECT_ROOT / "dataset" / "ITC_M2Pro_DATA"
+REPO_ROOT = PROJECT_ROOT.parent
+DEFAULT_DATASET_ROOT = REPO_ROOT / "data generation" / "dataset" / "ITC_M2Pro_DATA"
 ANALYSIS_SCRIPT = PROJECT_ROOT / "tools" / "generate_results_analysis.py"
 FULL_SCRIPT = PROJECT_ROOT / "tools" / "train_eval_dice_pipeline.py"
 
@@ -353,7 +354,8 @@ def write_manifest(
     manifest_dir.mkdir(parents=True, exist_ok=True)
     manifest = {
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
-        "project_root": str(PROJECT_ROOT),
+        "analysis_root": str(PROJECT_ROOT),
+        "repo_root": str(REPO_ROOT),
         "dataset_root": str(root),
         "dataset_digest": dataset_tree_sha256(root),
         "python": {
