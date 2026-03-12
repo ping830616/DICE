@@ -5,6 +5,7 @@ This folder contains the terminal-first analysis workflow for regenerating figur
 Start here:
 
 - [Portable analysis page](index.md)
+- [Cross-platform Conda environment](environment.yml)
 - [Locked Python environment](requirements.txt)
 - [Terminal wrapper](tools/run_results_pipeline.py)
 
@@ -14,10 +15,11 @@ Use this folder when you want to clone the repository and regenerate results wit
 
 ```bash
 cd DICE/"analysis and results"
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+conda env create -f environment.yml
+conda activate dice-results
 python tools/run_results_pipeline.py
 ```
 
 The default dataset is `../data generation/dataset/ITC_M2Pro_DATA/`.
+
+For a plain `venv` workflow, install [requirements.txt](requirements.txt) instead. A portable notebook copy also lives in `dice_results_analysis.ipynb`.

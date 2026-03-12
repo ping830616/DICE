@@ -77,6 +77,17 @@ def dataset_tree_sha256(root: Path) -> Dict[str, object]:
     return {"file_count": count, "sha256": hasher.hexdigest()}
 
 
+def file_sha256(path: Path) -> str:
+    hasher = hashlib.sha256()
+    with path.open("rb") as handle:
+        while True:
+            chunk = handle.read(1024 * 1024)
+            if not chunk:
+                break
+            hasher.update(chunk)
+    return hasher.hexdigest()
+
+
 def package_versions() -> Dict[str, str]:
     packages = [
         "matplotlib",
@@ -381,6 +392,14 @@ def write_manifest(
                 "BLIS_NUM_THREADS",
                 "PYTHONHASHSEED",
             ]
+        },
+        "environment_files": {
+            name: {"path": str(path), "sha256": file_sha256(path)}
+            for name, path in {
+                "requirements_txt": PROJECT_ROOT / "requirements.txt",
+                "environment_yml": PROJECT_ROOT / "environment.yml",
+            }.items()
+            if path.exists()
         },
         "parameters": json_ready(vars(args)),
         "outputs": outputs,

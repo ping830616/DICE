@@ -9,6 +9,7 @@ Start here:
 
 - [Data generation overview](data%20generation/README.md)
 - [Analysis and results overview](analysis%20and%20results/README.md)
+- [Cross-platform environment](analysis%20and%20results/environment.yml)
 - [Documentation home](data%20generation/docs/index.md)
 - [Portable analysis page](analysis%20and%20results/index.md)
 - [Hardware and compatibility](data%20generation/docs/hardware-compatibility.md)
