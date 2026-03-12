@@ -33,6 +33,3 @@ Tier-0 is the most deployment-friendly signal source because it relies on standa
 
 When results are computed from Tier-0 alone, anomaly separability is strongest for `ATOMIC`, `CACHE`, and `MEMBW`, because these conditions produce effects that are more visible in host-level counters. `BRANCH` and `TLB` are harder because their signatures are more microarchitectural and overlap more with benign runtime variability in system-level telemetry.
 
-## Fixed Operating Point Used in Reported Tier-0 Results
-
-To avoid per-anomaly tuning bias, the reported platform-wide operating point is fixed at `WIN=512`, `K=3`, and `top-p=90`. Under this fixed setting, the mean median `AUC-PR` is `0.8581` and the mean median `ROC-AUC` is `0.8886` across all five anomaly subclasses. As a supplementary difficulty analysis, excluding `BRANCH` and `TLB` increases these values to `0.9346` (`AUC-PR`) and `0.9460` (`ROC-AUC`).
