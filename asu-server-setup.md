@@ -36,23 +36,6 @@ cd DICE
 conda env create -f environment.yml
 ```
 
-This environment file creates the Conda env and then installs the exact pinned notebook stack from `requirements.txt` via `pip`, which avoids Conda-specific exact-version resolution issues across machines.
-
-If `conda run -n dice-results ...` reports `EnvironmentLocationNotFound`, create or recreate the environment first:
-
-```bash
-cd DICE
-conda env create -f environment.yml
-```
-
-If needed, rebuild it cleanly:
-
-```bash
-cd DICE
-conda env remove -n dice-results
-conda env create -f environment.yml
-```
-
 Launch Jupyter without opening a browser on the server:
 
 ```bash
@@ -88,18 +71,7 @@ After Jupyter opens:
 
 1. Open `dice_results_analysis.ipynb`.
 2. Run the notebook from top to bottom.
-3. Check `results_portable/run_manifest.json` after completion.
-
-The notebook regenerates:
-
-- `results_analysis/`
-- `results_dice_full/`
-- `results_portable/run_manifest.json`
-
-Optional notebook cells can also generate:
-
-- `results_dice_full_holdout/`
-- `results_dice_tuning/`
+3. Check `results_itc_paper/`, `results_itc_appendix/`, and `results_portable/run_manifest.json`.
 
 ## Reproducibility Notes
 

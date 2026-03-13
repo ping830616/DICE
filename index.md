@@ -1,52 +1,30 @@
 ---
 layout: default
-title: DICE Home
+title: DICE
 ---
 
-# DICE Workflows
+# DICE
 
-This site is split into two top-level areas:
+Portable analysis and ITC-paper result generation for the released DICE dataset.
 
-- root-level analysis files for portable notebook-first regeneration of figures, tables, and model outputs
-- `data generation/` for Tier-0 to Tier-2 collection and validation
-
-## Open
-
-- [Portable notebook]({{ site.baseurl }}/dice_results_analysis.ipynb)
-- [Portable setup guide]({{ site.baseurl }}/portable-setup.html)
-- [ASU server setup]({{ site.baseurl }}/asu-server-setup.html)
-- [Documentation home]({{ site.baseurl }}/data%20generation/docs/index.html)
-- [Hardware and compatibility]({{ site.baseurl }}/data%20generation/docs/hardware-compatibility.html)
-
-## Reviewer Path
-
-Start from:
+## Run
 
 ```bash
+git clone https://github.com/ping830616/DICE.git
 cd DICE
 conda env create -f environment.yml
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
 
-If `conda run -n dice-results ...` fails with `EnvironmentLocationNotFound`, create the environment first with `conda env create -f environment.yml`.
+Run the notebook from top to bottom. It generates:
 
-The environment file uses Conda for the base Python environment and `pip` for the exact pinned notebook stack.
+- `results_itc_paper/`
+- `results_itc_appendix/`
+- `results_portable/run_manifest.json`
 
-The `data generation/` folder remains in the repository for dataset methodology and context.
+## Docs
 
-## Remote Server
-
-```bash
-cd DICE
-conda env create -f environment.yml
-conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice_results_analysis.ipynb
-```
-
-## Updating an Existing Clone
-
-```bash
-cd DICE
-git fetch origin
-git pull --ff-only origin main
-conda env update -f environment.yml --prune
-```
+- [Portable setup]({{ site.baseurl }}/portable-setup.html)
+- [ITC paper and appendix methodology]({{ site.baseurl }}/itc-paper-methodology.html)
+- [ASU server setup]({{ site.baseurl }}/asu-server-setup.html)
+- [Data generation docs]({{ site.baseurl }}/data%20generation/docs/index.html)

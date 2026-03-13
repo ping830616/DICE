@@ -18,6 +18,7 @@ import importlib.metadata
 import json
 import os
 import platform
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -407,6 +408,171 @@ def write_manifest(
     (manifest_dir / "run_manifest.json").write_text(json.dumps(json_ready(manifest), indent=2), encoding="utf-8")
 
 
+def copy_output(src: Path, bundle_root: Path, rel_dst: str) -> Optional[str]:
+    if not src.exists():
+        return None
+    dst = bundle_root / rel_dst
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, dst)
+    return str(dst)
+
+
+def package_itc_submission(root: Path, outputs: Dict[str, str]) -> Dict[str, str]:
+    paper_dir = root / "results_itc_paper"
+    appendix_dir = root / "results_itc_appendix"
+    paper_dir.mkdir(parents=True, exist_ok=True)
+    appendix_dir.mkdir(parents=True, exist_ok=True)
+
+    analysis_dir = Path(outputs["results_analysis"]) if "results_analysis" in outputs else None
+    full_dir = Path(outputs["results_dice_full"]) if "results_dice_full" in outputs else None
+    holdout_dir = Path(outputs["results_dice_full_holdout"]) if "results_dice_full_holdout" in outputs else None
+    tuning_dir = Path(outputs["results_dice_tuning"]) if "results_dice_tuning" in outputs else None
+    manifest_path = root / "results_portable" / "run_manifest.json"
+
+    copied_paper: List[str] = []
+    copied_appendix: List[str] = []
+
+    def maybe_copy(base: Optional[Path], bundle_root: Path, rel_src: str, rel_dst: str, copied: List[str]) -> None:
+        if base is None:
+            return
+        out = copy_output(base / rel_src, bundle_root, rel_dst)
+        if out:
+            copied.append(rel_dst)
+
+    if analysis_dir:
+        for rel in [
+            "table_overall_metrics.csv",
+            "table_stressor_metrics.csv",
+            "table_workload_summary.csv",
+            "table_overall_metrics.tex",
+            "table_stressor_metrics.tex",
+            "RESULTS_SUMMARY.md",
+            "figures/fig_heatmap_pr_auc.png",
+            "figures/fig_run_score_distributions.png",
+            "figures/fig_af_timeseries_tier2.png",
+        ]:
+            maybe_copy(analysis_dir, paper_dir, rel, f"analysis/{Path(rel).name}", copied_paper)
+        for rel in [
+            "table_feature_inventory.csv",
+            "table_case_quality.csv",
+            "table_run_scores.csv",
+            "figures/fig_heatmap_roc_auc.png",
+            "figures/fig_af_timeseries_tier0.png",
+            "figures/fig_af_timeseries_tier1_alt.png",
+            "figures/fig_af_timeseries_tier2.png",
+        ]:
+            maybe_copy(analysis_dir, appendix_dir, rel, f"analysis/{Path(rel).name}", copied_appendix)
+
+    if full_dir:
+        for rel in [
+            "overall_metrics.csv",
+            "stressor_metrics_final_config.csv",
+            "sequential_metrics.csv",
+            "stressor_diagnosis_metrics.csv",
+            "mechanism_group_summary.csv",
+            "overall_metrics.tex",
+            "stressor_metrics_final_config.tex",
+            "sequential_metrics.tex",
+            "stressor_diagnosis_metrics.tex",
+            "RESULTS_SUMMARY.md",
+            "figures/fig_roc_pr_by_config_wc.png",
+            "figures/fig_run_score_boxplot_wc.png",
+            "figures/fig_detection_latency.png",
+            "figures/fig_stressor_confusion_matrix.png",
+            "figures/fig_stressor_tier_contributions.png",
+            "figures/fig_mechanism_group_summary.png",
+        ]:
+            maybe_copy(full_dir, paper_dir, rel, f"full/{Path(rel).name}", copied_paper)
+        for rel in [
+            "case_predictions.csv",
+            "case_diagnosis_summary.csv",
+            "stressor_diagnosis_predictions.csv",
+            "stressor_confusion_matrix.csv",
+            "stressor_tier_contributions.csv",
+            "mechanism_group_summary.csv",
+            "sequential_metrics.csv",
+            "stressor_feature_diagnosis_predictions.csv",
+            "stressor_feature_diagnosis_metrics.csv",
+            "stressor_feature_confusion_matrix.csv",
+            "overall_metrics.csv",
+            "stressor_metrics_final_config.csv",
+            "stressor_diagnosis_metrics.csv",
+        ]:
+            maybe_copy(full_dir, appendix_dir, rel, f"full/{Path(rel).name}", copied_appendix)
+
+    if holdout_dir:
+        for rel in [
+            "fold_metrics.csv",
+            "case_predictions.csv",
+            "overall_metrics.csv",
+            "holdout_robustness_summary.csv",
+            "RESULTS_SUMMARY.md",
+            "figures/fig_roc_pr_by_config_wc.png",
+        ]:
+            maybe_copy(holdout_dir, appendix_dir, rel, f"holdout/{Path(rel).name}", copied_appendix)
+
+    if tuning_dir:
+        for rel in [
+            "recommended_config.json",
+            "recommended_overall_metrics.csv",
+            "recommended_stressor_metrics.csv",
+            "recommended_fold_metrics.csv",
+            "sweep_stage1_gain_block.csv",
+            "sweep_stage2_alpha_persist.csv",
+            "sweep_summary_all.csv",
+        ]:
+            maybe_copy(tuning_dir, appendix_dir, rel, f"tuning/{Path(rel).name}", copied_appendix)
+
+    if manifest_path.exists():
+        out_paper = copy_output(manifest_path, paper_dir, "reproducibility/run_manifest.json")
+        out_appendix = copy_output(manifest_path, appendix_dir, "reproducibility/run_manifest.json")
+        if out_paper:
+            copied_paper.append("reproducibility/run_manifest.json")
+        if out_appendix:
+            copied_appendix.append("reproducibility/run_manifest.json")
+
+    paper_readme = [
+        "# ITC Main Paper Bundle",
+        "",
+        "This folder collects the portable result artifacts intended for the main ITC paper.",
+        "",
+        "Suggested main-paper content:",
+        "- System framing and tier-aware methodology in the paper body.",
+        "- Core performance tables from `analysis/` and `full/`.",
+        "- Sequential decision support from `full/sequential_metrics.csv`.",
+        "- Mechanism-level diagnosis from `full/stressor_diagnosis_metrics.csv` and the diagnosis figures.",
+        "- Reproducibility hash in `reproducibility/run_manifest.json`.",
+        "",
+        "Primary files copied into this bundle:",
+    ]
+    paper_readme.extend([f"- `{path}`" for path in copied_paper])
+    (paper_dir / "README.md").write_text("\n".join(paper_readme) + "\n", encoding="utf-8")
+
+    appendix_readme = [
+        "# ITC AI Appendix Bundle",
+        "",
+        "ITC allows an AI-focused appendix of up to six pages in addition to the main paper.",
+        "This folder collects the portable supporting artifacts that fit that appendix role.",
+        "",
+        "Recommended appendix sections:",
+        "1. Strict workload-holdout validation from `holdout/`.",
+        "2. Sequential false-alarm and time-to-detect detail from `full/sequential_metrics.csv`.",
+        "3. Diagnosis detail from `full/case_diagnosis_summary.csv`, `full/stressor_confusion_matrix.csv`, and feature-space diagnostics.",
+        "4. Tier and mechanism contribution analysis from `full/stressor_tier_contributions.csv` and `full/mechanism_group_summary.csv`.",
+        "5. Optional hyperparameter sensitivity from `tuning/` if generated.",
+        "6. Data quality, feature inventory, and reproducibility files.",
+        "",
+        "Primary files copied into this bundle:",
+    ]
+    appendix_readme.extend([f"- `{path}`" for path in copied_appendix])
+    (appendix_dir / "README.md").write_text("\n".join(appendix_readme) + "\n", encoding="utf-8")
+
+    return {
+        "results_itc_paper": str(paper_dir),
+        "results_itc_appendix": str(appendix_dir),
+    }
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Run the DICE results pipeline from the terminal.")
     ap.add_argument("--root", type=Path, default=DEFAULT_DATASET_ROOT, help="Dataset root to analyze.")
@@ -421,11 +587,21 @@ def main() -> None:
     ap.add_argument("--skip_full", action="store_true", help="Do not run the global full DICE pipeline.")
     ap.add_argument("--run_holdout", action="store_true", help="Also run workload-holdout evaluation.")
     ap.add_argument("--run_tuning", action="store_true", help="Also run the compact tuning sweep.")
+    ap.add_argument(
+        "--package_itc",
+        action="store_true",
+        help="Generate main-paper and AI-appendix result bundles; implies holdout but not tuning.",
+    )
     args = ap.parse_args()
 
     root = args.root.expanduser().resolve()
     ensure_dataset_root(root)
     env = deterministic_env()
+
+    if args.package_itc:
+        args.skip_analysis = False
+        args.skip_full = False
+        args.run_holdout = True
 
     outputs: Dict[str, str] = {}
     if not args.skip_analysis:
@@ -473,6 +649,9 @@ def main() -> None:
 
     manifest_dir = root / "results_portable"
     write_manifest(manifest_dir=manifest_dir, root=root, env=env, args=args, outputs=outputs)
+    if args.package_itc:
+        outputs.update(package_itc_submission(root=root, outputs=outputs))
+        write_manifest(manifest_dir=manifest_dir, root=root, env=env, args=args, outputs=outputs)
     print(f"[OK] wrote reproducibility manifest to: {manifest_dir / 'run_manifest.json'}")
     for name, path in outputs.items():
         print(f"[OK] {name}: {path}")
