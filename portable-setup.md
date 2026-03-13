@@ -19,6 +19,19 @@ Use this environment:
 
 The notebook resolves repository paths dynamically and calls the same pinned Python pipeline used by the CLI wrapper, so it does not depend on machine-specific local paths.
 
+## Updating an Existing Clone
+
+If you already cloned the repository and want the latest GitHub changes:
+
+```bash
+cd DICE
+git fetch origin
+git pull --ff-only origin main
+conda env update -f environment.yml --prune
+```
+
+If `git status --short` shows local changes you want to keep, commit them or stash them before pulling.
+
 ## Local Machine Procedure
 
 ```bash
@@ -56,6 +69,8 @@ ssh -L 8888:localhost:8888 <user>@<server>
 ```
 
 Then open the Jupyter URL shown by the server command in your local browser.
+
+For an ASU-specific server workflow with placeholders instead of personal account details, see [asu-server-setup.md](asu-server-setup.md).
 
 ## Windows and `venv`
 

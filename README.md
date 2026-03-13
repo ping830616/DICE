@@ -9,6 +9,7 @@ Start here:
 
 - [Portable notebook](dice_results_analysis.ipynb)
 - [Portable setup guide](portable-setup.md)
+- [ASU server setup](asu-server-setup.md)
 - [Cross-platform environment](environment.yml)
 - [Pinned `pip` environment](requirements.txt)
 - [Data generation overview](data%20generation/README.md)
@@ -22,6 +23,7 @@ Reviewers and users should start here:
 - [dice_results_analysis.ipynb](dice_results_analysis.ipynb)
 - [environment.yml](environment.yml)
 - [portable-setup.md](portable-setup.md)
+- [asu-server-setup.md](asu-server-setup.md)
 
 Portable local run:
 
@@ -40,6 +42,15 @@ conda env create -f environment.yml
 conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice_results_analysis.ipynb
 ```
 
+Updating an existing clone:
+
+```bash
+cd DICE
+git fetch origin
+git pull --ff-only origin main
+conda env update -f environment.yml --prune
+```
+
 The notebook regenerates the published outputs from `data generation/dataset/ITC_M2Pro_DATA/` and writes a manifest at `results_portable/run_manifest.json` so you can compare dataset and environment hashes across machines.
 
 ## Analysis File Map
@@ -48,6 +59,7 @@ The notebook regenerates the published outputs from `data generation/dataset/ITC
 - `environment.yml`: recommended Conda environment for Linux, Windows, macOS, and servers.
 - `requirements.txt`: `venv`/`pip` fallback.
 - `portable-setup.md`: step-by-step setup guide for local and remote execution.
+- `asu-server-setup.md`: server instructions using placeholders instead of personal account info.
 - `tools/run_results_pipeline.py`: non-interactive backend used by the notebook.
 - `tools/generate_results_analysis.py`: results-table and figure generation backend.
 - `tools/train_eval_dice_pipeline.py`: retraining and evaluation backend.

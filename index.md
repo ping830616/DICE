@@ -14,6 +14,7 @@ This site is split into two top-level areas:
 
 - [Portable notebook]({{ site.baseurl }}/dice_results_analysis.ipynb)
 - [Portable setup guide]({{ site.baseurl }}/portable-setup.html)
+- [ASU server setup]({{ site.baseurl }}/asu-server-setup.html)
 - [Documentation home]({{ site.baseurl }}/data%20generation/docs/index.html)
 - [Hardware and compatibility]({{ site.baseurl }}/data%20generation/docs/hardware-compatibility.html)
 
@@ -35,4 +36,13 @@ The `data generation/` folder remains in the repository for dataset methodology 
 cd DICE
 conda env create -f environment.yml
 conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice_results_analysis.ipynb
+```
+
+## Updating an Existing Clone
+
+```bash
+cd DICE
+git fetch origin
+git pull --ff-only origin main
+conda env update -f environment.yml --prune
 ```
