@@ -32,6 +32,44 @@ conda env update -f environment.yml --prune
 
 If `git status --short` shows local changes you want to keep, commit them or stash them before pulling.
 
+## Conda Environment Fix
+
+If this command fails:
+
+```bash
+conda run -n dice-results jupyter lab dice_results_analysis.ipynb
+```
+
+with:
+
+```text
+EnvironmentLocationNotFound: Not a conda environment
+```
+
+then `dice-results` has not been created yet on that machine.
+
+Create it with:
+
+```bash
+cd DICE
+conda env create -f environment.yml
+conda run -n dice-results jupyter lab dice_results_analysis.ipynb
+```
+
+You can verify it exists with:
+
+```bash
+conda env list
+```
+
+If the environment exists but seems broken, rebuild it cleanly:
+
+```bash
+cd DICE
+conda env remove -n dice-results
+conda env create -f environment.yml
+```
+
 ## Local Machine Procedure
 
 ```bash

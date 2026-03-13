@@ -36,6 +36,21 @@ cd DICE
 conda env create -f environment.yml
 ```
 
+If `conda run -n dice-results ...` reports `EnvironmentLocationNotFound`, create or recreate the environment first:
+
+```bash
+cd DICE
+conda env create -f environment.yml
+```
+
+If needed, rebuild it cleanly:
+
+```bash
+cd DICE
+conda env remove -n dice-results
+conda env create -f environment.yml
+```
+
 Launch Jupyter without opening a browser on the server:
 
 ```bash

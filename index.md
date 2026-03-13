@@ -28,6 +28,8 @@ conda env create -f environment.yml
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
 
+If `conda run -n dice-results ...` fails with `EnvironmentLocationNotFound`, create the environment first with `conda env create -f environment.yml`.
+
 The `data generation/` folder remains in the repository for dataset methodology and context.
 
 ## Remote Server

@@ -34,6 +34,14 @@ conda env create -f environment.yml
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
 
+If you see `EnvironmentLocationNotFound`, the environment has not been created yet on that machine. Run:
+
+```bash
+cd DICE
+conda env create -f environment.yml
+conda run -n dice-results jupyter lab dice_results_analysis.ipynb
+```
+
 Portable remote-server run:
 
 ```bash
@@ -49,6 +57,14 @@ cd DICE
 git fetch origin
 git pull --ff-only origin main
 conda env update -f environment.yml --prune
+```
+
+If the environment is broken and you want a clean rebuild:
+
+```bash
+cd DICE
+conda env remove -n dice-results
+conda env create -f environment.yml
 ```
 
 The notebook regenerates the published outputs from `data generation/dataset/ITC_M2Pro_DATA/` and writes a manifest at `results_portable/run_manifest.json` so you can compare dataset and environment hashes across machines.
