@@ -14,7 +14,7 @@ This public GitHub release is focused on the released dataset plus portable note
 1. Read the dataset narrative and assumptions: [docs/data-description.md](docs/data-description.md)
 2. Check the current release status and known platform limits: [docs/current-dataset-status.md](docs/current-dataset-status.md)
 3. Review the machine-specific constraints and portability notes: [docs/hardware-compatibility.md](docs/hardware-compatibility.md)
-4. For notebook-first analysis and results, switch to [../analysis and results/README.md](../analysis%20and%20results/README.md)
+4. For notebook-first analysis and results, switch to the root [README.md](../README.md), [dice_results_analysis.ipynb](../dice_results_analysis.ipynb), and [portable-setup.md](../portable-setup.md)
 5. Follow the runbook for full collection and validation: [docs/end-to-end.md](docs/end-to-end.md)
 6. Use the legacy clean feature-map reference if you need a harmonized column description: [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
 
@@ -30,7 +30,7 @@ Core narrative pages:
 - [docs/data-description.md](docs/data-description.md)
 - [docs/current-dataset-status.md](docs/current-dataset-status.md)
 - [docs/hardware-compatibility.md](docs/hardware-compatibility.md)
-- [../analysis and results/index.md](../analysis%20and%20results/index.md)
+- [../portable-setup.md](../portable-setup.md)
 - [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
 - [docs/end-to-end.md](docs/end-to-end.md)
 - [docs/feature-dictionary.md](docs/feature-dictionary.md)
@@ -58,7 +58,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-For reproducible notebook-first regeneration of the released results dataset, use the sibling [`analysis and results`](../analysis%20and%20results/README.md) folder.
+For reproducible notebook-first regeneration of the released results dataset, use the root-level notebook and setup files in this repository.
 
 The raw Tier-1/Tier-2 collection helpers used for local macOS capture are intentionally not published in this GitHub release.
 

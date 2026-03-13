@@ -5,10 +5,11 @@ title: Results Workflow Moved
 
 # Results Workflow Moved
 
-The terminal analysis and results workflow now lives outside `data generation/`.
+The notebook-first analysis and results workflow now lives at the repository root, outside `data generation/`.
 
-- New page: [../../analysis and results/index.md](../../analysis%20and%20results/index.md)
-- New working directory: `DICE/"analysis and results"`
-- New environment file: `analysis and results/requirements.txt`
+- New notebook: [../../dice_results_analysis.ipynb](../../dice_results_analysis.ipynb)
+- New setup guide: [../../portable-setup.md](../../portable-setup.md)
+- New working directory: `DICE/`
+- New environment files: `environment.yml` and `requirements.txt`
 
 Raw dataset collection remains documented under `data generation/`.

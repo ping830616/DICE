@@ -52,7 +52,7 @@ Legacy parser versions may emit a CPU/memory/IO-oriented core schema (`cpu_usage
 
 ## Command
 
-Raw Tier-2 collection is not the primary public workflow in this repository. To reproduce the published results, use `analysis and results/dice_results_analysis.ipynb` against the released dataset.
+Raw Tier-2 collection is not the primary public workflow in this repository. To reproduce the published results, use the root-level `dice_results_analysis.ipynb` against the released dataset.
 
 ## Notes
 

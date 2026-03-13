@@ -29,7 +29,7 @@ import pandas as pd
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-REPO_ROOT = PROJECT_ROOT.parent
+REPO_ROOT = PROJECT_ROOT
 DEFAULT_DATASET_ROOT = REPO_ROOT / "data generation" / "dataset" / "ITC_M2Pro_DATA"
 ANALYSIS_SCRIPT = PROJECT_ROOT / "tools" / "generate_results_analysis.py"
 FULL_SCRIPT = PROJECT_ROOT / "tools" / "train_eval_dice_pipeline.py"

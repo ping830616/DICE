@@ -63,7 +63,7 @@ def run_one(workload: str, stressor: str, duration_s: int):
     if not script.exists():
         raise RuntimeError(
             "The legacy Tier-1 shell collector is not shipped in the public GitHub notebook-first release. "
-            "Use the released dataset and the notebook in 'analysis and results/dice_results_analysis.ipynb' instead."
+            "Use the released dataset and the root-level 'dice_results_analysis.ipynb' notebook instead."
         )
     cmd_t1 = ["bash", str(script), str(raw_plistnul), str(samples_target), "200"]
     with (logs / "tier1_collect.log").open("w") as lf:

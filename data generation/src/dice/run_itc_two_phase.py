@@ -32,8 +32,8 @@ def public_repo_collection_removed(script_path: Path, phase: str) -> RuntimeErro
     return RuntimeError(
         f"{phase} raw collection is not available in the public GitHub notebook-first release. "
         f"Missing helper script: {script_path}. "
-        "Use the released dataset plus 'analysis and results/dice_results_analysis.ipynb' "
-        "or 'analysis and results/tools/run_results_pipeline.py' to reproduce the published results."
+        "Use the released dataset plus the root-level 'dice_results_analysis.ipynb' "
+        "or 'tools/run_results_pipeline.py' to reproduce the published results."
     )
 
 def append_manifest(manifest_path: Path, row: dict):

@@ -11,11 +11,11 @@ This page describes the recommended way to run the DICE analysis notebook across
 
 Open:
 
-- `analysis and results/dice_results_analysis.ipynb`
+- `dice_results_analysis.ipynb`
 
 Use this environment:
 
-- `analysis and results/environment.yml`
+- `environment.yml`
 
 The notebook resolves repository paths dynamically and calls the same pinned Python pipeline used by the CLI wrapper, so it does not depend on machine-specific local paths.
 
@@ -23,7 +23,7 @@ The notebook resolves repository paths dynamically and calls the same pinned Pyt
 
 ```bash
 git clone https://github.com/ping830616/DICE.git
-cd DICE/"analysis and results"
+cd DICE
 conda env create -f environment.yml
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
@@ -31,7 +31,7 @@ conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 If the environment already exists:
 
 ```bash
-cd DICE/"analysis and results"
+cd DICE
 conda env update -f environment.yml --prune
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
@@ -44,7 +44,7 @@ On the server:
 
 ```bash
 git clone https://github.com/ping830616/DICE.git
-cd DICE/"analysis and results"
+cd DICE
 conda env create -f environment.yml
 conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice_results_analysis.ipynb
 ```
@@ -63,7 +63,7 @@ Conda is the recommended cross-platform path. If you prefer `venv`:
 
 ```bash
 git clone https://github.com/ping830616/DICE.git
-cd DICE/"analysis and results"
+cd DICE
 python -m venv .venv
 .venv\Scripts\Activate.ps1
 pip install -r requirements.txt

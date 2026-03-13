@@ -68,7 +68,7 @@ If no numeric temperature keys are reported, Tier-1 still captures thermal press
 
 ## Command
 
-Raw Tier-1 collection is not the primary public workflow in this repository. To reproduce the published results, use `analysis and results/dice_results_analysis.ipynb` against the released dataset.
+Raw Tier-1 collection is not the primary public workflow in this repository. To reproduce the published results, use the root-level `dice_results_analysis.ipynb` against the released dataset.
 
 ## Recommended Tier-1 for This Apple Dataset (`tier1_alt`)
 

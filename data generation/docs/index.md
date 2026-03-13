@@ -14,7 +14,7 @@ The documentation is organized so that readers can start with the dataset narrat
 1. Read [Data Description](data-description.md) for scope, workloads, anomalies, and evaluation framing.
 2. Check [Current Dataset Status](current-dataset-status.md) for what is fully exposed by this Mac.
 3. Read [Hardware and Compatibility](hardware-compatibility.md) for the machine profile behind this release and what ports cleanly to other systems.
-4. Use [../../analysis and results/index.md](../../analysis%20and%20results/index.md) to regenerate figures and tables without Jupyter.
+4. Use [../../portable-setup.md](../../portable-setup.md) and [../../dice_results_analysis.ipynb](../../dice_results_analysis.ipynb) to regenerate figures and tables without Jupyter.
 5. Open [Dataset Feature Map (Clean Tier1 Consistent)](dataset-feature-map-clean-tier1-consistent.md) for the legacy harmonized-column reference.
 6. Run collection with [End-to-End User Guide](end-to-end.md).
 
@@ -73,7 +73,7 @@ python generate_dataset.py --phase all --duration_s 1000 --out_dir ./data --tier
 - [Data Description](data-description.md)
 - [Current Dataset Status](current-dataset-status.md)
 - [Hardware and Compatibility](hardware-compatibility.md)
-- [Analysis and Results](../../analysis%20and%20results/index.md)
+- [Portable Setup](../../portable-setup.md)
 - [Dataset Feature Map (Clean Tier1 Consistent)](dataset-feature-map-clean-tier1-consistent.md)
 - [End-to-End User Guide](end-to-end.md)
 - [Feature Dictionary](feature-dictionary.md)
