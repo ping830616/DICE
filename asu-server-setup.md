@@ -36,6 +36,8 @@ cd DICE
 conda env create -f environment.yml
 ```
 
+This environment file creates the Conda env and then installs the exact pinned notebook stack from `requirements.txt` via `pip`, which avoids Conda-specific exact-version resolution issues across machines.
+
 If `conda run -n dice-results ...` reports `EnvironmentLocationNotFound`, create or recreate the environment first:
 
 ```bash

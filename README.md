@@ -42,6 +42,8 @@ conda env create -f environment.yml
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
 
+`environment.yml` now creates the Conda environment and then installs the exact pinned notebook stack from `requirements.txt` via `pip`. This avoids Conda-only package availability problems for exact versions like `tzdata`.
+
 Portable remote-server run:
 
 ```bash

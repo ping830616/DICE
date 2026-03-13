@@ -19,6 +19,8 @@ Use this environment:
 
 The notebook resolves repository paths dynamically and calls the same pinned Python pipeline used by the CLI wrapper, so it does not depend on machine-specific local paths.
 
+`environment.yml` creates a lightweight Conda environment and then installs the exact pinned notebook stack from `requirements.txt` via `pip`. This is more reliable across platforms than pinning every package directly through Conda.
+
 ## Updating an Existing Clone
 
 If you already cloned the repository and want the latest GitHub changes:

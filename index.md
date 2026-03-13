@@ -30,6 +30,8 @@ conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 
 If `conda run -n dice-results ...` fails with `EnvironmentLocationNotFound`, create the environment first with `conda env create -f environment.yml`.
 
+The environment file uses Conda for the base Python environment and `pip` for the exact pinned notebook stack.
+
 The `data generation/` folder remains in the repository for dataset methodology and context.
 
 ## Remote Server
