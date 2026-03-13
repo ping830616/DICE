@@ -5,9 +5,9 @@ title: Analysis and Results
 
 # Analysis and Results
 
-This repository no longer requires Jupyter to regenerate the paper-ready results from the released dataset.
+This public GitHub release is notebook-first for reproducing the paper-ready results from the released dataset.
 
-Use the terminal wrapper below to run the analysis, the full DICE retrain/evaluation pipeline, and the optional tuning sweep in a reproducible way.
+The notebook below calls the same pinned Python pipeline used by the CLI wrapper, so you can run the same workflow on Linux servers, Windows, or macOS without relying on machine-specific local paths.
 
 This portability applies to result regeneration from the released dataset. Raw Tier-1 and Tier-2 collection still depends on macOS Apple Silicon tooling (`macmon`, `powermetrics`, `xctrace`).
 
@@ -18,7 +18,7 @@ This portability applies to result regeneration from the released dataset. Raw T
 - Headless alternative: `analysis and results/requirements.txt`
 - Default dataset root: `data generation/dataset/ITC_M2Pro_DATA/`
 
-## Clone and Run on Linux, macOS, or Windows
+## Notebook Procedure
 
 Recommended cross-platform setup with Conda or Mamba:
 
@@ -26,7 +26,7 @@ Recommended cross-platform setup with Conda or Mamba:
 git clone https://github.com/ping830616/DICE.git
 cd DICE/"analysis and results"
 conda env create -f environment.yml
-conda run -n dice-results python tools/run_results_pipeline.py
+conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
 
 If the environment already exists, refresh it with:
@@ -34,7 +34,7 @@ If the environment already exists, refresh it with:
 ```bash
 cd DICE/"analysis and results"
 conda env update -f environment.yml --prune
-conda run -n dice-results python tools/run_results_pipeline.py
+conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
 
 Alternative with `venv` + `pip`:
@@ -45,7 +45,7 @@ cd DICE/"analysis and results"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-python tools/run_results_pipeline.py
+jupyter lab dice_results_analysis.ipynb
 ```
 
 On Windows PowerShell, activate the `venv` with `.venv\\Scripts\\Activate.ps1`.
@@ -58,18 +58,40 @@ If `conda activate dice-results` returns `EnvironmentNameNotFound`, the environm
 
 If you are already inside another environment such as `.venv`, you can either `deactivate` before using Conda or skip activation entirely and run commands with `conda run -n dice-results ...`.
 
-## Jupyter Notebook
+Run the notebook from top to bottom. The first execution cell resolves the repository location dynamically, and the pipeline cell regenerates:
 
-A portable notebook copy of the original analysis now lives at `analysis and results/dice_results_analysis.ipynb`.
+- `results_analysis/`
+- `results_dice_full/`
+- `results_portable/run_manifest.json`
 
-Launch it with:
+Optional notebook cells can also generate:
+
+- `results_dice_full_holdout/`
+- `results_dice_tuning/`
+
+The notebook resolves repository paths dynamically and uses the same wrapper as the terminal flow, so it does not depend on `/Users/...` paths or macOS-only temp directories.
+
+## Remote Linux Server
+
+If you want to run the notebook on a remote Linux server:
+
+```bash
+git clone https://github.com/ping830616/DICE.git
+cd DICE/"analysis and results"
+conda env create -f environment.yml
+conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice_results_analysis.ipynb
+```
+
+Then connect through SSH port forwarding from your local machine and open the forwarded Jupyter URL in your browser.
+
+## Optional CLI
+
+The notebook is the primary public entry point. If you need a non-interactive run in CI or on a server, the same pipeline is available through:
 
 ```bash
 cd DICE/"analysis and results"
-conda run -n dice-results jupyter lab dice_results_analysis.ipynb
+conda run -n dice-results python tools/run_results_pipeline.py
 ```
-
-The notebook resolves repository paths dynamically and uses the same wrapper as the terminal flow, so it does not depend on `/Users/...` paths or macOS-only temp directories.
 
 ## Optional Modes
 
@@ -97,8 +119,6 @@ conda run -n dice-results python tools/run_results_pipeline.py \
 
 ## Outputs
 
-The wrapper writes:
-
 - `results_analysis/`
 - `results_dice_full/`
 - `results_dice_full_holdout/` when `--run_holdout` is used
@@ -107,7 +127,7 @@ The wrapper writes:
 
 ## Reproducibility Controls
 
-The wrapper enforces:
+The notebook-backed pipeline enforces:
 
 - single-threaded BLAS / OpenMP execution
 - fixed `PYTHONHASHSEED=0`
@@ -115,4 +135,11 @@ The wrapper enforces:
 - a dataset tree hash recorded in `results_portable/run_manifest.json`
 - exact package versions from `analysis and results/requirements.txt` or `analysis and results/environment.yml`
 
-For cross-machine consistency, use the same Python version, the same pinned dependencies, and the same dataset tree hash. The wrapper also records hashes for the environment files in `results_portable/run_manifest.json`.
+To keep results consistent across machines and servers:
+
+1. Use the committed dataset under `data generation/dataset/ITC_M2Pro_DATA/`.
+2. Create or update the environment from the same `environment.yml`.
+3. Run the notebook from top to bottom without changing the parameters.
+4. Check `results_portable/run_manifest.json` and confirm the dataset hash and environment-file hashes match across runs.
+
+This is designed for stable reproduction of the released results. It should be very close across machines, but exact byte-for-byte identity is not something I can honestly promise across every OS and linear algebra backend.

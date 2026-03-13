@@ -3,12 +3,13 @@
 The repository is organized into two top-level workflows:
 
 - [`data generation`](data%20generation/): Tier-0 to Tier-2 telemetry collection and validation.
-- [`analysis and results`](analysis%20and%20results/): terminal-first regeneration of figures, tables, and model results from the released dataset.
+- [`analysis and results`](analysis%20and%20results/): notebook-first regeneration of figures, tables, and model results from the released dataset.
 
 Start here:
 
 - [Data generation overview](data%20generation/README.md)
 - [Analysis and results overview](analysis%20and%20results/README.md)
+- [Portable notebook](analysis%20and%20results/dice_results_analysis.ipynb)
 - [Cross-platform environment](analysis%20and%20results/environment.yml)
 - [Documentation home](data%20generation/docs/index.md)
 - [Portable analysis page](analysis%20and%20results/index.md)

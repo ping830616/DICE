@@ -8,7 +8,7 @@ title: DICE Home
 This site is split into two top-level areas:
 
 - `data generation/` for Tier-0 to Tier-2 collection and validation
-- `analysis and results/` for portable terminal-only regeneration of figures, tables, and model outputs
+- `analysis and results/` for portable notebook-first regeneration of figures, tables, and model outputs
 
 ## Open
 

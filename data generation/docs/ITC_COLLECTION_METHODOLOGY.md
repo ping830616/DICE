@@ -1,6 +1,6 @@
 # ITC Dataset Collection Methodology (Tier-0 to Tier-2, macOS)
 
-This document is a terminal-first, reproducible workflow for generating ITC-ready telemetry data on Apple Silicon laptops.
+This document describes the local macOS collection workflow used to build the released dataset. The public GitHub repo is notebook-first for results reproduction and does not ship the low-level Tier-1/Tier-2 shell collectors.
 
 ## 1) Case Design
 

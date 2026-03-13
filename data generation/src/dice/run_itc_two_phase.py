@@ -27,6 +27,15 @@ DEFAULT_SCRIPTS = REPO_ROOT / "scripts"
 def mkdirp(p: Path):
     p.mkdir(parents=True, exist_ok=True)
 
+
+def public_repo_collection_removed(script_path: Path, phase: str) -> RuntimeError:
+    return RuntimeError(
+        f"{phase} raw collection is not available in the public GitHub notebook-first release. "
+        f"Missing helper script: {script_path}. "
+        "Use the released dataset plus 'analysis and results/dice_results_analysis.ipynb' "
+        "or 'analysis and results/tools/run_results_pipeline.py' to reproduce the published results."
+    )
+
 def append_manifest(manifest_path: Path, row: dict):
     import csv
     exists = manifest_path.exists()
@@ -173,7 +182,7 @@ def run_case_tier1(
     tier1_schema = Path(tier1_schema_path) if tier1_schema_path else out_root / "tier1_schema_global.json"
     powermetrics_script = scripts_dir / "03_powermetrics_collect_5hz.sh"
     if not powermetrics_script.exists():
-        raise FileNotFoundError(f"Missing powermetrics script: {powermetrics_script}")
+        raise public_repo_collection_removed(powermetrics_script, "Tier-1")
 
     cid = case_id(w, s)
     out_dir = out_root / "tier1" / cid
@@ -428,7 +437,7 @@ def run_case_tier2(
     tier2_schema = Path(tier2_schema_path) if tier2_schema_path else out_root / "tier2_schema_global.json"
     xctrace_script = scripts_dir / "05_xctrace_record_export.sh"
     if not xctrace_script.exists():
-        raise FileNotFoundError(f"Missing xctrace script: {xctrace_script}")
+        raise public_repo_collection_removed(xctrace_script, "Tier-2")
 
     cid = case_id(w, s)
     out_dir = out_root / "tier2" / cid

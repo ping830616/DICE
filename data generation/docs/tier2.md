@@ -12,7 +12,7 @@ Tier-2 adds trace-based evidence from Instruments (`xctrace`) for deeper runtime
 ## Source and Requirements
 
 - Source: `xcrun xctrace`
-- Collection script: `scripts/05_xctrace_record_export.sh`
+- Collection helper: not shipped in the public notebook-first GitHub release
 - Requires Xcode and accepted Xcode license.
 
 Preflight check:
@@ -52,9 +52,7 @@ Legacy parser versions may emit a CPU/memory/IO-oriented core schema (`cpu_usage
 
 ## Command
 
-```bash
-python generate_dataset.py --phase tier2 --duration_s 1000 --out_dir ./data --tier2_template "Time Profiler"
-```
+Raw Tier-2 collection is not the primary public workflow in this repository. To reproduce the published results, use `analysis and results/dice_results_analysis.ipynb` against the released dataset.
 
 ## Notes
 

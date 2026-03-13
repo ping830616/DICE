@@ -13,7 +13,7 @@ For this Apple Silicon dataset release, `tier1_alt` is the recommended Tier-1 so
 ## Source and Sampling
 
 - Source: `powermetrics`
-- Collection: `scripts/03_powermetrics_collect_5hz.sh`
+- Collection helper: not shipped in the public notebook-first GitHub release
 - Rate: `5 Hz` (`-i 200`)
 - Duration: typically `1000 s`
 - Temperature extension: collector first tries `--show-extra-power-info` to expose additional sensor keys when available
@@ -68,9 +68,7 @@ If no numeric temperature keys are reported, Tier-1 still captures thermal press
 
 ## Command
 
-```bash
-python generate_dataset.py --phase tier1 --duration_s 1000 --out_dir ./data
-```
+Raw Tier-1 collection is not the primary public workflow in this repository. To reproduce the published results, use `analysis and results/dice_results_analysis.ipynb` against the released dataset.
 
 ## Recommended Tier-1 for This Apple Dataset (`tier1_alt`)
 
@@ -103,50 +101,7 @@ Practical note for macOS laptop collection:
 
 ## Recovery Pipeline (If Tier-1 Raw Files Are Empty)
 
-If `powermetrics_raw.txt` is `0B` for many cases, the common cause is expired `sudo` credentials during long runs.
-
-Use this robust sequence:
-
-```bash
-cd "/Users/hsiaopingni/Documents/New project/DICE"
-
-# 1) Cache sudo credentials in this terminal
-sudo -v
-
-# 2) Keep sudo alive during the full Tier-1 run
-( while true; do sudo -n true; sleep 60; done ) &
-KEEPALIVE_PID=$!
-
-# 3) Generate list of cases with missing/empty Tier-1 raw output
-python3 - <<'PY' > /tmp/tier1_missing_cases.txt
-from pathlib import Path
-root = Path('/Users/hsiaopingni/ITC_2026_M2Pro_DATA/tier1')
-for d in sorted(p for p in root.iterdir() if p.is_dir()):
-    raw = d / 'powermetrics_raw.txt'
-    if (not raw.exists()) or raw.stat().st_size == 0:
-        print(d.name)
-PY
-
-# 4) Rerun each missing case (safe even if case names contain shell-sensitive chars)
-while IFS= read -r cid; do
-  [ -z "$cid" ] && continue
-  echo "Rerun Tier-1: $cid"
-  python3 tools/rerun_cases.py \
-    --phase tier1 \
-    --duration_s 1000 \
-    --out_dir /Users/hsiaopingni/ITC_2026_M2Pro_DATA \
-    --scripts_dir ./scripts \
-    --cases "$cid" || break
-done < /tmp/tier1_missing_cases.txt
-
-# 5) Stop keepalive
-kill "$KEEPALIVE_PID"
-wait "$KEEPALIVE_PID" 2>/dev/null
-
-# 6) Rebuild manifests and validate
-python3 tools/repair_itc_dataset.py --root /Users/hsiaopingni/ITC_2026_M2Pro_DATA --tier1_mode alt
-python3 tools/validate_itc_dataset.py --root /Users/hsiaopingni/ITC_2026_M2Pro_DATA --tier1_mode alt --check_tier2
-```
+Those raw-collection recovery steps depended on local shell collectors that are no longer published in this repository.
 
 ## Verify Tier-1-alt Signal Coverage (Power/Usage/Temperature)
 

@@ -7,12 +7,14 @@ DICE provides an end-to-end pipeline to generate case-aligned telemetry data for
 - `Tier-1` (legacy): direct `powermetrics` telemetry with global full schema and dense core features.
 - `Tier-2`: `xctrace` telemetry export and parsing into core/full CSV outputs.
 
+This public GitHub release is focused on the released dataset plus portable notebook-based results reproduction. The low-level Tier-1/Tier-2 shell collectors are not shipped in this repo.
+
 ## Start Here
 
 1. Read the dataset narrative and assumptions: [docs/data-description.md](docs/data-description.md)
 2. Check the current release status and known platform limits: [docs/current-dataset-status.md](docs/current-dataset-status.md)
 3. Review the machine-specific constraints and portability notes: [docs/hardware-compatibility.md](docs/hardware-compatibility.md)
-4. For terminal-only analysis and results, switch to [../analysis and results/README.md](../analysis%20and%20results/README.md)
+4. For notebook-first analysis and results, switch to [../analysis and results/README.md](../analysis%20and%20results/README.md)
 5. Follow the runbook for full collection and validation: [docs/end-to-end.md](docs/end-to-end.md)
 6. Use the legacy clean feature-map reference if you need a harmonized column description: [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
 
@@ -56,41 +58,11 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-For reproducible terminal-only regeneration of the released results dataset, use the sibling [`analysis and results`](../analysis%20and%20results/README.md) folder.
+For reproducible notebook-first regeneration of the released results dataset, use the sibling [`analysis and results`](../analysis%20and%20results/README.md) folder.
 
-Recommended publication profile (`tier0 + tier1_alt + tier2`):
+The raw Tier-1/Tier-2 collection helpers used for local macOS capture are intentionally not published in this GitHub release.
 
-```bash
-python generate_dataset.py --phase tier0 --duration_s 1000 --out_dir ./data
-python generate_dataset.py --phase tier1_alt --duration_s 1000 --out_dir ./data --tier1_alt_bin macmon
-python generate_dataset.py --phase tier2 --duration_s 1000 --out_dir ./data --tier2_template "Time Profiler"
-```
-
-Legacy Tier-0 + Tier-1 baseline:
-
-```bash
-python generate_dataset.py --phase both --duration_s 1000 --out_dir ./data
-```
-
-Tier-1 alternative on Apple Silicon using `macmon`:
-
-```bash
-python generate_dataset.py --phase tier1_alt --duration_s 1000 --out_dir ./data --tier1_alt_bin macmon
-```
-
-Tier-2 only:
-
-```bash
-python generate_dataset.py --phase tier2 --duration_s 1000 --out_dir ./data --tier2_template "Time Profiler"
-```
-
-All tiers:
-
-```bash
-python generate_dataset.py --phase all --duration_s 1000 --out_dir ./data --tier2_template "Time Profiler"
-```
-
-## Validate, Repair, Rerun
+## Validate and Inspect Existing Data
 
 ```bash
 # Validate legacy Tier-0 + Tier-1 profile
@@ -111,10 +83,6 @@ python tools/ensure_no_nan_dataset.py --root ./data --tier1_mode alt --out_dir .
 # Probe Tier-1 temperature support before long captures
 python tools/probe_tier1_temperature.py --samples 3 --interval_ms 1000 --out_raw ./data/tier1_temp_probe.txt
 
-# Rerun selected cases
-python tools/rerun_cases.py --phase tier1 --duration_s 1000 --out_dir ./data --scripts_dir ./scripts --cases BROWSER__CACHE PY_AI__TLB
-python tools/rerun_cases.py --phase tier1_alt --duration_s 1000 --out_dir ./data --cases BROWSER__CACHE PY_AI__TLB --tier1_alt_bin macmon
-python tools/rerun_cases.py --phase tier2 --duration_s 1000 --out_dir ./data --scripts_dir ./scripts --tier2_template "Time Profiler" --cases BROWSER__CACHE PY_AI__TLB
 ```
 
 ## Repository Layout
@@ -136,9 +104,6 @@ DICE/
       tier2.md
       validation.md
       publish.md
-    scripts/
-      03_powermetrics_collect_5hz.sh
-      05_xctrace_record_export.sh
     src/dice/
       cfg.py
       workloads.py
