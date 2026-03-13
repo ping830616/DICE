@@ -26,8 +26,15 @@ Recommended cross-platform setup with Conda or Mamba:
 git clone https://github.com/ping830616/DICE.git
 cd DICE/"analysis and results"
 conda env create -f environment.yml
-conda activate dice-results
-python tools/run_results_pipeline.py
+conda run -n dice-results python tools/run_results_pipeline.py
+```
+
+If the environment already exists, refresh it with:
+
+```bash
+cd DICE/"analysis and results"
+conda env update -f environment.yml --prune
+conda run -n dice-results python tools/run_results_pipeline.py
 ```
 
 Alternative with `venv` + `pip`:
@@ -45,6 +52,12 @@ On Windows PowerShell, activate the `venv` with `.venv\\Scripts\\Activate.ps1`.
 
 If you want to point at a different dataset snapshot, pass `--root ../"data generation"/dataset/<DATASET_NAME>`.
 
+## Conda Troubleshooting
+
+If `conda activate dice-results` returns `EnvironmentNameNotFound`, the environment has not been created on that machine yet. Run `conda env create -f environment.yml` from `DICE/"analysis and results"` first.
+
+If you are already inside another environment such as `.venv`, you can either `deactivate` before using Conda or skip activation entirely and run commands with `conda run -n dice-results ...`.
+
 ## Jupyter Notebook
 
 A portable notebook copy of the original analysis now lives at `analysis and results/dice_results_analysis.ipynb`.
@@ -53,8 +66,7 @@ Launch it with:
 
 ```bash
 cd DICE/"analysis and results"
-conda activate dice-results
-jupyter lab dice_results_analysis.ipynb
+conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
 
 The notebook resolves repository paths dynamically and uses the same wrapper as the terminal flow, so it does not depend on `/Users/...` paths or macOS-only temp directories.
@@ -64,21 +76,21 @@ The notebook resolves repository paths dynamically and uses the same wrapper as 
 Run workload-holdout evaluation too:
 
 ```bash
-python tools/run_results_pipeline.py \
+conda run -n dice-results python tools/run_results_pipeline.py \
   --run_holdout
 ```
 
 Run the compact tuning sweep too:
 
 ```bash
-python tools/run_results_pipeline.py \
+conda run -n dice-results python tools/run_results_pipeline.py \
   --run_tuning
 ```
 
 Run everything:
 
 ```bash
-python tools/run_results_pipeline.py \
+conda run -n dice-results python tools/run_results_pipeline.py \
   --run_holdout \
   --run_tuning
 ```

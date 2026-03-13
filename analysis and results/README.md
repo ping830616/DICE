@@ -16,10 +16,11 @@ Use this folder when you want to clone the repository and regenerate results wit
 ```bash
 cd DICE/"analysis and results"
 conda env create -f environment.yml
-conda activate dice-results
-python tools/run_results_pipeline.py
+conda run -n dice-results python tools/run_results_pipeline.py
 ```
 
 The default dataset is `../data generation/dataset/ITC_M2Pro_DATA/`.
 
-For a plain `venv` workflow, install [requirements.txt](requirements.txt) instead. A portable notebook copy also lives in `dice_results_analysis.ipynb`.
+If the Conda environment already exists, refresh it with `conda env update -f environment.yml --prune`.
+
+For a plain `venv` workflow, install [requirements.txt](requirements.txt) instead. A portable notebook copy also lives in `dice_results_analysis.ipynb`, and you can launch it with `conda run -n dice-results jupyter lab dice_results_analysis.ipynb`.
