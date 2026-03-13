@@ -6,6 +6,7 @@ Start here:
 
 - [Portable analysis page](index.md)
 - [Portable notebook](dice_results_analysis.ipynb)
+- [Portable setup guide](portable-setup.md)
 - [Cross-platform Conda environment](environment.yml)
 - [Locked Python environment](requirements.txt)
 - [Terminal wrapper](tools/run_results_pipeline.py)

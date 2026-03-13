@@ -17,6 +17,7 @@ This portability applies to result regeneration from the released dataset. Raw T
 - Recommended for Linux/macOS/Windows: `analysis and results/environment.yml`
 - Headless alternative: `analysis and results/requirements.txt`
 - Default dataset root: `data generation/dataset/ITC_M2Pro_DATA/`
+- Detailed setup guide: `analysis and results/portable-setup.md`
 
 ## Notebook Procedure
 
