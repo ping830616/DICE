@@ -50,6 +50,27 @@ EnvironmentLocationNotFound: Not a conda environment
 
 then `dice-results` has not been created yet on that machine.
 
+If Conda instead fails while solving and mentions `tzdata=2025.2`, you are using an older copy of `environment.yml`. The current repo version no longer pins Conda packages that way. Update your clone first:
+
+```bash
+cd DICE
+git fetch origin
+git pull --ff-only origin main
+```
+
+Then confirm the file now looks like this:
+
+```yaml
+name: dice-results
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11.4
+  - pip
+  - pip:
+      - -r requirements.txt
+```
+
 Create it with:
 
 ```bash

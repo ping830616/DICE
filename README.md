@@ -34,6 +34,18 @@ conda env create -f environment.yml
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
 
+If you see `EnvironmentLocationNotFound`, the environment has not been created yet on that machine. Run:
+
+```bash
+cd DICE
+conda env create -f environment.yml
+conda run -n dice-results jupyter lab dice_results_analysis.ipynb
+```
+
+If Conda fails during solving and mentions `tzdata=2025.2`, your local clone is stale. Pull the latest `main` branch and verify that `environment.yml` only contains `python`, `pip`, and `-r requirements.txt`.
+
+`environment.yml` now creates the Conda environment and then installs the exact pinned notebook stack from `requirements.txt` via `pip`. This avoids Conda-only package availability problems for exact versions like `tzdata`.
+
 Portable remote-server run:
 
 ```bash
