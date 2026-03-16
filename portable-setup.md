@@ -7,6 +7,21 @@ title: Portable Jupyter Setup
 
 Use the notebook as the public entry point.
 
+## Reproducibility Scope
+
+This setup is intended to regenerate the released DICE analysis results from the committed dataset across different machines.
+
+Expected to be reproducible:
+
+- notebook execution flow
+- paper and appendix output folders
+- dataset and environment hashes in `results_portable/run_manifest.json`
+
+Not guaranteed to be identical on every machine:
+
+- bit-for-bit identical floating-point outputs across all OS and math-library stacks
+- raw Tier-1/Tier-2 data collection outside Apple/macOS collection hosts
+
 ## Local
 
 ```bash
@@ -52,3 +67,14 @@ Then open the Jupyter URL shown by the server.
 The notebook generates the analysis, main-paper, appendix, and reproducibility folders under:
 
 - `data generation/dataset/ITC_M2Pro_DATA/`
+
+## Verification
+
+After running on different machines, compare:
+
+1. `results_portable/run_manifest.json`
+2. dataset SHA256
+3. `environment.yml` SHA256
+4. `requirements.txt` SHA256
+
+If those match, the same released workflow and declared environment were used.
