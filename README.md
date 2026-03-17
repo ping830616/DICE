@@ -2,6 +2,8 @@
 
 Portable analysis and ITC-paper result generation for the released DICE dataset.
 
+The public results workflow is notebook-only. Reviewers do not need to run shell scripts or external Python entrypoints; `dice_results_analysis.ipynb` contains the analysis and evaluation path directly.
+
 ## Reproducibility
 
 This repository is designed so the released `analysis/results` workflow can be rerun across Linux, macOS, and remote servers from the same committed dataset.
@@ -43,8 +45,12 @@ After the run finishes on each machine, compare:
 1. `results_portable/run_manifest.json`
 2. the dataset SHA256
 3. the `environment.yml` and `requirements.txt` SHA256 values
+4. these result tables:
+   `results_dice_full/overall_metrics.csv`
+   `results_dice_full/sequential_metrics.csv`
+   `results_dice_full/stressor_diagnosis_metrics.csv`
 
-If those hashes match, you are rerunning the same released DICE workflow and dataset under the same declared software environment.
+If the manifest hashes and these core result tables match, you are rerunning the same released DICE workflow and dataset under the same declared software environment.
 
 ## Update
 

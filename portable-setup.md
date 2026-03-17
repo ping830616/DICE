@@ -7,6 +7,8 @@ title: Portable Jupyter Setup
 
 Use the notebook as the public entry point.
 
+The notebook is the end-to-end runner. It does not require separate shell scripts or external Python entrypoints during normal use.
+
 ## Reproducibility Scope
 
 This setup is intended to regenerate the released DICE analysis results from the committed dataset across different machines.
@@ -76,5 +78,8 @@ After running on different machines, compare:
 2. dataset SHA256
 3. `environment.yml` SHA256
 4. `requirements.txt` SHA256
+5. `results_dice_full/overall_metrics.csv`
+6. `results_dice_full/sequential_metrics.csv`
+7. `results_dice_full/stressor_diagnosis_metrics.csv`
 
-If those match, the same released workflow and declared environment were used.
+If the manifest hashes and these core result tables match, the same released workflow and declared environment were used.
