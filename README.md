@@ -65,6 +65,7 @@ conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ## Docs
 
 - [Portable setup](portable-setup.md)
+- [Notebook guide](notebook-guide.md)
 - [ITC paper and appendix methodology](itc-paper-methodology.md)
 - [ASU server setup](asu-server-setup.md)
 - [`data generation`](data%20generation/README.md)
