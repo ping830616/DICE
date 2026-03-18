@@ -4,6 +4,8 @@ Portable analysis and ITC-paper result generation for the released DICE dataset.
 
 The public results workflow is notebook-only. Reviewers do not need to run shell scripts or external Python entrypoints; `dice_results_analysis.ipynb` contains the analysis and evaluation path directly.
 
+For paper writing and review, the same workflow is also split into a smaller notebook suite under `itc_notebooks/`.
+
 ## Reproducibility
 
 This repository is designed so the released `analysis/results` workflow can be rerun across Linux, macOS, and remote servers from the same committed dataset.
@@ -38,6 +40,8 @@ Run the notebook from top to bottom. It generates:
 - `results_itc_appendix/`
 - `results_portable/run_manifest.json`
 
+If you prefer a smaller paper-oriented workflow, open the split notebooks in `itc_notebooks/` and follow the order listed in `itc_notebooks/README.md`.
+
 ## Verify Across Machines
 
 After the run finishes on each machine, compare:
@@ -66,6 +70,7 @@ conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 
 - [Portable setup](portable-setup.md)
 - [Notebook guide](notebook-guide.md)
+- [ITC notebook suite](itc_notebooks/README.md)
 - [ITC paper and appendix methodology](itc-paper-methodology.md)
 - [ASU server setup](asu-server-setup.md)
 - [`data generation`](data%20generation/README.md)
