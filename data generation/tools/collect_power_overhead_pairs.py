@@ -33,7 +33,7 @@ from dice.tier1_alt_macmon import (  # type: ignore[attr-defined]
     extract_core,
     parse_with_schema,
 )
-from dice.workloads import run_workload
+import dice.workloads as dw
 from tier0_collect_full import Prev as Tier0Prev, sample_tier0_full
 
 
@@ -50,6 +50,54 @@ def load_pipeline_module():
 
 
 PIPELINE = load_pipeline_module()
+
+
+def workload_ai_numpy_torch_fallback(stop_evt: threading.Event, phase_s: float = 5.0):
+    dw._seed_all()
+    try:
+        import torch
+
+        torch.manual_seed(dw.SEED)
+        mps_ok = hasattr(torch.backends, "mps") and torch.backends.mps.is_available()
+        device = torch.device("mps" if mps_ok else "cpu")
+
+        n_numpy = 1024
+        n_torch = 2048
+        a_np = np.random.randn(n_numpy, n_numpy).astype(np.float32)
+        b_np = np.random.randn(n_numpy, n_numpy).astype(np.float32)
+        a_t = torch.randn((n_torch, n_torch), device=device, dtype=torch.float32)
+        b_t = torch.randn((n_torch, n_torch), device=device, dtype=torch.float32)
+
+        def torch_phase(end_t: float):
+            while time.time() < end_t and (not stop_evt.is_set()):
+                c = a_t @ b_t
+                s = c.sum()
+                if device.type == "cpu":
+                    _ = float(s.item())
+
+        def numpy_phase(end_t: float):
+            while time.time() < end_t and (not stop_evt.is_set()):
+                _ = a_np @ b_np
+
+        while not stop_evt.is_set():
+            t0 = time.time()
+            torch_phase(t0 + phase_s)
+            if stop_evt.is_set():
+                break
+            numpy_phase(time.time() + phase_s)
+
+    except ModuleNotFoundError:
+        n = 1536
+        a = np.random.randn(n, n).astype(np.float32)
+        b = np.random.randn(n, n).astype(np.float32)
+        while not stop_evt.is_set():
+            _ = a @ b
+
+
+def run_workload_safe(workload: str, stop_evt: threading.Event):
+    if workload == "PY_AI":
+        return workload_ai_numpy_torch_fallback(stop_evt, phase_s=5.0)
+    return dw.run_workload(workload, stop_evt)
 
 
 @dataclass
@@ -307,7 +355,7 @@ def collect_one(
     wait_for_macmon(tier1_state, proc, tried)
 
     stop_evt = threading.Event()
-    workload_thread = threading.Thread(target=run_workload, args=(workload, stop_evt), daemon=True)
+    workload_thread = threading.Thread(target=run_workload_safe, args=(workload, stop_evt), daemon=True)
     runtime_thread = None
     t0 = time.time()
     try:
