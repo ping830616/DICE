@@ -24,6 +24,7 @@ import argparse
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from time import perf_counter
 from typing import Dict, List, Sequence, Tuple
 
 import matplotlib
@@ -53,10 +54,17 @@ ANOMALIES = [s for s in STRESSORS if s != "NOMINAL"]
 
 IGNORE_COLS = {"idx", "ts_unix_s", "t_rel_s", "timestamp", "time", "ts"}
 
-TIER_FILE = {
-    "tier0": "tier0_full_5hz.csv",
-    "tier1_alt": "tier1_alt_core_5hz.csv",
-    "tier2": "tier2_core_5hz.csv",
+FEATURE_PROFILES = {
+    "mixed": {
+        "tier0": "tier0_full_5hz.csv",
+        "tier1_alt": "tier1_alt_core_5hz.csv",
+        "tier2": "tier2_core_5hz.csv",
+    },
+    "full": {
+        "tier0": "tier0_full_5hz.csv",
+        "tier1_alt": "tier1_alt_full_5hz.csv",
+        "tier2": "tier2_full_5hz.csv",
+    },
 }
 
 CONFIGS = {
@@ -144,8 +152,17 @@ def safe_ap(y_true: np.ndarray, score: np.ndarray) -> float:
     return float(average_precision_score(y_true, score))
 
 
-def case_path(root: Path, tier: str, case: CaseRef) -> Path:
-    return root / tier / case.case_id / TIER_FILE[tier]
+def default_results_dir(root: Path, protocol: str, feature_profile: str) -> Path:
+    if feature_profile == "mixed":
+        return root / ("results_dice_full_holdout" if protocol == "workload_holdout" else "results_dice_full")
+    suffix = f"results_dice_full_{feature_profile}"
+    if protocol == "workload_holdout":
+        suffix = f"{suffix}_holdout"
+    return root / suffix
+
+
+def case_path(root: Path, tier: str, case: CaseRef, tier_files: Dict[str, str]) -> Path:
+    return root / tier / case.case_id / tier_files[tier]
 
 
 def read_df(path: Path) -> pd.DataFrame:
@@ -177,10 +194,10 @@ def downsample_1hz(df: pd.DataFrame, source_hz: int = 5) -> pd.DataFrame:
     return tmp.groupby(grp, sort=False).mean(numeric_only=True)
 
 
-def common_features_per_tier(root: Path, tier: str) -> List[str]:
+def common_features_per_tier(root: Path, tier: str, tier_files: Dict[str, str]) -> List[str]:
     common = None
     for case in all_cases():
-        df = read_df(case_path(root, tier, case))
+        df = read_df(case_path(root, tier, case, tier_files))
         cols = set(numeric_features(df))
         common = cols if common is None else (common & cols)
     common_list = sorted(common) if common else []
@@ -190,7 +207,7 @@ def common_features_per_tier(root: Path, tier: str) -> List[str]:
     for f in common_list:
         vals = []
         for case in all_cases():
-            d = downsample_1hz(read_df(case_path(root, tier, case)))
+            d = downsample_1hz(read_df(case_path(root, tier, case, tier_files)))
             vals.append(d[f].to_numpy(dtype=float))
         x = np.concatenate(vals)
         if np.nanstd(x) > 1e-10:
@@ -203,13 +220,14 @@ def build_case_matrix(
     case: CaseRef,
     tiers: Sequence[str],
     feature_map: Dict[str, List[str]],
+    tier_files: Dict[str, str],
     source_hz: int = 5,
 ) -> Tuple[np.ndarray, List[str]]:
     mats = []
     names = []
     lengths = []
     for t in tiers:
-        df = downsample_1hz(read_df(case_path(root, t, case)), source_hz=source_hz)
+        df = downsample_1hz(read_df(case_path(root, t, case, tier_files)), source_hz=source_hz)
         feats = feature_map[t]
         arr = df[feats].to_numpy(dtype=float)
         mats.append(arr)
@@ -941,6 +959,12 @@ def main() -> None:
     ap.add_argument("--gain", type=float, default=0.35)
     ap.add_argument("--ridge_lambda", type=float, default=1e-3)
     ap.add_argument(
+        "--feature_profile",
+        choices=sorted(FEATURE_PROFILES.keys()),
+        default="mixed",
+        help="Feature-file profile: mixed keeps the current deployment-friendly setting; full uses full Tier-1/Tier-2 files as an upper-bound comparison.",
+    )
+    ap.add_argument(
         "--protocol",
         choices=["workload_holdout", "global"],
         default="global",
@@ -949,20 +973,28 @@ def main() -> None:
     args = ap.parse_args()
 
     root = args.root.expanduser().resolve()
-    out_dir = args.out_dir.expanduser().resolve() if args.out_dir else root / "results_dice_full"
+    tier_files = FEATURE_PROFILES[args.feature_profile]
+    out_dir = args.out_dir.expanduser().resolve() if args.out_dir else default_results_dir(
+        root,
+        protocol=args.protocol,
+        feature_profile=args.feature_profile,
+    )
     fig_dir = out_dir / "figures"
     out_dir.mkdir(parents=True, exist_ok=True)
     fig_dir.mkdir(parents=True, exist_ok=True)
 
-    tier_features = {t: common_features_per_tier(root, t) for t in TIER_FILE.keys()}
+    print(f"[INFO] feature_profile={args.feature_profile} tier_files={tier_files}")
+    tier_features = {t: common_features_per_tier(root, t, tier_files) for t in tier_files.keys()}
     for t, fs in tier_features.items():
         print(f"[INFO] {t}: common features={len(fs)}")
 
     preds = []
     fold_rows = []
     diagnostic_records: List[Dict[str, object]] = []
+    config_runtime: Dict[str, float] = {}
 
     for cfg_name, tiers in CONFIGS.items():
+        cfg_t0 = perf_counter()
         print(f"[INFO] training config={cfg_name} tiers={tiers}")
         case_X = {}
         feature_names_cfg = None
@@ -972,6 +1004,7 @@ def main() -> None:
                 case,
                 tiers=tiers,
                 feature_map=tier_features,
+                tier_files=tier_files,
                 source_hz=args.source_hz,
             )
             case_X[case.case_id] = X
@@ -1018,6 +1051,7 @@ def main() -> None:
                 s_run = fd["run_score"].to_numpy(dtype=float)
                 fold_rows.append(
                     {
+                        "feature_profile": args.feature_profile,
                         "config": cfg_name,
                         "holdout_workload": holdout_w,
                         "roc_auc": safe_auc(y, s_run),
@@ -1058,6 +1092,7 @@ def main() -> None:
             s_run = fd["run_score"].to_numpy(dtype=float)
             fold_rows.append(
                 {
+                    "feature_profile": args.feature_profile,
                     "config": cfg_name,
                     "holdout_workload": "ALL",
                     "roc_auc": safe_auc(y, s_run),
@@ -1067,12 +1102,15 @@ def main() -> None:
                     "n_features": int(fd["n_features"].iloc[0]),
                 }
             )
+        config_runtime[cfg_name] = perf_counter() - cfg_t0
 
     pred_df = pd.DataFrame(preds).sort_values(["config", "workload", "stressor"])
+    pred_df["feature_profile"] = args.feature_profile
     fold_df = pd.DataFrame(fold_rows).sort_values(["config", "holdout_workload"])
     diag_df = pd.DataFrame([{k: v for k, v in row.items() if not k.startswith("_")} for row in diagnostic_records]).sort_values(
         ["config", "workload", "stressor"]
     )
+    diag_df["feature_profile"] = args.feature_profile
 
     # Workload-conditioned score head: distance to workload nominal template.
     pred_df["nominal_template_score"] = np.nan
@@ -1093,9 +1131,11 @@ def main() -> None:
         s_wc = d["run_score_wc"].to_numpy(dtype=float)
         overall_rows.append(
             {
+                "feature_profile": args.feature_profile,
                 "config": cfg,
                 "n_cases": int(len(d)),
                 "n_features": int(d["n_features"].iloc[0]),
+                "fit_eval_seconds": float(config_runtime.get(cfg, float("nan"))),
                 "roc_auc": safe_auc(y, s_run),
                 "pr_auc": safe_ap(y, s_run),
                 "roc_auc_wc": safe_auc(y, s_wc),
@@ -1122,6 +1162,7 @@ def main() -> None:
         s_wc = np.concatenate([m["run_score_wc_neg"].to_numpy(dtype=float), m["run_score_wc_pos"].to_numpy(dtype=float)])
         stress_rows.append(
             {
+                "feature_profile": args.feature_profile,
                 "stressor": a,
                 "roc_auc": safe_auc(y, s_run),
                 "pr_auc": safe_ap(y, s_run),
@@ -1162,10 +1203,34 @@ def main() -> None:
     mechanism_df = build_mechanism_summary(diag_df, config=final_cfg)
     sequential_df = build_sequential_metrics(pred_df)
     holdout_df = build_holdout_robustness_summary(fold_df)
+    if not diag_metrics_feature_df.empty:
+        diag_metrics_feature_df["feature_profile"] = args.feature_profile
+    if not diag_metrics_df.empty:
+        diag_metrics_df["feature_profile"] = args.feature_profile
+    if not diag_tier_df.empty:
+        diag_tier_df["feature_profile"] = args.feature_profile
+    if not mechanism_df.empty:
+        mechanism_df["feature_profile"] = args.feature_profile
+    if not sequential_df.empty:
+        sequential_df["feature_profile"] = args.feature_profile
+    if not holdout_df.empty:
+        holdout_df["feature_profile"] = args.feature_profile
+
+    runtime_df = pd.DataFrame(
+        [
+            {
+                "feature_profile": args.feature_profile,
+                "config": cfg,
+                "fit_eval_seconds": float(sec),
+            }
+            for cfg, sec in config_runtime.items()
+        ]
+    ).sort_values("config")
 
     pred_df.to_csv(out_dir / "case_predictions.csv", index=False)
     fold_df.to_csv(out_dir / "fold_metrics.csv", index=False)
     overall_df.to_csv(out_dir / "overall_metrics.csv", index=False)
+    runtime_df.to_csv(out_dir / "config_runtime_summary.csv", index=False)
     stress_df.to_csv(out_dir / "stressor_metrics_final_config.csv", index=False)
     diag_df.to_csv(out_dir / "case_diagnosis_summary.csv", index=False)
     diag_pred_df.to_csv(out_dir / "stressor_diagnosis_predictions.csv", index=False)
@@ -1178,6 +1243,25 @@ def main() -> None:
     diag_pred_feature_df.to_csv(out_dir / "stressor_feature_diagnosis_predictions.csv", index=False)
     diag_metrics_feature_df.to_csv(out_dir / "stressor_feature_diagnosis_metrics.csv", index=False)
     diag_cm_feature.to_csv(out_dir / "stressor_feature_confusion_matrix.csv")
+    (out_dir / "run_context.json").write_text(
+        json.dumps(
+            {
+                "feature_profile": args.feature_profile,
+                "tier_files": tier_files,
+                "protocol": args.protocol,
+                "source_hz": args.source_hz,
+                "fit_ratio": args.fit_ratio,
+                "block_B": args.block_B,
+                "alpha": args.alpha,
+                "persist_k": args.persist_k,
+                "gain": args.gain,
+                "ridge_lambda": args.ridge_lambda,
+                "config_runtime_seconds": config_runtime,
+            },
+            indent=2,
+        )
+        + "\n"
+    )
 
     overall_tex = overall_df[
         ["config", "n_features", "roc_auc", "pr_auc", "roc_auc_wc", "pr_auc_wc", "fpr_run_alert", "tpr_run_alert"]
@@ -1305,6 +1389,9 @@ def main() -> None:
     md.append("")
     md.append("## Setup")
     md.append(
+        f"- Feature profile: {args.feature_profile} ({tier_files})"
+    )
+    md.append(
         f"- Protocol: {args.protocol}, benign-only fit/calibration, block_B={args.block_B}, "
         f"alpha={args.alpha}, persist_k={args.persist_k}, gain={args.gain}"
     )
@@ -1349,6 +1436,8 @@ def main() -> None:
     md.append("## Files")
     for p in [
         out_dir / "overall_metrics.csv",
+        out_dir / "config_runtime_summary.csv",
+        out_dir / "run_context.json",
         out_dir / "stressor_metrics_final_config.csv",
         out_dir / "sequential_metrics.csv",
         out_dir / "case_diagnosis_summary.csv",
