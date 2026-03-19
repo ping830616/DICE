@@ -33,6 +33,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.colors import Normalize
+from matplotlib.patches import Polygon
 from sklearn.metrics import (
     average_precision_score,
     confusion_matrix,
@@ -87,6 +89,24 @@ LABEL_SIZE = 13
 TICK_SIZE = 11
 LEGEND_SIZE = 11
 ANNOTATION_SIZE = 10
+CONFIG_PRETTY = {
+    "tier0": "Tier-0",
+    "tier0_tier1": "Tier-0/1",
+    "tier0_tier1_tier2": "Tier-0/1/2",
+}
+CONFIG_COLORS = {
+    "tier0": "#355070",
+    "tier0_tier1": "#2A9D8F",
+    "tier0_tier1_tier2": "#E76F51",
+}
+STRESSOR_COLORS = {
+    "ATOMIC": "#E76F51",
+    "BRANCH": "#43AA8B",
+    "CACHE": "#577590",
+    "MEMBW": "#F4A261",
+    "TLB": "#8D5A97",
+}
+SQRT3 = float(np.sqrt(3.0))
 
 
 @dataclass(frozen=True)
@@ -538,18 +558,66 @@ def to_latex_table(df: pd.DataFrame, caption: str, label: str) -> str:
     )
 
 
+def _cfg_label(cfg: str) -> str:
+    return CONFIG_PRETTY.get(cfg, cfg.replace("_", " + "))
+
+
+def _cfg_color(cfg: str) -> str:
+    return CONFIG_COLORS.get(cfg, "#4E79A7")
+
+
+def _stressor_color(stressor: str) -> str:
+    return STRESSOR_COLORS.get(stressor, "#4E79A7")
+
+
+def _ternary_xy(share0: float, share1: float, share2: float) -> Tuple[float, float]:
+    total = max(float(share0 + share1 + share2), 1e-12)
+    a = float(share0) / total
+    b = float(share1) / total
+    c = float(share2) / total
+    return b + 0.5 * c, c * SQRT3 / 2.0
+
+
+def _setup_ternary_axis(ax: plt.Axes, labels: Tuple[str, str, str]) -> None:
+    verts = np.array([[0.0, 0.0], [1.0, 0.0], [0.5, SQRT3 / 2.0]])
+    ax.add_patch(Polygon(verts, closed=True, fill=False, edgecolor="#334155", linewidth=1.8))
+    for frac in (0.2, 0.4, 0.6, 0.8):
+        for p1, p2 in [
+            (_ternary_xy(frac, 0.0, 1.0 - frac), _ternary_xy(frac, 1.0 - frac, 0.0)),
+            (_ternary_xy(0.0, frac, 1.0 - frac), _ternary_xy(1.0 - frac, frac, 0.0)),
+            (_ternary_xy(0.0, 1.0 - frac, frac), _ternary_xy(1.0 - frac, 0.0, frac)),
+        ]:
+            ax.plot([p1[0], p2[0]], [p1[1], p2[1]], color="#CBD5E1", linewidth=0.8, zorder=0)
+    ax.text(-0.06, -0.06, labels[0], fontsize=LABEL_SIZE, fontweight="bold", ha="right", va="top")
+    ax.text(1.06, -0.06, labels[1], fontsize=LABEL_SIZE, fontweight="bold", ha="left", va="top")
+    ax.text(0.5, SQRT3 / 2.0 + 0.06, labels[2], fontsize=LABEL_SIZE, fontweight="bold", ha="center")
+    ax.text(0.5, -0.12, "Closer to a corner means more evidence from that tier.", fontsize=11, ha="center", color="#475569")
+    ax.set_xlim(-0.10, 1.10)
+    ax.set_ylim(-0.15, SQRT3 / 2.0 + 0.12)
+    ax.set_aspect("equal")
+    ax.axis("off")
+
+
 def plot_curves(df: pd.DataFrame, out_png: Path, score_col: str, title_tag: str) -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(12.8, 5.4))
-    for cfg, d in df.groupby("config"):
+    fig, axes = plt.subplots(1, 2, figsize=(14.8, 6.0))
+    roc_metrics: List[Tuple[str, str]] = []
+    pr_metrics: List[Tuple[str, str]] = []
+    for cfg, d in df.groupby("config", sort=False):
         y = d["label"].to_numpy(dtype=int)
         s = d[score_col].to_numpy(dtype=float)
         if len(np.unique(y)) < 2:
             continue
         fpr, tpr, _ = roc_curve(y, s)
         p, r, _ = precision_recall_curve(y, s)
-        axes[0].plot(fpr, tpr, linewidth=2, label=f"{cfg} (AUC={roc_auc_score(y, s):.3f})")
-        axes[1].plot(r, p, linewidth=2)
-    axes[0].plot([0, 1], [0, 1], "k--", linewidth=1)
+        color = _cfg_color(cfg)
+        roc_val = roc_auc_score(y, s)
+        ap_val = average_precision_score(y, s)
+        axes[0].plot(fpr, tpr, linewidth=3.0, color=color, solid_capstyle="round")
+        axes[0].fill_between(fpr, tpr, 0, color=color, alpha=0.08)
+        axes[1].plot(r, p, linewidth=3.0, color=color, solid_capstyle="round")
+        roc_metrics.append((color, f"{_cfg_label(cfg)}  ROC {roc_val:.3f}"))
+        pr_metrics.append((color, f"{_cfg_label(cfg)}  AP {ap_val:.3f}"))
+    axes[0].plot([0, 1], [0, 1], linestyle=(0, (4, 4)), color="#94A3B8", linewidth=1.2)
     axes[0].set_title("ROC curve", fontsize=TITLE_SIZE)
     axes[0].set_xlabel("False Positive Rate", fontsize=LABEL_SIZE)
     axes[0].set_ylabel("True Positive Rate", fontsize=LABEL_SIZE)
@@ -557,28 +625,51 @@ def plot_curves(df: pd.DataFrame, out_png: Path, score_col: str, title_tag: str)
     axes[1].set_xlabel("Recall", fontsize=LABEL_SIZE)
     axes[1].set_ylabel("Precision", fontsize=LABEL_SIZE)
     for ax in axes:
+        ax.set_xlim(-0.02, 1.02)
+        ax.set_ylim(-0.02, 1.02)
         ax.grid(alpha=0.25)
         ax.tick_params(labelsize=TICK_SIZE)
-    handles, labels = axes[0].get_legend_handles_labels()
-    if handles:
-        fig.legend(
-            handles,
-            labels,
-            loc="upper center",
-            bbox_to_anchor=(0.5, 1.05),
-            ncol=min(3, len(handles)),
-            frameon=True,
-            fontsize=LEGEND_SIZE,
+    for idx, (color, text) in enumerate(roc_metrics):
+        axes[0].text(
+            0.0,
+            -0.20 - idx * 0.09,
+            text,
+            transform=axes[0].transAxes,
+            color=color,
+            fontsize=ANNOTATION_SIZE + 1,
+            fontweight="bold",
+            ha="left",
+            va="top",
         )
+    for idx, (color, text) in enumerate(pr_metrics):
+        axes[1].text(
+            0.0,
+            -0.20 - idx * 0.09,
+            text,
+            transform=axes[1].transAxes,
+            color=color,
+            fontsize=ANNOTATION_SIZE + 1,
+            fontweight="bold",
+            ha="left",
+            va="top",
+        )
+    fig.text(
+        0.5,
+        0.03,
+        "Shaded area highlights stronger separation; workload-conditioned curves overlap because all heads are perfect there.",
+        ha="center",
+        fontsize=12,
+        color="#475569",
+    )
     fig.suptitle(f"DICE curves ({title_tag})", fontsize=TITLE_SIZE + 1, fontweight="bold")
-    fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.92])
+    fig.tight_layout(rect=[0.0, 0.16, 1.0, 0.92])
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
     plt.close(fig)
 
 
 def plot_score_box(df: pd.DataFrame, out_png: Path, score_col: str, y_label: str, title_tag: str) -> None:
     cfgs = list(df["config"].unique())
-    fig, axes = plt.subplots(1, len(cfgs), figsize=(5.2 * len(cfgs), 5.0), sharey=False)
+    fig, axes = plt.subplots(1, len(cfgs), figsize=(5.4 * len(cfgs), 5.4), sharey=False)
     if len(cfgs) == 1:
         axes = [axes]
     rng = np.random.default_rng(0)
@@ -587,33 +678,44 @@ def plot_score_box(df: pd.DataFrame, out_png: Path, score_col: str, y_label: str
         d = df[df["config"] == cfg]
         neg = d[d["label"] == 0][score_col].to_numpy(dtype=float)
         pos = d[d["label"] == 1][score_col].to_numpy(dtype=float)
-        parts = ax.violinplot([neg, pos], positions=[1, 2], showmeans=False, showmedians=True, showextrema=False)
+        parts = ax.violinplot(
+            [neg, pos],
+            positions=[1, 2],
+            widths=0.82,
+            showmeans=False,
+            showmedians=False,
+            showextrema=False,
+        )
         for body, color in zip(parts["bodies"], ["#b0bec5", "#ef9a9a"]):
             body.set_facecolor(color)
             body.set_edgecolor("black")
             body.set_alpha(0.75)
-        if "cmedians" in parts:
-            parts["cmedians"].set_color("black")
-            parts["cmedians"].set_linewidth(1.2)
-        for xpos, vals, color in [(1, neg, "black"), (2, pos, "#b71c1c")]:
+        for xpos, vals, color, edge in [(1, neg, "#0F172A", "white"), (2, pos, "#C62828", "white")]:
             jitter = rng.uniform(-0.07, 0.07, size=len(vals))
             ax.scatter(
                 np.full(len(vals), xpos) + jitter,
                 vals,
                 color=color,
-                s=24,
+                s=42,
                 alpha=0.72,
-                edgecolor="white",
+                edgecolor=edge,
                 linewidth=0.4,
                 zorder=3,
             )
+            if len(vals):
+                q1, med, q3 = np.percentile(vals, [25, 50, 75])
+                ax.vlines(xpos, q1, q3, color=color, linewidth=6, alpha=0.82, zorder=4)
+                ax.hlines(med, xpos - 0.18, xpos + 0.18, color="white", linewidth=2.4, zorder=5)
         ax.set_xticks([1, 2], labels=["Benign", "Anomaly"])
-        ax.set_title(cfg, fontsize=TITLE_SIZE)
-        ax.set_ylabel(y_label, fontsize=LABEL_SIZE)
+        ax.set_title(_cfg_label(cfg), fontsize=TITLE_SIZE + 2)
         ax.tick_params(labelsize=TICK_SIZE)
         ax.grid(alpha=0.22)
-    fig.suptitle(f"DICE run score distributions ({title_tag})", fontsize=TITLE_SIZE + 1, fontweight="bold")
-    fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.94])
+        vals_all = np.concatenate([neg, pos]) if len(neg) or len(pos) else np.array([])
+        if len(vals_all) and np.all(vals_all > 0):
+            ax.set_yscale("log")
+    fig.supylabel(y_label, fontsize=LABEL_SIZE)
+    fig.suptitle(f"DICE run score distributions ({title_tag})", fontsize=TITLE_SIZE + 2, fontweight="bold")
+    fig.tight_layout(rect=[0.04, 0.0, 1.0, 0.94])
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
     plt.close(fig)
 
@@ -927,9 +1029,23 @@ def plot_confusion_heatmap(cm: pd.DataFrame, out_png: Path, title: str) -> None:
     if cm.empty:
         return
     mat = cm.to_numpy(dtype=float)
-    fig, ax = plt.subplots(figsize=(6.2, 5.2))
-    im = ax.imshow(mat, cmap="Blues")
-    ax.set_xticks(np.arange(len(cm.columns)), labels=list(cm.columns), rotation=30, ha="right")
+    row_sum = mat.sum(axis=1, keepdims=True)
+    row_share = np.divide(mat, np.where(row_sum == 0.0, 1.0, row_sum))
+    fig, ax = plt.subplots(figsize=(7.2, 6.0))
+    yy, xx = np.indices(mat.shape)
+    sizes = 1800.0 * (mat.flatten() / max(np.max(mat), 1.0) + 0.08)
+    sc = ax.scatter(
+        xx.flatten(),
+        yy.flatten(),
+        s=sizes,
+        c=row_share.flatten(),
+        cmap="YlOrRd",
+        norm=Normalize(vmin=0.0, vmax=1.0),
+        edgecolor="#334155",
+        linewidth=1.1,
+        zorder=3,
+    )
+    ax.set_xticks(np.arange(len(cm.columns)), labels=list(cm.columns), rotation=28, ha="right")
     ax.set_yticks(np.arange(len(cm.index)), labels=list(cm.index))
     ax.set_xlabel("Predicted stressor", fontsize=LABEL_SIZE)
     ax.set_ylabel("True stressor", fontsize=LABEL_SIZE)
@@ -937,9 +1053,18 @@ def plot_confusion_heatmap(cm: pd.DataFrame, out_png: Path, title: str) -> None:
     ax.tick_params(labelsize=TICK_SIZE)
     for i in range(mat.shape[0]):
         for j in range(mat.shape[1]):
-            color = "white" if mat[i, j] >= max(1.0, np.max(mat) * 0.55) else "black"
-            ax.text(j, i, f"{int(mat[i, j])}", ha="center", va="center", color=color, fontsize=ANNOTATION_SIZE)
-    fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+            share = row_share[i, j]
+            color = "white" if share >= 0.55 else "black"
+            ax.text(j, i, f"{int(mat[i, j])}", ha="center", va="center", color=color, fontsize=ANNOTATION_SIZE + 2, fontweight="bold")
+    ax.set_xlim(-0.6, mat.shape[1] - 0.4)
+    ax.set_ylim(mat.shape[0] - 0.4, -0.6)
+    ax.set_facecolor("#F8FAFC")
+    ax.set_xticks(np.arange(-0.5, mat.shape[1], 1), minor=True)
+    ax.set_yticks(np.arange(-0.5, mat.shape[0], 1), minor=True)
+    ax.grid(which="minor", color="#E2E8F0", linewidth=1.0)
+    ax.grid(False)
+    cbar = fig.colorbar(sc, ax=ax, fraction=0.046, pad=0.04)
+    cbar.ax.set_ylabel("Share within each true stressor", fontsize=12)
     fig.tight_layout()
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
     plt.close(fig)
@@ -948,32 +1073,42 @@ def plot_confusion_heatmap(cm: pd.DataFrame, out_png: Path, title: str) -> None:
 def plot_stressor_tier_shares(df: pd.DataFrame, out_png: Path) -> None:
     if df.empty:
         return
-    fig, ax = plt.subplots(figsize=(7.4, 4.8))
-    x = np.arange(len(df))
-    bottom = np.zeros(len(df), dtype=float)
-    series = [
-        ("tier0_share", "Tier-0", "#78909c"),
-        ("tier1_alt_share", "Tier-1", "#81c784"),
-        ("tier2_share", "Tier-2", "#ffb74d"),
-    ]
-    for col, label, color in series:
-        vals = df[col].to_numpy(dtype=float)
-        ax.bar(x, vals, bottom=bottom, label=label, color=color, edgecolor="white", linewidth=0.8)
-        bottom += vals
-    ax.set_xticks(x, labels=df["stressor"].tolist())
-    ax.set_ylim(0.0, 1.0)
-    ax.set_ylabel("Mean contribution share", fontsize=LABEL_SIZE)
-    ax.set_title("Final-config diagnosis contribution share by tier", fontsize=TITLE_SIZE)
-    ax.tick_params(labelsize=TICK_SIZE)
-    ax.legend(
-        frameon=True,
-        fontsize=LEGEND_SIZE,
-        loc="upper center",
-        bbox_to_anchor=(0.5, 1.18),
-        ncol=3,
-    )
-    ax.grid(axis="y", alpha=0.25)
-    fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.9])
+    fig, ax = plt.subplots(figsize=(8.4, 7.2))
+    _setup_ternary_axis(ax, ("Tier-0", "Tier-1", "Tier-2"))
+    label_offsets = {
+        "ATOMIC": (-0.028, 0.090),
+        "BRANCH": (-0.105, 0.050),
+        "CACHE": (0.0, 0.055),
+        "MEMBW": (-0.105, 0.010),
+        "TLB": (0.060, 0.088),
+    }
+    for row in df.itertuples(index=False):
+        x, y = _ternary_xy(row.tier0_share, row.tier1_alt_share, row.tier2_share)
+        color = _stressor_color(row.stressor)
+        ax.scatter(
+            x,
+            y,
+            s=360 + 260 * max(row.tier0_share, row.tier1_alt_share, row.tier2_share),
+            color=color,
+            edgecolor="white",
+            linewidth=1.6,
+            zorder=3,
+        )
+        dx, dy = label_offsets.get(str(row.stressor), (0.0, 0.05))
+        ax.annotate(
+            str(row.stressor),
+            xy=(x, y),
+            xytext=(x + dx, y + dy),
+            textcoords="data",
+            ha="center",
+            va="center",
+            fontsize=ANNOTATION_SIZE,
+            fontweight="bold",
+            arrowprops=dict(arrowstyle="-", color=color, linewidth=1.0, alpha=0.8),
+            bbox=dict(boxstyle="round,pad=0.18", fc="white", ec="none", alpha=0.86),
+        )
+    ax.set_title("Where the final diagnosis gets its evidence", fontsize=TITLE_SIZE + 2)
+    fig.tight_layout()
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
     plt.close(fig)
 
@@ -981,34 +1116,44 @@ def plot_stressor_tier_shares(df: pd.DataFrame, out_png: Path) -> None:
 def plot_mechanism_shares(df: pd.DataFrame, out_png: Path) -> None:
     if df.empty:
         return
-    fig, ax = plt.subplots(figsize=(8.6, 5.0))
-    x = np.arange(len(df))
-    bottom = np.zeros(len(df), dtype=float)
-    series = [
-        ("compute_share", "Compute", "#5c6bc0"),
-        ("memory_io_share", "Memory/I/O", "#26a69a"),
-        ("thermal_power_share", "Thermal/Power", "#ef5350"),
-        ("scheduler_runtime_share", "Scheduler/Runtime", "#8d6e63"),
-        ("platform_pressure_share", "Platform Pressure", "#78909c"),
+    fields = [
+        ("compute_share", "Compute"),
+        ("memory_io_share", "Memory/I/O"),
+        ("thermal_power_share", "Thermal/Power"),
+        ("scheduler_runtime_share", "Runtime"),
+        ("platform_pressure_share", "Platform"),
     ]
-    for col, label, color in series:
-        vals = df[col].to_numpy(dtype=float)
-        ax.bar(x, vals, bottom=bottom, label=label, color=color, edgecolor="white", linewidth=0.8)
-        bottom += vals
-    ax.set_xticks(x, labels=df["stressor"].tolist())
-    ax.set_ylim(0.0, 1.0)
-    ax.set_ylabel("Mean mechanism share", fontsize=LABEL_SIZE)
-    ax.set_title("Final-config mechanism diagnosis share by stressor", fontsize=TITLE_SIZE)
-    ax.tick_params(labelsize=TICK_SIZE)
-    ax.legend(
-        frameon=True,
-        ncol=2,
-        fontsize=LEGEND_SIZE,
-        loc="upper center",
-        bbox_to_anchor=(0.5, 1.22),
-    )
-    ax.grid(axis="y", alpha=0.25)
-    fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.88])
+    angles = np.linspace(0.0, 2.0 * np.pi, len(fields), endpoint=False)
+    angles_closed = np.concatenate([angles, angles[:1]])
+    rmax = max(0.4, float(df[[col for col, _ in fields]].to_numpy(dtype=float).max()) * 1.2)
+    fig, axes = plt.subplots(2, 3, figsize=(14.5, 8.4), subplot_kw={"projection": "polar"})
+    axes = axes.ravel()
+    rows = list(df.itertuples(index=False))
+    mean_row = {col: float(df[col].mean()) for col, _ in fields}
+    for idx, ax in enumerate(axes):
+        if idx < len(rows):
+            row = rows[idx]
+            title = str(row.stressor)
+            vals = [float(getattr(row, col)) for col, _ in fields]
+            color = _stressor_color(title)
+        else:
+            title = "Average profile"
+            vals = [mean_row[col] for col, _ in fields]
+            color = "#1D3557"
+        vals_closed = np.array(vals + vals[:1], dtype=float)
+        ax.plot(angles_closed, vals_closed, color=color, linewidth=2.5)
+        ax.fill(angles_closed, vals_closed, color=color, alpha=0.22)
+        ax.set_xticks(angles)
+        ax.set_xticklabels([label for _, label in fields], fontsize=11)
+        ax.set_ylim(0.0, rmax)
+        yticks = np.linspace(rmax / 4.0, rmax, 4)
+        ax.set_yticks(yticks)
+        ax.set_yticklabels([f"{tick:.2f}" for tick in yticks], fontsize=9, color="#64748B")
+        ax.grid(color="#CBD5E1", alpha=0.7)
+        ax.spines["polar"].set_color("#CBD5E1")
+        ax.set_title(title, fontsize=TITLE_SIZE, fontweight="bold", y=1.10)
+    fig.suptitle("Mechanism fingerprints by stressor", fontsize=TITLE_SIZE + 3, fontweight="bold", y=0.98)
+    fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.95])
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
     plt.close(fig)
 
@@ -1016,27 +1161,50 @@ def plot_mechanism_shares(df: pd.DataFrame, out_png: Path) -> None:
 def plot_detection_latency(df: pd.DataFrame, out_png: Path) -> None:
     if df.empty:
         return
-    fig, ax = plt.subplots(figsize=(7.2, 4.8))
-    vals = df["median_time_to_detect_s"].to_numpy(dtype=float)
-    xpos = np.arange(len(df))
-    colors = ["#90a4ae", "#66bb6a", "#ffa726"][: len(df)]
-    ax.hlines(xpos, xmin=0.0, xmax=vals, color=colors, linewidth=3)
-    ax.scatter(vals, xpos, s=150, c=colors, edgecolor="black", zorder=3)
-    for x, y, value in zip(vals, xpos, vals):
+    fig, ax = plt.subplots(figsize=(9.2, 5.4))
+    d = df.copy()
+    d["label"] = d["config"].map(_cfg_label)
+    order_map = {cfg: i for i, cfg in enumerate(CONFIGS.keys())}
+    d["sort_key"] = d["config"].map(order_map)
+    d = d.sort_values("sort_key").reset_index(drop=True)
+    vals = d["median_time_to_detect_s"].to_numpy(dtype=float)
+    xpos = np.arange(len(d))
+    colors = [_cfg_color(cfg) for cfg in d["config"]]
+    detect = d["anomaly_detect_rate"].fillna(0.0).to_numpy(dtype=float)
+    benign = d["benign_run_alert_rate"].fillna(0.0).to_numpy(dtype=float)
+    for ref in (120.0, 300.0, 600.0):
+        ax.axvline(ref, color="#CBD5E1", linestyle=(0, (3, 4)), linewidth=1.0, zorder=0)
+    ax.hlines(xpos, xmin=0.0, xmax=vals, color=colors, linewidth=4, alpha=0.35)
+    sc = ax.scatter(
+        vals,
+        xpos,
+        s=240 + 760 * detect,
+        c=benign,
+        cmap="OrRd",
+        norm=Normalize(vmin=0.0, vmax=max(float(np.max(benign)), 0.25)),
+        edgecolor="black",
+        linewidth=1.1,
+        zorder=3,
+    )
+    for x, y, value, rate in zip(vals, xpos, vals, detect):
         ax.text(
             x + max(vals) * 0.02,
             y,
-            f"{value:.1f}",
+            f"{value:.0f}s | detect {rate:.0%}",
             va="center",
-            fontsize=ANNOTATION_SIZE,
+            fontsize=ANNOTATION_SIZE + 1,
             bbox=dict(boxstyle="round,pad=0.16", fc="white", ec="none", alpha=0.85),
         )
-    ax.set_yticks(xpos, labels=df["config"].tolist())
+    ax.set_yticks(xpos, labels=d["label"].tolist())
     ax.set_xlabel("Median time-to-detect (s)", fontsize=LABEL_SIZE)
-    ax.set_title("Sequential detection latency by observation head", fontsize=TITLE_SIZE)
+    ax.set_title("Sequential detection speed and alert burden", fontsize=TITLE_SIZE + 1)
     ax.tick_params(labelsize=TICK_SIZE)
-    ax.grid(axis="y", alpha=0.25)
-    fig.tight_layout()
+    ax.set_facecolor("#F8FAFC")
+    ax.grid(axis="x", alpha=0.25)
+    cbar = fig.colorbar(sc, ax=ax, fraction=0.046, pad=0.04)
+    cbar.ax.set_ylabel("Benign alert rate", fontsize=12)
+    fig.text(0.5, 0.03, "Larger circles mean higher anomaly detection rate.", ha="center", fontsize=12, color="#475569")
+    fig.tight_layout(rect=[0.0, 0.05, 1.0, 1.0])
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
     plt.close(fig)
 

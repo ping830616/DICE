@@ -493,28 +493,55 @@ def plot_auc_heatmaps(out_dir: Path, stressor: pd.DataFrame) -> List[str]:
 
 def plot_run_score_distributions(out_dir: Path, runs: pd.DataFrame) -> str:
     tiers = ["tier0", "tier1_alt", "tier2"]
-    fig, axes = plt.subplots(1, len(tiers), figsize=(14.5, 4.6), sharey=False)
+    fig, axes = plt.subplots(1, len(tiers), figsize=(15.8, 5.1), sharey=False)
     if len(tiers) == 1:
         axes = [axes]
+    rng = np.random.default_rng(0)
 
     for i, t in enumerate(tiers):
         ax = axes[i]
         d = runs[runs["tier"] == t]
         nom = d[d["label"] == 0]["run_score_median"].to_numpy(dtype=float)
         anm = d[d["label"] == 1]["run_score_median"].to_numpy(dtype=float)
-        bp = ax.boxplot([nom, anm], tick_labels=["Benign", "Anomaly"], patch_artist=True)
-        for patch, color in zip(bp["boxes"], ["#9e9e9e", "#ef9a9a"]):
-            patch.set_facecolor(color)
-            patch.set_alpha(0.8)
-        ax.scatter(np.repeat(1, len(nom)), nom, color="black", s=24, alpha=0.8)
-        ax.scatter(np.repeat(2, len(anm)), anm, color="#c62828", s=24, alpha=0.7)
-        ax.set_title(TIER_PRETTY[t], fontsize=14, fontweight="bold")
-        ax.set_ylabel("Run AF Index (median)", fontsize=12)
+        parts = ax.violinplot(
+            [nom, anm],
+            positions=[1, 2],
+            widths=0.82,
+            showmeans=False,
+            showmedians=False,
+            showextrema=False,
+        )
+        for body, color in zip(parts["bodies"], ["#B0BEC5", "#EFA3A3"]):
+            body.set_facecolor(color)
+            body.set_edgecolor("black")
+            body.set_alpha(0.78)
+        for xpos, vals, color in [(1, nom, "#0F172A"), (2, anm, "#C62828")]:
+            jitter = rng.uniform(-0.07, 0.07, size=len(vals))
+            ax.scatter(
+                np.full(len(vals), xpos) + jitter,
+                vals,
+                color=color,
+                s=38,
+                alpha=0.74,
+                edgecolor="white",
+                linewidth=0.4,
+                zorder=3,
+            )
+            if len(vals):
+                q1, med, q3 = np.percentile(vals, [25, 50, 75])
+                ax.vlines(xpos, q1, q3, color=color, linewidth=6, alpha=0.82, zorder=4)
+                ax.hlines(med, xpos - 0.18, xpos + 0.18, color="white", linewidth=2.4, zorder=5)
+        vals_all = np.concatenate([nom, anm]) if len(nom) or len(anm) else np.array([])
+        if len(vals_all) and np.all(vals_all > 0):
+            ax.set_yscale("log")
+        ax.set_title(TIER_PRETTY[t], fontsize=18, fontweight="bold", pad=10)
+        ax.set_xticks([1, 2], labels=["Benign", "Anomaly"])
         ax.grid(alpha=0.22)
-        ax.tick_params(axis="both", labelsize=11)
+        ax.tick_params(axis="both", labelsize=14)
 
-    fig.suptitle("Run-level AF-index score distributions", fontsize=18, y=1.02)
-    fig.tight_layout()
+    fig.supylabel("Run AF Index (median)", fontsize=16)
+    fig.suptitle("Run-level AF-index score distributions", fontsize=24, y=0.98, fontweight="bold")
+    fig.tight_layout(rect=[0.04, 0.02, 1.0, 0.93])
     out = out_dir / "fig_run_score_distributions.png"
     fig.savefig(out, dpi=240, bbox_inches="tight")
     plt.close(fig)
