@@ -627,7 +627,8 @@ def build_diagnostic_record(
 ) -> Dict[str, object]:
     contrib = np.asarray(feature_contrib, dtype=float)
     total = float(np.sum(contrib))
-    tier_totals = {tier: 0.0 for tier in TIER_FILE}
+    # Track contributions over the released three-tier observation hierarchy.
+    tier_totals = {tier: 0.0 for tier in ("tier0", "tier1_alt", "tier2")}
     for name, value in zip(feature_names, contrib):
         tier = name.split(":", 1)[0]
         if tier in tier_totals:
