@@ -82,6 +82,12 @@ MECHANISM_GROUPS = [
     "platform_pressure",
 ]
 
+TITLE_SIZE = 15
+LABEL_SIZE = 13
+TICK_SIZE = 11
+LEGEND_SIZE = 11
+ANNOTATION_SIZE = 10
+
 
 @dataclass(frozen=True)
 class CaseRef:
@@ -362,6 +368,18 @@ def finite_percentile(x: Sequence[float], q: float) -> float:
     return float(np.percentile(arr, q))
 
 
+def workload_conditioned_scores(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
+    nominal_map = (
+        df[df["stressor"] == "NOMINAL"]
+        .drop_duplicates(subset=["workload"], keep="last")
+        .set_index("workload")["run_score"]
+        .to_dict()
+    )
+    nominal = df["workload"].map(nominal_map).to_numpy(dtype=float)
+    score = np.abs(df["run_score"].to_numpy(dtype=float) - nominal)
+    return nominal, score
+
+
 def mechanism_group(feature_name: str) -> str:
     name = feature_name.split(":", 1)[-1].lower()
     if any(tok in name for tok in ["temp", "power", "fan"]):
@@ -521,7 +539,7 @@ def to_latex_table(df: pd.DataFrame, caption: str, label: str) -> str:
 
 
 def plot_curves(df: pd.DataFrame, out_png: Path, score_col: str, title_tag: str) -> None:
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.8))
+    fig, axes = plt.subplots(1, 2, figsize=(12.8, 5.4))
     for cfg, d in df.groupby("config"):
         y = d["label"].to_numpy(dtype=int)
         s = d[score_col].to_numpy(dtype=float)
@@ -530,44 +548,72 @@ def plot_curves(df: pd.DataFrame, out_png: Path, score_col: str, title_tag: str)
         fpr, tpr, _ = roc_curve(y, s)
         p, r, _ = precision_recall_curve(y, s)
         axes[0].plot(fpr, tpr, linewidth=2, label=f"{cfg} (AUC={roc_auc_score(y, s):.3f})")
-        axes[1].plot(r, p, linewidth=2, label=f"{cfg} (AP={average_precision_score(y, s):.3f})")
+        axes[1].plot(r, p, linewidth=2)
     axes[0].plot([0, 1], [0, 1], "k--", linewidth=1)
-    axes[0].set_title("ROC curve")
-    axes[0].set_xlabel("False Positive Rate")
-    axes[0].set_ylabel("True Positive Rate")
-    axes[1].set_title("Precision-Recall curve")
-    axes[1].set_xlabel("Recall")
-    axes[1].set_ylabel("Precision")
+    axes[0].set_title("ROC curve", fontsize=TITLE_SIZE)
+    axes[0].set_xlabel("False Positive Rate", fontsize=LABEL_SIZE)
+    axes[0].set_ylabel("True Positive Rate", fontsize=LABEL_SIZE)
+    axes[1].set_title("Precision-Recall curve", fontsize=TITLE_SIZE)
+    axes[1].set_xlabel("Recall", fontsize=LABEL_SIZE)
+    axes[1].set_ylabel("Precision", fontsize=LABEL_SIZE)
     for ax in axes:
         ax.grid(alpha=0.25)
-        ax.legend(frameon=True, fontsize=10)
-    fig.suptitle(f"DICE curves ({title_tag})")
-    fig.tight_layout()
+        ax.tick_params(labelsize=TICK_SIZE)
+    handles, labels = axes[0].get_legend_handles_labels()
+    if handles:
+        fig.legend(
+            handles,
+            labels,
+            loc="upper center",
+            bbox_to_anchor=(0.5, 1.05),
+            ncol=min(3, len(handles)),
+            frameon=True,
+            fontsize=LEGEND_SIZE,
+        )
+    fig.suptitle(f"DICE curves ({title_tag})", fontsize=TITLE_SIZE + 1, fontweight="bold")
+    fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.92])
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
     plt.close(fig)
 
 
 def plot_score_box(df: pd.DataFrame, out_png: Path, score_col: str, y_label: str, title_tag: str) -> None:
     cfgs = list(df["config"].unique())
-    fig, axes = plt.subplots(1, len(cfgs), figsize=(5.0 * len(cfgs), 4.8), sharey=False)
+    fig, axes = plt.subplots(1, len(cfgs), figsize=(5.2 * len(cfgs), 5.0), sharey=False)
     if len(cfgs) == 1:
         axes = [axes]
+    rng = np.random.default_rng(0)
     for i, cfg in enumerate(cfgs):
         ax = axes[i]
         d = df[df["config"] == cfg]
         neg = d[d["label"] == 0][score_col].to_numpy(dtype=float)
         pos = d[d["label"] == 1][score_col].to_numpy(dtype=float)
-        bp = ax.boxplot([neg, pos], tick_labels=["Benign", "Anomaly"], patch_artist=True)
-        for patch, color in zip(bp["boxes"], ["#9e9e9e", "#ef9a9a"]):
-            patch.set_facecolor(color)
-            patch.set_alpha(0.8)
-        ax.scatter(np.repeat(1, len(neg)), neg, color="black", s=22, alpha=0.8)
-        ax.scatter(np.repeat(2, len(pos)), pos, color="#c62828", s=22, alpha=0.7)
-        ax.set_title(cfg)
-        ax.set_ylabel(y_label)
+        parts = ax.violinplot([neg, pos], positions=[1, 2], showmeans=False, showmedians=True, showextrema=False)
+        for body, color in zip(parts["bodies"], ["#b0bec5", "#ef9a9a"]):
+            body.set_facecolor(color)
+            body.set_edgecolor("black")
+            body.set_alpha(0.75)
+        if "cmedians" in parts:
+            parts["cmedians"].set_color("black")
+            parts["cmedians"].set_linewidth(1.2)
+        for xpos, vals, color in [(1, neg, "black"), (2, pos, "#b71c1c")]:
+            jitter = rng.uniform(-0.07, 0.07, size=len(vals))
+            ax.scatter(
+                np.full(len(vals), xpos) + jitter,
+                vals,
+                color=color,
+                s=24,
+                alpha=0.72,
+                edgecolor="white",
+                linewidth=0.4,
+                zorder=3,
+            )
+        ax.set_xticks([1, 2], labels=["Benign", "Anomaly"])
+        ax.set_title(cfg, fontsize=TITLE_SIZE)
+        ax.set_ylabel(y_label, fontsize=LABEL_SIZE)
+        ax.tick_params(labelsize=TICK_SIZE)
         ax.grid(alpha=0.22)
-    fig.suptitle(f"DICE run score distributions ({title_tag})")
-    fig.tight_layout()
+    fig.suptitle(f"DICE run score distributions ({title_tag})", fontsize=TITLE_SIZE + 1, fontweight="bold")
+    fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.94])
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
     plt.close(fig)
 
@@ -829,18 +875,46 @@ def build_sequential_metrics(pred_df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values("config")
 
 
-def build_holdout_robustness_summary(fold_df: pd.DataFrame) -> pd.DataFrame:
+def build_holdout_robustness_summary(fold_df: pd.DataFrame, pred_df: pd.DataFrame) -> pd.DataFrame:
     d = fold_df[fold_df["holdout_workload"] != "ALL"].copy()
     if d.empty:
-        return pd.DataFrame(columns=["config", "mean_pr_auc", "worst_pr_auc", "mean_roc_auc", "mean_fpr", "mean_tpr"])
+        return pd.DataFrame(
+            columns=[
+                "config",
+                "mean_pr_auc",
+                "worst_pr_auc",
+                "mean_roc_auc",
+                "mean_pr_auc_wc",
+                "worst_pr_auc_wc",
+                "mean_roc_auc_wc",
+                "pooled_pr_auc",
+                "pooled_roc_auc",
+                "pooled_pr_auc_wc",
+                "pooled_roc_auc_wc",
+                "mean_fpr",
+                "mean_tpr",
+            ]
+        )
+    pred_holdout = pred_df[pred_df["holdout_workload"] != "ALL"].copy()
     rows = []
     for cfg, part in d.groupby("config", sort=False):
+        pred_part = pred_holdout[pred_holdout["config"] == cfg]
+        y = pred_part["label"].to_numpy(dtype=int)
+        s_run = pred_part["run_score"].to_numpy(dtype=float)
+        s_wc = pred_part["run_score_wc"].to_numpy(dtype=float)
         rows.append(
             {
                 "config": cfg,
                 "mean_pr_auc": float(part["pr_auc"].mean()),
                 "worst_pr_auc": float(part["pr_auc"].min()),
                 "mean_roc_auc": float(part["roc_auc"].mean()),
+                "mean_pr_auc_wc": float(part["pr_auc_wc"].mean()),
+                "worst_pr_auc_wc": float(part["pr_auc_wc"].min()),
+                "mean_roc_auc_wc": float(part["roc_auc_wc"].mean()),
+                "pooled_pr_auc": safe_ap(y, s_run),
+                "pooled_roc_auc": safe_auc(y, s_run),
+                "pooled_pr_auc_wc": safe_ap(y, s_wc),
+                "pooled_roc_auc_wc": safe_auc(y, s_wc),
                 "mean_fpr": float(part["fpr"].mean()),
                 "mean_tpr": float(part["tpr"].mean()),
             }
@@ -856,13 +930,14 @@ def plot_confusion_heatmap(cm: pd.DataFrame, out_png: Path, title: str) -> None:
     im = ax.imshow(mat, cmap="Blues")
     ax.set_xticks(np.arange(len(cm.columns)), labels=list(cm.columns), rotation=30, ha="right")
     ax.set_yticks(np.arange(len(cm.index)), labels=list(cm.index))
-    ax.set_xlabel("Predicted stressor")
-    ax.set_ylabel("True stressor")
-    ax.set_title(title)
+    ax.set_xlabel("Predicted stressor", fontsize=LABEL_SIZE)
+    ax.set_ylabel("True stressor", fontsize=LABEL_SIZE)
+    ax.set_title(title, fontsize=TITLE_SIZE)
+    ax.tick_params(labelsize=TICK_SIZE)
     for i in range(mat.shape[0]):
         for j in range(mat.shape[1]):
             color = "white" if mat[i, j] >= max(1.0, np.max(mat) * 0.55) else "black"
-            ax.text(j, i, f"{int(mat[i, j])}", ha="center", va="center", color=color, fontsize=10)
+            ax.text(j, i, f"{int(mat[i, j])}", ha="center", va="center", color=color, fontsize=ANNOTATION_SIZE)
     fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     fig.tight_layout()
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
@@ -886,11 +961,18 @@ def plot_stressor_tier_shares(df: pd.DataFrame, out_png: Path) -> None:
         bottom += vals
     ax.set_xticks(x, labels=df["stressor"].tolist())
     ax.set_ylim(0.0, 1.0)
-    ax.set_ylabel("Mean contribution share")
-    ax.set_title("Final-config diagnosis contribution share by tier")
-    ax.legend(frameon=True)
+    ax.set_ylabel("Mean contribution share", fontsize=LABEL_SIZE)
+    ax.set_title("Final-config diagnosis contribution share by tier", fontsize=TITLE_SIZE)
+    ax.tick_params(labelsize=TICK_SIZE)
+    ax.legend(
+        frameon=True,
+        fontsize=LEGEND_SIZE,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.18),
+        ncol=3,
+    )
     ax.grid(axis="y", alpha=0.25)
-    fig.tight_layout()
+    fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.9])
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
     plt.close(fig)
 
@@ -914,11 +996,18 @@ def plot_mechanism_shares(df: pd.DataFrame, out_png: Path) -> None:
         bottom += vals
     ax.set_xticks(x, labels=df["stressor"].tolist())
     ax.set_ylim(0.0, 1.0)
-    ax.set_ylabel("Mean mechanism share")
-    ax.set_title("Final-config mechanism diagnosis share by stressor")
-    ax.legend(frameon=True, ncol=2)
+    ax.set_ylabel("Mean mechanism share", fontsize=LABEL_SIZE)
+    ax.set_title("Final-config mechanism diagnosis share by stressor", fontsize=TITLE_SIZE)
+    ax.tick_params(labelsize=TICK_SIZE)
+    ax.legend(
+        frameon=True,
+        ncol=2,
+        fontsize=LEGEND_SIZE,
+        loc="upper center",
+        bbox_to_anchor=(0.5, 1.22),
+    )
     ax.grid(axis="y", alpha=0.25)
-    fig.tight_layout()
+    fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.88])
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
     plt.close(fig)
 
@@ -926,11 +1015,25 @@ def plot_mechanism_shares(df: pd.DataFrame, out_png: Path) -> None:
 def plot_detection_latency(df: pd.DataFrame, out_png: Path) -> None:
     if df.empty:
         return
-    fig, ax = plt.subplots(figsize=(7.0, 4.8))
+    fig, ax = plt.subplots(figsize=(7.2, 4.8))
     vals = df["median_time_to_detect_s"].to_numpy(dtype=float)
-    ax.bar(df["config"], vals, color=["#90a4ae", "#66bb6a", "#ffa726"][: len(df)])
-    ax.set_ylabel("Median time-to-detect (s)")
-    ax.set_title("Sequential detection latency by observation head")
+    xpos = np.arange(len(df))
+    colors = ["#90a4ae", "#66bb6a", "#ffa726"][: len(df)]
+    ax.hlines(xpos, xmin=0.0, xmax=vals, color=colors, linewidth=3)
+    ax.scatter(vals, xpos, s=150, c=colors, edgecolor="black", zorder=3)
+    for x, y, value in zip(vals, xpos, vals):
+        ax.text(
+            x + max(vals) * 0.02,
+            y,
+            f"{value:.1f}",
+            va="center",
+            fontsize=ANNOTATION_SIZE,
+            bbox=dict(boxstyle="round,pad=0.16", fc="white", ec="none", alpha=0.85),
+        )
+    ax.set_yticks(xpos, labels=df["config"].tolist())
+    ax.set_xlabel("Median time-to-detect (s)", fontsize=LABEL_SIZE)
+    ax.set_title("Sequential detection latency by observation head", fontsize=TITLE_SIZE)
+    ax.tick_params(labelsize=TICK_SIZE)
     ax.grid(axis="y", alpha=0.25)
     fig.tight_layout()
     fig.savefig(out_png, dpi=240, bbox_inches="tight")
@@ -1049,6 +1152,7 @@ def main() -> None:
                 fd = pd.DataFrame(fold_curr)
                 y = fd["label"].to_numpy(dtype=int)
                 s_run = fd["run_score"].to_numpy(dtype=float)
+                _, s_wc = workload_conditioned_scores(fd)
                 fold_rows.append(
                     {
                         "feature_profile": args.feature_profile,
@@ -1056,6 +1160,8 @@ def main() -> None:
                         "holdout_workload": holdout_w,
                         "roc_auc": safe_auc(y, s_run),
                         "pr_auc": safe_ap(y, s_run),
+                        "roc_auc_wc": safe_auc(y, s_wc),
+                        "pr_auc_wc": safe_ap(y, s_wc),
                         "fpr": float(np.mean((fd["label"] == 0) & (fd["run_alert"] == 1))),
                         "tpr": float(np.mean((fd["label"] == 1) & (fd["run_alert"] == 1))),
                         "n_features": int(fd["n_features"].iloc[0]),
@@ -1090,6 +1196,7 @@ def main() -> None:
             fd = pd.DataFrame([p for p in preds if p["config"] == cfg_name])
             y = fd["label"].to_numpy(dtype=int)
             s_run = fd["run_score"].to_numpy(dtype=float)
+            _, s_wc = workload_conditioned_scores(fd)
             fold_rows.append(
                 {
                     "feature_profile": args.feature_profile,
@@ -1097,6 +1204,8 @@ def main() -> None:
                     "holdout_workload": "ALL",
                     "roc_auc": safe_auc(y, s_run),
                     "pr_auc": safe_ap(y, s_run),
+                    "roc_auc_wc": safe_auc(y, s_wc),
+                    "pr_auc_wc": safe_ap(y, s_wc),
                     "fpr": float(np.mean((fd["label"] == 0) & (fd["run_alert"] == 1))),
                     "tpr": float(np.mean((fd["label"] == 1) & (fd["run_alert"] == 1))),
                     "n_features": int(fd["n_features"].iloc[0]),
@@ -1116,13 +1225,10 @@ def main() -> None:
     pred_df["nominal_template_score"] = np.nan
     pred_df["run_score_wc"] = pred_df["run_score"]
     for cfg, d in pred_df.groupby("config"):
-        base = d[d["stressor"] == "NOMINAL"].set_index("workload")["run_score"].to_dict()
         idx = d.index
-        pred_df.loc[idx, "nominal_template_score"] = d["workload"].map(base).to_numpy(dtype=float)
-        pred_df.loc[idx, "run_score_wc"] = np.abs(
-            pred_df.loc[idx, "run_score"].to_numpy(dtype=float)
-            - pred_df.loc[idx, "nominal_template_score"].to_numpy(dtype=float)
-        )
+        nominal, s_wc = workload_conditioned_scores(d)
+        pred_df.loc[idx, "nominal_template_score"] = nominal
+        pred_df.loc[idx, "run_score_wc"] = s_wc
 
     overall_rows = []
     for cfg, d in pred_df.groupby("config"):
@@ -1202,7 +1308,7 @@ def main() -> None:
     diag_tier_df = build_stressor_tier_contributions(diag_df, config=final_cfg)
     mechanism_df = build_mechanism_summary(diag_df, config=final_cfg)
     sequential_df = build_sequential_metrics(pred_df)
-    holdout_df = build_holdout_robustness_summary(fold_df)
+    holdout_df = build_holdout_robustness_summary(fold_df, pred_df)
     if not diag_metrics_feature_df.empty:
         diag_metrics_feature_df["feature_profile"] = args.feature_profile
     if not diag_metrics_df.empty:
