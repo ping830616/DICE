@@ -1,0 +1,3 @@
+feature_profile,profile_label,global_dir_exists,holdout_dir_exists,paper_dir_exists,overall_metrics_exists,holdout_summary_exists,two_stage_exists,feature_budget_exists,reliability_exists
+mixed,Mixed,1,1,1,1,1,1,0,1
+full,Full,0,0,1,0,0,0,0,0

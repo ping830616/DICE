@@ -1,0 +1,6 @@
+policy,trigger_quantile,trigger_rate_all,trigger_rate_benign,trigger_rate_anomaly,avg_feature_budget,auc_pr,roc_auc,benign_alert_rate,detection_rate,median_ttd_s,feature_profile,profile_label
+Tier-0 only,,0.0,0.0,0.0,46.0,1.0000000000000002,1.0,0.25,0.3,74.5,mixed,Mixed
+Two-stage q=0.90,0.9,1.0,1.0,1.0,64.0,1.0000000000000002,1.0,0.25,0.45,62.0,mixed,Mixed
+Two-stage q=0.95,0.95,1.0,1.0,1.0,64.0,1.0000000000000002,1.0,0.25,0.45,62.0,mixed,Mixed
+Two-stage q=0.98,0.98,1.0,1.0,1.0,64.0,1.0000000000000002,1.0,0.25,0.45,62.0,mixed,Mixed
+Always Tier-0/1/2,0.0,1.0,1.0,1.0,64.0,1.0000000000000002,1.0,0.25,0.45,62.0,mixed,Mixed

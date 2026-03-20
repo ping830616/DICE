@@ -1,0 +1,6 @@
+feature_profile,scenario,scenario_label,config,config_label,n_features,score,roc_auc,pr_auc,mean_pr_auc,worst_pr_auc,pooled_pr_auc,anomaly_detect_rate,benign_run_alert_rate,median_time_to_detect_s,top1_acc,top2_acc
+mixed,global,Global separation,tier0_tier1_tier2,Tier-0/1/2,64,0.8500000000000001,0.8375,0.9536249219047206,0.8741666666666666,0.81,0.8026120139731494,0.45,0.25,62.0,0.2,0.5
+mixed,holdout,Holdout portability,tier0_tier1_tier2,Tier-0/1/2,64,1.0,0.8375,0.9536249219047206,0.8741666666666666,0.81,0.8026120139731494,0.45,0.25,62.0,0.2,0.5
+mixed,alert,Persistent alerting,tier0_tier1_tier2,Tier-0/1/2,64,0.525,0.8375,0.9536249219047206,0.8741666666666666,0.81,0.8026120139731494,0.45,0.25,62.0,0.2,0.5
+mixed,diagnosis,Diagnosis,tier0,Tier-0,46,1.0,0.8,0.9318987314285302,0.7825,0.71,0.7671418846872305,0.3,0.25,74.5,0.3,0.55
+mixed,overall,Overall,tier0_tier1_tier2,Tier-0/1/2,64,0.7975000000000001,0.8375,0.9536249219047206,0.8741666666666666,0.81,0.8026120139731494,0.45,0.25,62.0,0.2,0.5

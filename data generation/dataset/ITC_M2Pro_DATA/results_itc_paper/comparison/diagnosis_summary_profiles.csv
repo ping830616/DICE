@@ -1,0 +1,4 @@
+config,top1_acc,top2_acc,macro_f1,feature_profile,profile_label,config_label
+tier0,0.3,0.55,0.2181818181818181,mixed,Mixed,Tier-0
+tier0_tier1,0.2,0.45,0.18,mixed,Mixed,Tier-0/1
+tier0_tier1_tier2,0.2,0.5,0.1743145743145743,mixed,Mixed,Tier-0/1/2

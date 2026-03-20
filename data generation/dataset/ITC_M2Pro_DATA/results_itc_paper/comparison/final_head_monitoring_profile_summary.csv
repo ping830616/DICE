@@ -1,0 +1,2 @@
+config,n_features,roc_auc,pr_auc,roc_auc_wc,pr_auc_wc,fit_eval_seconds,benign_run_alert_rate,anomaly_detect_rate,median_time_to_detect_s,top1_acc,top2_acc,macro_f1,feature_profile,profile_label,config_label
+tier0_tier1_tier2,64,0.8375,0.9536249219047206,1.0,1.0000000000000002,1.0796288330020616,0.25,0.45,62.0,0.2,0.5,0.1743145743145743,mixed,Mixed,Tier-0/1/2

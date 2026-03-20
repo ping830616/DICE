@@ -1,0 +1,4 @@
+config,n_features,roc_auc,pr_auc,roc_auc_wc,pr_auc_wc,fit_eval_seconds,benign_run_alert_rate,anomaly_detect_rate,median_time_to_detect_s,top1_acc,top2_acc,macro_f1,feature_profile,profile_label,config_label
+tier0,46,0.8,0.9318987314285302,1.0,1.0000000000000002,0.8002845419978257,0.25,0.3,74.5,0.3,0.55,0.2181818181818181,mixed,Mixed,Tier-0
+tier0_tier1,57,0.825,0.9514604197402184,1.0,1.0000000000000002,0.941185999996378,0.25,0.45,62.0,0.2,0.45,0.18,mixed,Mixed,Tier-0/1
+tier0_tier1_tier2,64,0.8375,0.9536249219047206,1.0,1.0000000000000002,1.0796288330020616,0.25,0.45,62.0,0.2,0.5,0.1743145743145743,mixed,Mixed,Tier-0/1/2
