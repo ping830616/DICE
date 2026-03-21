@@ -27,16 +27,18 @@ The practical goal is reproducible regenerated results from the released dataset
 
 ## Run
 
-For the strictest cross-machine/server reproducibility, use the exact same git commit, the pinned Conda environment, the committed dataset, and the headless notebook runner:
+For the strictest cross-machine/server reproducibility, use the exact same git commit, the pinned Conda environment, the committed dataset, and the headless notebook runner.
+
+For example, to reproduce the published repository state at commit `4a2ab609f9845ccb8790acead085146fa16cec1f`:
 
 ```bash
 git clone https://github.com/ping830616/DICE.git
 cd DICE
-git checkout <exact-commit-hash>
-bash tools/run_reproducible_notebook.sh --ref <exact-commit-hash>
+git checkout 4a2ab609f9845ccb8790acead085146fa16cec1f
+bash tools/run_reproducible_notebook.sh --ref 4a2ab609f9845ccb8790acead085146fa16cec1f
 ```
 
-Replace `<exact-commit-hash>` with the commit you want to reproduce. This is the recommended path for laptops, remote Linux servers, and CI runners.
+Replace that example hash with any other commit you want to reproduce. This is the recommended path for laptops, remote Linux servers, and CI runners.
 
 The wrapper:
 
