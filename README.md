@@ -27,9 +27,30 @@ The practical goal is reproducible regenerated results from the released dataset
 
 ## Run
 
+For the strictest cross-machine/server reproducibility, use the exact same git commit, the pinned Conda environment, the committed dataset, and the headless notebook runner:
+
 ```bash
 git clone https://github.com/ping830616/DICE.git
 cd DICE
+git checkout <exact-commit-hash>
+bash tools/run_reproducible_notebook.sh --ref <exact-commit-hash>
+```
+
+Replace `<exact-commit-hash>` with the commit you want to reproduce. This is the recommended path for laptops, remote Linux servers, and CI runners.
+
+The wrapper:
+
+- checks out the exact git ref you specify
+- creates or refreshes the pinned `dice-results` Conda environment
+- exports deterministic runtime settings used for the notebook
+- runs the notebook environment preflight
+- executes `dice_results_analysis.ipynb` headlessly with `nbconvert`
+- writes `ci_artifacts/dice_results_analysis.executed.ipynb`
+- writes `ci_artifacts/notebook_environment_report.json`
+
+For local exploratory use, you can still launch Jupyter directly:
+
+```bash
 conda env create -f environment.yml
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
@@ -39,32 +60,6 @@ Run the notebook from top to bottom. It generates:
 - `results_itc_paper/`
 - `results_itc_appendix/`
 - `results_portable/run_manifest.json`
-
-If you want a single reproducible command for laptops, servers, or CI-style runs:
-
-```bash
-git clone https://github.com/ping830616/DICE.git
-cd DICE
-bash tools/run_reproducible_notebook.sh --ref 3d3ee6c51122bd0a2d8083c207e0a3efc8277542
-```
-
-That wrapper:
-
-- checks out the exact git ref you specify
-- creates or refreshes the pinned `dice-results` Conda environment
-- exports deterministic runtime settings used for the notebook
-- runs the notebook environment preflight
-- executes `dice_results_analysis.ipynb` headlessly with `nbconvert`
-
-For the strictest cross-machine/server reproducibility, use the exact same git commit, the pinned Conda environment, the committed dataset, and the headless notebook runner:
-
-```bash
-git clone https://github.com/ping830616/DICE.git
-cd DICE
-bash tools/run_reproducible_notebook.sh --ref 3d3ee6c51122bd0a2d8083c207e0a3efc8277542
-```
-
-This is the recommended path for laptops, remote Linux servers, and CI runners because it fixes the repository state first, refreshes the pinned software environment, applies the deterministic runtime settings, runs the environment preflight, and then executes the notebook in a non-interactive way.
 
 Before running the notebook, you can verify that the pinned environment is actually the one in use:
 
