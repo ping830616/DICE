@@ -6,6 +6,54 @@ The public results workflow is notebook-only. Reviewers do not need to run shell
 
 For paper writing and review, the same workflow is also split into a smaller notebook suite under `itc_notebooks/`.
 
+## Quick Start
+
+### 1) Environment
+
+Conda:
+
+```bash
+conda env create -f environment.yml
+conda activate dice-results
+```
+
+Pip:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2) Dataset Location
+
+The released dataset is expected under:
+
+```bash
+data generation/dataset/ITC_M2Pro_DATA
+```
+
+If you launch DICE from outside the repository checkout, point it at the repo root instead of hardcoding paths inside the notebook:
+
+```bash
+export DICE_REPO_ROOT=/path/to/DICE
+```
+
+### 3) Run All Experiments
+
+Mirror the `X-OCTANE` workflow:
+
+```bash
+python scripts/validate_env.py
+bash scripts/reproduce_all.sh --ref <exact-commit-hash>
+```
+
+Outputs:
+
+- `data generation/dataset/ITC_M2Pro_DATA/results_analysis/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_dice_full/` or `results_dice_full_<profile>/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_portable/run_manifest.json`
+
 ## Reproducibility
 
 This repository is designed so the released `analysis/results` workflow can be rerun across Linux, macOS, and remote servers from the same committed dataset.
@@ -35,7 +83,8 @@ For example, to reproduce the published repository state at commit `4a2ab609f984
 git clone https://github.com/ping830616/DICE.git
 cd DICE
 git checkout 4a2ab609f9845ccb8790acead085146fa16cec1f
-bash tools/run_reproducible_notebook.sh --ref 4a2ab609f9845ccb8790acead085146fa16cec1f
+python scripts/validate_env.py
+bash scripts/reproduce_all.sh --ref 4a2ab609f9845ccb8790acead085146fa16cec1f
 ```
 
 Replace that example hash with any other commit you want to reproduce. This is the recommended path for laptops, remote Linux servers, and CI runners.
