@@ -45,7 +45,7 @@ If you want a single reproducible command for laptops, servers, or CI-style runs
 ```bash
 git clone https://github.com/ping830616/DICE.git
 cd DICE
-bash tools/run_reproducible_notebook.sh --ref ff2e010034829d5cf3e4167b87015224ee08e5a2
+bash tools/run_reproducible_notebook.sh --ref 3d3ee6c51122bd0a2d8083c207e0a3efc8277542
 ```
 
 That wrapper:
@@ -55,6 +55,16 @@ That wrapper:
 - exports deterministic runtime settings used for the notebook
 - runs the notebook environment preflight
 - executes `dice_results_analysis.ipynb` headlessly with `nbconvert`
+
+For the strictest cross-machine/server reproducibility, use the exact same git commit, the pinned Conda environment, the committed dataset, and the headless notebook runner:
+
+```bash
+git clone https://github.com/ping830616/DICE.git
+cd DICE
+bash tools/run_reproducible_notebook.sh --ref 3d3ee6c51122bd0a2d8083c207e0a3efc8277542
+```
+
+This is the recommended path for laptops, remote Linux servers, and CI runners because it fixes the repository state first, refreshes the pinned software environment, applies the deterministic runtime settings, runs the environment preflight, and then executes the notebook in a non-interactive way.
 
 Before running the notebook, you can verify that the pinned environment is actually the one in use:
 
