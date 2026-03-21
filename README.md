@@ -40,6 +40,22 @@ Run the notebook from top to bottom. It generates:
 - `results_itc_appendix/`
 - `results_portable/run_manifest.json`
 
+If you want a single reproducible command for laptops, servers, or CI-style runs:
+
+```bash
+git clone https://github.com/ping830616/DICE.git
+cd DICE
+bash tools/run_reproducible_notebook.sh --ref ff2e010034829d5cf3e4167b87015224ee08e5a2
+```
+
+That wrapper:
+
+- checks out the exact git ref you specify
+- creates or refreshes the pinned `dice-results` Conda environment
+- exports deterministic runtime settings used for the notebook
+- runs the notebook environment preflight
+- executes `dice_results_analysis.ipynb` headlessly with `nbconvert`
+
 Before running the notebook, you can verify that the pinned environment is actually the one in use:
 
 ```bash
