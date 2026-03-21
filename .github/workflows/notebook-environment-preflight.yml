@@ -1,0 +1,113 @@
+name: Notebook Environment Preflight
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_notebook:
+        description: Execute dice_results_analysis.ipynb after the environment preflight succeeds
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+  push:
+    paths:
+      - ".github/workflows/notebook-environment-preflight.yml"
+      - "environment.yml"
+      - "requirements.txt"
+      - "data generation/requirements.txt"
+      - "tools/check_notebook_environment.py"
+      - "dice_results_analysis.ipynb"
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pinned conda environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: dice-results
+          auto-activate-base: false
+          environment-file: environment.yml
+          miniforge-variant: Miniforge3
+          python-version: 3.11.4
+          use-mamba: true
+
+      - name: Verify notebook environment
+        run: |
+          python --version
+          python tools/check_notebook_environment.py \
+            --repo-root . \
+            --dataset-root "data generation/dataset/ITC_M2Pro_DATA" \
+            --report-path notebook_environment_report.json
+
+      - name: Upload preflight report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: notebook-environment-report
+          path: notebook_environment_report.json
+          if-no-files-found: error
+
+  run-notebook:
+    if: github.event_name == 'workflow_dispatch' && inputs.run_notebook == 'true'
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pinned conda environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: dice-results
+          auto-activate-base: false
+          environment-file: environment.yml
+          miniforge-variant: Miniforge3
+          python-version: 3.11.4
+          use-mamba: true
+
+      - name: Re-run environment preflight
+        run: |
+          python tools/check_notebook_environment.py \
+            --repo-root . \
+            --dataset-root "data generation/dataset/ITC_M2Pro_DATA" \
+            --report-path notebook_environment_report.json
+
+      - name: Execute notebook
+        run: |
+          mkdir -p ci_artifacts
+          jupyter nbconvert \
+            --to notebook \
+            --execute dice_results_analysis.ipynb \
+            --output ci_artifacts/dice_results_analysis.executed.ipynb \
+            --ExecutePreprocessor.timeout=-1
+
+      - name: Upload notebook artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: notebook-run-artifacts
+          path: |
+            notebook_environment_report.json
+            ci_artifacts/dice_results_analysis.executed.ipynb
+            data generation/dataset/ITC_M2Pro_DATA/results_portable/run_manifest.json
+            data generation/dataset/ITC_M2Pro_DATA/results_dice_full/overall_metrics.csv
+            data generation/dataset/ITC_M2Pro_DATA/results_dice_full/sequential_metrics.csv
+            data generation/dataset/ITC_M2Pro_DATA/results_dice_full/stressor_diagnosis_metrics.csv
+            data generation/dataset/ITC_M2Pro_DATA/results_dice_full_full/overall_metrics.csv
+            data generation/dataset/ITC_M2Pro_DATA/results_dice_full_full/sequential_metrics.csv
+            data generation/dataset/ITC_M2Pro_DATA/results_dice_full_full/stressor_diagnosis_metrics.csv
+          if-no-files-found: warn

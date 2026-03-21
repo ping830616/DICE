@@ -40,7 +40,29 @@ Run the notebook from top to bottom. It generates:
 - `results_itc_appendix/`
 - `results_portable/run_manifest.json`
 
+Before running the notebook, you can verify that the pinned environment is actually the one in use:
+
+```bash
+conda run -n dice-results python tools/check_notebook_environment.py \
+  --repo-root . \
+  --dataset-root "data generation/dataset/ITC_M2Pro_DATA"
+```
+
 If you prefer a smaller paper-oriented workflow, open the split notebooks in `itc_notebooks/` and follow the order listed in `itc_notebooks/README.md`.
+
+## GitHub Preflight
+
+The repository now includes `.github/workflows/notebook-environment-preflight.yml`.
+
+Use it when you want GitHub to set up the same pinned notebook environment before execution:
+
+- the workflow creates the `dice-results` conda environment from `environment.yml`
+- it verifies Python and every pinned package in `requirements.txt`
+- it checks that the released dataset layout exists
+- it uploads a JSON preflight report as an artifact
+- on manual `workflow_dispatch`, you can set `run_notebook=true` to execute `dice_results_analysis.ipynb` only after the preflight succeeds
+
+This gives you a repo-side guardrail so the notebook is not launched on GitHub under a drifted environment.
 
 ## Verify Across Machines
 
