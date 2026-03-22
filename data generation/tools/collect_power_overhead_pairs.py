@@ -304,6 +304,7 @@ def collect_tier1_alt_raw(raw_jsonl: Path, tier1_state: dict, duration_s: int) -
 
 
 def ensure_manifest(pairs_root: Path) -> Path:
+    pairs_root.mkdir(parents=True, exist_ok=True)
     rows = []
     for workload in WORKLOADS:
         for mode in ["baseline", "dice_on"]:
