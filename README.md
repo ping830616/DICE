@@ -39,7 +39,7 @@ export DICE_REPO_ROOT=/path/to/DICE
 
 ### 3) Run All Experiments
 
-Mirror the `X-OCTANE` workflow:
+Use the DICE run wrappers:
 
 ```bash
 python scripts/validate_env.py
@@ -77,14 +77,14 @@ The practical goal is reproducible regenerated results from the released dataset
 
 For the strictest cross-machine/server reproducibility, use the exact same git commit, the pinned Conda environment, the committed dataset, and the headless notebook runner.
 
-For example, to reproduce the published repository state at commit `4a2ab609f9845ccb8790acead085146fa16cec1f`:
+For example, to reproduce the current published repository state at commit `b1ce5186e1743469a749352d381d2fbdbd2e3688`:
 
 ```bash
 git clone https://github.com/ping830616/DICE.git
 cd DICE
-git checkout 4a2ab609f9845ccb8790acead085146fa16cec1f
+git checkout b1ce5186e1743469a749352d381d2fbdbd2e3688
 python scripts/validate_env.py
-bash scripts/reproduce_all.sh --ref 4a2ab609f9845ccb8790acead085146fa16cec1f
+bash scripts/reproduce_all.sh --ref b1ce5186e1743469a749352d381d2fbdbd2e3688
 ```
 
 Replace that example hash with any other commit you want to reproduce. This is the recommended path for laptops, remote Linux servers, and CI runners.
