@@ -53,6 +53,15 @@ DEFAULT_DATASET_ROOT = REPO_ROOT / "data generation" / "dataset" / "ITC_M2Pro_DA
 WORKLOADS = ["BROWSER", "VIDEO_SW", "PY_AI", "PY_STATS"]
 STRESSORS = ["NOMINAL", "CACHE", "TLB", "BRANCH", "MEMBW", "ATOMIC"]
 ANOMALIES = [s for s in STRESSORS if s != "NOMINAL"]
+STRESSOR_FAMILY = {
+    "NOMINAL": "benign",
+    "CACHE": "memory_pressure",
+    "TLB": "memory_pressure",
+    "MEMBW": "memory_pressure",
+    "BRANCH": "control_flow",
+    "ATOMIC": "synchronization",
+}
+DIAGNOSIS_FAMILIES = ["memory_pressure", "control_flow", "synchronization"]
 
 IGNORE_COLS = {"idx", "ts_unix_s", "t_rel_s", "timestamp", "time", "ts"}
 
@@ -107,6 +116,9 @@ STRESSOR_COLORS = {
     "TLB": "#8D5A97",
 }
 SQRT3 = float(np.sqrt(3.0))
+SQRT2 = float(np.sqrt(2.0))
+DIAG_FAMILY_GATE_QUANTILE = 0.35
+DIAG_CONFIDENCE_GATE_QUANTILE = 0.45
 
 
 @dataclass(frozen=True)
@@ -400,6 +412,54 @@ def workload_conditioned_scores(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarra
     return nominal, score
 
 
+def stressor_family(stressor: str) -> str:
+    return STRESSOR_FAMILY.get(str(stressor), "unknown")
+
+
+def normalize_attribution_vector(x: np.ndarray) -> np.ndarray:
+    arr = np.asarray(x, dtype=float)
+    arr = np.nan_to_num(arr, nan=0.0, posinf=0.0, neginf=0.0)
+    arr = np.clip(arr, 0.0, None)
+    total = float(np.sum(arr))
+    if not np.isfinite(total) or total <= 1e-12:
+        return np.zeros_like(arr, dtype=float)
+    return arr / total
+
+
+def hellinger_distance(p: np.ndarray, q: np.ndarray) -> float:
+    p_norm = normalize_attribution_vector(p)
+    q_norm = normalize_attribution_vector(q)
+    return float(np.linalg.norm(np.sqrt(p_norm) - np.sqrt(q_norm)) / SQRT2)
+
+
+def safe_quantile(values: Sequence[float], q: float, default: float) -> float:
+    arr = np.asarray(values, dtype=float)
+    arr = arr[np.isfinite(arr)]
+    if arr.size == 0:
+        return float(default)
+    qq = min(max(float(q), 0.0), 1.0)
+    return float(np.quantile(arr, qq))
+
+
+def multiclass_balanced_accuracy(
+    y_true: Sequence[str],
+    y_pred: Sequence[str],
+    labels: Sequence[str],
+) -> float:
+    cm = confusion_matrix(y_true, y_pred, labels=list(labels))
+    support = cm.sum(axis=1).astype(float)
+    recalls = np.divide(
+        np.diag(cm).astype(float),
+        support,
+        out=np.full(len(labels), np.nan, dtype=float),
+        where=support > 0,
+    )
+    valid = np.isfinite(recalls)
+    if not np.any(valid):
+        return float("nan")
+    return float(np.mean(recalls[valid]))
+
+
 def mechanism_group(feature_name: str) -> str:
     name = feature_name.split(":", 1)[-1].lower()
     if any(tok in name for tok in ["temp", "power", "fan"]):
@@ -434,6 +494,138 @@ def mechanism_vector(feature_names: Sequence[str], feature_contrib: np.ndarray) 
         totals[mechanism_group(name)] += float(value)
     vec = np.array([totals[group] for group in MECHANISM_GROUPS], dtype=float)
     return totals, vec
+
+
+def attribution_centroid(vectors: Sequence[np.ndarray]) -> np.ndarray:
+    mats = [normalize_attribution_vector(v) for v in vectors]
+    if not mats:
+        raise ValueError("Cannot build a centroid from an empty vector list.")
+    return normalize_attribution_vector(np.median(np.vstack(mats), axis=0))
+
+
+def build_label_centroids(
+    rows: Sequence[Dict[str, object]],
+    labels: Sequence[str],
+    vector_key: str,
+    label_fn,
+) -> Dict[str, np.ndarray]:
+    centroids: Dict[str, np.ndarray] = {}
+    for label in labels:
+        mats = [row[vector_key] for row in rows if label_fn(row) == label]
+        if mats:
+            centroids[label] = attribution_centroid(mats)
+    return centroids
+
+
+def ordered_proto_distances(vec: np.ndarray, centroids: Dict[str, np.ndarray]) -> List[Tuple[str, float]]:
+    return sorted(
+        (
+            (label, hellinger_distance(vec, centroid))
+            for label, centroid in centroids.items()
+        ),
+        key=lambda item: item[1],
+    )
+
+
+def margin_to_second(ordered: Sequence[Tuple[str, float]]) -> float:
+    if len(ordered) < 2:
+        return float("inf")
+    return float(ordered[1][1] - ordered[0][1])
+
+
+def hierarchical_prediction_info(
+    row: Dict[str, object],
+    stressor_centroids: Dict[str, np.ndarray],
+    family_centroids: Dict[str, np.ndarray],
+    family_margin_tau: float,
+) -> Dict[str, object]:
+    feature_vec = normalize_attribution_vector(row["_feature_contrib_norm"])
+    family_vec = normalize_attribution_vector(row["_mechanism_vector_norm"])
+    feature_ordered = ordered_proto_distances(feature_vec, stressor_centroids)
+    family_ordered = ordered_proto_distances(family_vec, family_centroids)
+    if not feature_ordered or not family_ordered:
+        raise ValueError("Hierarchical diagnosis requires both stressor and family centroids.")
+
+    best_family = family_ordered[0][0]
+    family_margin = margin_to_second(family_ordered)
+    if np.isfinite(family_margin_tau) and family_margin >= family_margin_tau:
+        in_family = [item for item in feature_ordered if stressor_family(item[0]) == best_family]
+        out_family = [item for item in feature_ordered if stressor_family(item[0]) != best_family]
+        ordered = in_family + out_family if in_family else feature_ordered
+    else:
+        ordered = feature_ordered
+
+    pred = ordered[0][0]
+    pred_family = stressor_family(pred)
+    exact_margin = margin_to_second(ordered)
+    nearest_distance = float(ordered[0][1])
+    confidence_score = float(exact_margin / (nearest_distance + 1e-6) + 0.5 * family_margin)
+    return {
+        "pred_stressor": pred,
+        "pred_family": pred_family,
+        "top2_labels": [label for label, _ in ordered[:2]],
+        "nearest_distance": nearest_distance,
+        "margin_to_second": exact_margin,
+        "family_pred": best_family,
+        "family_nearest_distance": float(family_ordered[0][1]),
+        "family_margin": family_margin,
+        "family_consistent": int(pred_family == best_family),
+        "confidence_score": confidence_score,
+    }
+
+
+def fit_hierarchical_gate(train_rows: Sequence[Dict[str, object]]) -> Dict[str, float]:
+    family_correct_margins: List[float] = []
+    for idx, row in enumerate(train_rows):
+        ref = [train_rows[j] for j in range(len(train_rows)) if j != idx]
+        family_centroids = build_label_centroids(
+            ref,
+            DIAGNOSIS_FAMILIES,
+            "_mechanism_vector_norm",
+            lambda item: stressor_family(str(item["stressor"])),
+        )
+        if len(family_centroids) < 2:
+            continue
+        ordered = ordered_proto_distances(row["_mechanism_vector_norm"], family_centroids)
+        if ordered and ordered[0][0] == stressor_family(str(row["stressor"])):
+            family_correct_margins.append(margin_to_second(ordered))
+
+    family_margin_tau = safe_quantile(
+        family_correct_margins,
+        DIAG_FAMILY_GATE_QUANTILE,
+        default=float("inf"),
+    )
+
+    confidence_scores: List[float] = []
+    for idx, row in enumerate(train_rows):
+        ref = [train_rows[j] for j in range(len(train_rows)) if j != idx]
+        stressor_centroids = build_label_centroids(
+            ref,
+            ANOMALIES,
+            "_feature_contrib_norm",
+            lambda item: str(item["stressor"]),
+        )
+        family_centroids = build_label_centroids(
+            ref,
+            DIAGNOSIS_FAMILIES,
+            "_mechanism_vector_norm",
+            lambda item: stressor_family(str(item["stressor"])),
+        )
+        if len(stressor_centroids) < 2 or len(family_centroids) < 2:
+            continue
+        info = hierarchical_prediction_info(row, stressor_centroids, family_centroids, family_margin_tau)
+        if info["pred_stressor"] == str(row["stressor"]):
+            confidence_scores.append(float(info["confidence_score"]))
+
+    confidence_tau = safe_quantile(
+        confidence_scores,
+        DIAG_CONFIDENCE_GATE_QUANTILE,
+        default=0.0,
+    )
+    return {
+        "family_margin_tau": float(family_margin_tau),
+        "confidence_tau": float(confidence_tau),
+    }
 
 
 def train_bundle(
@@ -728,6 +920,7 @@ def build_diagnostic_record(
     feature_contrib: np.ndarray,
 ) -> Dict[str, object]:
     contrib = np.asarray(feature_contrib, dtype=float)
+    contrib_norm = normalize_attribution_vector(contrib)
     total = float(np.sum(contrib))
     # Track contributions over the released three-tier observation hierarchy.
     tier_totals = {tier: 0.0 for tier in ("tier0", "tier1_alt", "tier2")}
@@ -737,6 +930,7 @@ def build_diagnostic_record(
             tier_totals[tier] += float(value)
     dominant_tier = max(tier_totals, key=tier_totals.get) if total > 0 else "none"
     mech_totals, mech_vec = mechanism_vector(feature_names, contrib)
+    mech_vec_norm = normalize_attribution_vector(mech_vec)
     dominant_mechanism = max(mech_totals, key=mech_totals.get) if total > 0 else "none"
     order = np.argsort(contrib)[::-1][:DIAG_TOP_K]
     mech_order = np.argsort(mech_vec)[::-1][:3]
@@ -747,6 +941,7 @@ def build_diagnostic_record(
         "case_id": case.case_id,
         "workload": case.workload,
         "stressor": case.stressor,
+        "stressor_family": stressor_family(case.stressor),
         "label": case.label,
         "dominant_tier": dominant_tier,
         "tier0_contrib": float(tier_totals["tier0"]),
@@ -757,7 +952,9 @@ def build_diagnostic_record(
         "tier2_share": float(tier_totals["tier2"] / total) if total > 0 else 0.0,
         "dominant_mechanism": dominant_mechanism,
         "_feature_contrib": contrib.copy(),
+        "_feature_contrib_norm": contrib_norm.copy(),
         "_mechanism_vector": mech_vec.copy(),
+        "_mechanism_vector_norm": mech_vec_norm.copy(),
     }
     for group in MECHANISM_GROUPS:
         row[f"{group}_contrib"] = float(mech_totals[group])
@@ -840,18 +1037,18 @@ def build_stressor_attribution(
         for holdout_w in WORKLOADS:
             train = [r for r in cfg_records if r["workload"] != holdout_w]
             test = [r for r in cfg_records if r["workload"] == holdout_w]
-            centroids = {}
-            for stressor in ANOMALIES:
-                mats = [r[vector_key] for r in train if r["stressor"] == stressor]
-                if mats:
-                    centroids[stressor] = np.median(np.vstack(mats), axis=0)
+            centroids = build_label_centroids(
+                train,
+                ANOMALIES,
+                vector_key,
+                lambda row: str(row["stressor"]),
+            )
             if len(centroids) < 2:
                 continue
             for row in test:
                 truth = str(row["stressor"])
-                contrib = np.asarray(row[vector_key], dtype=float)
-                dists = {stressor: float(np.linalg.norm(contrib - centroid)) for stressor, centroid in centroids.items()}
-                ordered = sorted(dists.items(), key=lambda item: item[1])
+                contrib = normalize_attribution_vector(row[vector_key])
+                ordered = ordered_proto_distances(contrib, centroids)
                 pred = ordered[0][0]
                 top2 = [label for label, _ in ordered[:2]]
                 pred_rows.append(
@@ -864,14 +1061,23 @@ def build_stressor_attribution(
                         "is_correct": int(pred == truth),
                         "top2_hit": int(truth in top2),
                         "nearest_distance": float(ordered[0][1]),
-                        "margin_to_second": float(ordered[1][1] - ordered[0][1]) if len(ordered) > 1 else float("inf"),
+                        "margin_to_second": margin_to_second(ordered),
                     }
                 )
 
     pred_df = pd.DataFrame(pred_rows)
     if pred_df.empty:
         empty_metrics = pd.DataFrame(
-            columns=["config", "n_cases", "top1_acc", "top2_acc", "macro_f1", "mean_margin_to_second"]
+            columns=[
+                "config",
+                "n_cases",
+                "top1_acc",
+                "top2_acc",
+                "balanced_acc",
+                "macro_f1",
+                "mean_margin_to_second",
+                "median_margin_to_second",
+            ]
         )
         empty_cm = pd.DataFrame(index=ANOMALIES, columns=ANOMALIES, data=0)
         empty_cm.index.name = "true_stressor"
@@ -881,12 +1087,18 @@ def build_stressor_attribution(
 
     metric_rows = []
     for cfg_name, d in pred_df.groupby("config", sort=False):
+        margins = d["margin_to_second"].replace([np.inf, -np.inf], np.nan)
         metric_rows.append(
             {
                 "config": cfg_name,
                 "n_cases": int(len(d)),
                 "top1_acc": float(d["is_correct"].mean()),
                 "top2_acc": float(d["top2_hit"].mean()),
+                "balanced_acc": multiclass_balanced_accuracy(
+                    d["true_stressor"],
+                    d["pred_stressor"],
+                    ANOMALIES,
+                ),
                 "macro_f1": float(
                     f1_score(
                         d["true_stressor"],
@@ -896,7 +1108,8 @@ def build_stressor_attribution(
                         zero_division=0,
                     )
                 ),
-                "mean_margin_to_second": float(d["margin_to_second"].replace([np.inf, -np.inf], np.nan).mean()),
+                "mean_margin_to_second": float(margins.mean()),
+                "median_margin_to_second": float(margins.median()),
             }
         )
     metrics_df = pd.DataFrame(metric_rows).sort_values("config")
@@ -915,6 +1128,236 @@ def build_stressor_attribution(
     cm.index.name = "true_stressor"
     cm.columns.name = "pred_stressor"
     return pred_df, metrics_df, cm
+
+
+def build_hierarchical_stressor_attribution(
+    diagnostic_records: Sequence[Dict[str, object]],
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    pred_rows: List[Dict[str, object]] = []
+    for cfg_name in CONFIGS:
+        cfg_records = [r for r in diagnostic_records if r["config"] == cfg_name and int(r["label"]) == 1]
+        for holdout_w in WORKLOADS:
+            train = [r for r in cfg_records if r["workload"] != holdout_w]
+            test = [r for r in cfg_records if r["workload"] == holdout_w]
+            stressor_centroids = build_label_centroids(
+                train,
+                ANOMALIES,
+                "_feature_contrib_norm",
+                lambda row: str(row["stressor"]),
+            )
+            family_centroids = build_label_centroids(
+                train,
+                DIAGNOSIS_FAMILIES,
+                "_mechanism_vector_norm",
+                lambda row: stressor_family(str(row["stressor"])),
+            )
+            if len(stressor_centroids) < 2 or len(family_centroids) < 2:
+                continue
+            gate = fit_hierarchical_gate(train)
+            for row in test:
+                truth = str(row["stressor"])
+                truth_family = stressor_family(truth)
+                info = hierarchical_prediction_info(
+                    row,
+                    stressor_centroids,
+                    family_centroids,
+                    gate["family_margin_tau"],
+                )
+                accepted = int(float(info["confidence_score"]) >= float(gate["confidence_tau"]))
+                pred_rows.append(
+                    {
+                        "config": cfg_name,
+                        "holdout_workload": holdout_w,
+                        "case_id": row["case_id"],
+                        "true_stressor": truth,
+                        "true_family": truth_family,
+                        "pred_stressor": info["pred_stressor"],
+                        "pred_family": info["pred_family"],
+                        "family_pred": info["family_pred"],
+                        "top2_labels": "|".join(info["top2_labels"]),
+                        "is_correct": int(info["pred_stressor"] == truth),
+                        "top2_hit": int(truth in info["top2_labels"]),
+                        "family_correct": int(info["family_pred"] == truth_family),
+                        "family_consistent": int(info["family_consistent"]),
+                        "nearest_distance": float(info["nearest_distance"]),
+                        "margin_to_second": float(info["margin_to_second"]),
+                        "family_nearest_distance": float(info["family_nearest_distance"]),
+                        "family_margin": float(info["family_margin"]),
+                        "confidence_score": float(info["confidence_score"]),
+                        "family_margin_tau": float(gate["family_margin_tau"]),
+                        "confidence_tau": float(gate["confidence_tau"]),
+                        "abstained": int(1 - accepted),
+                        "pred_stressor_selective": info["pred_stressor"] if accepted else "ABSTAIN",
+                    }
+                )
+
+    pred_df = pd.DataFrame(pred_rows)
+    if pred_df.empty:
+        empty_metrics = pd.DataFrame(
+            columns=[
+                "config",
+                "n_cases",
+                "top1_acc",
+                "top2_acc",
+                "family_acc",
+                "balanced_acc",
+                "macro_f1",
+                "coverage",
+                "abstain_rate",
+                "selective_top1_acc",
+                "selective_top2_acc",
+                "selective_balanced_acc",
+                "selective_macro_f1",
+                "mean_margin_to_second",
+                "median_margin_to_second",
+                "mean_family_margin",
+                "median_family_margin",
+                "family_margin_tau",
+                "confidence_tau",
+            ]
+        )
+        empty_cm = pd.DataFrame(index=ANOMALIES, columns=[*ANOMALIES, "ABSTAIN"], data=0)
+        empty_cm.index.name = "true_stressor"
+        empty_cm.columns.name = "pred_stressor"
+        return pred_df, empty_metrics, empty_cm
+    pred_df = pred_df.sort_values(["config", "holdout_workload", "case_id"]).reset_index(drop=True)
+
+    metric_rows = []
+    for cfg_name, d in pred_df.groupby("config", sort=False):
+        margins = d["margin_to_second"].replace([np.inf, -np.inf], np.nan)
+        family_margins = d["family_margin"].replace([np.inf, -np.inf], np.nan)
+        accepted = d[d["abstained"] == 0].copy()
+        row = {
+            "config": cfg_name,
+            "n_cases": int(len(d)),
+            "top1_acc": float(d["is_correct"].mean()),
+            "top2_acc": float(d["top2_hit"].mean()),
+            "family_acc": float(d["family_correct"].mean()),
+            "balanced_acc": multiclass_balanced_accuracy(
+                d["true_stressor"],
+                d["pred_stressor"],
+                ANOMALIES,
+            ),
+            "macro_f1": float(
+                f1_score(
+                    d["true_stressor"],
+                    d["pred_stressor"],
+                    labels=ANOMALIES,
+                    average="macro",
+                    zero_division=0,
+                )
+            ),
+            "coverage": float((d["abstained"] == 0).mean()),
+            "abstain_rate": float(d["abstained"].mean()),
+            "selective_top1_acc": np.nan,
+            "selective_top2_acc": np.nan,
+            "selective_balanced_acc": np.nan,
+            "selective_macro_f1": np.nan,
+            "mean_margin_to_second": float(margins.mean()),
+            "median_margin_to_second": float(margins.median()),
+            "mean_family_margin": float(family_margins.mean()),
+            "median_family_margin": float(family_margins.median()),
+            "family_margin_tau": float(d["family_margin_tau"].replace([np.inf, -np.inf], np.nan).median()),
+            "confidence_tau": float(d["confidence_tau"].median()),
+        }
+        if not accepted.empty:
+            row["selective_top1_acc"] = float(accepted["is_correct"].mean())
+            row["selective_top2_acc"] = float(accepted["top2_hit"].mean())
+            row["selective_balanced_acc"] = multiclass_balanced_accuracy(
+                accepted["true_stressor"],
+                accepted["pred_stressor"],
+                ANOMALIES,
+            )
+            row["selective_macro_f1"] = float(
+                f1_score(
+                    accepted["true_stressor"],
+                    accepted["pred_stressor"],
+                    labels=ANOMALIES,
+                    average="macro",
+                    zero_division=0,
+                )
+            )
+        metric_rows.append(row)
+    metrics_df = pd.DataFrame(metric_rows).sort_values("config")
+
+    final_cfg = "tier0_tier1_tier2"
+    d_final = pred_df[pred_df["config"] == final_cfg]
+    if d_final.empty:
+        cm = pd.DataFrame(index=ANOMALIES, columns=[*ANOMALIES, "ABSTAIN"], data=0)
+    else:
+        labels = [*ANOMALIES, "ABSTAIN"]
+        cm_arr = confusion_matrix(
+            d_final["true_stressor"],
+            d_final["pred_stressor_selective"],
+            labels=labels,
+        )
+        cm = pd.DataFrame(cm_arr, index=labels, columns=labels).loc[ANOMALIES, labels]
+    cm.index.name = "true_stressor"
+    cm.columns.name = "pred_stressor"
+    return pred_df, metrics_df, cm
+
+
+def build_hierarchical_abstain_sweep(pred_df: pd.DataFrame) -> pd.DataFrame:
+    if pred_df.empty:
+        return pd.DataFrame(
+            columns=[
+                "config",
+                "gate_label",
+                "confidence_threshold",
+                "n_kept",
+                "coverage",
+                "abstain_rate",
+                "selective_top1_acc",
+                "selective_top2_acc",
+                "selective_balanced_acc",
+                "selective_macro_f1",
+            ]
+        )
+
+    rows = []
+    fixed_thresholds = [0.0, 0.05, 0.10, 0.15, 0.20, 0.25]
+    for cfg_name, part in pred_df.groupby("config", sort=False):
+        trained_tau = float(part["confidence_tau"].median())
+        thresholds = [("trained", trained_tau)]
+        thresholds.extend((f"conf_{tau:.2f}", tau) for tau in fixed_thresholds)
+        seen = set()
+        for gate_label, threshold in thresholds:
+            key = (gate_label, round(float(threshold), 8))
+            if key in seen:
+                continue
+            seen.add(key)
+            kept = part[part["confidence_score"] >= float(threshold)].copy()
+            row = {
+                "config": cfg_name,
+                "gate_label": gate_label,
+                "confidence_threshold": float(threshold),
+                "n_kept": int(len(kept)),
+                "coverage": float(len(kept) / max(len(part), 1)),
+                "abstain_rate": float(1.0 - len(kept) / max(len(part), 1)),
+                "selective_top1_acc": np.nan,
+                "selective_top2_acc": np.nan,
+                "selective_balanced_acc": np.nan,
+                "selective_macro_f1": np.nan,
+            }
+            if not kept.empty:
+                row["selective_top1_acc"] = float(kept["is_correct"].mean())
+                row["selective_top2_acc"] = float(kept["top2_hit"].mean())
+                row["selective_balanced_acc"] = multiclass_balanced_accuracy(
+                    kept["true_stressor"],
+                    kept["pred_stressor"],
+                    ANOMALIES,
+                )
+                row["selective_macro_f1"] = float(
+                    f1_score(
+                        kept["true_stressor"],
+                        kept["pred_stressor"],
+                        labels=ANOMALIES,
+                        average="macro",
+                        zero_division=0,
+                    )
+                )
+            rows.append(row)
+    return pd.DataFrame(rows).sort_values(["config", "confidence_threshold"]).reset_index(drop=True)
 
 
 def build_stressor_tier_contributions(diag_df: pd.DataFrame, config: str) -> pd.DataFrame:
@@ -1468,12 +1911,16 @@ def main() -> None:
 
     diag_pred_feature_df, diag_metrics_feature_df, diag_cm_feature = build_stressor_attribution(
         diagnostic_records,
-        vector_key="_feature_contrib",
+        vector_key="_feature_contrib_norm",
     )
     diag_pred_df, diag_metrics_df, diag_cm = build_stressor_attribution(
         diagnostic_records,
-        vector_key="_mechanism_vector",
+        vector_key="_mechanism_vector_norm",
     )
+    diag_pred_hier_df, diag_metrics_hier_df, diag_cm_hier = build_hierarchical_stressor_attribution(
+        diagnostic_records,
+    )
+    diag_abstain_sweep_df = build_hierarchical_abstain_sweep(diag_pred_hier_df)
     diag_tier_df = build_stressor_tier_contributions(diag_df, config=final_cfg)
     mechanism_df = build_mechanism_summary(diag_df, config=final_cfg)
     sequential_df = build_sequential_metrics(pred_df)
@@ -1482,6 +1929,10 @@ def main() -> None:
         diag_metrics_feature_df["feature_profile"] = args.feature_profile
     if not diag_metrics_df.empty:
         diag_metrics_df["feature_profile"] = args.feature_profile
+    if not diag_metrics_hier_df.empty:
+        diag_metrics_hier_df["feature_profile"] = args.feature_profile
+    if not diag_abstain_sweep_df.empty:
+        diag_abstain_sweep_df["feature_profile"] = args.feature_profile
     if not diag_tier_df.empty:
         diag_tier_df["feature_profile"] = args.feature_profile
     if not mechanism_df.empty:
@@ -1511,6 +1962,10 @@ def main() -> None:
     diag_pred_df.to_csv(out_dir / "stressor_diagnosis_predictions.csv", index=False)
     diag_metrics_df.to_csv(out_dir / "stressor_diagnosis_metrics.csv", index=False)
     diag_cm.to_csv(out_dir / "stressor_confusion_matrix.csv")
+    diag_pred_hier_df.to_csv(out_dir / "stressor_hierarchical_diagnosis_predictions.csv", index=False)
+    diag_metrics_hier_df.to_csv(out_dir / "stressor_hierarchical_diagnosis_metrics.csv", index=False)
+    diag_cm_hier.to_csv(out_dir / "stressor_hierarchical_confusion_matrix.csv")
+    diag_abstain_sweep_df.to_csv(out_dir / "stressor_hierarchical_abstain_sweep.csv", index=False)
     diag_tier_df.to_csv(out_dir / "stressor_tier_contributions.csv", index=False)
     mechanism_df.to_csv(out_dir / "mechanism_group_summary.csv", index=False)
     sequential_df.to_csv(out_dir / "sequential_metrics.csv", index=False)
@@ -1597,6 +2052,39 @@ def main() -> None:
                 "tab:dice_stressor_diagnosis",
             )
         )
+    if not diag_metrics_hier_df.empty:
+        diag_hier_tex = diag_metrics_hier_df.rename(
+            columns={
+                "config": "Configuration",
+                "n_cases": "Cases",
+                "top1_acc": "Top-1 Acc.",
+                "top2_acc": "Top-2 Acc.",
+                "family_acc": "Family Acc.",
+                "coverage": "Coverage",
+                "selective_top1_acc": "Selective Top-1",
+                "selective_top2_acc": "Selective Top-2",
+                "abstain_rate": "Abstain Rate",
+            }
+        )[
+            [
+                "Configuration",
+                "Cases",
+                "Top-1 Acc.",
+                "Top-2 Acc.",
+                "Family Acc.",
+                "Coverage",
+                "Selective Top-1",
+                "Selective Top-2",
+                "Abstain Rate",
+            ]
+        ]
+        (out_dir / "stressor_hierarchical_diagnosis_metrics.tex").write_text(
+            to_latex_table(
+                diag_hier_tex,
+                "Normalized feature-level prototype diagnosis with family-aware confidence gating.",
+                "tab:dice_stressor_hierarchical_diagnosis",
+            )
+        )
     if not sequential_df.empty:
         seq_tex = sequential_df.rename(
             columns={
@@ -1642,9 +2130,14 @@ def main() -> None:
         title_tag="workload-conditioned",
     )
     plot_confusion_heatmap(
-        diag_cm,
+        diag_cm_hier if not diag_cm_hier.empty else diag_cm_feature,
         fig_dir / "fig_stressor_confusion_matrix.png",
-        title="Final-config prototype stressor attribution",
+        title="Final-config hierarchical stressor attribution",
+    )
+    plot_confusion_heatmap(
+        diag_cm_feature,
+        fig_dir / "fig_stressor_confusion_matrix_feature.png",
+        title="Final-config normalized feature prototype attribution",
     )
     plot_stressor_tier_shares(
         diag_tier_df,
@@ -1689,9 +2182,22 @@ def main() -> None:
     md.append("")
     if not diag_metrics_df.empty:
         md.append("## Diagnosis")
-        md.append("- Primary diagnosis uses mechanism-group centroids over workload-held residual summaries.")
+        md.append("- Feature-level diagnosis uses normalized residual-attribution prototypes.")
+        append_text_table(md, diag_metrics_feature_df)
+        md.append("")
+        md.append("- Mechanism-level diagnosis uses normalized mechanism centroids over workload-held residual summaries.")
         append_text_table(md, diag_metrics_df)
         md.append("")
+        if not diag_metrics_hier_df.empty:
+            md.append("## Hierarchical Diagnosis")
+            md.append("- High-confidence diagnosis adds a mechanism-family gate and abstains on low-confidence cases.")
+            append_text_table(md, diag_metrics_hier_df)
+            md.append("")
+        if not diag_abstain_sweep_df.empty:
+            md.append("## Hierarchical Abstain Sweep")
+            md.append("- The sweep below shows how selective diagnosis improves as the confidence gate becomes stricter.")
+            append_text_table(md, diag_abstain_sweep_df)
+            md.append("")
         if not diag_tier_df.empty:
             md.append("## Final Config Tier Contribution Summary")
             append_text_table(md, diag_tier_df)
@@ -1717,18 +2223,24 @@ def main() -> None:
         out_dir / "sequential_metrics.csv",
         out_dir / "case_diagnosis_summary.csv",
         out_dir / "stressor_diagnosis_metrics.csv",
+        out_dir / "stressor_feature_diagnosis_metrics.csv",
+        out_dir / "stressor_hierarchical_diagnosis_metrics.csv",
+        out_dir / "stressor_hierarchical_abstain_sweep.csv",
         out_dir / "mechanism_group_summary.csv",
         out_dir / "stressor_confusion_matrix.csv",
+        out_dir / "stressor_hierarchical_confusion_matrix.csv",
         out_dir / "stressor_tier_contributions.csv",
         out_dir / "overall_metrics.tex",
         out_dir / "stressor_metrics_final_config.tex",
         out_dir / "stressor_diagnosis_metrics.tex",
+        out_dir / "stressor_hierarchical_diagnosis_metrics.tex",
         out_dir / "sequential_metrics.tex",
         fig_dir / "fig_roc_pr_by_config.png",
         fig_dir / "fig_roc_pr_by_config_wc.png",
         fig_dir / "fig_run_score_boxplot.png",
         fig_dir / "fig_run_score_boxplot_wc.png",
         fig_dir / "fig_stressor_confusion_matrix.png",
+        fig_dir / "fig_stressor_confusion_matrix_feature.png",
         fig_dir / "fig_stressor_tier_contributions.png",
         fig_dir / "fig_mechanism_group_summary.png",
         fig_dir / "fig_detection_latency.png",
@@ -1744,6 +2256,12 @@ def main() -> None:
     if not diag_metrics_df.empty:
         print("[OK] stressor diagnosis metrics:")
         print(diag_metrics_df.to_string(index=False))
+    if not diag_metrics_hier_df.empty:
+        print("[OK] hierarchical diagnosis metrics:")
+        print(diag_metrics_hier_df.to_string(index=False))
+    if not diag_abstain_sweep_df.empty:
+        print("[OK] hierarchical abstain sweep:")
+        print(diag_abstain_sweep_df.to_string(index=False))
     if not sequential_df.empty:
         print("[OK] sequential metrics:")
         print(sequential_df.to_string(index=False))
