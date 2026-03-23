@@ -85,6 +85,25 @@ CONFIGS = {
 }
 
 DIAG_TOP_K = 5
+DIAG_POST_ALERT_BLOCKS = 5
+DIAG_POST_ALERT_MIN_BLOCKS = 3
+DIAG_MONOTONIC_TOKENS = (
+    "uptime",
+    "syscall",
+    "ctx_switch",
+    "soft_interrupt",
+    "hard_interrupt",
+)
+DIAG_GENERIC_MEMORY_STATE_TOKENS = (
+    "mem_free_bytes",
+    "mem_inactive_bytes",
+    "mem_available_bytes",
+    "mem_percent",
+    "swap_percent",
+    "swap_free_bytes",
+    "swap_used_bytes",
+)
+DIAG_GENERIC_MEMORY_STATE_FACTOR = 0.35
 MECHANISM_GROUPS = [
     "compute",
     "memory_io",
@@ -142,6 +161,7 @@ class ModelBundle:
     scale: np.ndarray
     A: np.ndarray
     weights: np.ndarray
+    diagnosis_weights: np.ndarray
     cal_scores: np.ndarray
     tau: float
 
@@ -384,6 +404,122 @@ def first_positive_index(x: np.ndarray) -> int:
     return int(idx[0]) if len(idx) else -1
 
 
+def normalize_positive_weights(x: np.ndarray) -> np.ndarray:
+    arr = np.asarray(x, dtype=float)
+    arr = np.nan_to_num(arr, nan=0.0, posinf=0.0, neginf=0.0)
+    arr = np.clip(arr, 0.0, None)
+    total = float(arr.sum())
+    if total <= 1e-12:
+        if len(arr) == 0:
+            return np.zeros((0,), dtype=float)
+        return np.full(len(arr), 1.0 / len(arr), dtype=float)
+    return arr / total
+
+
+def diagnosis_feature_weights(feature_names: Sequence[str]) -> np.ndarray:
+    weights = np.ones(len(feature_names), dtype=float)
+    for idx, name in enumerate(feature_names):
+        base = str(name).split(":", 1)[-1].lower()
+        if any(tok in base for tok in DIAG_MONOTONIC_TOKENS):
+            weights[idx] = 0.0
+            continue
+        if any(tok in base for tok in DIAG_GENERIC_MEMORY_STATE_TOKENS):
+            weights[idx] *= DIAG_GENERIC_MEMORY_STATE_FACTOR
+    return weights
+
+
+def post_alert_window_indices(
+    n_blocks: int,
+    start_idx: int,
+    window_blocks: int,
+) -> np.ndarray:
+    if n_blocks <= 0:
+        return np.zeros((0,), dtype=int)
+    start = min(max(int(start_idx), 0), n_blocks - 1)
+    width = min(n_blocks - start, max(1, int(window_blocks)))
+    return np.arange(start, start + width, dtype=int)
+
+
+def select_diagnosis_block_indices(
+    scores: np.ndarray,
+    block_alert: np.ndarray,
+    persist: np.ndarray,
+    window_blocks: int = DIAG_POST_ALERT_BLOCKS,
+    min_blocks: int = DIAG_POST_ALERT_MIN_BLOCKS,
+) -> Tuple[np.ndarray, str]:
+    if len(scores) == 0:
+        return np.zeros((0,), dtype=int), "none"
+    if np.any(persist):
+        selected = post_alert_window_indices(len(scores), first_positive_index(persist), window_blocks)
+        mode = "post_persist"
+    elif np.any(block_alert):
+        selected = post_alert_window_indices(len(scores), first_positive_index(block_alert), window_blocks)
+        mode = "post_alert"
+    else:
+        peak_idx = int(np.argmax(scores))
+        selected = post_alert_window_indices(len(scores), peak_idx, window_blocks)
+        mode = "peak_window"
+
+    if len(selected) < min_blocks and len(scores) > len(selected):
+        order = np.argsort(scores)[::-1]
+        extra: List[int] = list(selected)
+        for idx in order:
+            idx_int = int(idx)
+            if idx_int in extra:
+                continue
+            extra.append(idx_int)
+            if len(extra) >= min(len(scores), min_blocks):
+                break
+        selected = np.asarray(sorted(extra), dtype=int)
+        mode = f"{mode}_backfill"
+    return selected, mode
+
+
+def focused_diagnosis_signature(
+    signatures: np.ndarray,
+    scores: np.ndarray,
+    block_alert: np.ndarray,
+    persist: np.ndarray,
+    tau: float,
+) -> Tuple[np.ndarray, Dict[str, object]]:
+    if signatures.shape[0] == 0:
+        empty = np.zeros((signatures.shape[1] if signatures.ndim == 2 else 0,), dtype=float)
+        return empty, {
+            "diagnosis_block_mode": "none",
+            "diagnosis_selected_blocks": 0,
+            "diagnosis_selected_block_idxs": "",
+            "diagnosis_peak_block_idx": -1,
+            "diagnosis_peak_block_score": 0.0,
+            "diagnosis_focus_score_mean": 0.0,
+            "diagnosis_focus_score_max": 0.0,
+        }
+
+    selected_idx, mode = select_diagnosis_block_indices(scores, block_alert, persist)
+    peak_idx = int(np.argmax(scores)) if len(scores) else -1
+    if len(selected_idx) == 0:
+        selected_idx = np.asarray([peak_idx], dtype=int) if peak_idx >= 0 else np.zeros((0,), dtype=int)
+        mode = "peak"
+
+    selected_scores = scores[selected_idx]
+    excess = np.maximum(selected_scores - float(tau), 0.0)
+    if np.all(excess <= 1e-12):
+        excess = np.maximum(selected_scores, 0.0)
+    weights = normalize_positive_weights(excess)
+    focused = np.average(signatures[selected_idx], axis=0, weights=weights) if len(selected_idx) else np.zeros(signatures.shape[1], dtype=float)
+    meta = {
+        "diagnosis_block_mode": mode,
+        "diagnosis_selected_blocks": int(len(selected_idx)),
+        "diagnosis_selected_block_idxs": ",".join(str(int(i)) for i in selected_idx),
+        "diagnosis_peak_block_idx": peak_idx,
+        "diagnosis_peak_block_score": float(scores[peak_idx]) if peak_idx >= 0 else 0.0,
+        "diagnosis_focus_score_mean": float(np.mean(selected_scores)) if len(selected_scores) else 0.0,
+        "diagnosis_focus_score_max": float(np.max(selected_scores)) if len(selected_scores) else 0.0,
+        "_diagnosis_selected_idx": selected_idx.copy(),
+        "_diagnosis_selected_weights": weights.copy(),
+    }
+    return focused, meta
+
+
 def finite_median(x: Sequence[float]) -> float:
     arr = np.asarray(x, dtype=float)
     arr = arr[np.isfinite(arr)]
@@ -538,8 +674,9 @@ def hierarchical_prediction_info(
     stressor_centroids: Dict[str, np.ndarray],
     family_centroids: Dict[str, np.ndarray],
     family_margin_tau: float,
+    feature_vector_key: str,
 ) -> Dict[str, object]:
-    feature_vec = normalize_attribution_vector(row["_feature_contrib_norm"])
+    feature_vec = normalize_attribution_vector(row[feature_vector_key])
     family_vec = normalize_attribution_vector(row["_mechanism_vector_norm"])
     feature_ordered = ordered_proto_distances(feature_vec, stressor_centroids)
     family_ordered = ordered_proto_distances(family_vec, family_centroids)
@@ -574,7 +711,10 @@ def hierarchical_prediction_info(
     }
 
 
-def fit_hierarchical_gate(train_rows: Sequence[Dict[str, object]]) -> Dict[str, float]:
+def fit_hierarchical_gate(
+    train_rows: Sequence[Dict[str, object]],
+    feature_vector_key: str = "_feature_contrib_norm",
+) -> Dict[str, float]:
     family_correct_margins: List[float] = []
     for idx, row in enumerate(train_rows):
         ref = [train_rows[j] for j in range(len(train_rows)) if j != idx]
@@ -602,7 +742,7 @@ def fit_hierarchical_gate(train_rows: Sequence[Dict[str, object]]) -> Dict[str, 
         stressor_centroids = build_label_centroids(
             ref,
             ANOMALIES,
-            "_feature_contrib_norm",
+            feature_vector_key,
             lambda item: str(item["stressor"]),
         )
         family_centroids = build_label_centroids(
@@ -613,7 +753,13 @@ def fit_hierarchical_gate(train_rows: Sequence[Dict[str, object]]) -> Dict[str, 
         )
         if len(stressor_centroids) < 2 or len(family_centroids) < 2:
             continue
-        info = hierarchical_prediction_info(row, stressor_centroids, family_centroids, family_margin_tau)
+        info = hierarchical_prediction_info(
+            row,
+            stressor_centroids,
+            family_centroids,
+            family_margin_tau,
+            feature_vector_key=feature_vector_key,
+        )
         if info["pred_stressor"] == str(row["stressor"]):
             confidence_scores.append(float(info["confidence_score"]))
 
@@ -683,6 +829,7 @@ def train_bundle(
         scale=scale,
         A=A,
         weights=w,
+        diagnosis_weights=diagnosis_feature_weights(feature_names),
         cal_scores=cal_scores_all,
         tau=tau,
     )
@@ -695,7 +842,7 @@ def evaluate_run(
     alpha: float,
     persist_k: int,
     gain: float,
-) -> Tuple[Dict[str, float], np.ndarray]:
+) -> Tuple[Dict[str, float], np.ndarray, List[Dict[str, object]], Dict[str, object]]:
     Xn = (X_run - bundle.median) / (bundle.scale + 1e-12)
     r = residual_timeseries(Xn, bundle.A, gain=gain)
     sig = block_signatures(r, B=B)
@@ -709,13 +856,72 @@ def evaluate_run(
     peak_score = float(np.max(sc)) if len(sc) else 0.0
     run_score = peak_score
     run_signature = np.nanmedian(sig, axis=0) if len(sig) else np.zeros_like(bundle.weights)
-    feature_contrib = run_signature * bundle.weights
+    peak_signature = sig[int(np.argmax(sc))] if len(sig) else np.zeros_like(bundle.weights)
+    focused_signature, diagnosis_meta = focused_diagnosis_signature(
+        sig,
+        sc,
+        block_alert,
+        persist,
+        tau=bundle.tau,
+    )
+    diag_weights = np.asarray(bundle.diagnosis_weights, dtype=float)
+    feature_contrib_run = (run_signature * bundle.weights) * diag_weights
+    feature_contrib_peak = (peak_signature * bundle.weights) * diag_weights
+    feature_contrib_focus = (focused_signature * bundle.weights) * diag_weights
     first_block_idx = first_positive_index(block_alert)
     first_persist_idx = first_positive_index(persist)
     block_time_s = float(B + first_block_idx) if first_block_idx >= 0 else float("nan")
     persist_time_s = float(B + first_persist_idx) if first_persist_idx >= 0 else float("nan")
     n_blocks = int(len(sc))
     duration_s = max(n_blocks, 1)
+
+    selected_lookup = {
+        int(idx): float(weight)
+        for idx, weight in zip(
+            diagnosis_meta.pop("_diagnosis_selected_idx", np.zeros((0,), dtype=int)),
+            diagnosis_meta.pop("_diagnosis_selected_weights", np.zeros((0,), dtype=float)),
+        )
+    }
+    block_records: List[Dict[str, object]] = []
+    for i in range(len(sc)):
+        contrib = sig[i] * bundle.weights
+        total = float(np.sum(contrib))
+        tier_totals = {tier: 0.0 for tier in ("tier0", "tier1_alt", "tier2")}
+        for name, value in zip(bundle.feature_names, contrib):
+            tier = name.split(":", 1)[0]
+            if tier in tier_totals:
+                tier_totals[tier] += float(value)
+        dominant_tier = max(tier_totals, key=tier_totals.get) if total > 0 else "none"
+        mech_totals, _ = mechanism_vector(bundle.feature_names, contrib)
+        dominant_mechanism = max(mech_totals, key=mech_totals.get) if total > 0 else "none"
+        block_records.append(
+            {
+                "block_idx": int(i),
+                "block_start_s": float(i),
+                "block_end_s": float(B + i),
+                "score": float(sc[i]),
+                "pvalue": float(pv[i]),
+                "block_alert": int(block_alert[i]),
+                "persist_alert": int(persist[i]),
+                "is_selected_for_diagnosis": int(i in selected_lookup),
+                "diagnosis_selection_weight": float(selected_lookup.get(i, 0.0)),
+                "threshold": float(bundle.tau),
+                "dominant_tier": dominant_tier,
+                "dominant_mechanism": dominant_mechanism,
+                "top_feature_1": "",
+                "top_feature_score_1": 0.0,
+                "top_feature_2": "",
+                "top_feature_score_2": 0.0,
+                "top_feature_3": "",
+                "top_feature_score_3": 0.0,
+            }
+        )
+        order = np.argsort(contrib)[::-1][:3]
+        for rank in range(3):
+            if rank < len(order) and contrib[order[rank]] > 0.0:
+                idx = int(order[rank])
+                block_records[-1][f"top_feature_{rank + 1}"] = bundle.feature_names[idx]
+                block_records[-1][f"top_feature_score_{rank + 1}"] = float(contrib[idx])
 
     return (
         {
@@ -733,7 +939,14 @@ def evaluate_run(
             "block_alerts_per_hour": float(np.sum(block_alert) * 3600.0 / duration_s),
             "persist_alerts_per_hour": float(np.sum(persist) * 3600.0 / duration_s),
         },
-        feature_contrib,
+        feature_contrib_run,
+        block_records,
+        {
+            **diagnosis_meta,
+            "_feature_contrib_run": feature_contrib_run.copy(),
+            "_feature_contrib_peak": feature_contrib_peak.copy(),
+            "_feature_contrib_focus": feature_contrib_focus.copy(),
+        },
     )
 
 
@@ -918,9 +1131,14 @@ def build_diagnostic_record(
     case: CaseRef,
     feature_names: Sequence[str],
     feature_contrib: np.ndarray,
+    diagnosis_meta: Dict[str, object] | None = None,
 ) -> Dict[str, object]:
     contrib = np.asarray(feature_contrib, dtype=float)
     contrib_norm = normalize_attribution_vector(contrib)
+    diagnosis_meta = diagnosis_meta or {}
+    contrib_run = np.asarray(diagnosis_meta.get("_feature_contrib_run", contrib), dtype=float)
+    contrib_peak = np.asarray(diagnosis_meta.get("_feature_contrib_peak", np.zeros_like(contrib)), dtype=float)
+    contrib_focus = np.asarray(diagnosis_meta.get("_feature_contrib_focus", np.zeros_like(contrib)), dtype=float)
     total = float(np.sum(contrib))
     # Track contributions over the released three-tier observation hierarchy.
     tier_totals = {tier: 0.0 for tier in ("tier0", "tier1_alt", "tier2")}
@@ -943,6 +1161,13 @@ def build_diagnostic_record(
         "stressor": case.stressor,
         "stressor_family": stressor_family(case.stressor),
         "label": case.label,
+        "diagnosis_block_mode": str(diagnosis_meta.get("diagnosis_block_mode", "none")),
+        "diagnosis_selected_blocks": int(diagnosis_meta.get("diagnosis_selected_blocks", 0)),
+        "diagnosis_selected_block_idxs": str(diagnosis_meta.get("diagnosis_selected_block_idxs", "")),
+        "diagnosis_peak_block_idx": int(diagnosis_meta.get("diagnosis_peak_block_idx", -1)),
+        "diagnosis_peak_block_score": float(diagnosis_meta.get("diagnosis_peak_block_score", 0.0)),
+        "diagnosis_focus_score_mean": float(diagnosis_meta.get("diagnosis_focus_score_mean", 0.0)),
+        "diagnosis_focus_score_max": float(diagnosis_meta.get("diagnosis_focus_score_max", 0.0)),
         "dominant_tier": dominant_tier,
         "tier0_contrib": float(tier_totals["tier0"]),
         "tier1_alt_contrib": float(tier_totals["tier1_alt"]),
@@ -953,6 +1178,12 @@ def build_diagnostic_record(
         "dominant_mechanism": dominant_mechanism,
         "_feature_contrib": contrib.copy(),
         "_feature_contrib_norm": contrib_norm.copy(),
+        "_feature_contrib_run": contrib_run.copy(),
+        "_feature_contrib_run_norm": normalize_attribution_vector(contrib_run),
+        "_feature_contrib_peak": contrib_peak.copy(),
+        "_feature_contrib_peak_norm": normalize_attribution_vector(contrib_peak),
+        "_feature_contrib_focus": contrib_focus.copy(),
+        "_feature_contrib_focus_norm": normalize_attribution_vector(contrib_focus),
         "_mechanism_vector": mech_vec.copy(),
         "_mechanism_vector_norm": mech_vec_norm.copy(),
     }
@@ -985,6 +1216,7 @@ def build_diagnostic_record(
 def append_case_outputs(
     preds: List[Dict[str, object]],
     diagnostic_records: List[Dict[str, object]],
+    block_records: List[Dict[str, object]],
     config: str,
     holdout_workload: str,
     case: CaseRef,
@@ -995,7 +1227,7 @@ def append_case_outputs(
     persist_k: int,
     gain: float,
 ) -> None:
-    metrics, feature_contrib = evaluate_run(
+    metrics, feature_contrib, case_block_records, diagnosis_meta = evaluate_run(
         X_run,
         bundle,
         B=B,
@@ -1016,6 +1248,18 @@ def append_case_outputs(
             "tau": bundle.tau,
         }
     )
+    for row in case_block_records:
+        block_records.append(
+            {
+                "config": config,
+                "holdout_workload": holdout_workload,
+                "case_id": case.case_id,
+                "workload": case.workload,
+                "stressor": case.stressor,
+                "label": case.label,
+                **row,
+            }
+        )
     diagnostic_records.append(
         build_diagnostic_record(
             config=config,
@@ -1023,6 +1267,7 @@ def append_case_outputs(
             case=case,
             feature_names=bundle.feature_names,
             feature_contrib=feature_contrib,
+            diagnosis_meta=diagnosis_meta,
         )
     )
 
@@ -1132,6 +1377,7 @@ def build_stressor_attribution(
 
 def build_hierarchical_stressor_attribution(
     diagnostic_records: Sequence[Dict[str, object]],
+    feature_vector_key: str = "_feature_contrib_norm",
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     pred_rows: List[Dict[str, object]] = []
     for cfg_name in CONFIGS:
@@ -1142,7 +1388,7 @@ def build_hierarchical_stressor_attribution(
             stressor_centroids = build_label_centroids(
                 train,
                 ANOMALIES,
-                "_feature_contrib_norm",
+                feature_vector_key,
                 lambda row: str(row["stressor"]),
             )
             family_centroids = build_label_centroids(
@@ -1153,7 +1399,7 @@ def build_hierarchical_stressor_attribution(
             )
             if len(stressor_centroids) < 2 or len(family_centroids) < 2:
                 continue
-            gate = fit_hierarchical_gate(train)
+            gate = fit_hierarchical_gate(train, feature_vector_key=feature_vector_key)
             for row in test:
                 truth = str(row["stressor"])
                 truth_family = stressor_family(truth)
@@ -1162,6 +1408,7 @@ def build_hierarchical_stressor_attribution(
                     stressor_centroids,
                     family_centroids,
                     gate["family_margin_tau"],
+                    feature_vector_key=feature_vector_key,
                 )
                 accepted = int(float(info["confidence_score"]) >= float(gate["confidence_tau"]))
                 pred_rows.append(
@@ -1706,6 +1953,7 @@ def main() -> None:
     preds = []
     fold_rows = []
     diagnostic_records: List[Dict[str, object]] = []
+    case_block_records: List[Dict[str, object]] = []
     config_runtime: Dict[str, float] = {}
 
     for cfg_name, tiers in CONFIGS.items():
@@ -1749,6 +1997,7 @@ def main() -> None:
                     append_case_outputs(
                         preds=preds,
                         diagnostic_records=diagnostic_records,
+                        block_records=case_block_records,
                         config=cfg_name,
                         holdout_workload=holdout_w,
                         case=case,
@@ -1794,6 +2043,7 @@ def main() -> None:
                 append_case_outputs(
                     preds=preds,
                     diagnostic_records=diagnostic_records,
+                    block_records=case_block_records,
                     config=cfg_name,
                     holdout_workload="ALL",
                     case=case,
@@ -1832,6 +2082,10 @@ def main() -> None:
         ["config", "workload", "stressor"]
     )
     diag_df["feature_profile"] = args.feature_profile
+    block_df = pd.DataFrame(case_block_records)
+    if not block_df.empty:
+        block_df = block_df.sort_values(["config", "workload", "stressor", "block_idx"])
+        block_df["feature_profile"] = args.feature_profile
 
     # Workload-conditioned score head: distance to workload nominal template.
     pred_df["nominal_template_score"] = np.nan
@@ -1909,9 +2163,13 @@ def main() -> None:
     mm_pr_filt_wc = float(np.mean(filt["pr_auc_wc"]))
     mm_roc_filt_wc = float(np.mean(filt["roc_auc_wc"]))
 
-    diag_pred_feature_df, diag_metrics_feature_df, diag_cm_feature = build_stressor_attribution(
+    diag_pred_feature_run_df, diag_metrics_feature_run_df, diag_cm_feature_run = build_stressor_attribution(
         diagnostic_records,
-        vector_key="_feature_contrib_norm",
+        vector_key="_feature_contrib_run_norm",
+    )
+    diag_pred_feature_focus_df, diag_metrics_feature_focus_df, diag_cm_feature_focus = build_stressor_attribution(
+        diagnostic_records,
+        vector_key="_feature_contrib_focus_norm",
     )
     diag_pred_df, diag_metrics_df, diag_cm = build_stressor_attribution(
         diagnostic_records,
@@ -1919,20 +2177,32 @@ def main() -> None:
     )
     diag_pred_hier_df, diag_metrics_hier_df, diag_cm_hier = build_hierarchical_stressor_attribution(
         diagnostic_records,
+        feature_vector_key="_feature_contrib_run_norm",
     )
     diag_abstain_sweep_df = build_hierarchical_abstain_sweep(diag_pred_hier_df)
+    diag_pred_hier_focus_df, diag_metrics_hier_focus_df, diag_cm_hier_focus = build_hierarchical_stressor_attribution(
+        diagnostic_records,
+        feature_vector_key="_feature_contrib_focus_norm",
+    )
+    diag_abstain_sweep_focus_df = build_hierarchical_abstain_sweep(diag_pred_hier_focus_df)
     diag_tier_df = build_stressor_tier_contributions(diag_df, config=final_cfg)
     mechanism_df = build_mechanism_summary(diag_df, config=final_cfg)
     sequential_df = build_sequential_metrics(pred_df)
     holdout_df = build_holdout_robustness_summary(fold_df, pred_df)
-    if not diag_metrics_feature_df.empty:
-        diag_metrics_feature_df["feature_profile"] = args.feature_profile
+    if not diag_metrics_feature_run_df.empty:
+        diag_metrics_feature_run_df["feature_profile"] = args.feature_profile
+    if not diag_metrics_feature_focus_df.empty:
+        diag_metrics_feature_focus_df["feature_profile"] = args.feature_profile
     if not diag_metrics_df.empty:
         diag_metrics_df["feature_profile"] = args.feature_profile
     if not diag_metrics_hier_df.empty:
         diag_metrics_hier_df["feature_profile"] = args.feature_profile
+    if not diag_metrics_hier_focus_df.empty:
+        diag_metrics_hier_focus_df["feature_profile"] = args.feature_profile
     if not diag_abstain_sweep_df.empty:
         diag_abstain_sweep_df["feature_profile"] = args.feature_profile
+    if not diag_abstain_sweep_focus_df.empty:
+        diag_abstain_sweep_focus_df["feature_profile"] = args.feature_profile
     if not diag_tier_df.empty:
         diag_tier_df["feature_profile"] = args.feature_profile
     if not mechanism_df.empty:
@@ -1941,6 +2211,29 @@ def main() -> None:
         sequential_df["feature_profile"] = args.feature_profile
     if not holdout_df.empty:
         holdout_df["feature_profile"] = args.feature_profile
+
+    diagnosis_mode_frames = []
+    if not diag_metrics_feature_run_df.empty:
+        diagnosis_mode_frames.append(
+            diag_metrics_feature_run_df.assign(diagnosis_target="feature_level", diagnosis_mode="whole_run")
+        )
+    if not diag_metrics_feature_focus_df.empty:
+        diagnosis_mode_frames.append(
+            diag_metrics_feature_focus_df.assign(diagnosis_target="feature_level", diagnosis_mode="post_alert_window")
+        )
+    if not diag_metrics_hier_df.empty:
+        diagnosis_mode_frames.append(
+            diag_metrics_hier_df.assign(diagnosis_target="hierarchical", diagnosis_mode="whole_run")
+        )
+    if not diag_metrics_hier_focus_df.empty:
+        diagnosis_mode_frames.append(
+            diag_metrics_hier_focus_df.assign(diagnosis_target="hierarchical", diagnosis_mode="post_alert_window")
+        )
+    diagnosis_mode_comparison_df = (
+        pd.concat(diagnosis_mode_frames, ignore_index=True, sort=False)
+        if diagnosis_mode_frames
+        else pd.DataFrame()
+    )
 
     runtime_df = pd.DataFrame(
         [
@@ -1954,6 +2247,8 @@ def main() -> None:
     ).sort_values("config")
 
     pred_df.to_csv(out_dir / "case_predictions.csv", index=False)
+    if not block_df.empty:
+        block_df.to_csv(out_dir / "case_block_traces.csv", index=False)
     fold_df.to_csv(out_dir / "fold_metrics.csv", index=False)
     overall_df.to_csv(out_dir / "overall_metrics.csv", index=False)
     runtime_df.to_csv(out_dir / "config_runtime_summary.csv", index=False)
@@ -1962,17 +2257,36 @@ def main() -> None:
     diag_pred_df.to_csv(out_dir / "stressor_diagnosis_predictions.csv", index=False)
     diag_metrics_df.to_csv(out_dir / "stressor_diagnosis_metrics.csv", index=False)
     diag_cm.to_csv(out_dir / "stressor_confusion_matrix.csv")
+    diag_pred_feature_run_df.to_csv(out_dir / "stressor_feature_diagnosis_predictions.csv", index=False)
+    diag_metrics_feature_run_df.to_csv(out_dir / "stressor_feature_diagnosis_metrics.csv", index=False)
+    diag_cm_feature_run.to_csv(out_dir / "stressor_feature_confusion_matrix.csv")
+    diag_pred_feature_run_df.to_csv(out_dir / "stressor_feature_diagnosis_runlevel_predictions.csv", index=False)
+    diag_metrics_feature_run_df.to_csv(out_dir / "stressor_feature_diagnosis_runlevel_metrics.csv", index=False)
+    diag_cm_feature_run.to_csv(out_dir / "stressor_feature_confusion_matrix_runlevel.csv")
+    diag_pred_feature_focus_df.to_csv(out_dir / "stressor_feature_diagnosis_post_alert_predictions.csv", index=False)
+    diag_metrics_feature_focus_df.to_csv(out_dir / "stressor_feature_diagnosis_post_alert_metrics.csv", index=False)
+    diag_cm_feature_focus.to_csv(out_dir / "stressor_feature_confusion_matrix_post_alert.csv")
+    diag_pred_feature_focus_df.to_csv(out_dir / "stressor_feature_diagnosis_top_blocks_predictions.csv", index=False)
+    diag_metrics_feature_focus_df.to_csv(out_dir / "stressor_feature_diagnosis_top_blocks_metrics.csv", index=False)
+    diag_cm_feature_focus.to_csv(out_dir / "stressor_feature_confusion_matrix_top_blocks.csv")
     diag_pred_hier_df.to_csv(out_dir / "stressor_hierarchical_diagnosis_predictions.csv", index=False)
     diag_metrics_hier_df.to_csv(out_dir / "stressor_hierarchical_diagnosis_metrics.csv", index=False)
     diag_cm_hier.to_csv(out_dir / "stressor_hierarchical_confusion_matrix.csv")
     diag_abstain_sweep_df.to_csv(out_dir / "stressor_hierarchical_abstain_sweep.csv", index=False)
+    diag_pred_hier_focus_df.to_csv(out_dir / "stressor_hierarchical_diagnosis_post_alert_predictions.csv", index=False)
+    diag_metrics_hier_focus_df.to_csv(out_dir / "stressor_hierarchical_diagnosis_post_alert_metrics.csv", index=False)
+    diag_cm_hier_focus.to_csv(out_dir / "stressor_hierarchical_confusion_matrix_post_alert.csv")
+    diag_abstain_sweep_focus_df.to_csv(out_dir / "stressor_hierarchical_abstain_sweep_post_alert.csv", index=False)
+    diag_pred_hier_focus_df.to_csv(out_dir / "stressor_hierarchical_diagnosis_top_blocks_predictions.csv", index=False)
+    diag_metrics_hier_focus_df.to_csv(out_dir / "stressor_hierarchical_diagnosis_top_blocks_metrics.csv", index=False)
+    diag_cm_hier_focus.to_csv(out_dir / "stressor_hierarchical_confusion_matrix_top_blocks.csv")
+    diag_abstain_sweep_focus_df.to_csv(out_dir / "stressor_hierarchical_abstain_sweep_top_blocks.csv", index=False)
     diag_tier_df.to_csv(out_dir / "stressor_tier_contributions.csv", index=False)
     mechanism_df.to_csv(out_dir / "mechanism_group_summary.csv", index=False)
     sequential_df.to_csv(out_dir / "sequential_metrics.csv", index=False)
     holdout_df.to_csv(out_dir / "holdout_robustness_summary.csv", index=False)
-    diag_pred_feature_df.to_csv(out_dir / "stressor_feature_diagnosis_predictions.csv", index=False)
-    diag_metrics_feature_df.to_csv(out_dir / "stressor_feature_diagnosis_metrics.csv", index=False)
-    diag_cm_feature.to_csv(out_dir / "stressor_feature_confusion_matrix.csv")
+    if not diagnosis_mode_comparison_df.empty:
+        diagnosis_mode_comparison_df.to_csv(out_dir / "diagnosis_mode_comparison.csv", index=False)
     (out_dir / "run_context.json").write_text(
         json.dumps(
             {
@@ -1987,6 +2301,10 @@ def main() -> None:
                 "gain": args.gain,
                 "ridge_lambda": args.ridge_lambda,
                 "config_runtime_seconds": config_runtime,
+                "diagnosis_monotonic_tokens": list(DIAG_MONOTONIC_TOKENS),
+                "diagnosis_generic_memory_state_tokens": list(DIAG_GENERIC_MEMORY_STATE_TOKENS),
+                "diagnosis_generic_memory_state_factor": DIAG_GENERIC_MEMORY_STATE_FACTOR,
+                "diagnosis_window_blocks": DIAG_POST_ALERT_BLOCKS,
             },
             indent=2,
         )
@@ -2130,14 +2448,19 @@ def main() -> None:
         title_tag="workload-conditioned",
     )
     plot_confusion_heatmap(
-        diag_cm_hier if not diag_cm_hier.empty else diag_cm_feature,
+        diag_cm_hier if not diag_cm_hier.empty else diag_cm_feature_run,
         fig_dir / "fig_stressor_confusion_matrix.png",
         title="Final-config hierarchical stressor attribution",
     )
     plot_confusion_heatmap(
-        diag_cm_feature,
+        diag_cm_feature_run,
         fig_dir / "fig_stressor_confusion_matrix_feature.png",
-        title="Final-config normalized feature prototype attribution",
+        title="Final-config normalized feature prototype attribution (whole run)",
+    )
+    plot_confusion_heatmap(
+        diag_cm_feature_focus,
+        fig_dir / "fig_stressor_confusion_matrix_feature_top_blocks.png",
+        title="Final-config normalized feature prototype attribution (post-alert window)",
     )
     plot_stressor_tier_shares(
         diag_tier_df,
@@ -2182,21 +2505,40 @@ def main() -> None:
     md.append("")
     if not diag_metrics_df.empty:
         md.append("## Diagnosis")
-        md.append("- Feature-level diagnosis uses normalized residual-attribution prototypes.")
-        append_text_table(md, diag_metrics_feature_df)
+        md.append("- Feature-level diagnosis uses normalized whole-run residual-attribution prototypes as the default paper-facing result, with diagnosis-only filtering that removes monotonic counters and downweights generic memory-state features.")
+        append_text_table(md, diag_metrics_feature_run_df)
         md.append("")
+        if not diag_metrics_feature_focus_df.empty:
+            md.append("- Post-alert-window diagnosis is exported below as a side-by-side comparison; it uses windows immediately after the first alert/persistent alert and applies the same diagnosis-only filtering and downweighting.")
+            append_text_table(md, diag_metrics_feature_focus_df)
+            md.append("")
         md.append("- Mechanism-level diagnosis uses normalized mechanism centroids over workload-held residual summaries.")
         append_text_table(md, diag_metrics_df)
         md.append("")
         if not diag_metrics_hier_df.empty:
             md.append("## Hierarchical Diagnosis")
-            md.append("- High-confidence diagnosis adds a mechanism-family gate and abstains on low-confidence cases.")
+            md.append("- High-confidence diagnosis adds a mechanism-family gate and abstains on low-confidence cases; whole-run attribution is the default input.")
             append_text_table(md, diag_metrics_hier_df)
+            md.append("")
+        if not diag_metrics_hier_focus_df.empty:
+            md.append("## Hierarchical Diagnosis (Post-Alert Window)")
+            md.append("- This comparison uses the same gate on post-alert-window attribution rather than whole-run attribution.")
+            append_text_table(md, diag_metrics_hier_focus_df)
             md.append("")
         if not diag_abstain_sweep_df.empty:
             md.append("## Hierarchical Abstain Sweep")
             md.append("- The sweep below shows how selective diagnosis improves as the confidence gate becomes stricter.")
             append_text_table(md, diag_abstain_sweep_df)
+            md.append("")
+        if not diag_abstain_sweep_focus_df.empty:
+            md.append("## Hierarchical Abstain Sweep (Post-Alert Window)")
+            md.append("- This comparison applies the same sweep to post-alert-window attribution.")
+            append_text_table(md, diag_abstain_sweep_focus_df)
+            md.append("")
+        if not diagnosis_mode_comparison_df.empty:
+            md.append("## Diagnosis Mode Comparison")
+            md.append("- Whole-run and post-alert-window diagnosis are exported together so the diagnosis mode can be evaluated directly.")
+            append_text_table(md, diagnosis_mode_comparison_df)
             md.append("")
         if not diag_tier_df.empty:
             md.append("## Final Config Tier Contribution Summary")
@@ -2219,13 +2561,22 @@ def main() -> None:
         out_dir / "overall_metrics.csv",
         out_dir / "config_runtime_summary.csv",
         out_dir / "run_context.json",
+        out_dir / "case_block_traces.csv",
         out_dir / "stressor_metrics_final_config.csv",
         out_dir / "sequential_metrics.csv",
         out_dir / "case_diagnosis_summary.csv",
         out_dir / "stressor_diagnosis_metrics.csv",
         out_dir / "stressor_feature_diagnosis_metrics.csv",
+        out_dir / "stressor_feature_diagnosis_runlevel_metrics.csv",
+        out_dir / "stressor_feature_diagnosis_post_alert_metrics.csv",
+        out_dir / "stressor_feature_diagnosis_top_blocks_metrics.csv",
         out_dir / "stressor_hierarchical_diagnosis_metrics.csv",
         out_dir / "stressor_hierarchical_abstain_sweep.csv",
+        out_dir / "stressor_hierarchical_diagnosis_post_alert_metrics.csv",
+        out_dir / "stressor_hierarchical_abstain_sweep_post_alert.csv",
+        out_dir / "stressor_hierarchical_diagnosis_top_blocks_metrics.csv",
+        out_dir / "stressor_hierarchical_abstain_sweep_top_blocks.csv",
+        out_dir / "diagnosis_mode_comparison.csv",
         out_dir / "mechanism_group_summary.csv",
         out_dir / "stressor_confusion_matrix.csv",
         out_dir / "stressor_hierarchical_confusion_matrix.csv",
@@ -2241,6 +2592,7 @@ def main() -> None:
         fig_dir / "fig_run_score_boxplot_wc.png",
         fig_dir / "fig_stressor_confusion_matrix.png",
         fig_dir / "fig_stressor_confusion_matrix_feature.png",
+        fig_dir / "fig_stressor_confusion_matrix_feature_top_blocks.png",
         fig_dir / "fig_stressor_tier_contributions.png",
         fig_dir / "fig_mechanism_group_summary.png",
         fig_dir / "fig_detection_latency.png",
@@ -2256,12 +2608,27 @@ def main() -> None:
     if not diag_metrics_df.empty:
         print("[OK] stressor diagnosis metrics:")
         print(diag_metrics_df.to_string(index=False))
+    if not diag_metrics_feature_run_df.empty:
+        print("[OK] feature diagnosis metrics (whole run default):")
+        print(diag_metrics_feature_run_df.to_string(index=False))
+    if not diag_metrics_feature_focus_df.empty:
+        print("[OK] feature diagnosis metrics (post-alert window comparison):")
+        print(diag_metrics_feature_focus_df.to_string(index=False))
     if not diag_metrics_hier_df.empty:
-        print("[OK] hierarchical diagnosis metrics:")
+        print("[OK] hierarchical diagnosis metrics (whole run default):")
         print(diag_metrics_hier_df.to_string(index=False))
+    if not diag_metrics_hier_focus_df.empty:
+        print("[OK] hierarchical diagnosis metrics (post-alert window comparison):")
+        print(diag_metrics_hier_focus_df.to_string(index=False))
     if not diag_abstain_sweep_df.empty:
-        print("[OK] hierarchical abstain sweep:")
+        print("[OK] hierarchical abstain sweep (whole run default):")
         print(diag_abstain_sweep_df.to_string(index=False))
+    if not diag_abstain_sweep_focus_df.empty:
+        print("[OK] hierarchical abstain sweep (post-alert window comparison):")
+        print(diag_abstain_sweep_focus_df.to_string(index=False))
+    if not diagnosis_mode_comparison_df.empty:
+        print("[OK] diagnosis mode comparison:")
+        print(diagnosis_mode_comparison_df.to_string(index=False))
     if not sequential_df.empty:
         print("[OK] sequential metrics:")
         print(sequential_df.to_string(index=False))

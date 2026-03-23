@@ -1,4 +1,7 @@
-config,top1_acc,top2_acc,macro_f1,feature_profile,profile_label,config_label
-tier0,0.3,0.55,0.2181818181818181,mixed,Mixed,Tier-0
-tier0_tier1,0.2,0.45,0.18,mixed,Mixed,Tier-0/1
-tier0_tier1_tier2,0.2,0.5,0.1743145743145743,mixed,Mixed,Tier-0/1/2
+config,n_cases,top1_acc,top2_acc,balanced_acc,macro_f1,mean_margin_to_second,median_margin_to_second,feature_profile,profile_label,config_label,diagnosis_source
+tier0,20,0.4,0.6,0.4,0.3224242424242424,0.0238113077980322,0.0182278686290714,mixed,Mixed,Tier-0,feature-level (diagnosis-weighted)
+tier0_tier1,20,0.35,0.6,0.35,0.2512820512820513,0.0238069954841361,0.0211633835156291,mixed,Mixed,Tier-0/1,feature-level (diagnosis-weighted)
+tier0_tier1_tier2,20,0.45,0.6,0.45,0.4256410256410256,0.0211599155522727,0.0189595659109829,mixed,Mixed,Tier-0/1/2,feature-level (diagnosis-weighted)
+tier0,20,0.4,0.6,0.4,0.3224242424242424,0.0238113077980322,0.0182278686290714,full,Full,Tier-0,feature-level (diagnosis-weighted)
+tier0_tier1,20,0.2,0.35,0.2,0.1641025641025641,0.0133777506531444,0.0111843533118061,full,Full,Tier-0/1,feature-level (diagnosis-weighted)
+tier0_tier1_tier2,20,0.3,0.4,0.3,0.2,0.0236686454053034,0.021294482840072,full,Full,Tier-0/1/2,feature-level (diagnosis-weighted)

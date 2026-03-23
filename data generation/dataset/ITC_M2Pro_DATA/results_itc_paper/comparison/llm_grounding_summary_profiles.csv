@@ -1,0 +1,1 @@
+feature_profile,profile_label,model_id,prompt_type,n_outputs,grounded_core_rate,dominant_tier_rate,dominant_mechanism_rate,mean_cue_coverage,hallucination_rate,source_csv
