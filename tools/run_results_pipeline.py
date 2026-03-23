@@ -45,14 +45,14 @@ def deterministic_env() -> Dict[str, str]:
     env = os.environ.copy()
     settings = {
         "MPLCONFIGDIR": env.get("MPLCONFIGDIR", tempfile.mkdtemp(prefix="dice-mpl-")),
-        "MPLBACKEND": "Agg",
-        "OPENBLAS_NUM_THREADS": "1",
-        "OMP_NUM_THREADS": "1",
-        "MKL_NUM_THREADS": "1",
-        "NUMEXPR_NUM_THREADS": "1",
-        "VECLIB_MAXIMUM_THREADS": "1",
-        "BLIS_NUM_THREADS": "1",
-        "PYTHONHASHSEED": "0",
+        "MPLBACKEND": env.get("MPLBACKEND", "Agg"),
+        "OPENBLAS_NUM_THREADS": env.get("OPENBLAS_NUM_THREADS", "1"),
+        "OMP_NUM_THREADS": env.get("OMP_NUM_THREADS", "1"),
+        "MKL_NUM_THREADS": env.get("MKL_NUM_THREADS", "1"),
+        "NUMEXPR_NUM_THREADS": env.get("NUMEXPR_NUM_THREADS", "1"),
+        "VECLIB_MAXIMUM_THREADS": env.get("VECLIB_MAXIMUM_THREADS", "1"),
+        "BLIS_NUM_THREADS": env.get("BLIS_NUM_THREADS", "1"),
+        "PYTHONHASHSEED": env.get("PYTHONHASHSEED", "0"),
     }
     env.update(settings)
     os.environ.update(settings)
