@@ -1,170 +1,191 @@
 # DICE
 
-Portable analysis and ITC-paper result generation for the released DICE dataset.
+Tier-aware digital-twin anomaly detection, diagnosis, and grounded triage for portable silicon lifecycle monitoring.
 
-The public results workflow is notebook-only. Reviewers do not need to run shell scripts or external Python entrypoints; `dice_results_analysis.ipynb` contains the analysis and evaluation path directly.
+This repository is notebook-first. The primary reproducibility path is:
 
-For paper writing and review, the same workflow is also split into a smaller notebook suite under `itc_notebooks/`.
+`dice_results_analysis.ipynb`
 
-## Quick Start
+Open that notebook and run it from the first cell to the last cell. No repo bash wrapper is required for the main public results workflow.
 
-### 1) Environment
+## What To Run
 
-Conda:
+- Primary notebook: `dice_results_analysis.ipynb`
+- Notebook guide: [notebook-guide.md](notebook-guide.md)
+- Portable setup notes: [portable-setup.md](portable-setup.md)
+- Linux server guide: [asu-server-setup.md](asu-server-setup.md)
+- ITC notebook suite: [itc_notebooks/README.md](itc_notebooks/README.md)
+- Paper-method notes: [itc-paper-methodology.md](itc-paper-methodology.md)
+
+## Step-By-Step Setup On Any Machine
+
+Clone the repo, or update an existing clone:
+
+```bash
+git clone https://github.com/ping830616/DICE.git
+cd DICE
+```
+
+If the repo already exists:
+
+```bash
+cd ~/DICE
+git pull origin main
+```
+
+Create the environment, or refresh an existing one:
 
 ```bash
 conda env create -f environment.yml
 conda activate dice-results
 ```
 
-Pip:
+If `dice-results` already exists:
 
 ```bash
-pip install -r requirements.txt
+conda activate dice-results
+conda env update -f environment.yml --prune
 ```
 
-### 2) Dataset Location
+Export the required runtime variables and validate the environment:
 
-The released dataset is expected under:
+```bash
+export PYTHONHASHSEED=0
+export DICE_REPO_ROOT="$PWD"
+export MPLCONFIGDIR="$PWD/.cache/matplotlib"
+mkdir -p "$MPLCONFIGDIR"
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export VECLIB_MAXIMUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export BLIS_NUM_THREADS=1
+python scripts/validate_env.py
+```
+
+The released dataset is expected at:
 
 ```bash
 data generation/dataset/ITC_M2Pro_DATA
 ```
 
-If you launch DICE from outside the repository checkout, point it at the repo root instead of hardcoding paths inside the notebook:
+Choose the run mode that matches your machine:
+
+Local interactive run on the same machine:
 
 ```bash
-export DICE_REPO_ROOT=/path/to/DICE
+jupyter lab --notebook-dir="$PWD"
 ```
 
-### 3) Run All Experiments
+Headless run on any machine:
 
-Use the DICE run wrappers:
+```bash
+jupyter nbconvert --to notebook --execute --inplace dice_results_analysis.ipynb
+```
+
+Remote Linux server run with browser access from another machine:
+
+use [asu-server-setup.md](asu-server-setup.md)
+
+In Jupyter, choose `Kernel -> Restart Kernel and Run All Cells`.
+
+Wait for the notebook to finish from top to bottom without jumping between cells.
+
+## Across Different Machines
+
+To compare notebook runs across machines, keep these aligned:
+
+- the same commit
+- the same notebook: `dice_results_analysis.ipynb`
+- the same released dataset
+- the same strict launch block before starting Jupyter: `PYTHONHASHSEED=0`, `MPLCONFIGDIR`, and the single-thread variables above
+- CPU-only execution
+- single-threaded execution
+
+The first notebook cells print the resolved repository root, dataset root, profile selection, imports, and default result save locations used for that run.
+
+## Path Overrides
+
+If you do not set `DICE_REPO_ROOT`, the notebook tries to infer the repository root from the current working directory and its parent directories.
+
+The notebook uses these repo-local defaults:
+
+- repository root inferred from the current working directory
+- `data generation/dataset/ITC_M2Pro_DATA` as the dataset location
+- `results_analysis/`, `results_dice_full*/`, `results_itc_paper/`, and `results_itc_appendix/` under the dataset root for outputs
+
+If you want to launch Jupyter from somewhere else, use an absolute repo path:
+
+```bash
+export PYTHONHASHSEED=0
+export DICE_REPO_ROOT=/absolute/path/to/DICE
+export MPLCONFIGDIR=/absolute/path/to/matplotlib_cache
+mkdir -p "$MPLCONFIGDIR"
+```
+
+For strict reviewer-to-reviewer matching, launch Jupyter from a shell where `PYTHONHASHSEED=0` is already exported.
+
+## Method Sequence
+
+The main notebook is meant to be executed in this order:
+
+1. Validate the released repository and dataset layout.
+2. Build the analysis/setup figures and released-data inventory.
+3. Run the mixed and full DICE evaluations, including tuning, global evaluation, and holdout robustness when enabled.
+4. Generate the detection, diagnosis, attribution, two-stage, and feature-budget summaries.
+5. Export the paper and appendix bundles.
+6. Export the grounded LLM triage case cards, model catalog, prompt bundles, and any scored LLM outputs if they exist.
+
+If you prefer the split paper-oriented workflow, use the notebook order in [itc_notebooks/README.md](itc_notebooks/README.md).
+
+## Main Outputs
+
+After a successful notebook run, the main artifacts are written under:
+
+- `data generation/dataset/ITC_M2Pro_DATA/results_analysis/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_dice_full/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_dice_full_holdout/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_dice_full_full/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_dice_full_full_holdout/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/`
+- `data generation/dataset/ITC_M2Pro_DATA/results_portable/run_manifest.json`
+
+Key checkpoints:
+
+- `results_dice_full/overall_metrics.csv`
+- `results_dice_full/stressor_feature_diagnosis_metrics.csv`
+- `results_dice_full_full/overall_metrics.csv`
+- `results_dice_full_full/stressor_feature_diagnosis_metrics.csv`
+- `results_itc_paper/comparison/digital_twin_variant_summary_profiles.csv`
+- `results_itc_paper/comparison/diagnosis_summary_profiles.csv`
+- `results_itc_paper/comparison/llm_grounded_triage_assets_profiles.csv`
+- `results_itc_paper/comparison/llm_grounding_summary_profiles.csv`
+- `results_itc_appendix/mixed/llm_case_cards.csv`
+- `results_itc_appendix/full/llm_case_cards.csv`
+
+## Reproducibility Notes
+
+- The environment is pinned in [environment.yml](environment.yml) and [requirements.txt](requirements.txt).
+- The notebook prints resolved paths and package/runtime settings in the first cells.
+- Run the notebook only in top-to-bottom order.
+- The released dataset is bundled under `data generation/dataset/ITC_M2Pro_DATA`, so the public results path is self-contained once the repo is present.
+- The practical goal is reproducible regenerated results from the released dataset, not bit-identical floating-point outputs across every OS, CPU, or BLAS stack.
+- Portable reproduction applies to the released results workflow, not to raw Tier-1/Tier-2 telemetry collection on arbitrary non-macOS hosts.
+
+## Optional Automated Path
+
+The notebook is the main path. The shell wrappers are optional helpers for headless or CI-style runs:
 
 ```bash
 python scripts/validate_env.py
 bash scripts/reproduce_all.sh --ref <exact-commit-hash>
 ```
 
-Outputs:
+They are useful when you want a stricter scripted preflight or a headless notebook execution, but they are not required for the primary notebook-first workflow.
 
-- `data generation/dataset/ITC_M2Pro_DATA/results_analysis/`
-- `data generation/dataset/ITC_M2Pro_DATA/results_dice_full/` or `results_dice_full_<profile>/`
-- `data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/`
-- `data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/`
-- `data generation/dataset/ITC_M2Pro_DATA/results_portable/run_manifest.json`
+## Legacy/Internal Files
 
-## Reproducibility
-
-This repository is designed so the released `analysis/results` workflow can be rerun across Linux, macOS, and remote servers from the same committed dataset.
-
-What should match across machines:
-
-- the notebook workflow
-- the input dataset
-- the Conda environment specification
-- the generated paper and appendix artifact structure
-- the dataset and environment hashes recorded in `results_portable/run_manifest.json`
-
-What is not claimed:
-
-- bit-identical floating-point outputs on every OS, CPU, or BLAS stack
-- portable raw Tier-1/Tier-2 collection on non-macOS machines
-
-The practical goal is reproducible regenerated results from the released dataset, not hardware-independent telemetry collection.
-
-## Run
-
-For the strictest cross-machine/server reproducibility, use the exact same git commit, the pinned Conda environment, the committed dataset, and the headless notebook runner.
-
-For example, to reproduce the current published repository state at commit `b1ce5186e1743469a749352d381d2fbdbd2e3688`:
-
-```bash
-git clone https://github.com/ping830616/DICE.git
-cd DICE
-git checkout b1ce5186e1743469a749352d381d2fbdbd2e3688
-python scripts/validate_env.py
-bash scripts/reproduce_all.sh --ref b1ce5186e1743469a749352d381d2fbdbd2e3688
-```
-
-Replace that example hash with any other commit you want to reproduce. This is the recommended path for laptops, remote Linux servers, and CI runners.
-
-The wrapper:
-
-- checks out the exact git ref you specify
-- creates or refreshes the pinned `dice-results` Conda environment
-- exports deterministic runtime settings used for the notebook
-- runs the notebook environment preflight
-- executes `dice_results_analysis.ipynb` headlessly with `nbconvert`
-- writes `ci_artifacts/dice_results_analysis.executed.ipynb`
-- writes `ci_artifacts/notebook_environment_report.json`
-
-For local exploratory use, you can still launch Jupyter directly:
-
-```bash
-conda env create -f environment.yml
-conda run -n dice-results jupyter lab dice_results_analysis.ipynb
-```
-
-Run the notebook from top to bottom. It generates:
-
-- `results_itc_paper/`
-- `results_itc_appendix/`
-- `results_portable/run_manifest.json`
-
-Before running the notebook, you can verify that the pinned environment is actually the one in use:
-
-```bash
-conda run -n dice-results python tools/check_notebook_environment.py \
-  --repo-root . \
-  --dataset-root "data generation/dataset/ITC_M2Pro_DATA"
-```
-
-If you prefer a smaller paper-oriented workflow, open the split notebooks in `itc_notebooks/` and follow the order listed in `itc_notebooks/README.md`.
-
-## GitHub Preflight
-
-The repository now includes `.github/workflows/notebook-environment-preflight.yml`.
-
-Use it when you want GitHub to set up the same pinned notebook environment before execution:
-
-- the workflow creates the `dice-results` conda environment from `environment.yml`
-- it verifies Python and every pinned package in `requirements.txt`
-- it checks that the released dataset layout exists
-- it uploads a JSON preflight report as an artifact
-- on manual `workflow_dispatch`, you can set `run_notebook=true` to execute `dice_results_analysis.ipynb` only after the preflight succeeds
-
-This gives you a repo-side guardrail so the notebook is not launched on GitHub under a drifted environment.
-
-## Verify Across Machines
-
-After the run finishes on each machine, compare:
-
-1. `results_portable/run_manifest.json`
-2. the dataset SHA256
-3. the `environment.yml` and `requirements.txt` SHA256 values
-4. these result tables:
-   `results_dice_full/overall_metrics.csv`
-   `results_dice_full/sequential_metrics.csv`
-   `results_dice_full/stressor_diagnosis_metrics.csv`
-
-If the manifest hashes and these core result tables match, you are rerunning the same released DICE workflow and dataset under the same declared software environment.
-
-## Update
-
-```bash
-cd DICE
-git fetch origin
-git pull --ff-only origin main
-conda env update -f environment.yml --prune
-conda run -n dice-results jupyter lab dice_results_analysis.ipynb
-```
-
-## Docs
-
-- [Portable setup](portable-setup.md)
-- [Notebook guide](notebook-guide.md)
-- [ITC notebook suite](itc_notebooks/README.md)
-- [ITC paper and appendix methodology](itc-paper-methodology.md)
-- [ASU server setup](asu-server-setup.md)
-- [`data generation`](data%20generation/README.md)
+- `scripts/` is kept as optional automation support for validation and headless execution.
+- `tools/` contains implementation helpers and pipeline code used by the notebook and automated runs.
+- `itc_notebooks/` keeps the split paper workflow for smaller staged runs, but the main public reproduction path remains `dice_results_analysis.ipynb`.
