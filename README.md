@@ -16,6 +16,8 @@ Open that notebook and run it from the first cell to the last cell. No repo bash
 - Linux server guide: [asu-server-setup.md](asu-server-setup.md)
 - ITC notebook suite: [itc_notebooks/README.md](itc_notebooks/README.md)
 - Paper-method notes: [itc-paper-methodology.md](itc-paper-methodology.md)
+- Optional uncertainty experiment: `tools/evaluate_dice_uncertainty.py`
+- Optional portable local LLM scorer: `tools/run_grounded_llm_local.py`
 
 ## Step-By-Step Setup On Any Machine
 
@@ -91,6 +93,41 @@ In Jupyter, choose `Kernel -> Restart Kernel and Run All Cells`.
 
 Wait for the notebook to finish from top to bottom without jumping between cells.
 
+## Optional Portable Add-Ons
+
+The notebook is still the main public path. These two scripts are the portable add-ons used for the new uncertainty-aware and scored-LLM results:
+
+```bash
+python tools/evaluate_dice_uncertainty.py --feature_profile mixed
+python tools/evaluate_dice_uncertainty.py --feature_profile full
+```
+
+For the grounded LLM scorer, install the lightweight local runtime once on Apple Silicon:
+
+```bash
+python -m pip install mlx-lm sentencepiece
+```
+
+Then run the same fixed scored baseline for both profiles:
+
+```bash
+python tools/run_grounded_llm_local.py \
+  --feature_profile mixed \
+  --model_id mlx-community/Qwen2.5-0.5B-Instruct-4bit \
+  --prompt_types reviewer_summary \
+  --seed 7 \
+  --max_tokens 120
+
+python tools/run_grounded_llm_local.py \
+  --feature_profile full \
+  --model_id mlx-community/Qwen2.5-0.5B-Instruct-4bit \
+  --prompt_types reviewer_summary \
+  --seed 7 \
+  --max_tokens 120
+```
+
+These commands write the paper-facing uncertainty summaries, scored LLM outputs, grounding summaries, and runtime metadata under the released dataset tree so the notebook can pick them up automatically.
+
 ## Across Different Machines
 
 To compare notebook runs across machines, keep these aligned:
@@ -101,6 +138,14 @@ To compare notebook runs across machines, keep these aligned:
 - the same strict launch block before starting Jupyter: `PYTHONHASHSEED=0`, `MPLCONFIGDIR`, and the single-thread variables above
 - CPU-only execution
 - single-threaded execution
+
+For the optional portable LLM scorer, also keep these aligned:
+
+- the same `model_id`
+- the same cached model revision recorded in `llm_runtime_*.json`
+- the same `seed`
+- the same `max_tokens`
+- the same prompt type (`reviewer_summary` in the released scored baseline)
 
 The first notebook cells print the resolved repository root, dataset root, profile selection, imports, and default result save locations used for that run.
 
@@ -132,9 +177,9 @@ The main notebook is meant to be executed in this order:
 1. Validate the released repository and dataset layout.
 2. Build the analysis/setup figures and released-data inventory.
 3. Run the mixed and full DICE evaluations, including tuning, global evaluation, and holdout robustness when enabled.
-4. Generate the detection, diagnosis, attribution, two-stage, and feature-budget summaries.
+4. Generate the detection, diagnosis, attribution, uncertainty-aware, two-stage, and feature-budget summaries.
 5. Export the paper and appendix bundles.
-6. Export the grounded LLM triage case cards, model catalog, prompt bundles, and any scored LLM outputs if they exist.
+6. Export the grounded LLM triage case cards, model catalog, prompt bundles, and any saved scored LLM outputs that match the released portable baseline.
 
 If you prefer the split paper-oriented workflow, use the notebook order in [itc_notebooks/README.md](itc_notebooks/README.md).
 
@@ -159,7 +204,9 @@ Key checkpoints:
 - `results_dice_full_full/stressor_feature_diagnosis_metrics.csv`
 - `results_itc_paper/comparison/digital_twin_variant_summary_profiles.csv`
 - `results_itc_paper/comparison/diagnosis_summary_profiles.csv`
+- `results_itc_paper/comparison/uncertainty_summary_profiles.csv`
 - `results_itc_paper/comparison/llm_grounded_triage_assets_profiles.csv`
+- `results_itc_paper/comparison/llm_runtime_profiles.csv`
 - `results_itc_paper/comparison/llm_grounding_summary_profiles.csv`
 - `results_itc_appendix/mixed/llm_case_cards.csv`
 - `results_itc_appendix/full/llm_case_cards.csv`
@@ -172,6 +219,7 @@ Key checkpoints:
 - The released dataset is bundled under `data generation/dataset/ITC_M2Pro_DATA`, so the public results path is self-contained once the repo is present.
 - The practical goal is reproducible regenerated results from the released dataset, not bit-identical floating-point outputs across every OS, CPU, or BLAS stack.
 - Portable reproduction applies to the released results workflow, not to raw Tier-1/Tier-2 telemetry collection on arbitrary non-macOS hosts.
+- The scored local LLM baseline is reproducible from the released case cards and prompt bundle, but the exact regenerated text depends on using the same model revision and runtime settings recorded in the emitted `llm_runtime_*.json` files.
 
 ## Optional Automated Path
 

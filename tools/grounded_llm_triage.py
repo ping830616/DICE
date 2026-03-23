@@ -30,7 +30,7 @@ MECHANISM_ALIAS_MAP = {
 
 def runtime_availability() -> dict[str, bool]:
     modules = {}
-    for mod in ["transformers", "torch", "vllm", "llama_cpp", "ollama"]:
+    for mod in ["transformers", "torch", "vllm", "llama_cpp", "ollama", "mlx_lm"]:
         if mod == "ollama":
             modules[mod] = False
             continue
@@ -78,6 +78,8 @@ def export_llm_case_cards(out_full: Path, appendix_full: Path) -> pd.DataFrame:
         "top_mechanism_score_3",
     ]
     cards = cards[[c for c in keep_cols if c in cards.columns]].copy()
+    supported_tier_threshold = 0.05
+    supported_mech_threshold = 0.10
 
     def _case_card_json(row: pd.Series) -> str:
         payload = {
@@ -111,28 +113,77 @@ def export_llm_case_cards(out_full: Path, appendix_full: Path) -> pd.DataFrame:
         }
         return json.dumps(payload, sort_keys=True)
 
+    def _grounded_evidence_text(row: pd.Series) -> str:
+        tier_shares = [
+            ("tier0", row.get("tier0_share", 0.0)),
+            ("tier1_alt", row.get("tier1_alt_share", 0.0)),
+            ("tier2", row.get("tier2_share", 0.0)),
+        ]
+        mechanism_shares = [
+            ("compute", row.get("compute_share", 0.0)),
+            ("memory_io", row.get("memory_io_share", 0.0)),
+            ("thermal_power", row.get("thermal_power_share", 0.0)),
+            ("scheduler_runtime", row.get("scheduler_runtime_share", 0.0)),
+            ("platform_pressure", row.get("platform_pressure_share", 0.0)),
+        ]
+        supported_tiers = [
+            f"{name} ({float(score):.3f})"
+            for name, score in tier_shares
+            if pd.notna(score) and float(score) >= supported_tier_threshold
+        ]
+        supported_mechanisms = [
+            f"{name} ({float(score):.3f})"
+            for name, score in mechanism_shares
+            if pd.notna(score) and float(score) >= supported_mech_threshold
+        ]
+        top_features = [
+            f"{row.get(f'top_feature_{i}')} ({float(row.get(f'top_feature_score_{i}', 0.0)):.3f})"
+            for i in range(1, 4)
+            if pd.notna(row.get(f"top_feature_{i}"))
+        ]
+        top_mechanisms = [
+            f"{row.get(f'top_mechanism_{i}')} ({float(row.get(f'top_mechanism_score_{i}', 0.0)):.3f})"
+            for i in range(1, 3)
+            if pd.notna(row.get(f"top_mechanism_{i}"))
+        ]
+        lines = [
+            f"case_id: {row.get('case_id')}",
+            f"workload: {row.get('workload')}",
+            f"stressor: {row.get('stressor')}",
+            f"dominant_tier: {row.get('dominant_tier')}",
+            f"dominant_mechanism: {row.get('dominant_mechanism')}",
+            "supported_tiers: " + (", ".join(supported_tiers) if supported_tiers else "none"),
+            "supported_mechanisms: " + (", ".join(supported_mechanisms) if supported_mechanisms else "none"),
+            "top_features: " + (", ".join(top_features) if top_features else "none"),
+            "top_mechanisms: " + (", ".join(top_mechanisms) if top_mechanisms else "none"),
+        ]
+        return "\n".join(lines)
+
     cards["diagnostic_case_card_json"] = cards.apply(_case_card_json, axis=1)
-    cards["reviewer_prompt"] = cards["diagnostic_case_card_json"].apply(
+    cards["grounded_evidence_text"] = cards.apply(_grounded_evidence_text, axis=1)
+    cards["reviewer_prompt"] = cards["grounded_evidence_text"].apply(
         lambda s: (
             "You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. "
-            "Use only the supplied case card. Do not invent missing evidence. "
-            "Explain the dominant tier, dominant mechanism, and the top residual cues in plain English.\n\n"
-            f"Case card JSON:\n{s}"
+            "Use only the supplied evidence block. Do not quote or restate full JSON. "
+            "Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. "
+            "Do not mention any tier, mechanism, or feature that is not explicitly listed.\n\n"
+            f"Grounded evidence:\n{s}"
         )
     )
-    cards["triage_prompt"] = cards["diagnostic_case_card_json"].apply(
+    cards["triage_prompt"] = cards["grounded_evidence_text"].apply(
         lambda s: (
-            "Use only the supplied DICE case card. Write a compact triage report with five fields: "
-            "severity, likely subsystem, evidence summary, two follow-up measurements, and confidence. "
-            "If the evidence is weak, say so directly.\n\n"
-            f"Case card JSON:\n{s}"
+            "Use only the supplied DICE evidence block. Write exactly five lines with these labels: "
+            "severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. "
+            "Do not mention any tier, mechanism, or feature that is not explicitly listed.\n\n"
+            f"Grounded evidence:\n{s}"
         )
     )
-    cards["followup_prompt"] = cards["diagnostic_case_card_json"].apply(
+    cards["followup_prompt"] = cards["grounded_evidence_text"].apply(
         lambda s: (
-            "Use only the supplied DICE case card. Recommend up to three next diagnostic steps. "
-            "Each step must cite the specific feature or mechanism that motivated it.\n\n"
-            f"Case card JSON:\n{s}"
+            "Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. "
+            "Each step must cite the specific listed feature or mechanism that motivated it. "
+            "Do not mention any unsupported signals.\n\n"
+            f"Grounded evidence:\n{s}"
         )
     )
     cards.to_csv(appendix_full / "llm_case_cards.csv", index=False)
@@ -144,9 +195,19 @@ def export_llm_diagnostic_model_catalog(appendix_full: Path) -> pd.DataFrame:
     models = pd.DataFrame(
         [
             {
+                "model_id": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+                "deployment_role": "portable local scored baseline",
+                "priority_rank": 1,
+                "params_billions": 0.49,
+                "context_tokens": 32768,
+                "strengths": "Small, reproducible, and practical for notebook-driven local scoring on Apple Silicon.",
+                "best_for_dice": "Portable grounded reviewer summaries that can be rerun across machines with a lightweight local setup.",
+                "source_url": "https://huggingface.co/mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+            },
+            {
                 "model_id": "Qwen/Qwen2.5-7B-Instruct",
                 "deployment_role": "primary DICE baseline",
-                "priority_rank": 1,
+                "priority_rank": 2,
                 "params_billions": 7.61,
                 "context_tokens": 131072,
                 "strengths": "Strong instruction following, structured output behavior, and long-context support.",
@@ -156,7 +217,7 @@ def export_llm_diagnostic_model_catalog(appendix_full: Path) -> pd.DataFrame:
             {
                 "model_id": "microsoft/Phi-4-mini-instruct",
                 "deployment_role": "lightweight comparison",
-                "priority_rank": 2,
+                "priority_rank": 3,
                 "params_billions": 3.8,
                 "context_tokens": 128000,
                 "strengths": "Small footprint, strong reasoning density, and good fit for constrained local diagnostics.",
@@ -166,7 +227,7 @@ def export_llm_diagnostic_model_catalog(appendix_full: Path) -> pd.DataFrame:
             {
                 "model_id": "meta-llama/Meta-Llama-3.1-8B-Instruct",
                 "deployment_role": "ecosystem baseline",
-                "priority_rank": 3,
+                "priority_rank": 4,
                 "params_billions": 8.0,
                 "context_tokens": 128000,
                 "strengths": "Broad tooling support, stable chat behavior, and strong general-purpose instruction tuning.",
@@ -176,7 +237,7 @@ def export_llm_diagnostic_model_catalog(appendix_full: Path) -> pd.DataFrame:
             {
                 "model_id": "Qwen/Qwen2.5-14B-Instruct",
                 "deployment_role": "stronger offline review",
-                "priority_rank": 4,
+                "priority_rank": 5,
                 "params_billions": 14.7,
                 "context_tokens": 131072,
                 "strengths": "Higher-capacity structured reasoning while remaining practical for offline workstation use.",

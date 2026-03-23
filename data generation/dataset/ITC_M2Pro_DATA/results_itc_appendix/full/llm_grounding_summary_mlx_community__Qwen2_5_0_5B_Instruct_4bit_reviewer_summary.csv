@@ -1,0 +1,2 @@
+model_id,prompt_type,n_outputs,grounded_core_rate,dominant_tier_rate,dominant_mechanism_rate,top_feature_1_rate,top_mechanism_1_rate,mean_cue_coverage,hallucination_rate
+mlx-community/Qwen2.5-0.5B-Instruct-4bit,reviewer_summary,20,1.0,1.0,1.0,0.0,1.0,0.75,0.0

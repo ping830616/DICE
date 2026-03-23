@@ -1,3 +1,3 @@
-feature_profile,profile_label,n_case_cards,n_model_profiles,n_prompt_rows,prompt_types,llm_output_csvs_found,runtime_transformers,runtime_torch,runtime_vllm,runtime_llama_cpp,appendix_dir
-mixed,Mixed,20,4,240,"followup, reviewer_summary, triage",0,0,0,0,0,/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/mixed
-full,Full,20,4,240,"followup, reviewer_summary, triage",0,0,0,0,0,/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/full
+feature_profile,profile_label,n_case_cards,n_model_profiles,n_prompt_rows,prompt_types,llm_output_csvs_found,runtime_mlx_lm,appendix_dir
+mixed,Mixed,20,5,300,"followup, reviewer_summary, triage",1,1,/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/mixed
+full,Full,20,5,300,"followup, reviewer_summary, triage",1,1,/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/full

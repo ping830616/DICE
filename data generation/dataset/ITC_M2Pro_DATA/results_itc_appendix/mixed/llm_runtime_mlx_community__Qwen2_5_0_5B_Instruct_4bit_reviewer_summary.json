@@ -1,0 +1,52 @@
+{
+  "feature_profile": "mixed",
+  "global_dir": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full",
+  "appendix_dir": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/mixed",
+  "model_id": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+  "revision": "",
+  "resolved_cached_revision": "a5339a4131f135d0fdc6a5c8b5bbed2753bbe0f3",
+  "prompt_types": [
+    "reviewer_summary"
+  ],
+  "max_tokens": 120,
+  "seed": 7,
+  "n_outputs": 20,
+  "mlx_lm_version": "0.31.1",
+  "prompt_bundle_sha256": "1d841890ae7ac410ad6e5d0b8d6f64c21531606b6ce5a35173d57dc8cb6d98d3",
+  "case_cards_sha256": "84e2b80cc9567c23cbbad13afee6fe80aab9844e43d4f963987019ba090a283b",
+  "python_version": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+  "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+  "sampler": "greedy(temp=0.0)",
+  "model_config": {
+    "architectures": [
+      "Qwen2ForCausalLM"
+    ],
+    "attention_dropout": 0.0,
+    "bos_token_id": 151643,
+    "eos_token_id": 151645,
+    "hidden_act": "silu",
+    "hidden_size": 896,
+    "initializer_range": 0.02,
+    "intermediate_size": 4864,
+    "max_position_embeddings": 32768,
+    "max_window_layers": 21,
+    "model_type": "qwen2",
+    "num_attention_heads": 14,
+    "num_hidden_layers": 24,
+    "num_key_value_heads": 2,
+    "quantization": {
+      "group_size": 64,
+      "bits": 4
+    },
+    "rms_norm_eps": 1e-06,
+    "rope_theta": 1000000.0,
+    "sliding_window": 32768,
+    "tie_word_embeddings": true,
+    "torch_dtype": "bfloat16",
+    "transformers_version": "4.43.1",
+    "use_cache": true,
+    "use_sliding_window": false,
+    "vocab_size": 151936
+  },
+  "elapsed_s": 18.757
+}
