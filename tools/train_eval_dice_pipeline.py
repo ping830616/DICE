@@ -104,6 +104,10 @@ DIAG_GENERIC_MEMORY_STATE_TOKENS = (
     "swap_used_bytes",
 )
 DIAG_GENERIC_MEMORY_STATE_FACTOR = 0.35
+PHASE_GUARD_WORKLOADS = {"VIDEO_SW"}
+PHASE_GUARD_SMOOTH_WINDOW = 31
+PHASE_GUARD_TOL_QUANTILE = 0.995
+PHASE_GUARD_TOL_FLOOR_FRAC = 0.05
 MECHANISM_GROUPS = [
     "compute",
     "memory_io",
@@ -164,6 +168,9 @@ class ModelBundle:
     diagnosis_weights: np.ndarray
     cal_scores: np.ndarray
     tau: float
+    phase_guard_templates: Dict[str, np.ndarray]
+    phase_guard_tolerances: Dict[str, np.ndarray]
+    phase_guard_cal_scores: np.ndarray
 
 
 def all_cases() -> List[CaseRef]:
@@ -368,6 +375,44 @@ def signature_scores(signatures: np.ndarray, weights: np.ndarray) -> np.ndarray:
     return signatures @ weights
 
 
+def smooth_1d(x: np.ndarray, window: int) -> np.ndarray:
+    arr = np.asarray(x, dtype=float)
+    if arr.size == 0:
+        return arr.copy()
+    width = max(1, int(window))
+    if width <= 1 or arr.size <= 2:
+        return arr.copy()
+    if width % 2 == 0:
+        width += 1
+    width = min(width, arr.size if arr.size % 2 == 1 else max(1, arr.size - 1))
+    if width <= 1:
+        return arr.copy()
+    pad = width // 2
+    padded = np.pad(arr, pad_width=pad, mode="edge")
+    kernel = np.ones(width, dtype=float) / float(width)
+    return np.convolve(padded, kernel, mode="valid")
+
+
+def align_1d_reference(x: np.ndarray, target_len: int) -> np.ndarray:
+    arr = np.asarray(x, dtype=float)
+    target = max(0, int(target_len))
+    if target == 0:
+        return np.zeros((0,), dtype=float)
+    if arr.size == 0:
+        return np.zeros((target,), dtype=float)
+    if arr.size == target:
+        return arr.astype(float, copy=True)
+    if arr.size == 1:
+        return np.full((target,), float(arr[0]), dtype=float)
+    src = np.linspace(0.0, 1.0, num=arr.size)
+    dst = np.linspace(0.0, 1.0, num=target)
+    return np.interp(dst, src, arr).astype(float, copy=False)
+
+
+def case_workload(case_id: str) -> str:
+    return str(case_id).split("__", 1)[0]
+
+
 def conformal_threshold(cal_scores: np.ndarray, alpha: float) -> float:
     sc = np.sort(np.asarray(cal_scores, dtype=float))
     n = len(sc)
@@ -426,6 +471,68 @@ def diagnosis_feature_weights(feature_names: Sequence[str]) -> np.ndarray:
         if any(tok in base for tok in DIAG_GENERIC_MEMORY_STATE_TOKENS):
             weights[idx] *= DIAG_GENERIC_MEMORY_STATE_FACTOR
     return weights
+
+
+def build_phase_guard_templates(
+    benign_score_runs: Dict[str, np.ndarray],
+) -> Tuple[Dict[str, np.ndarray], Dict[str, np.ndarray], np.ndarray]:
+    templates: Dict[str, np.ndarray] = {}
+    tolerances: Dict[str, np.ndarray] = {}
+    adjusted_cal: List[np.ndarray] = []
+
+    if not benign_score_runs:
+        return templates, tolerances, np.zeros((0,), dtype=float)
+
+    global_scores = np.concatenate([np.asarray(v, dtype=float) for v in benign_score_runs.values() if len(v)])
+    global_floor = safe_quantile(
+        np.abs(global_scores),
+        PHASE_GUARD_TOL_FLOOR_FRAC,
+        default=0.0,
+    )
+
+    for case_id, sc in benign_score_runs.items():
+        workload = case_workload(case_id)
+        if workload not in PHASE_GUARD_WORKLOADS:
+            continue
+        arr = np.asarray(sc, dtype=float)
+        if arr.size == 0:
+            continue
+        template = smooth_1d(arr, PHASE_GUARD_SMOOTH_WINDOW)
+        deviation = np.abs(arr - template)
+        tol_scalar = max(
+            safe_quantile(deviation, PHASE_GUARD_TOL_QUANTILE, default=0.0),
+            float(global_floor),
+            1e-12,
+        )
+        tol_vec = np.full(arr.shape, tol_scalar, dtype=float)
+        templates[workload] = template
+        tolerances[workload] = tol_vec
+        adjusted_cal.append(np.clip(arr - template - tol_vec, 0.0, None))
+
+    cal_scores = np.concatenate(adjusted_cal) if adjusted_cal else np.zeros((0,), dtype=float)
+    return templates, tolerances, cal_scores
+
+
+def phase_guard_excess_scores(
+    scores: np.ndarray,
+    workload: str | None,
+    bundle: ModelBundle,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, bool]:
+    sc = np.asarray(scores, dtype=float)
+    if (
+        workload is None
+        or workload not in PHASE_GUARD_WORKLOADS
+        or workload not in bundle.phase_guard_templates
+        or workload not in bundle.phase_guard_tolerances
+        or sc.size == 0
+    ):
+        zeros = np.zeros(sc.shape, dtype=float)
+        return zeros, zeros, zeros, False
+
+    template = align_1d_reference(bundle.phase_guard_templates[workload], len(sc))
+    tolerance = align_1d_reference(bundle.phase_guard_tolerances[workload], len(sc))
+    excess = np.clip(sc - template - tolerance, 0.0, None)
+    return excess, template, tolerance, True
 
 
 def post_alert_window_indices(
@@ -814,6 +921,7 @@ def train_bundle(
     w = fit_weights(sig_fit_all)
 
     cal_scores = []
+    benign_score_runs: Dict[str, np.ndarray] = {}
     for X in cal_norm:
         r = residual_timeseries(X, A, gain=gain)
         s = block_signatures(r, B=B)
@@ -822,6 +930,14 @@ def train_bundle(
             cal_scores.append(sc)
     cal_scores_all = np.concatenate(cal_scores)
     tau = conformal_threshold(cal_scores_all, alpha=alpha)
+
+    for case_id, X in train_benign_runs.items():
+        X_norm = (X - med) / (scale + 1e-12)
+        r = residual_timeseries(X_norm, A, gain=gain)
+        s = block_signatures(r, B=B)
+        benign_score_runs[str(case_id)] = signature_scores(s, w)
+
+    phase_templates, phase_tolerances, phase_cal_scores = build_phase_guard_templates(benign_score_runs)
 
     return ModelBundle(
         feature_names=feature_names,
@@ -832,6 +948,9 @@ def train_bundle(
         diagnosis_weights=diagnosis_feature_weights(feature_names),
         cal_scores=cal_scores_all,
         tau=tau,
+        phase_guard_templates=phase_templates,
+        phase_guard_tolerances=phase_tolerances,
+        phase_guard_cal_scores=phase_cal_scores,
     )
 
 
@@ -842,14 +961,20 @@ def evaluate_run(
     alpha: float,
     persist_k: int,
     gain: float,
+    workload: str | None = None,
 ) -> Tuple[Dict[str, float], np.ndarray, List[Dict[str, object]], Dict[str, object]]:
     Xn = (X_run - bundle.median) / (bundle.scale + 1e-12)
     r = residual_timeseries(Xn, bundle.A, gain=gain)
     sig = block_signatures(r, B=B)
     sc = signature_scores(sig, bundle.weights)
     pv = conformal_pvals(bundle.cal_scores, sc)
-
-    block_alert = pv < alpha
+    phase_excess, phase_template, phase_tolerance, phase_guard_applied = phase_guard_excess_scores(sc, workload, bundle)
+    if phase_guard_applied and len(bundle.phase_guard_cal_scores):
+        phase_pv = conformal_pvals(bundle.phase_guard_cal_scores, phase_excess)
+        block_alert = (pv < alpha) & (phase_pv < alpha)
+    else:
+        phase_pv = np.ones(len(sc), dtype=float)
+        block_alert = pv < alpha
     persist = persistent_alerts(block_alert, k=persist_k)
 
     run_alert = int(np.any(persist > 0))
@@ -901,6 +1026,11 @@ def evaluate_run(
                 "block_end_s": float(B + i),
                 "score": float(sc[i]),
                 "pvalue": float(pv[i]),
+                "phase_guard_applied": int(phase_guard_applied),
+                "phase_template_score": float(phase_template[i]) if len(phase_template) else 0.0,
+                "phase_tolerance": float(phase_tolerance[i]) if len(phase_tolerance) else 0.0,
+                "phase_excess_score": float(phase_excess[i]) if len(phase_excess) else 0.0,
+                "phase_pvalue": float(phase_pv[i]) if len(phase_pv) else 1.0,
                 "block_alert": int(block_alert[i]),
                 "persist_alert": int(persist[i]),
                 "is_selected_for_diagnosis": int(i in selected_lookup),
@@ -928,7 +1058,10 @@ def evaluate_run(
             "run_score": run_score,
             "run_alert": run_alert,
             "min_pvalue": float(np.min(pv)) if len(pv) else 1.0,
+            "min_phase_pvalue": float(np.min(phase_pv)) if len(phase_pv) else 1.0,
             "peak_block_score": peak_score,
+            "peak_phase_excess_score": float(np.max(phase_excess)) if len(phase_excess) else 0.0,
+            "phase_guard_applied": int(phase_guard_applied),
             "n_blocks": n_blocks,
             "n_block_alerts": int(np.sum(block_alert)),
             "n_persist_alerts": int(np.sum(persist)),
@@ -1234,6 +1367,7 @@ def append_case_outputs(
         alpha=alpha,
         persist_k=persist_k,
         gain=gain,
+        workload=case.workload,
     )
     preds.append(
         {
@@ -2305,6 +2439,10 @@ def main() -> None:
                 "diagnosis_generic_memory_state_tokens": list(DIAG_GENERIC_MEMORY_STATE_TOKENS),
                 "diagnosis_generic_memory_state_factor": DIAG_GENERIC_MEMORY_STATE_FACTOR,
                 "diagnosis_window_blocks": DIAG_POST_ALERT_BLOCKS,
+                "phase_guard_workloads": sorted(PHASE_GUARD_WORKLOADS),
+                "phase_guard_smooth_window": PHASE_GUARD_SMOOTH_WINDOW,
+                "phase_guard_tolerance_quantile": PHASE_GUARD_TOL_QUANTILE,
+                "phase_guard_tolerance_floor_frac": PHASE_GUARD_TOL_FLOOR_FRAC,
             },
             indent=2,
         )
