@@ -444,14 +444,14 @@ def plot_af_timeseries(out_dir: Path, tier_data: Iterable[TierData]) -> List[str
         fig.legend(
             dedup.values(),
             dedup.keys(),
-            loc="upper center",
+            loc="lower center",
             ncol=4,
             frameon=True,
             fontsize=12,
-            bbox_to_anchor=(0.5, 1.02),
+            bbox_to_anchor=(0.5, -0.01),
         )
-        fig.suptitle(f"All-feature AF-index trajectories | {TIER_PRETTY[td.tier]}", fontsize=20, y=1.04)
-        fig.tight_layout(rect=[0, 0, 1, 0.98])
+        fig.suptitle(f"All-feature AF-index trajectories | {TIER_PRETTY[td.tier]}", fontsize=20, y=0.995)
+        fig.tight_layout(rect=[0, 0.10, 1, 0.95])
 
         out = out_dir / f"fig_af_timeseries_{td.tier}.png"
         fig.savefig(out, dpi=240, bbox_inches="tight")
