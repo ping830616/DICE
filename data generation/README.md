@@ -9,6 +9,13 @@ DICE provides an end-to-end pipeline to generate case-aligned telemetry data for
 
 This public GitHub release is focused on the released dataset plus portable notebook-based results reproduction. The low-level Tier-1/Tier-2 shell collectors are not shipped in this repo.
 
+In practice, that means:
+
+- `Tier-0`: public collection path is included
+- `Tier-1-alt` (`macmon`): public collection path is included
+- legacy `Tier-1` (`powermetrics` shell helper): documented, but not fully collectable from GitHub alone
+- `Tier-2` (`xctrace` shell helper): documented, but not fully collectable from GitHub alone
+
 ## Start Here
 
 1. Read the dataset narrative and assumptions: [docs/data-description.md](docs/data-description.md)
@@ -61,6 +68,137 @@ pip install -r requirements.txt
 For reproducible notebook-first regeneration of the released results dataset, use the root-level notebook and setup files in this repository.
 
 The raw Tier-1/Tier-2 collection helpers used for local macOS capture are intentionally not published in this GitHub release.
+
+At the default `duration_s=1000` and `24` cases, the nominal collection window is:
+
+- `Tier-0`: about `6 h 40 m` total, plus about `10 s` once for the initial schema probe
+- `Tier-1-alt`: about `6 h 40 m` total, plus parsing overhead
+- legacy `Tier-1`: about `6 h 40 m` total, plus parsing and `sudo` startup overhead
+- `Tier-2`: about `6 h 40 m` total, plus trace-export overhead
+
+`generate_dataset.py` now prints per-case elapsed time, tier elapsed time, and estimated remaining time while a collection run is in progress.
+
+## MacBook Pro Collection Instructions
+
+If you want to collect fresh DICE telemetry on your own MacBook Pro, use this as the practical public-GitHub path.
+
+### 1. Open a terminal in the data-generation folder
+
+```bash
+cd /absolute/path/to/DICE/data\ generation
+```
+
+### 2. Create and activate the data-generation environment
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Optional for the `PY_AI` workload behavior:
+
+```bash
+pip install torch
+```
+
+### 3. Install the recommended Tier-1 collector
+
+The recommended Apple Silicon Tier-1 source is `macmon`.
+
+Check that it is available:
+
+```bash
+macmon --help
+```
+
+If that command is not found, install `macmon` first and make sure it is on your shell `PATH`.
+
+### 4. Choose an output folder for your collected dataset
+
+Example:
+
+```bash
+OUT="$PWD/dataset/MY_MBP_DICE_DATA"
+mkdir -p "$OUT"
+```
+
+### 5. Collect Tier-0
+
+```bash
+python generate_dataset.py --phase tier0 --duration_s 1000 --out_dir "$OUT"
+```
+
+This is the host-visible telemetry layer and is fully collectable from the public repo.
+
+### 6. Collect the recommended Tier-1-alt on Apple Silicon
+
+```bash
+python generate_dataset.py --phase tier1_alt --duration_s 1000 --out_dir "$OUT" --tier1_alt_bin macmon
+```
+
+This is the recommended Apple Silicon power/usage/thermal proxy tier and is fully collectable from the public repo.
+
+### 7. Tier-2 status
+
+Tier-2 is documented, and the parser is included, but the low-level raw collection helper used to record/export `xctrace` traces is not shipped in the public GitHub release.
+
+So:
+
+- if you only have the public GitHub repo, stop after `tier0` and `tier1_alt`
+- if you also have your private/local Tier-2 collector helper restored, then you can run:
+
+```bash
+xcrun xctrace version
+xcrun xctrace list templates | rg "Time Profiler"
+python generate_dataset.py --phase tier2 --duration_s 1000 --out_dir "$OUT" --tier2_template "Time Profiler"
+```
+
+### 8. Validate what you collected
+
+For the recommended MacBook Pro profile:
+
+```bash
+python tools/repair_itc_dataset.py --root "$OUT" --tier1_mode alt
+python tools/validate_itc_dataset.py --root "$OUT" --tier1_mode alt --check_tier2
+```
+
+If you did not collect Tier-2, validate without `--check_tier2`:
+
+```bash
+python tools/validate_itc_dataset.py --root "$OUT" --tier1_mode alt
+```
+
+### 9. Understand the time you will spend
+
+At the default `duration_s=1000` and `24` cases:
+
+- `Tier-0`: about `6 h 40 m`
+- `Tier-1-alt`: about `6 h 40 m`
+- `Tier-2`: about `6 h 40 m` plus trace export overhead
+
+The collector now prints:
+
+- which case is running
+- how long that case took
+- how much time the whole tier has taken so far
+- the estimated remaining time
+
+### 10. Important command note
+
+Do not use `--phase all` if your goal is the current recommended Apple Silicon dataset profile.
+
+In the current code:
+
+- `--phase all` = `tier0 + legacy tier1 + tier2`
+- it does **not** include the recommended `tier1_alt`
+
+For your MacBook Pro, the practical public-repo sequence is:
+
+```bash
+python generate_dataset.py --phase tier0 --duration_s 1000 --out_dir "$OUT"
+python generate_dataset.py --phase tier1_alt --duration_s 1000 --out_dir "$OUT" --tier1_alt_bin macmon
+```
 
 ## Validate and Inspect Existing Data
 

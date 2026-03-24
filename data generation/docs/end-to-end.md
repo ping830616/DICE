@@ -49,6 +49,14 @@ Legacy baseline (optional):
 python generate_dataset.py --phase both --duration_s 1000 --out_dir ./data
 ```
 
+Expected wall-clock time at the default `duration_s=1000` and `24` cases:
+
+- `Tier-0`: about `6 h 40 m` total, plus about `10 s` once for the initial global schema probe
+- `Tier-1-alt`: about `6 h 40 m` total, plus parsing overhead; if `macmon` fails and a case falls back to `powermetrics`, that case can take roughly twice as long
+- `Legacy both` (`tier0 + tier1`): about `13 h 20 m` plus parsing and startup overhead
+
+The collector now prints per-case elapsed time, total tier elapsed time, and an estimated remaining time while the run is in progress.
+
 ## 4. Run Tier-2 (Optional)
 
 Tier-2 requires Xcode tooling and an accepted license.
@@ -66,11 +74,26 @@ Run Tier-2:
 python generate_dataset.py --phase tier2 --duration_s 1000 --out_dir ./data --tier2_template "Time Profiler"
 ```
 
+Expected wall-clock time at the default `duration_s=1000` and `24` cases:
+
+- `Tier-2`: about `6 h 40 m` total, plus trace-export overhead after each case
+
+Important public-release note:
+
+- the Tier-2 Python parser is included, but the low-level shell collector helper used to record and export traces is not shipped in the public GitHub release
+- on a local private setup where that helper exists, the command above is the intended entry point
+
 ## 5. Full Collection in One Command
 
 ```bash
 python generate_dataset.py --phase all --duration_s 1000 --out_dir ./data --tier2_template "Time Profiler"
 ```
+
+Important:
+
+- in the current public code, `--phase all` means `tier0 + legacy tier1 + tier2`
+- it does **not** include the recommended Apple Silicon `tier1_alt` path
+- if you want the current paper-facing Apple dataset profile, run `tier0`, then `tier1_alt`, then `tier2` explicitly
 
 ## 6. Validate Outputs
 

@@ -2,11 +2,12 @@
 import argparse
 import sys
 from pathlib import Path
+from time import perf_counter
 
 REPO_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
-from dice.cfg import all_cases
+from dice.cfg import all_cases, case_id
 from dice.run_itc_two_phase import (
     run_case_tier0,
     run_case_tier1,
@@ -18,6 +19,65 @@ from dice.run_itc_two_phase import (
 
 def mkdirp(p: Path):
     p.mkdir(parents=True, exist_ok=True)
+
+
+def format_seconds(seconds: float) -> str:
+    total = int(round(max(seconds, 0.0)))
+    hours, rem = divmod(total, 3600)
+    minutes, secs = divmod(rem, 60)
+    if hours:
+        return f"{hours:d}h {minutes:02d}m {secs:02d}s"
+    if minutes:
+        return f"{minutes:d}m {secs:02d}s"
+    return f"{secs:d}s"
+
+
+def print_tier_timing_note(phase: str, duration_s: int, n_cases: int) -> None:
+    expected = duration_s * n_cases
+    note = f"[DICE] {phase}: nominal collection window is about {format_seconds(expected)} for {n_cases} cases"
+    if phase == "tier0":
+        note += " (+ about 10s once for the Tier-0 schema probe if the schema does not already exist)"
+    elif phase == "tier1_alt":
+        note += " (+ parsing overhead; fallback to powermetrics can make a failed case take roughly twice as long)"
+    elif phase == "tier1":
+        note += " (+ parsing overhead and any sudo/powermetrics startup time)"
+    elif phase == "tier2":
+        note += " (+ trace export overhead after each capture)"
+    print(note)
+
+
+def run_phase(phase: str, cases, runner, duration_s: int) -> None:
+    tier_start = perf_counter()
+    total = len(cases)
+    print(f"[DICE] Generating {phase} for {total} cases...")
+    print_tier_timing_note(phase, duration_s, total)
+
+    for idx, c in enumerate(cases, start=1):
+        cid = case_id(c.workload, c.stressor)
+        case_start = perf_counter()
+        print(f"[DICE] [{phase}] {idx}/{total} starting {cid}")
+        try:
+            runner(c)
+        except Exception:
+            case_elapsed = perf_counter() - case_start
+            tier_elapsed = perf_counter() - tier_start
+            print(
+                f"[DICE] [{phase}] {idx}/{total} failed {cid} after {format_seconds(case_elapsed)} "
+                f"(tier elapsed {format_seconds(tier_elapsed)})"
+            )
+            raise
+
+        case_elapsed = perf_counter() - case_start
+        tier_elapsed = perf_counter() - tier_start
+        avg_case = tier_elapsed / idx
+        remaining = avg_case * (total - idx)
+        print(
+            f"[DICE] [{phase}] {idx}/{total} finished {cid} in {format_seconds(case_elapsed)} | "
+            f"tier elapsed {format_seconds(tier_elapsed)} | est. remaining {format_seconds(remaining)}"
+        )
+
+    tier_elapsed = perf_counter() - tier_start
+    print(f"[DICE] {phase} complete in {format_seconds(tier_elapsed)}")
 
 
 def main():
@@ -42,32 +102,39 @@ def main():
     cases = all_cases()
 
     if args.phase in ("tier0", "both", "all"):
-        print(f"[DICE] Generating Tier-0 for {len(cases)} cases...")
-        for c in cases:
-            run_case_tier0(
+        run_phase(
+            "tier0",
+            cases,
+            lambda c: run_case_tier0(
                 c.workload,
                 c.stressor,
                 c.label,
                 args.duration_s,
                 out_root=out_root,
-            )
+            ),
+            args.duration_s,
+        )
 
     if args.phase in ("tier1", "both", "all"):
-        print(f"[DICE] Generating Tier-1 for {len(cases)} cases...")
-        for c in cases:
-            run_case_tier1(
+        run_phase(
+            "tier1",
+            cases,
+            lambda c: run_case_tier1(
                 c.workload,
                 c.stressor,
                 c.label,
                 args.duration_s,
                 out_root=out_root,
                 scripts_dir=scripts_dir,
-            )
+            ),
+            args.duration_s,
+        )
 
     if args.phase == "tier1_alt":
-        print(f"[DICE] Generating Tier-1-alt (macmon) for {len(cases)} cases...")
-        for c in cases:
-            run_case_tier1_alt(
+        run_phase(
+            "tier1_alt",
+            cases,
+            lambda c: run_case_tier1_alt(
                 c.workload,
                 c.stressor,
                 c.label,
@@ -75,13 +142,16 @@ def main():
                 out_root=out_root,
                 scripts_dir=scripts_dir,
                 macmon_bin=args.tier1_alt_bin,
-            )
+            ),
+            args.duration_s,
+        )
 
     if args.phase in ("tier2", "all"):
         ensure_xctrace_ready()
-        print(f"[DICE] Generating Tier-2 for {len(cases)} cases...")
-        for c in cases:
-            run_case_tier2(
+        run_phase(
+            "tier2",
+            cases,
+            lambda c: run_case_tier2(
                 c.workload,
                 c.stressor,
                 c.label,
@@ -89,7 +159,9 @@ def main():
                 out_root=out_root,
                 scripts_dir=scripts_dir,
                 template=args.tier2_template,
-            )
+            ),
+            args.duration_s,
+        )
 
     print(f"[DICE] Done. Output root: {out_root}")
 
