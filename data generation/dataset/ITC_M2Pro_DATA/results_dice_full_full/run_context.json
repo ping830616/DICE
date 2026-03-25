@@ -1,0 +1,45 @@
+{
+  "feature_profile": "full",
+  "tier_files": {
+    "tier0": "tier0_full_5hz.csv",
+    "tier1_alt": "tier1_alt_full_5hz.csv",
+    "tier2": "tier2_full_5hz.csv"
+  },
+  "protocol": "global",
+  "source_hz": 5,
+  "fit_ratio": 0.6,
+  "block_B": 60,
+  "alpha": 0.02,
+  "persist_k": 1,
+  "gain": 0.35,
+  "ridge_lambda": 0.001,
+  "config_runtime_seconds": {
+    "tier0": 2.496628916996997,
+    "tier0_tier1": 3.099015457992209,
+    "tier0_tier1_tier2": 3.8660292499989737
+  },
+  "diagnosis_monotonic_tokens": [
+    "uptime",
+    "syscall",
+    "ctx_switch",
+    "soft_interrupt",
+    "hard_interrupt"
+  ],
+  "diagnosis_generic_memory_state_tokens": [
+    "mem_free_bytes",
+    "mem_inactive_bytes",
+    "mem_available_bytes",
+    "mem_percent",
+    "swap_percent",
+    "swap_free_bytes",
+    "swap_used_bytes"
+  ],
+  "diagnosis_generic_memory_state_factor": 0.35,
+  "diagnosis_window_blocks": 5,
+  "phase_guard_workloads": [
+    "VIDEO_SW"
+  ],
+  "phase_guard_smooth_window": 31,
+  "phase_guard_tolerance_quantile": 0.995,
+  "phase_guard_tolerance_floor_frac": 0.05
+}

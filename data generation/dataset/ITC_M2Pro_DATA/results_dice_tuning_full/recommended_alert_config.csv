@@ -1,0 +1,2 @@
+gain,block_B,alpha,persist_k,pr_auc_wc,roc_auc_wc,anomaly_detect_rate,benign_run_alert_rate,benign_run_keep_rate,median_time_to_detect_s,diag_source,diag_top1_acc,diag_top2_acc,diag_macro_f1,alert_utility,feature_profile,selection_mode
+0.35,60,0.02,1,1.0000000000000002,1.0,0.95,0.25,0.75,60.0,feature-level,0.3,0.5,0.2371428571428571,0.88,full,balanced

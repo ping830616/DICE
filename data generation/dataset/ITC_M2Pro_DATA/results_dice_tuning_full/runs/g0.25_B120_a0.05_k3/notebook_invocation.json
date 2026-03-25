@@ -1,0 +1,12 @@
+{
+  "feature_profile": "full",
+  "protocol": "global",
+  "elapsed_s": 42.886788583011366,
+  "source_hz": 5,
+  "fit_ratio": 0.6,
+  "block_B": 120,
+  "alpha": 0.05,
+  "persist_k": 3,
+  "gain": 0.25,
+  "ridge_lambda": 0.001
+}

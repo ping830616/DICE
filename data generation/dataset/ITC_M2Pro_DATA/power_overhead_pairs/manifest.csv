@@ -1,0 +1,9 @@
+workload,mode,csv_path,power_col,sample_hz
+BROWSER,baseline,BROWSER/baseline/tier1_alt_full_5hz.csv,sys_power,5
+BROWSER,dice_on,BROWSER/dice_on/tier1_alt_full_5hz.csv,sys_power,5
+VIDEO_SW,baseline,VIDEO_SW/baseline/tier1_alt_full_5hz.csv,sys_power,5
+VIDEO_SW,dice_on,VIDEO_SW/dice_on/tier1_alt_full_5hz.csv,sys_power,5
+PY_AI,baseline,PY_AI/baseline/tier1_alt_full_5hz.csv,sys_power,5
+PY_AI,dice_on,PY_AI/dice_on/tier1_alt_full_5hz.csv,sys_power,5
+PY_STATS,baseline,PY_STATS/baseline/tier1_alt_full_5hz.csv,sys_power,5
+PY_STATS,dice_on,PY_STATS/dice_on/tier1_alt_full_5hz.csv,sys_power,5

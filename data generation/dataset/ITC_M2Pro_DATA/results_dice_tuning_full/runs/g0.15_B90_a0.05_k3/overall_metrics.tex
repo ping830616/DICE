@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\caption{DICE micro-twin + split-conformal run-level results under benign retraining.}
+\label{tab:dice_full_overall}
+\footnotesize
+\begin{tabular}{lrrrrrrr}
+\toprule
+Configuration & Features & ROC-AUC (Base) & AUC-PR (Base) & ROC-AUC (WC) & AUC-PR (WC) & Run-FPR & Run-TPR \\
+\midrule
+tier0 & 46 & 0.7875 & 0.9219 & 1.0000 & 1.0000 & 0.2500 & 0.3000 \\
+tier0_tier1 & 64 & 0.8000 & 0.9432 & 1.0000 & 1.0000 & 0.2500 & 0.5000 \\
+tier0_tier1_tier2 & 75 & 0.9625 & 0.9925 & 1.0000 & 1.0000 & 0.2500 & 0.9500 \\
+\bottomrule
+\end{tabular}
+
+\end{table}

@@ -1,0 +1,2 @@
+gain,block_B,alpha,persist_k,pr_auc_wc,roc_auc_wc,anomaly_detect_rate,benign_run_alert_rate,benign_run_keep_rate,median_time_to_detect_s
+0.35,60,0.01,1,1.0000000000000002,1.0,0.9,0.25,0.75,84.5
