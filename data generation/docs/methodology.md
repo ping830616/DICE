@@ -7,43 +7,43 @@ title: End-to-End Methodology
 
 ## Case Matrix
 
-- Workloads: `BROWSER`, `VIDEO_SW`, `PY_AI`, `PY_STATS`
-- Stressors: `NOMINAL`, `CACHE`, `TLB`, `BRANCH`, `MEMBW`, `ATOMIC`
-- Case ID: `WORKLOAD__STRESSOR`
-- Total cases: `24`
+- workloads: `BROWSER`, `VIDEO_SW`, `PY_AI`, `PY_STATS`
+- conditions: `NOMINAL`, `CACHE`, `TLB`, `BRANCH`, `MEMBW`, `ATOMIC`
+- case ID: `WORKLOAD__CONDITION`
+- total cases: `24`
 
-## Recommended Three-Tier Profile
+## Recommended Apple Silicon Profile
 
-1. Tier-0 pass:
-   - collect host OS telemetry (`psutil`) at 5 Hz,
-   - build low-NaN probe schema,
-   - write `tier0_full_5hz.csv` per case.
-2. Tier-1-alt pass (recommended on Apple Silicon):
-   - collect `macmon` telemetry,
-   - auto-fallback to `powermetrics` when needed,
-   - write `tier1_alt_core_5hz.csv` and `tier1_alt_full_5hz.csv`.
-3. Tier-2 pass:
-   - record `xctrace` traces,
-   - export XML,
-   - parse to `tier2_core_5hz.csv` and `tier2_full_5hz.csv`.
+The recommended collection profile is:
 
-Legacy Tier-1 (`powermetrics`) remains available for compatibility, but the recommended publication profile is `tier0 + tier1_alt + tier2`.
+1. `Tier-0`
+   - collect unprivileged operating-system telemetry at `5 Hz`
+   - build a probe-based global schema
+   - write `tier0_full_5hz.csv`
+2. `Tier-1-alt`
+   - collect `macmon` telemetry at `5 Hz`
+   - fall back to `powermetrics` if a `macmon` run fails
+   - write `tier1_alt_core_5hz.csv` and `tier1_alt_full_5hz.csv`
+3. `Tier-2`
+   - record `xctrace` Time Profiler traces
+   - export raw trace data
+   - parse trace buckets into `tier2_core_5hz.csv` and `tier2_full_5hz.csv`
 
-## Standard Terminal Sequence
+The single-command entry point is:
 
 ```bash
-cd DICE/"data generation"
-source .venv/bin/activate
-
-# Tier-0
-python generate_dataset.py --phase tier0 --duration_s 1000 --out_dir ./data
-
-# Tier-1-alt (recommended)
-python generate_dataset.py --phase tier1_alt --duration_s 1000 --out_dir ./data --tier1_alt_bin macmon
-
-# Tier-2
-python generate_dataset.py --phase tier2 --duration_s 1000 --out_dir ./data --tier2_template "Time Profiler"
+python generate_dataset.py --phase recommended --duration_s 1000 --out_dir ./data
 ```
+
+## Portable Profile
+
+When release-parity tooling is not available, use:
+
+```bash
+python generate_dataset.py --phase portable --duration_s 1000 --out_dir ./data
+```
+
+Portable mode always runs `Tier-0` and then chooses the best supported higher-tier collectors on the current host.
 
 ## Validation Sequence
 
@@ -52,34 +52,16 @@ python tools/repair_itc_dataset.py --root ./data --tier1_mode alt
 python tools/validate_itc_dataset.py --root ./data --tier1_mode alt --check_tier2
 ```
 
-## Output Layout
+## Release Snapshot Export
 
-```text
-data/
-  tier0/<CASE_ID>/tier0_full_5hz.csv
-  tier1_alt/<CASE_ID>/macmon_raw.jsonl
-  tier1_alt/<CASE_ID>/tier1_alt_core_5hz.csv
-  tier1_alt/<CASE_ID>/tier1_alt_full_5hz.csv
-  tier2/<CASE_ID>/xctrace.trace
-  tier2/<CASE_ID>/xctrace_export.xml
-  tier2/<CASE_ID>/tier2_core_5hz.csv
-  tier2/<CASE_ID>/tier2_full_5hz.csv
-  meta/<CASE_ID>/meta_tier{0,1_alt,2}.json
-  logs/<CASE_ID>/*.log
-  manifest_tier0.csv
-  manifest_tier1_alt.csv
-  manifest_tier2.csv
-  tier0_schema_global.json
-  tier1_alt_schema_global.json
-  tier2_schema_global.json
+The public `ITC_M2Pro_DATA` layout is a processed snapshot of the fuller collection tree. Export that layout with:
+
+```bash
+python tools/export_release_snapshot.py --root ./data --out_dir ./ITC_M2Pro_DATA_export --tier1_mode alt
 ```
 
-Legacy optional output:
+Validate the stripped export with:
 
-```text
-  tier1/<CASE_ID>/powermetrics_raw.txt
-  tier1/<CASE_ID>/tier1_core_5hz.csv
-  tier1/<CASE_ID>/tier1_full_5hz.csv
-  manifest_tier1.csv
-  tier1_schema_global.json
+```bash
+python tools/validate_itc_dataset.py --root ./ITC_M2Pro_DATA_export --tier1_mode alt --check_tier2 --processed_only
 ```

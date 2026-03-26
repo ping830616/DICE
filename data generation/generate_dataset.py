@@ -13,6 +13,9 @@ from dice.run_itc_two_phase import (
     run_case_tier1,
     run_case_tier1_alt,
     run_case_tier2,
+    can_run_tier1,
+    can_run_tier1_alt,
+    can_run_tier2,
     ensure_xctrace_ready,
 )
 
@@ -81,8 +84,18 @@ def run_phase(phase: str, cases, runner, duration_s: int) -> None:
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Generate ITC dataset across Tier-0/Tier-1/Tier-2 phases.")
-    ap.add_argument("--phase", choices=["tier0", "tier1", "tier1_alt", "tier2", "both", "all"], default="both")
+    ap = argparse.ArgumentParser(
+        description=(
+            "Generate the DICE ITC dataset across Tier-0, Tier-1, and Tier-2 collection phases. "
+            "'recommended' runs the Apple Silicon release profile (Tier-0 + Tier-1-alt + Tier-2); "
+            "'portable' collects the best available tier set on the current machine."
+        )
+    )
+    ap.add_argument(
+        "--phase",
+        choices=["tier0", "tier1", "tier1_alt", "tier2", "both", "all", "recommended", "portable"],
+        default="recommended",
+    )
     ap.add_argument("--duration_s", "--duration-s", dest="duration_s", type=int, default=1000)
     ap.add_argument("--out_dir", "--out-dir", dest="out_dir", type=Path, default=REPO_ROOT / "data")
     ap.add_argument("--scripts_dir", "--scripts-dir", dest="scripts_dir", type=Path, default=REPO_ROOT / "scripts")
@@ -101,7 +114,7 @@ def main():
 
     cases = all_cases()
 
-    if args.phase in ("tier0", "both", "all"):
+    if args.phase in ("tier0", "both", "all", "recommended", "portable"):
         run_phase(
             "tier0",
             cases,
@@ -130,7 +143,7 @@ def main():
             args.duration_s,
         )
 
-    if args.phase == "tier1_alt":
+    if args.phase in ("tier1_alt", "recommended"):
         run_phase(
             "tier1_alt",
             cases,
@@ -145,8 +158,41 @@ def main():
             ),
             args.duration_s,
         )
+    elif args.phase == "portable":
+        if can_run_tier1_alt(args.tier1_alt_bin):
+            run_phase(
+                "tier1_alt",
+                cases,
+                lambda c: run_case_tier1_alt(
+                    c.workload,
+                    c.stressor,
+                    c.label,
+                    args.duration_s,
+                    out_root=out_root,
+                    scripts_dir=scripts_dir,
+                    macmon_bin=args.tier1_alt_bin,
+                ),
+                args.duration_s,
+            )
+        elif can_run_tier1():
+            print("[DICE] portable mode: macmon is unavailable; falling back to legacy Tier-1 powermetrics collection.")
+            run_phase(
+                "tier1",
+                cases,
+                lambda c: run_case_tier1(
+                    c.workload,
+                    c.stressor,
+                    c.label,
+                    args.duration_s,
+                    out_root=out_root,
+                    scripts_dir=scripts_dir,
+                ),
+                args.duration_s,
+            )
+        else:
+            print("[DICE] portable mode: skipping Tier-1 because neither macmon nor powermetrics is available on this machine.")
 
-    if args.phase in ("tier2", "all"):
+    if args.phase in ("tier2", "all", "recommended"):
         ensure_xctrace_ready()
         run_phase(
             "tier2",
@@ -162,6 +208,24 @@ def main():
             ),
             args.duration_s,
         )
+    elif args.phase == "portable":
+        if can_run_tier2():
+            run_phase(
+                "tier2",
+                cases,
+                lambda c: run_case_tier2(
+                    c.workload,
+                    c.stressor,
+                    c.label,
+                    args.duration_s,
+                    out_root=out_root,
+                    scripts_dir=scripts_dir,
+                    template=args.tier2_template,
+                ),
+                args.duration_s,
+            )
+        else:
+            print("[DICE] portable mode: skipping Tier-2 because xctrace is unavailable on this machine.")
 
     print(f"[DICE] Done. Output root: {out_root}")
 

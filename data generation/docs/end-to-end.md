@@ -3,9 +3,9 @@ layout: default
 title: End-to-End User Guide
 ---
 
-# End-to-End User Guide (Tier-0 to Tier-2)
+# End-to-End User Guide
 
-This guide is designed for users who want a practical, reproducible workflow from environment setup to final validation.
+This guide describes the practical public workflow for collecting, validating, and exporting the DICE ITC dataset.
 
 ## 1. Environment Setup
 
@@ -16,7 +16,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Optional dependency for AI workload behavior:
+Optional dependency for the `PY_AI` workload:
 
 ```bash
 pip install torch
@@ -25,91 +25,115 @@ pip install torch
 ## 2. Dataset Design
 
 - Workloads: `BROWSER`, `VIDEO_SW`, `PY_AI`, `PY_STATS`
-- Stressors: `NOMINAL`, `CACHE`, `TLB`, `BRANCH`, `MEMBW`, `ATOMIC`
-- Cases: `24` total (`WORKLOAD__STRESSOR`)
-- Sampling rate: `5 Hz`
+- Conditions: `NOMINAL`, `CACHE`, `TLB`, `BRANCH`, `MEMBW`, `ATOMIC`
+- Cases: `24` total
+- Sampling rate before alignment: `5 Hz`
 - Standard run duration: `1000 s`
-- Samples per run: `5000` (`5001` lines with header)
+- Samples per processed run: `5000` (`5001` CSV lines with header)
 
-## 3. Run Recommended Profile (Tier-0 + Tier-1-alt)
+## 3. Choose a Collection Mode
+
+### Recommended Apple Silicon Profile
 
 ```bash
-python generate_dataset.py --phase tier0 --duration_s 1000 --out_dir ./data
-python generate_dataset.py --phase tier1_alt --duration_s 1000 --out_dir ./data --tier1_alt_bin macmon
+python generate_dataset.py --phase recommended --duration_s 1000 --out_dir ./data --tier1_alt_bin macmon --tier2_template "Time Profiler"
 ```
 
-This profile uses:
+This profile runs:
 
-1. Tier-0 host telemetry collection.
-2. Tier-1-alt collection on Apple Silicon (`macmon` source with automatic fallback when needed).
+- `Tier-0`
+- `Tier-1-alt`
+- `Tier-2`
 
-Legacy baseline (optional):
+Use it when you want the closest public match to the Apple Silicon procedure behind the released `ITC_M2Pro_DATA` dataset.
+
+### Portable Profile
+
+```bash
+python generate_dataset.py --phase portable --duration_s 1000 --out_dir ./data --tier1_alt_bin macmon --tier2_template "Time Profiler"
+```
+
+Portable mode:
+
+- always runs `Tier-0`
+- prefers `Tier-1-alt` if `macmon` is available
+- falls back to legacy `Tier-1` if `powermetrics` is available but `macmon` is not
+- runs `Tier-2` only when `xctrace` is available and licensed
+- skips unsupported tiers with an explicit message
+
+Use this mode when you want the workflow to adapt to the capabilities of the current machine.
+
+### Legacy Compatibility Modes
 
 ```bash
 python generate_dataset.py --phase both --duration_s 1000 --out_dir ./data
-```
-
-Expected wall-clock time at the default `duration_s=1000` and `24` cases:
-
-- `Tier-0`: about `6 h 40 m` total, plus about `10 s` once for the initial global schema probe
-- `Tier-1-alt`: about `6 h 40 m` total, plus parsing overhead; if `macmon` fails and a case falls back to `powermetrics`, that case can take roughly twice as long
-- `Legacy both` (`tier0 + tier1`): about `13 h 20 m` plus parsing and startup overhead
-
-The collector now prints per-case elapsed time, total tier elapsed time, and an estimated remaining time while the run is in progress.
-
-## 4. Run Tier-2 (Optional)
-
-Tier-2 requires Xcode tooling and an accepted license.
-
-Preflight:
-
-```bash
-xcrun xctrace version
-xcrun xctrace list templates | rg "Time Profiler"
-```
-
-Run Tier-2:
-
-```bash
-python generate_dataset.py --phase tier2 --duration_s 1000 --out_dir ./data --tier2_template "Time Profiler"
-```
-
-Expected wall-clock time at the default `duration_s=1000` and `24` cases:
-
-- `Tier-2`: about `6 h 40 m` total, plus trace-export overhead after each case
-
-Important public-release note:
-
-- the Tier-2 Python parser is included, but the low-level shell collector helper used to record and export traces is not shipped in the public GitHub release
-- on a local private setup where that helper exists, the command above is the intended entry point
-
-## 5. Full Collection in One Command
-
-```bash
 python generate_dataset.py --phase all --duration_s 1000 --out_dir ./data --tier2_template "Time Profiler"
 ```
 
-Important:
+- `both` = `tier0 + tier1`
+- `all` = `tier0 + tier1 + tier2`
 
-- in the current public code, `--phase all` means `tier0 + legacy tier1 + tier2`
-- it does **not** include the recommended Apple Silicon `tier1_alt` path
-- if you want the current paper-facing Apple dataset profile, run `tier0`, then `tier1_alt`, then `tier2` explicitly
+These modes remain available for compatibility, but they do not match the recommended Apple Silicon release profile because they use legacy `Tier-1`.
 
-## 6. Validate Outputs
+## 4. Tooling Checks
 
-Recommended Tier-0 + Tier-1-alt + Tier-2 profile:
+Before a full Apple Silicon collection, confirm the required tools are available:
 
 ```bash
+macmon --help
+powermetrics --help
+xcrun xctrace version
+```
+
+Tier-2 also requires a working Xcode installation and an accepted Xcode license.
+
+## 5. Expected Time
+
+At the default `duration_s=1000` and `24` cases, the nominal collection window is:
+
+- `Tier-0`: about `6 h 40 m`, plus about `10 s` once for the Tier-0 schema probe
+- `Tier-1-alt`: about `6 h 40 m`, plus parsing overhead
+- `Tier-1`: about `6 h 40 m`, plus parsing and `sudo` startup overhead
+- `Tier-2`: about `6 h 40 m`, plus trace-export overhead
+
+On the reference local collection tree used for the released dataset, the observed wall-clock times were approximately:
+
+- `Tier-0`: `7 h 11 m`
+- `Tier-1-alt`: `8 h 02 m`
+- `Tier-2`: `9 h 31 m`
+
+The collector prints the current case ID, per-case elapsed time, tier elapsed time, and estimated remaining time while the run is in progress.
+
+## 6. Validate the Full Collection Tree
+
+For the recommended Apple Silicon profile:
+
+```bash
+python tools/repair_itc_dataset.py --root ./data --tier1_mode alt
 python tools/validate_itc_dataset.py --root ./data --tier1_mode alt --check_tier2
 ```
 
-Legacy Tier-0 + Tier-1 + Tier-2 profile:
+For a legacy Tier-1 tree:
 
 ```bash
 python tools/validate_itc_dataset.py --root ./data --tier1_mode powermetrics --check_tier2
 ```
 
-## 7. Repair and Rerun
+## 7. Export a Processed Public Snapshot
+
+The released `ITC_M2Pro_DATA` layout is a processed snapshot, not a full raw collection tree. After a full collection, create a matching stripped export with:
+
+```bash
+python tools/export_release_snapshot.py --root ./data --out_dir ./ITC_M2Pro_DATA_export --tier1_mode alt
+```
+
+Validate the stripped snapshot with:
+
+```bash
+python tools/validate_itc_dataset.py --root ./ITC_M2Pro_DATA_export --tier1_mode alt --check_tier2 --processed_only
+```
+
+## 8. Repair and Rerun
 
 Rebuild manifests from existing files:
 
@@ -124,7 +148,6 @@ python tools/rerun_cases.py \
   --phase tier1_alt \
   --duration_s 1000 \
   --out_dir ./data \
-  --scripts_dir ./scripts \
   --tier1_alt_bin macmon \
   --cases BROWSER__CACHE PY_AI__TLB
 ```
@@ -136,12 +159,13 @@ python tools/rerun_cases.py \
   --phase tier2 \
   --duration_s 1000 \
   --out_dir ./data \
-  --scripts_dir ./scripts \
   --tier2_template "Time Profiler" \
   --cases BROWSER__CACHE PY_AI__TLB
 ```
 
-## 8. Output Structure
+## 9. Output Structure
+
+A full collection tree contains:
 
 ```text
 data/
@@ -159,19 +183,13 @@ data/
   meta/<CASE_ID>/meta_tier{0,1,1_alt,2}.json
   logs/<CASE_ID>/*.log
   manifest_tier0.csv
-  manifest_tier1_alt.csv
   manifest_tier1.csv
+  manifest_tier1_alt.csv
   manifest_tier2.csv
   tier0_schema_global.json
-  tier1_alt_schema_global.json
   tier1_schema_global.json
+  tier1_alt_schema_global.json
   tier2_schema_global.json
 ```
 
-## 9. Expected Counts for a Complete Run
-
-- Tier folders per phase: `24`
-- Manifest line count per phase: `25`
-- CSV line count per case: `5001`
-
-For detailed per-feature definitions, see [Feature Dictionary](feature-dictionary.md).
+A processed release snapshot keeps only the processed tier CSV files plus `no_nan_report.json`.

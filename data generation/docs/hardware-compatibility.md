@@ -5,9 +5,9 @@ title: Hardware and Compatibility
 
 # Hardware and Compatibility
 
-This dataset release is tied to one specific collection machine and one specific telemetry toolchain.
+The released dataset was collected on one specific Apple Silicon machine, but the public workflow now supports both a release-matching Apple profile and a capability-aware portable profile.
 
-## Collection Machine
+## Reference Collection Machine
 
 The released data in this repository was collected on:
 
@@ -19,33 +19,35 @@ The released data in this repository was collected on:
 - `arm64`
 - `macOS 26.3`
 
-## Why This Repository Is Mac-Specific
+## What Portability Means Here
 
-- `Tier-0` uses `psutil`, so the code itself is the most portable part, but the exported fields still depend on the host OS and hardware.
-- `Tier-1` uses `powermetrics` plus `sudo`, which is macOS-specific and exposes Apple-specific power and thermal counters.
-- `Tier-1-alt` uses `macmon` and falls back to `powermetrics`, so it is effectively an Apple Silicon macOS path.
-- `Tier-2` uses `xcrun xctrace`, which requires Apple's Xcode tooling and therefore macOS.
+The workflow is portable in the sense that the code can adapt to the telemetry interfaces available on the current machine:
 
-## What Your Hardware Changes in the Data
+- `recommended` mode targets the Apple Silicon release profile
+- `portable` mode always runs `Tier-0` and then chooses the best available higher-tier path
 
-- Apple Silicon exposes CPU, GPU, and ANE power behavior that does not exist on generic x86 laptops in the same form.
-- The `M2 Pro` split between performance and efficiency cores changes utilization, scheduling, thermals, and frequency behavior.
-- Unified memory means memory pressure and bandwidth behavior differ from discrete CPU/GPU systems.
-- The `19`-core integrated GPU affects Tier-1-alt and Tier-2 signals for graphics-heavy or AI-heavy workloads.
-- Some fields are tool-exposure dependent even on Mac, so another Mac can still produce a different schema or different missing-value pattern.
+Portability does not mean that every machine will expose the same tiers, the same fields, or the same schemas.
 
-## Compatibility Table
+## Tier Availability by Platform
 
-| Machine | Tier-0 | Tier-1 | Tier-1-alt | Tier-2 | Practical status |
-| --- | --- | --- | --- | --- | --- |
-| This Apple Silicon Mac (`M2 Pro`) | Yes | Yes | Yes | Yes | Full release path |
-| Another Apple Silicon Mac | Yes | Usually | Usually | Usually | Best port, but not schema-identical |
-| Intel Mac | Yes | Partial | No | Partial | Can run some pieces, not release-parity |
-| Linux | Partial | No | No | No | Tier-0 only, schema differs |
-| Windows | Partial | No | No | No | Tier-0 only, schema differs |
+| Machine | Tier-0 | Tier-1 | Tier-2 | Practical status |
+| --- | --- | --- | --- | --- |
+| This Apple Silicon Mac (`M2 Pro`) | Yes | Yes | Yes | Release-matching path |
+| Another Apple Silicon Mac | Yes | Usually | Usually | Best public port, but not schema-identical |
+| Intel Mac | Yes | Usually legacy only | Partial | Partial collection path |
+| Linux | Partial | No | No | Tier-0 only, schema differs |
+| Windows | Partial | No | No | Tier-0 only, schema differs |
 
-## Recommended Interpretation
+## Why the Data Changes Across Machines
 
-- Treat this repository as a reproducible workflow for Apple Silicon macOS collection.
-- Treat the released dataset as an `M2 Pro` machine profile, not as a hardware-neutral benchmark.
-- If you move to another machine, expect to regenerate schemas and revalidate feature coverage before comparing results.
+- Apple Silicon exposes CPU, GPU, and ANE telemetry that does not exist in the same form on many x86 systems.
+- The `M2 Pro` mix of performance and efficiency cores affects utilization, scheduling, and thermal behavior.
+- Unified memory changes memory-pressure behavior relative to systems with discrete CPU and GPU memory.
+- Tier-1 and Tier-2 depend on platform-specific tooling and exposed counters.
+- Even another Mac can expose a different subset of Tier-1 signals or a different pattern of missing values.
+
+## Recommended Use
+
+- Use `recommended` mode when you want the closest public reproduction of the released Apple Silicon procedure.
+- Use `portable` mode when you want the repo to collect the best supported tier set on the current host.
+- Regenerate schemas and revalidate feature coverage whenever you move to a different machine.

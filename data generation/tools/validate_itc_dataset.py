@@ -84,6 +84,13 @@ def main():
     )
     ap.add_argument("--check_tier1_alt", "--check-tier1-alt", dest="check_tier1_alt", action="store_true")
     ap.add_argument("--check_tier2", "--check-tier2", dest="check_tier2", action="store_true")
+    ap.add_argument(
+        "--processed_only",
+        "--processed-only",
+        dest="processed_only",
+        action="store_true",
+        help="Validate a processed public snapshot that does not include schemas, manifests, or raw artifacts.",
+    )
     args = ap.parse_args()
 
     check_tier1 = args.tier1_mode in ("powermetrics", "both")
@@ -96,54 +103,55 @@ def main():
     t2 = root / "tier2"
     problems = []
 
-    # --- Schema files ---
-    t0_schema = root / "tier0_schema_global.json"
-    t1_schema = root / "tier1_schema_global.json"
-    if not t0_schema.exists():
-        problems.append(f"Missing Tier-0 schema: {t0_schema}")
-    if check_tier1 and not t1_schema.exists():
-        problems.append(f"Missing Tier-1 schema: {t1_schema}")
-    if check_tier1_alt:
-        t1a_schema = root / "tier1_alt_schema_global.json"
-        if not t1a_schema.exists():
-            problems.append(f"Missing Tier-1-alt schema: {t1a_schema}")
-    if args.check_tier2:
-        t2_schema = root / "tier2_schema_global.json"
-        if not t2_schema.exists():
-            problems.append(f"Missing Tier-2 schema: {t2_schema}")
+    if not args.processed_only:
+        # --- Schema files ---
+        t0_schema = root / "tier0_schema_global.json"
+        t1_schema = root / "tier1_schema_global.json"
+        if not t0_schema.exists():
+            problems.append(f"Missing Tier-0 schema: {t0_schema}")
+        if check_tier1 and not t1_schema.exists():
+            problems.append(f"Missing Tier-1 schema: {t1_schema}")
+        if check_tier1_alt:
+            t1a_schema = root / "tier1_alt_schema_global.json"
+            if not t1a_schema.exists():
+                problems.append(f"Missing Tier-1-alt schema: {t1a_schema}")
+        if args.check_tier2:
+            t2_schema = root / "tier2_schema_global.json"
+            if not t2_schema.exists():
+                problems.append(f"Missing Tier-2 schema: {t2_schema}")
 
-    # --- Manifests ---
-    m0 = root / "manifest_tier0.csv"
-    m1 = root / "manifest_tier1.csv"
-    m1a = root / "manifest_tier1_alt.csv"
-    m2 = root / "manifest_tier2.csv"
-    if m0.exists():
-        n = count_lines(m0)
-        if n != args.expected_cases + 1:
-            problems.append(f"manifest_tier0.csv lines={n} (expected {args.expected_cases+1})")
-    else:
-        problems.append(f"Missing {m0}")
-    if check_tier1:
-        if m1.exists():
-            n = count_lines(m1)
+        # --- Manifests ---
+        m0 = root / "manifest_tier0.csv"
+        m1 = root / "manifest_tier1.csv"
+        m1a = root / "manifest_tier1_alt.csv"
+        m2 = root / "manifest_tier2.csv"
+        if m0.exists():
+            n = count_lines(m0)
             if n != args.expected_cases + 1:
-                problems.append(f"manifest_tier1.csv lines={n} (expected {args.expected_cases+1})")
+                problems.append(f"manifest_tier0.csv lines={n} (expected {args.expected_cases+1})")
         else:
-            problems.append(f"Missing {m1}")
-    if check_tier1_alt:
-        if m1a.exists():
-            n = count_lines(m1a)
-            if n != args.expected_cases + 1:
-                problems.append(f"manifest_tier1_alt.csv lines={n} (expected {args.expected_cases+1})")
-        else:
-            problems.append(f"Missing {m1a}")
-    if args.check_tier2:
-        if m2.exists():
-            n = count_lines(m2)
-            if n != args.expected_cases + 1:
-                problems.append(f"manifest_tier2.csv lines={n} (expected {args.expected_cases+1})")
-        else:
-            problems.append(f"Missing {m2}")
+            problems.append(f"Missing {m0}")
+        if check_tier1:
+            if m1.exists():
+                n = count_lines(m1)
+                if n != args.expected_cases + 1:
+                    problems.append(f"manifest_tier1.csv lines={n} (expected {args.expected_cases+1})")
+            else:
+                problems.append(f"Missing {m1}")
+        if check_tier1_alt:
+            if m1a.exists():
+                n = count_lines(m1a)
+                if n != args.expected_cases + 1:
+                    problems.append(f"manifest_tier1_alt.csv lines={n} (expected {args.expected_cases+1})")
+            else:
+                problems.append(f"Missing {m1a}")
+        if args.check_tier2:
+            if m2.exists():
+                n = count_lines(m2)
+                if n != args.expected_cases + 1:
+                    problems.append(f"manifest_tier2.csv lines={n} (expected {args.expected_cases+1})")
+            else:
+                problems.append(f"Missing {m2}")
 
     # --- Tier folder counts ---
     t0_cases = sorted([p.name for p in t0.iterdir() if p.is_dir()]) if t0.exists() else []
@@ -217,6 +225,9 @@ def main():
                 n = count_lines(full)
                 if n != args.expected_lines:
                     problems.append(f"[Tier1] {cid} full lines={n} (expected {args.expected_lines})")
+            raw = t1 / cid / "powermetrics_raw.txt"
+            if not args.processed_only and not raw.exists():
+                problems.append(f"[Tier1] Missing raw txt: {raw}")
 
     # Tier-1-alt files + core sanity
     if check_tier1_alt:
@@ -244,7 +255,7 @@ def main():
                 n = count_lines(full)
                 if n != args.expected_lines:
                     problems.append(f"[Tier1-alt] {cid} full lines={n} (expected {args.expected_lines})")
-            if not raw.exists():
+            if not args.processed_only and not raw.exists():
                 problems.append(f"[Tier1-alt] Missing raw jsonl: {raw}")
 
     # Tier-2 files + core sanity
@@ -276,7 +287,7 @@ def main():
                 n = count_lines(full)
                 if n != args.expected_lines:
                     problems.append(f"[Tier2] {cid} full lines={n} (expected {args.expected_lines})")
-            if not raw.exists():
+            if not args.processed_only and not raw.exists():
                 problems.append(f"[Tier2] Missing raw export: {raw}")
 
     # --- Report ---

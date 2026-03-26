@@ -37,6 +37,34 @@ TIER1_ALT_CORE_FIELDS = [
 TIER2_DEFAULT_TEMPLATE = "Time Profiler"
 
 TIER2_CORE_FIELDS = [
+    "avg_core_id",
+    "avg_weight_ns",
+    "max_core_id",
+    "running_fraction",
+    "samples_per_bucket",
+    "sentinel_count",
+    "total_weight_ns",
+    "unique_process_count",
+    "unique_thread_count",
+]
+
+TIER2_FULL_FIELDS = [
+    "avg_core_id",
+    "avg_weight_ns",
+    "first_sample_time_ns",
+    "last_sample_time_ns",
+    "max_core_id",
+    "running_count",
+    "running_fraction",
+    "sample_span_ns",
+    "samples_per_bucket",
+    "sentinel_count",
+    "total_weight_ns",
+    "unique_process_count",
+    "unique_thread_count",
+]
+
+TIER2_LEGACY_CORE_FIELDS = [
     "cpu_usage_pct",
     "cpu_time_ms",
     "thread_count",

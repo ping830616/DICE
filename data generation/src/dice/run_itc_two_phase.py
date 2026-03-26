@@ -2,6 +2,7 @@ import argparse
 import contextlib
 import json
 import platform
+import shutil
 import subprocess
 import threading
 from pathlib import Path
@@ -18,6 +19,11 @@ from .tier1_alt_macmon import (
     parse_with_schema as parse_tier1_alt_with_schema,
 )
 from .tier2_xctrace_parse import build_global_schema as build_tier2_global_schema, parse_with_schema as parse_tier2_with_schema
+from .macos_collectors import (
+    collect_powermetrics_text,
+    export_xctrace_time_profile,
+    record_xctrace_time_profile,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_OUT = REPO_ROOT / "data"
@@ -27,15 +33,6 @@ DEFAULT_SCRIPTS = REPO_ROOT / "scripts"
 def mkdirp(p: Path):
     p.mkdir(parents=True, exist_ok=True)
 
-
-def public_repo_collection_removed(script_path: Path, phase: str) -> RuntimeError:
-    return RuntimeError(
-        f"{phase} raw collection is not available in the public GitHub notebook-first release. "
-        f"Missing helper script: {script_path}. "
-        "Use the released dataset plus the root-level 'dice_results_analysis.ipynb' "
-        "or 'tools/run_results_pipeline.py' to reproduce the published results."
-    )
-
 def append_manifest(manifest_path: Path, row: dict):
     import csv
     exists = manifest_path.exists()
@@ -43,6 +40,37 @@ def append_manifest(manifest_path: Path, row: dict):
         w = csv.DictWriter(f, fieldnames=list(row.keys()))
         if not exists: w.writeheader()
         w.writerow(row)
+
+
+def command_available(name: str) -> bool:
+    return shutil.which(name) is not None
+
+
+def ensure_powermetrics_ready() -> None:
+    if platform.system() != "Darwin":
+        raise RuntimeError("Tier-1 powermetrics collection is only supported on macOS.")
+    if not command_available("powermetrics"):
+        raise RuntimeError(
+            "Tier-1 collection requires the 'powermetrics' command to be available on this machine."
+        )
+
+
+def can_run_tier1() -> bool:
+    return platform.system() == "Darwin" and command_available("powermetrics")
+
+
+def can_run_tier1_alt(macmon_bin: str = "macmon") -> bool:
+    return platform.system() == "Darwin" and command_available(macmon_bin)
+
+
+def can_run_tier2() -> bool:
+    if platform.system() != "Darwin":
+        return False
+    try:
+        ensure_xctrace_ready()
+    except Exception:
+        return False
+    return True
 
 
 def ensure_xctrace_ready():
@@ -178,11 +206,8 @@ def run_case_tier1(
     tier1_schema_path: Optional[Path] = None,
 ):
     out_root = Path(out_root)
-    scripts_dir = Path(scripts_dir)
     tier1_schema = Path(tier1_schema_path) if tier1_schema_path else out_root / "tier1_schema_global.json"
-    powermetrics_script = scripts_dir / "03_powermetrics_collect_5hz.sh"
-    if not powermetrics_script.exists():
-        raise public_repo_collection_removed(powermetrics_script, "Tier-1")
+    ensure_powermetrics_ready()
 
     cid = case_id(w, s)
     out_dir = out_root / "tier1" / cid
@@ -205,24 +230,18 @@ def run_case_tier1(
     th_s = threading.Thread(target=run_stressor, args=(s, stop_evt), daemon=True)
     th_w.start(); th_s.start()
 
-    cmd = ["bash", str(powermetrics_script), str(raw_txt), str(samples_target), "200"]
     with sudo_keepalive(required=True):
-        with (logs / "tier1_collect.log").open("w") as lf:
-            p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT)
-
-        try:
-            p.wait(timeout=duration_s + 240)
-        except subprocess.TimeoutExpired:
-            try:
-                p.terminate(); p.wait(timeout=10)
-            except Exception:
-                try: p.kill()
-                except Exception: pass
+        result = collect_powermetrics_text(
+            raw_txt,
+            samples_target=samples_target,
+            sample_rate_ms=200,
+            log_path=logs / "tier1_collect.log",
+        )
 
     stop_evt.set()
     th_w.join(timeout=3); th_s.join(timeout=3)
 
-    if p.returncode not in (0, None):
+    if result.returncode != 0:
         raw_err = Path(f"{raw_txt}.stderr.log")
         raise RuntimeError(
             f"Tier-1 collection failed for {cid}. "
@@ -270,13 +289,12 @@ def run_case_tier1_alt(
     macmon_bin: str = "macmon",
 ):
     out_root = Path(out_root)
-    scripts_dir = Path(scripts_dir)
     tier1_alt_schema = (
         Path(tier1_alt_schema_path)
         if tier1_alt_schema_path
         else out_root / "tier1_alt_schema_global.json"
     )
-    powermetrics_script = scripts_dir / "03_powermetrics_collect_5hz.sh"
+    ensure_powermetrics_ready()
 
     cid = case_id(w, s)
     out_dir = out_root / "tier1_alt" / cid
@@ -325,13 +343,6 @@ def run_case_tier1_alt(
         th_s.join(timeout=3)
 
     if collect_err is not None:
-        if not powermetrics_script.exists():
-            raise RuntimeError(
-                f"Tier-1-alt collection failed for {cid} using macmon. "
-                f"raw={raw_jsonl}. Error: {collect_err}. "
-                f"Fallback script is missing: {powermetrics_script}"
-            )
-
         fallback_raw_txt = out_dir / "powermetrics_fallback_raw.txt"
         stop_evt_fb = threading.Event()
         th_w_fb = threading.Thread(target=run_workload, args=(w, stop_evt_fb), daemon=True)
@@ -339,28 +350,19 @@ def run_case_tier1_alt(
         th_w_fb.start()
         th_s_fb.start()
 
-        cmd = ["bash", str(powermetrics_script), str(fallback_raw_txt), str(samples_target), "200"]
         with sudo_keepalive(required=True):
-            with (logs / "tier1_alt_collect_fallback.log").open("w") as lf:
-                p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT)
-
-            try:
-                p.wait(timeout=duration_s + 240)
-            except subprocess.TimeoutExpired:
-                try:
-                    p.terminate()
-                    p.wait(timeout=10)
-                except Exception:
-                    try:
-                        p.kill()
-                    except Exception:
-                        pass
+            result = collect_powermetrics_text(
+                fallback_raw_txt,
+                samples_target=samples_target,
+                sample_rate_ms=200,
+                log_path=logs / "tier1_alt_collect_fallback.log",
+            )
 
         stop_evt_fb.set()
         th_w_fb.join(timeout=3)
         th_s_fb.join(timeout=3)
 
-        if p.returncode not in (0, None):
+        if result.returncode != 0:
             fallback_err = Path(f"{fallback_raw_txt}.stderr.log")
             raise RuntimeError(
                 f"Tier-1-alt collection failed for {cid}. "
@@ -433,11 +435,7 @@ def run_case_tier2(
     template: str = TIER2_DEFAULT_TEMPLATE,
 ):
     out_root = Path(out_root)
-    scripts_dir = Path(scripts_dir)
     tier2_schema = Path(tier2_schema_path) if tier2_schema_path else out_root / "tier2_schema_global.json"
-    xctrace_script = scripts_dir / "05_xctrace_record_export.sh"
-    if not xctrace_script.exists():
-        raise public_repo_collection_removed(xctrace_script, "Tier-2")
 
     cid = case_id(w, s)
     out_dir = out_root / "tier2" / cid
@@ -470,30 +468,32 @@ def run_case_tier2(
     th_w.start()
     th_s.start()
 
-    cmd = ["bash", str(xctrace_script), str(duration_s), str(trace_out), str(raw_export), str(template)]
-    with (logs / "tier2_collect.log").open("w") as lf:
-        p = subprocess.Popen(cmd, stdout=lf, stderr=subprocess.STDOUT)
-
     try:
-        p.wait(timeout=duration_s + 300)
-    except subprocess.TimeoutExpired:
-        try:
-            p.terminate()
-            p.wait(timeout=10)
-        except Exception:
-            try:
-                p.kill()
-            except Exception:
-                pass
+        record_result = record_xctrace_time_profile(
+            trace_out=trace_out,
+            duration_s=duration_s,
+            template=template,
+            log_path=logs / "tier2_collect.log",
+        )
+        if record_result.returncode != 0:
+            raise RuntimeError(
+                f"Tier-2 collection failed for {cid}. "
+                f"See log: {logs / 'tier2_collect.log'}"
+            )
+        export_xctrace_time_profile(
+            trace_out=trace_out,
+            raw_export=raw_export,
+            log_path=logs / "tier2_collect.log",
+        )
+    finally:
+        stop_evt.set()
+        th_w.join(timeout=3)
+        th_s.join(timeout=3)
 
-    stop_evt.set()
-    th_w.join(timeout=3)
-    th_s.join(timeout=3)
-
-    if p.returncode not in (0, None):
+    if not raw_export.exists():
         raise RuntimeError(
             f"Tier-2 collection failed for {cid}. "
-            f"See log: {logs / 'tier2_collect.log'}"
+            f"Missing export: {raw_export}"
         )
 
     if not tier2_schema.exists():
