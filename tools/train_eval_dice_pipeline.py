@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from time import perf_counter
@@ -148,14 +149,31 @@ DIAG_CONFIDENCE_GATE_QUANTILE = 0.45
 class CaseRef:
     workload: str
     stressor: str
+    repeat_tag: str = ""
+    raw_case_id: str | None = None
 
     @property
     def case_id(self) -> str:
+        if self.raw_case_id:
+            return self.raw_case_id
+        return self.base_case_id if not self.repeat_tag else f"{self.base_case_id}__{self.repeat_tag}"
+
+    @property
+    def base_case_id(self) -> str:
         return f"{self.workload}__{self.stressor}"
 
     @property
     def label(self) -> int:
         return 0 if self.stressor == "NOMINAL" else 1
+
+    @property
+    def repeat_index(self) -> int:
+        if not self.repeat_tag:
+            return 0
+        matches = re.findall(r"\d+", self.repeat_tag)
+        if not matches:
+            return 1
+        return int(matches[-1])
 
 
 @dataclass
@@ -171,6 +189,59 @@ class ModelBundle:
     phase_guard_templates: Dict[str, np.ndarray]
     phase_guard_tolerances: Dict[str, np.ndarray]
     phase_guard_cal_scores: np.ndarray
+
+
+def ordered_workloads(values: Sequence[str]) -> List[str]:
+    order = {name: idx for idx, name in enumerate(WORKLOADS)}
+    return sorted(set(values), key=lambda item: (order.get(str(item), len(order)), str(item)))
+
+
+def ordered_stressors(values: Sequence[str]) -> List[str]:
+    order = {name: idx for idx, name in enumerate(STRESSORS)}
+    return sorted(set(values), key=lambda item: (order.get(str(item), len(order)), str(item)))
+
+
+def parse_case_dir_name(case_id: str) -> CaseRef | None:
+    parts = str(case_id).split("__")
+    if len(parts) < 2:
+        return None
+    workload = parts[0]
+    stressor = parts[1]
+    if workload not in WORKLOADS or stressor not in STRESSORS:
+        return None
+    repeat_tag = "__".join(parts[2:]) if len(parts) > 2 else ""
+    return CaseRef(workload=workload, stressor=stressor, repeat_tag=repeat_tag, raw_case_id=str(case_id))
+
+
+def discover_cases(root: Path, tier_files: Dict[str, str]) -> List[CaseRef]:
+    tier_case_sets: Dict[str, set[str]] = {}
+    for tier, filename in tier_files.items():
+        tier_root = root / tier
+        if not tier_root.exists():
+            raise FileNotFoundError(f"Missing tier directory: {tier_root}")
+        case_ids = {
+            path.name
+            for path in tier_root.iterdir()
+            if path.is_dir() and (path / filename).exists()
+        }
+        tier_case_sets[tier] = case_ids
+
+    shared_case_ids = sorted(set.intersection(*tier_case_sets.values())) if tier_case_sets else []
+    cases = [parse_case_dir_name(case_id) for case_id in shared_case_ids]
+    valid_cases = [case for case in cases if case is not None]
+    if not valid_cases:
+        raise RuntimeError(f"No valid cases discovered under {root}")
+
+    return sorted(
+        valid_cases,
+        key=lambda case: (
+            WORKLOADS.index(case.workload),
+            STRESSORS.index(case.stressor),
+            case.repeat_index,
+            case.repeat_tag,
+            case.case_id,
+        ),
+    )
 
 
 def all_cases() -> List[CaseRef]:
@@ -259,9 +330,9 @@ def downsample_1hz(df: pd.DataFrame, source_hz: int = 5) -> pd.DataFrame:
     return tmp.groupby(grp, sort=False).mean(numeric_only=True)
 
 
-def common_features_per_tier(root: Path, tier: str, tier_files: Dict[str, str]) -> List[str]:
+def common_features_per_tier(root: Path, tier: str, tier_files: Dict[str, str], cases: Sequence[CaseRef]) -> List[str]:
     common = None
-    for case in all_cases():
+    for case in cases:
         df = read_df(case_path(root, tier, case, tier_files))
         cols = set(numeric_features(df))
         common = cols if common is None else (common & cols)
@@ -271,7 +342,7 @@ def common_features_per_tier(root: Path, tier: str, tier_files: Dict[str, str]) 
     keep = []
     for f in common_list:
         vals = []
-        for case in all_cases():
+        for case in cases:
             d = downsample_1hz(read_df(case_path(root, tier, case, tier_files)))
             vals.append(d[f].to_numpy(dtype=float))
         x = np.concatenate(vals)
@@ -646,8 +717,8 @@ def finite_percentile(x: Sequence[float], q: float) -> float:
 def workload_conditioned_scores(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
     nominal_map = (
         df[df["stressor"] == "NOMINAL"]
-        .drop_duplicates(subset=["workload"], keep="last")
-        .set_index("workload")["run_score"]
+        .groupby("workload", sort=False)["run_score"]
+        .median()
         .to_dict()
     )
     nominal = df["workload"].map(nominal_map).to_numpy(dtype=float)
@@ -1290,6 +1361,9 @@ def build_diagnostic_record(
         "config": config,
         "holdout_workload": holdout_workload,
         "case_id": case.case_id,
+        "base_case_id": case.base_case_id,
+        "repeat_tag": case.repeat_tag,
+        "repeat_index": case.repeat_index,
         "workload": case.workload,
         "stressor": case.stressor,
         "stressor_family": stressor_family(case.stressor),
@@ -1411,9 +1485,10 @@ def build_stressor_attribution(
     vector_key: str,
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     pred_rows: List[Dict[str, object]] = []
+    workloads = ordered_workloads([str(r["workload"]) for r in diagnostic_records])
     for cfg_name in CONFIGS:
         cfg_records = [r for r in diagnostic_records if r["config"] == cfg_name and int(r["label"]) == 1]
-        for holdout_w in WORKLOADS:
+        for holdout_w in workloads:
             train = [r for r in cfg_records if r["workload"] != holdout_w]
             test = [r for r in cfg_records if r["workload"] == holdout_w]
             centroids = build_label_centroids(
@@ -1514,9 +1589,10 @@ def build_hierarchical_stressor_attribution(
     feature_vector_key: str = "_feature_contrib_norm",
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     pred_rows: List[Dict[str, object]] = []
+    workloads = ordered_workloads([str(r["workload"]) for r in diagnostic_records])
     for cfg_name in CONFIGS:
         cfg_records = [r for r in diagnostic_records if r["config"] == cfg_name and int(r["label"]) == 1]
-        for holdout_w in WORKLOADS:
+        for holdout_w in workloads:
             train = [r for r in cfg_records if r["workload"] != holdout_w]
             test = [r for r in cfg_records if r["workload"] == holdout_w]
             stressor_centroids = build_label_centroids(
@@ -1739,6 +1815,317 @@ def build_hierarchical_abstain_sweep(pred_df: pd.DataFrame) -> pd.DataFrame:
                 )
             rows.append(row)
     return pd.DataFrame(rows).sort_values(["config", "confidence_threshold"]).reset_index(drop=True)
+
+
+def build_family_attribution(
+    diagnostic_records: Sequence[Dict[str, object]],
+    vector_key: str = "_mechanism_vector_norm",
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    pred_rows: List[Dict[str, object]] = []
+    workloads = ordered_workloads([str(r["workload"]) for r in diagnostic_records])
+    for cfg_name in CONFIGS:
+        cfg_records = [r for r in diagnostic_records if r["config"] == cfg_name and int(r["label"]) == 1]
+        for holdout_w in workloads:
+            train = [r for r in cfg_records if r["workload"] != holdout_w]
+            test = [r for r in cfg_records if r["workload"] == holdout_w]
+            centroids = build_label_centroids(
+                train,
+                DIAGNOSIS_FAMILIES,
+                vector_key,
+                lambda row: stressor_family(str(row["stressor"])),
+            )
+            if len(centroids) < 2:
+                continue
+            for row in test:
+                truth = stressor_family(str(row["stressor"]))
+                contrib = normalize_attribution_vector(row[vector_key])
+                ordered = ordered_proto_distances(contrib, centroids)
+                pred = ordered[0][0]
+                top2 = [label for label, _ in ordered[:2]]
+                pred_rows.append(
+                    {
+                        "config": cfg_name,
+                        "holdout_workload": holdout_w,
+                        "case_id": row["case_id"],
+                        "base_case_id": row["base_case_id"],
+                        "true_family": truth,
+                        "pred_family": pred,
+                        "is_correct": int(pred == truth),
+                        "top2_hit": int(truth in top2),
+                        "nearest_distance": float(ordered[0][1]),
+                        "margin_to_second": margin_to_second(ordered),
+                    }
+                )
+
+    pred_df = pd.DataFrame(pred_rows)
+    if pred_df.empty:
+        empty_metrics = pd.DataFrame(
+            columns=[
+                "config",
+                "n_cases",
+                "top1_acc",
+                "top2_acc",
+                "balanced_acc",
+                "macro_f1",
+                "mean_margin_to_second",
+                "median_margin_to_second",
+            ]
+        )
+        empty_cm = pd.DataFrame(index=DIAGNOSIS_FAMILIES, columns=DIAGNOSIS_FAMILIES, data=0)
+        empty_cm.index.name = "true_family"
+        empty_cm.columns.name = "pred_family"
+        return pred_df, empty_metrics, empty_cm
+    pred_df = pred_df.sort_values(["config", "holdout_workload", "case_id"])
+
+    metric_rows = []
+    for cfg_name, d in pred_df.groupby("config", sort=False):
+        margins = d["margin_to_second"].replace([np.inf, -np.inf], np.nan)
+        metric_rows.append(
+            {
+                "config": cfg_name,
+                "n_cases": int(len(d)),
+                "top1_acc": float(d["is_correct"].mean()),
+                "top2_acc": float(d["top2_hit"].mean()),
+                "balanced_acc": multiclass_balanced_accuracy(
+                    d["true_family"],
+                    d["pred_family"],
+                    DIAGNOSIS_FAMILIES,
+                ),
+                "macro_f1": float(
+                    f1_score(
+                        d["true_family"],
+                        d["pred_family"],
+                        labels=DIAGNOSIS_FAMILIES,
+                        average="macro",
+                        zero_division=0,
+                    )
+                ),
+                "mean_margin_to_second": float(margins.mean()),
+                "median_margin_to_second": float(margins.median()),
+            }
+        )
+    metrics_df = pd.DataFrame(metric_rows).sort_values("config")
+
+    final_cfg = "tier0_tier1_tier2"
+    d_final = pred_df[pred_df["config"] == final_cfg]
+    if d_final.empty:
+        cm = pd.DataFrame(index=DIAGNOSIS_FAMILIES, columns=DIAGNOSIS_FAMILIES, data=0)
+    else:
+        cm_arr = confusion_matrix(
+            d_final["true_family"],
+            d_final["pred_family"],
+            labels=DIAGNOSIS_FAMILIES,
+        )
+        cm = pd.DataFrame(cm_arr, index=DIAGNOSIS_FAMILIES, columns=DIAGNOSIS_FAMILIES)
+    cm.index.name = "true_family"
+    cm.columns.name = "pred_family"
+    return pred_df, metrics_df, cm
+
+
+def build_supervised_stressor_diagnosis(
+    diagnostic_records: Sequence[Dict[str, object]],
+    vector_key: str = "_feature_contrib_run_norm",
+    group_key: str = "base_case_id",
+    include_workload: bool = True,
+    min_class_samples: int = 8,
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    try:
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.pipeline import make_pipeline
+        from sklearn.preprocessing import StandardScaler
+    except Exception as exc:  # pragma: no cover - optional dependency guard
+        empty_metrics = pd.DataFrame(
+            [
+                {
+                    "config": cfg_name,
+                    "status": f"skipped_import_error:{exc.__class__.__name__}",
+                    "n_cases": 0,
+                    "top1_acc": np.nan,
+                    "top2_acc": np.nan,
+                    "balanced_acc": np.nan,
+                    "macro_f1": np.nan,
+                    "min_class_count": 0,
+                    "min_group_count": 0,
+                    "group_key": group_key,
+                    "include_workload": int(include_workload),
+                }
+                for cfg_name in CONFIGS
+            ]
+        )
+        empty_cm = pd.DataFrame(index=ANOMALIES, columns=ANOMALIES, data=0)
+        empty_cm.index.name = "true_stressor"
+        empty_cm.columns.name = "pred_stressor"
+        return pd.DataFrame(), empty_metrics, empty_cm
+
+    pred_rows: List[Dict[str, object]] = []
+    metric_rows: List[Dict[str, object]] = []
+
+    for cfg_name in CONFIGS:
+        cfg_records = [r for r in diagnostic_records if r["config"] == cfg_name and int(r["label"]) == 1]
+        if not cfg_records:
+            metric_rows.append(
+                {
+                    "config": cfg_name,
+                    "status": "skipped_no_anomalies",
+                    "n_cases": 0,
+                    "top1_acc": np.nan,
+                    "top2_acc": np.nan,
+                    "balanced_acc": np.nan,
+                    "macro_f1": np.nan,
+                    "min_class_count": 0,
+                    "min_group_count": 0,
+                    "group_key": group_key,
+                    "include_workload": int(include_workload),
+                }
+            )
+            continue
+
+        y = np.array([str(r["stressor"]) for r in cfg_records], dtype=object)
+        groups = np.array([str(r.get(group_key, r["case_id"])) for r in cfg_records], dtype=object)
+        workloads = np.array([str(r["workload"]) for r in cfg_records], dtype=object)
+        class_counts = pd.Series(y).value_counts().reindex(ANOMALIES, fill_value=0)
+        group_counts = (
+            pd.DataFrame({"y": y, "group": groups})
+            .drop_duplicates()
+            .groupby("y")["group"]
+            .nunique()
+            .reindex(ANOMALIES, fill_value=0)
+        )
+        min_class_count = int(class_counts.min())
+        min_group_count = int(group_counts.min())
+        if min_class_count < int(min_class_samples) or min_group_count < 2:
+            metric_rows.append(
+                {
+                    "config": cfg_name,
+                    "status": "skipped_insufficient_samples",
+                    "n_cases": int(len(cfg_records)),
+                    "top1_acc": np.nan,
+                    "top2_acc": np.nan,
+                    "balanced_acc": np.nan,
+                    "macro_f1": np.nan,
+                    "min_class_count": min_class_count,
+                    "min_group_count": min_group_count,
+                    "group_key": group_key,
+                    "include_workload": int(include_workload),
+                }
+            )
+            continue
+
+        X = np.vstack([np.asarray(r[vector_key], dtype=float) for r in cfg_records])
+        if include_workload:
+            workload_vocab = ordered_workloads(workloads)
+            W = np.zeros((len(cfg_records), len(workload_vocab)), dtype=float)
+            workload_index = {workload: idx for idx, workload in enumerate(workload_vocab)}
+            for i, workload in enumerate(workloads):
+                W[i, workload_index[workload]] = 1.0
+            X = np.hstack([X, W])
+
+        unique_groups = list(dict.fromkeys(groups))
+        fold_rows = []
+        for group in unique_groups:
+            test_mask = groups == group
+            train_mask = ~test_mask
+            y_train = y[train_mask]
+            if len(np.unique(y_train)) < len(ANOMALIES):
+                continue
+            model = make_pipeline(
+                StandardScaler(with_mean=False),
+                LogisticRegression(
+                    max_iter=5000,
+                    multi_class="auto",
+                    class_weight="balanced",
+                    solver="lbfgs",
+                ),
+            )
+            model.fit(X[train_mask], y_train)
+            pred = model.predict(X[test_mask])
+            proba = model.predict_proba(X[test_mask])
+            classes = model.classes_
+            for idx_local, record_idx in enumerate(np.where(test_mask)[0]):
+                top_order = np.argsort(proba[idx_local])[::-1]
+                top2 = [str(classes[j]) for j in top_order[:2]]
+                fold_rows.append(
+                    {
+                        "config": cfg_name,
+                        "case_id": cfg_records[record_idx]["case_id"],
+                        "base_case_id": cfg_records[record_idx]["base_case_id"],
+                        "repeat_tag": cfg_records[record_idx]["repeat_tag"],
+                        "workload": cfg_records[record_idx]["workload"],
+                        "group_id": group,
+                        "true_stressor": y[record_idx],
+                        "pred_stressor": str(pred[idx_local]),
+                        "is_correct": int(str(pred[idx_local]) == y[record_idx]),
+                        "top2_hit": int(y[record_idx] in top2),
+                        "top2_labels": "|".join(top2),
+                        "max_probability": float(np.max(proba[idx_local])),
+                    }
+                )
+
+        pred_part = pd.DataFrame(fold_rows)
+        if pred_part.empty:
+            metric_rows.append(
+                {
+                    "config": cfg_name,
+                    "status": "skipped_group_folds",
+                    "n_cases": int(len(cfg_records)),
+                    "top1_acc": np.nan,
+                    "top2_acc": np.nan,
+                    "balanced_acc": np.nan,
+                    "macro_f1": np.nan,
+                    "min_class_count": min_class_count,
+                    "min_group_count": min_group_count,
+                    "group_key": group_key,
+                    "include_workload": int(include_workload),
+                }
+            )
+            continue
+
+        pred_rows.extend(pred_part.to_dict(orient="records"))
+        metric_rows.append(
+            {
+                "config": cfg_name,
+                "status": "ok",
+                "n_cases": int(len(pred_part)),
+                "top1_acc": float(pred_part["is_correct"].mean()),
+                "top2_acc": float(pred_part["top2_hit"].mean()),
+                "balanced_acc": multiclass_balanced_accuracy(
+                    pred_part["true_stressor"],
+                    pred_part["pred_stressor"],
+                    ANOMALIES,
+                ),
+                "macro_f1": float(
+                    f1_score(
+                        pred_part["true_stressor"],
+                        pred_part["pred_stressor"],
+                        labels=ANOMALIES,
+                        average="macro",
+                        zero_division=0,
+                    )
+                ),
+                "min_class_count": min_class_count,
+                "min_group_count": min_group_count,
+                "group_key": group_key,
+                "include_workload": int(include_workload),
+            }
+        )
+
+    pred_df = pd.DataFrame(pred_rows).sort_values(["config", "workload", "case_id"]) if pred_rows else pd.DataFrame()
+    metrics_df = pd.DataFrame(metric_rows).sort_values("config")
+
+    final_cfg = "tier0_tier1_tier2"
+    d_final = pred_df[pred_df["config"] == final_cfg] if not pred_df.empty else pd.DataFrame()
+    if d_final.empty:
+        cm = pd.DataFrame(index=ANOMALIES, columns=ANOMALIES, data=0)
+    else:
+        cm_arr = confusion_matrix(
+            d_final["true_stressor"],
+            d_final["pred_stressor"],
+            labels=ANOMALIES,
+        )
+        cm = pd.DataFrame(cm_arr, index=ANOMALIES, columns=ANOMALIES)
+    cm.index.name = "true_stressor"
+    cm.columns.name = "pred_stressor"
+    return pred_df, metrics_df, cm
 
 
 def build_stressor_tier_contributions(diag_df: pd.DataFrame, config: str) -> pd.DataFrame:
@@ -2066,10 +2453,37 @@ def main() -> None:
         default="global",
         help="Evaluation protocol: workload_holdout (strict) or global benign split (paper-style).",
     )
+    ap.add_argument(
+        "--supervised_diagnosis",
+        choices=["auto", "off", "on"],
+        default="auto",
+        help="Optional supervised stressor diagnosis on expanded anomaly sets. Auto skips when repeats are too sparse.",
+    )
+    ap.add_argument(
+        "--supervised_min_class_samples",
+        type=int,
+        default=8,
+        help="Minimum anomaly samples per stressor before the supervised diagnosis path is allowed to train.",
+    )
+    ap.add_argument(
+        "--supervised_group_key",
+        choices=["base_case_id", "workload", "case_id"],
+        default="base_case_id",
+        help="Grouping key used to keep repeated runs from leaking across supervised diagnosis folds.",
+    )
+    ap.add_argument(
+        "--supervised_include_workload",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Include workload identity as an auxiliary feature in the supervised diagnosis path.",
+    )
     args = ap.parse_args()
 
     root = args.root.expanduser().resolve()
     tier_files = FEATURE_PROFILES[args.feature_profile]
+    cases = discover_cases(root, tier_files)
+    case_index = {case.case_id: case for case in cases}
+    workloads = ordered_workloads([case.workload for case in cases])
     out_dir = args.out_dir.expanduser().resolve() if args.out_dir else default_results_dir(
         root,
         protocol=args.protocol,
@@ -2080,7 +2494,8 @@ def main() -> None:
     fig_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"[INFO] feature_profile={args.feature_profile} tier_files={tier_files}")
-    tier_features = {t: common_features_per_tier(root, t, tier_files) for t in tier_files.keys()}
+    print(f"[INFO] discovered_cases={len(cases)} base_cases={len({case.base_case_id for case in cases})}")
+    tier_features = {t: common_features_per_tier(root, t, tier_files, cases=cases) for t in tier_files.keys()}
     for t, fs in tier_features.items():
         print(f"[INFO] {t}: common features={len(fs)}")
 
@@ -2095,7 +2510,7 @@ def main() -> None:
         print(f"[INFO] training config={cfg_name} tiers={tiers}")
         case_X = {}
         feature_names_cfg = None
-        for case in all_cases():
+        for case in cases:
             X, names = build_case_matrix(
                 root,
                 case,
@@ -2109,11 +2524,11 @@ def main() -> None:
                 feature_names_cfg = names
 
         if args.protocol == "workload_holdout":
-            for holdout_w in WORKLOADS:
+            for holdout_w in workloads:
                 train_benign = {
                     case_id: X
                     for case_id, X in case_X.items()
-                    if case_id.endswith("__NOMINAL") and not case_id.startswith(f"{holdout_w}__")
+                    if case_index[case_id].stressor == "NOMINAL" and case_index[case_id].workload != holdout_w
                 }
 
                 bundle = train_bundle(
@@ -2126,7 +2541,7 @@ def main() -> None:
                     ridge_lambda=args.ridge_lambda,
                 )
 
-                test_cases = [c for c in all_cases() if c.workload == holdout_w]
+                test_cases = [c for c in cases if c.workload == holdout_w]
                 for case in test_cases:
                     append_case_outputs(
                         preds=preds,
@@ -2163,7 +2578,11 @@ def main() -> None:
                     }
                 )
         else:
-            train_benign = {case_id: X for case_id, X in case_X.items() if case_id.endswith("__NOMINAL")}
+            train_benign = {
+                case.case_id: case_X[case.case_id]
+                for case in cases
+                if case.stressor == "NOMINAL"
+            }
             bundle = train_bundle(
                 train_benign_runs=train_benign,
                 feature_names=feature_names_cfg or [],
@@ -2173,7 +2592,7 @@ def main() -> None:
                 gain=args.gain,
                 ridge_lambda=args.ridge_lambda,
             )
-            for case in all_cases():
+            for case in cases:
                 append_case_outputs(
                     preds=preds,
                     diagnostic_records=diagnostic_records,
@@ -2209,17 +2628,31 @@ def main() -> None:
             )
         config_runtime[cfg_name] = perf_counter() - cfg_t0
 
-    pred_df = pd.DataFrame(preds).sort_values(["config", "workload", "stressor"])
+    pred_df = pd.DataFrame(preds).sort_values(["config", "workload", "stressor", "case_id"])
     pred_df["feature_profile"] = args.feature_profile
     fold_df = pd.DataFrame(fold_rows).sort_values(["config", "holdout_workload"])
     diag_df = pd.DataFrame([{k: v for k, v in row.items() if not k.startswith("_")} for row in diagnostic_records]).sort_values(
-        ["config", "workload", "stressor"]
+        ["config", "workload", "stressor", "case_id"]
     )
     diag_df["feature_profile"] = args.feature_profile
     block_df = pd.DataFrame(case_block_records)
     if not block_df.empty:
-        block_df = block_df.sort_values(["config", "workload", "stressor", "block_idx"])
+        block_df = block_df.sort_values(["config", "workload", "stressor", "case_id", "block_idx"])
         block_df["feature_profile"] = args.feature_profile
+    case_inventory_df = pd.DataFrame(
+        [
+            {
+                "case_id": case.case_id,
+                "base_case_id": case.base_case_id,
+                "repeat_tag": case.repeat_tag,
+                "repeat_index": case.repeat_index,
+                "workload": case.workload,
+                "stressor": case.stressor,
+                "label": case.label,
+            }
+            for case in cases
+        ]
+    )
 
     # Workload-conditioned score head: distance to workload nominal template.
     pred_df["nominal_template_score"] = np.nan
@@ -2259,13 +2692,23 @@ def main() -> None:
     final_cfg = "tier0_tier1_tier2"
     fin = pred_df[pred_df["config"] == final_cfg]
     stress_rows = []
-    neg = fin[fin["stressor"] == "NOMINAL"][["workload", "run_score", "run_score_wc"]].set_index("workload")
     for a in ANOMALIES:
-        pos = fin[fin["stressor"] == a][["workload", "run_score", "run_score_wc"]].set_index("workload")
-        m = neg.join(pos, lsuffix="_neg", rsuffix="_pos", how="inner")
-        y = np.array([0] * len(m) + [1] * len(m), dtype=int)
-        s_run = np.concatenate([m["run_score_neg"].to_numpy(dtype=float), m["run_score_pos"].to_numpy(dtype=float)])
-        s_wc = np.concatenate([m["run_score_wc_neg"].to_numpy(dtype=float), m["run_score_wc_pos"].to_numpy(dtype=float)])
+        neg_scores: List[float] = []
+        pos_scores: List[float] = []
+        neg_scores_wc: List[float] = []
+        pos_scores_wc: List[float] = []
+        for workload in workloads:
+            neg_part = fin[(fin["workload"] == workload) & (fin["stressor"] == "NOMINAL")]
+            pos_part = fin[(fin["workload"] == workload) & (fin["stressor"] == a)]
+            if neg_part.empty or pos_part.empty:
+                continue
+            neg_scores.extend(neg_part["run_score"].to_numpy(dtype=float).tolist())
+            pos_scores.extend(pos_part["run_score"].to_numpy(dtype=float).tolist())
+            neg_scores_wc.extend(neg_part["run_score_wc"].to_numpy(dtype=float).tolist())
+            pos_scores_wc.extend(pos_part["run_score_wc"].to_numpy(dtype=float).tolist())
+        y = np.array([0] * len(neg_scores) + [1] * len(pos_scores), dtype=int)
+        s_run = np.array([*neg_scores, *pos_scores], dtype=float)
+        s_wc = np.array([*neg_scores_wc, *pos_scores_wc], dtype=float)
         stress_rows.append(
             {
                 "feature_profile": args.feature_profile,
@@ -2274,14 +2717,14 @@ def main() -> None:
                 "pr_auc": safe_ap(y, s_run),
                 "roc_auc_wc": safe_auc(y, s_wc),
                 "pr_auc_wc": safe_ap(y, s_wc),
-                "median_neg_score": float(np.median(m["run_score_neg"])),
-                "median_pos_score": float(np.median(m["run_score_pos"])),
-                "median_neg_score_wc": float(np.median(m["run_score_wc_neg"])),
-                "median_pos_score_wc": float(np.median(m["run_score_wc_pos"])),
-                "pos_neg_ratio": float((np.median(m["run_score_pos"]) + 1e-6) / (np.median(m["run_score_neg"]) + 1e-6)),
-                "pos_neg_diff": float(np.median(m["run_score_pos"]) - np.median(m["run_score_neg"])),
-                "pos_neg_ratio_wc": float((np.median(m["run_score_wc_pos"]) + 1e-6) / (np.median(m["run_score_wc_neg"]) + 1e-6)),
-                "pos_neg_diff_wc": float(np.median(m["run_score_wc_pos"]) - np.median(m["run_score_wc_neg"])),
+                "median_neg_score": float(np.median(neg_scores)) if neg_scores else float("nan"),
+                "median_pos_score": float(np.median(pos_scores)) if pos_scores else float("nan"),
+                "median_neg_score_wc": float(np.median(neg_scores_wc)) if neg_scores_wc else float("nan"),
+                "median_pos_score_wc": float(np.median(pos_scores_wc)) if pos_scores_wc else float("nan"),
+                "pos_neg_ratio": float((np.median(pos_scores) + 1e-6) / (np.median(neg_scores) + 1e-6)) if neg_scores and pos_scores else float("nan"),
+                "pos_neg_diff": float(np.median(pos_scores) - np.median(neg_scores)) if neg_scores and pos_scores else float("nan"),
+                "pos_neg_ratio_wc": float((np.median(pos_scores_wc) + 1e-6) / (np.median(neg_scores_wc) + 1e-6)) if neg_scores_wc and pos_scores_wc else float("nan"),
+                "pos_neg_diff_wc": float(np.median(pos_scores_wc) - np.median(neg_scores_wc)) if neg_scores_wc and pos_scores_wc else float("nan"),
             }
         )
     stress_df = pd.DataFrame(stress_rows).sort_values("stressor")
@@ -2309,6 +2752,10 @@ def main() -> None:
         diagnostic_records,
         vector_key="_mechanism_vector_norm",
     )
+    diag_pred_family_df, diag_metrics_family_df, diag_cm_family = build_family_attribution(
+        diagnostic_records,
+        vector_key="_feature_contrib_run_norm",
+    )
     diag_pred_hier_df, diag_metrics_hier_df, diag_cm_hier = build_hierarchical_stressor_attribution(
         diagnostic_records,
         feature_vector_key="_feature_contrib_run_norm",
@@ -2323,16 +2770,50 @@ def main() -> None:
     mechanism_df = build_mechanism_summary(diag_df, config=final_cfg)
     sequential_df = build_sequential_metrics(pred_df)
     holdout_df = build_holdout_robustness_summary(fold_df, pred_df)
+    if args.supervised_diagnosis == "off":
+        diag_pred_supervised_df = pd.DataFrame()
+        diag_metrics_supervised_df = pd.DataFrame(
+            [
+                {
+                    "config": cfg_name,
+                    "status": "disabled",
+                    "n_cases": 0,
+                    "top1_acc": np.nan,
+                    "top2_acc": np.nan,
+                    "balanced_acc": np.nan,
+                    "macro_f1": np.nan,
+                    "min_class_count": 0,
+                    "min_group_count": 0,
+                    "group_key": args.supervised_group_key,
+                    "include_workload": int(args.supervised_include_workload),
+                }
+                for cfg_name in CONFIGS
+            ]
+        )
+        diag_cm_supervised = pd.DataFrame(index=ANOMALIES, columns=ANOMALIES, data=0)
+    else:
+        supervised_min_class_samples = 1 if args.supervised_diagnosis == "on" else args.supervised_min_class_samples
+        diag_pred_supervised_df, diag_metrics_supervised_df, diag_cm_supervised = build_supervised_stressor_diagnosis(
+            diagnostic_records,
+            vector_key="_feature_contrib_run_norm",
+            group_key=args.supervised_group_key,
+            include_workload=args.supervised_include_workload,
+            min_class_samples=supervised_min_class_samples,
+        )
     if not diag_metrics_feature_run_df.empty:
         diag_metrics_feature_run_df["feature_profile"] = args.feature_profile
     if not diag_metrics_feature_focus_df.empty:
         diag_metrics_feature_focus_df["feature_profile"] = args.feature_profile
     if not diag_metrics_df.empty:
         diag_metrics_df["feature_profile"] = args.feature_profile
+    if not diag_metrics_family_df.empty:
+        diag_metrics_family_df["feature_profile"] = args.feature_profile
     if not diag_metrics_hier_df.empty:
         diag_metrics_hier_df["feature_profile"] = args.feature_profile
     if not diag_metrics_hier_focus_df.empty:
         diag_metrics_hier_focus_df["feature_profile"] = args.feature_profile
+    if not diag_metrics_supervised_df.empty:
+        diag_metrics_supervised_df["feature_profile"] = args.feature_profile
     if not diag_abstain_sweep_df.empty:
         diag_abstain_sweep_df["feature_profile"] = args.feature_profile
     if not diag_abstain_sweep_focus_df.empty:
@@ -2363,6 +2844,14 @@ def main() -> None:
         diagnosis_mode_frames.append(
             diag_metrics_hier_focus_df.assign(diagnosis_target="hierarchical", diagnosis_mode="post_alert_window")
         )
+    if not diag_metrics_family_df.empty:
+        diagnosis_mode_frames.append(
+            diag_metrics_family_df.assign(diagnosis_target="family_level", diagnosis_mode="whole_run")
+        )
+    if not diag_metrics_supervised_df.empty and "top1_acc" in diag_metrics_supervised_df.columns:
+        diagnosis_mode_frames.append(
+            diag_metrics_supervised_df.assign(diagnosis_target="supervised", diagnosis_mode="whole_run")
+        )
     diagnosis_mode_comparison_df = (
         pd.concat(diagnosis_mode_frames, ignore_index=True, sort=False)
         if diagnosis_mode_frames
@@ -2381,6 +2870,7 @@ def main() -> None:
     ).sort_values("config")
 
     pred_df.to_csv(out_dir / "case_predictions.csv", index=False)
+    case_inventory_df.to_csv(out_dir / "case_inventory.csv", index=False)
     if not block_df.empty:
         block_df.to_csv(out_dir / "case_block_traces.csv", index=False)
     fold_df.to_csv(out_dir / "fold_metrics.csv", index=False)
@@ -2391,6 +2881,9 @@ def main() -> None:
     diag_pred_df.to_csv(out_dir / "stressor_diagnosis_predictions.csv", index=False)
     diag_metrics_df.to_csv(out_dir / "stressor_diagnosis_metrics.csv", index=False)
     diag_cm.to_csv(out_dir / "stressor_confusion_matrix.csv")
+    diag_pred_family_df.to_csv(out_dir / "stressor_family_diagnosis_predictions.csv", index=False)
+    diag_metrics_family_df.to_csv(out_dir / "stressor_family_diagnosis_metrics.csv", index=False)
+    diag_cm_family.to_csv(out_dir / "stressor_family_confusion_matrix.csv")
     diag_pred_feature_run_df.to_csv(out_dir / "stressor_feature_diagnosis_predictions.csv", index=False)
     diag_metrics_feature_run_df.to_csv(out_dir / "stressor_feature_diagnosis_metrics.csv", index=False)
     diag_cm_feature_run.to_csv(out_dir / "stressor_feature_confusion_matrix.csv")
@@ -2415,6 +2908,9 @@ def main() -> None:
     diag_metrics_hier_focus_df.to_csv(out_dir / "stressor_hierarchical_diagnosis_top_blocks_metrics.csv", index=False)
     diag_cm_hier_focus.to_csv(out_dir / "stressor_hierarchical_confusion_matrix_top_blocks.csv")
     diag_abstain_sweep_focus_df.to_csv(out_dir / "stressor_hierarchical_abstain_sweep_top_blocks.csv", index=False)
+    diag_pred_supervised_df.to_csv(out_dir / "stressor_supervised_diagnosis_predictions.csv", index=False)
+    diag_metrics_supervised_df.to_csv(out_dir / "stressor_supervised_diagnosis_metrics.csv", index=False)
+    diag_cm_supervised.to_csv(out_dir / "stressor_supervised_confusion_matrix.csv")
     diag_tier_df.to_csv(out_dir / "stressor_tier_contributions.csv", index=False)
     mechanism_df.to_csv(out_dir / "mechanism_group_summary.csv", index=False)
     sequential_df.to_csv(out_dir / "sequential_metrics.csv", index=False)
@@ -2434,11 +2930,17 @@ def main() -> None:
                 "persist_k": args.persist_k,
                 "gain": args.gain,
                 "ridge_lambda": args.ridge_lambda,
+                "n_cases_discovered": len(cases),
+                "n_base_cases_discovered": len({case.base_case_id for case in cases}),
                 "config_runtime_seconds": config_runtime,
                 "diagnosis_monotonic_tokens": list(DIAG_MONOTONIC_TOKENS),
                 "diagnosis_generic_memory_state_tokens": list(DIAG_GENERIC_MEMORY_STATE_TOKENS),
                 "diagnosis_generic_memory_state_factor": DIAG_GENERIC_MEMORY_STATE_FACTOR,
                 "diagnosis_window_blocks": DIAG_POST_ALERT_BLOCKS,
+                "supervised_diagnosis": args.supervised_diagnosis,
+                "supervised_min_class_samples": args.supervised_min_class_samples,
+                "supervised_group_key": args.supervised_group_key,
+                "supervised_include_workload": args.supervised_include_workload,
                 "phase_guard_workloads": sorted(PHASE_GUARD_WORKLOADS),
                 "phase_guard_smooth_window": PHASE_GUARD_SMOOTH_WINDOW,
                 "phase_guard_tolerance_quantile": PHASE_GUARD_TOL_QUANTILE,
@@ -2624,6 +3126,9 @@ def main() -> None:
         f"- Protocol: {args.protocol}, benign-only fit/calibration, block_B={args.block_B}, "
         f"alpha={args.alpha}, persist_k={args.persist_k}, gain={args.gain}"
     )
+    md.append(
+        f"- Case inventory: {len(cases)} runs across {len({case.base_case_id for case in cases})} workload-stressor bases."
+    )
     md.append("")
     md.append("## Overall")
     append_text_table(md, overall_df)
@@ -2653,6 +3158,10 @@ def main() -> None:
         md.append("- Mechanism-level diagnosis uses normalized mechanism centroids over workload-held residual summaries.")
         append_text_table(md, diag_metrics_df)
         md.append("")
+        if not diag_metrics_family_df.empty:
+            md.append("- Family-level diagnosis relaxes the label space from exact stressors to mechanism families while keeping the whole-run residual-attribution representation.")
+            append_text_table(md, diag_metrics_family_df)
+            md.append("")
         if not diag_metrics_hier_df.empty:
             md.append("## Hierarchical Diagnosis")
             md.append("- High-confidence diagnosis adds a mechanism-family gate and abstains on low-confidence cases; whole-run attribution is the default input.")
@@ -2686,6 +3195,11 @@ def main() -> None:
             md.append("## Final Config Mechanism Summary")
             append_text_table(md, mechanism_df)
             md.append("")
+        if not diag_metrics_supervised_df.empty:
+            md.append("## Supervised Diagnosis")
+            md.append("- This path is intended for expanded anomaly sets with repeated runs per workload-stressor pair. It is skipped automatically until each stressor has enough samples.")
+            append_text_table(md, diag_metrics_supervised_df)
+            md.append("")
     if not sequential_df.empty:
         md.append("## Sequential Decisioning")
         append_text_table(md, sequential_df)
@@ -2699,16 +3213,19 @@ def main() -> None:
         out_dir / "overall_metrics.csv",
         out_dir / "config_runtime_summary.csv",
         out_dir / "run_context.json",
+        out_dir / "case_inventory.csv",
         out_dir / "case_block_traces.csv",
         out_dir / "stressor_metrics_final_config.csv",
         out_dir / "sequential_metrics.csv",
         out_dir / "case_diagnosis_summary.csv",
         out_dir / "stressor_diagnosis_metrics.csv",
+        out_dir / "stressor_family_diagnosis_metrics.csv",
         out_dir / "stressor_feature_diagnosis_metrics.csv",
         out_dir / "stressor_feature_diagnosis_runlevel_metrics.csv",
         out_dir / "stressor_feature_diagnosis_post_alert_metrics.csv",
         out_dir / "stressor_feature_diagnosis_top_blocks_metrics.csv",
         out_dir / "stressor_hierarchical_diagnosis_metrics.csv",
+        out_dir / "stressor_supervised_diagnosis_metrics.csv",
         out_dir / "stressor_hierarchical_abstain_sweep.csv",
         out_dir / "stressor_hierarchical_diagnosis_post_alert_metrics.csv",
         out_dir / "stressor_hierarchical_abstain_sweep_post_alert.csv",
@@ -2717,7 +3234,9 @@ def main() -> None:
         out_dir / "diagnosis_mode_comparison.csv",
         out_dir / "mechanism_group_summary.csv",
         out_dir / "stressor_confusion_matrix.csv",
+        out_dir / "stressor_family_confusion_matrix.csv",
         out_dir / "stressor_hierarchical_confusion_matrix.csv",
+        out_dir / "stressor_supervised_confusion_matrix.csv",
         out_dir / "stressor_tier_contributions.csv",
         out_dir / "overall_metrics.tex",
         out_dir / "stressor_metrics_final_config.tex",
@@ -2746,6 +3265,9 @@ def main() -> None:
     if not diag_metrics_df.empty:
         print("[OK] stressor diagnosis metrics:")
         print(diag_metrics_df.to_string(index=False))
+    if not diag_metrics_family_df.empty:
+        print("[OK] family diagnosis metrics:")
+        print(diag_metrics_family_df.to_string(index=False))
     if not diag_metrics_feature_run_df.empty:
         print("[OK] feature diagnosis metrics (whole run default):")
         print(diag_metrics_feature_run_df.to_string(index=False))
@@ -2767,6 +3289,9 @@ def main() -> None:
     if not diagnosis_mode_comparison_df.empty:
         print("[OK] diagnosis mode comparison:")
         print(diagnosis_mode_comparison_df.to_string(index=False))
+    if not diag_metrics_supervised_df.empty:
+        print("[OK] supervised diagnosis metrics:")
+        print(diag_metrics_supervised_df.to_string(index=False))
     if not sequential_df.empty:
         print("[OK] sequential metrics:")
         print(sequential_df.to_string(index=False))

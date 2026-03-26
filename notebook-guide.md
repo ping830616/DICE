@@ -7,7 +7,7 @@ The digital twin is executed in the `Run End-to-End` section of `dice_results_an
 That execution cell calls `run_notebook_pipeline(...)`, which runs:
 - tier-level analysis artifact generation
 - the full benign-trained DICE digital-twin pipeline
-- the optional workload-holdout robustness pass
+- the optional cross-workload transfer pass
 - the optional tuning sweep
 
 ## What Only Defines Code?
@@ -26,16 +26,53 @@ Everything after `What Runs vs What Reads` mostly loads generated CSV/PNG output
 - `persist_k`: persistent-alert requirement
 - `gain`: fixed-gain synchronization strength
 - `ridge_lambda`: ridge regularization for the benign dynamics model
-- `RUN_HOLDOUT`: whether to run workload-holdout robustness
+- `RUN_HOLDOUT`: whether to run the cross-workload transfer pass
 - `INCLUDE_TUNING`: whether to run the tuning sweep
+
+## Recommended Reading Order
+
+After the notebook finishes, the clearest GitHub reading order is:
+
+1. `Run End-to-End`
+2. `Reader Guide and Main Claims`
+3. `Quick Paper-Safe Metrics`
+4. `Mixed vs Full Deployment Summary`
+5. `Operating-Point Rationale and Industry Metrics`
+6. `Diagnosis, Localization, and Hardware Scorecard`
+7. `Scenario diagnosis and localization figures`
+8. `Case-by-case onset and hotspot figures`
+9. `Six-Cell Paper Storyboard`
+
+These sections pull the main paper-facing outputs to the front of the notebook.
+
+## Released Operating Points
+
+The released paper-facing operating points are:
+
+- mixed: `gain=0.15`, `block_B=30`, `alpha=0.10`, `persist_k=1`
+- full: `gain=0.35`, `block_B=60`, `alpha=0.02`, `persist_k=1`
+
+These settings come from the two-stage sweep and are summarized in the notebook section `Operating-Point Rationale and Industry Metrics`.
+
+## Main Result Files
+
+If you want to inspect the results without reading the full notebook first, start here:
+
+- `results_itc_paper/comparison/industry_paper_scorecard_profiles.csv`
+- `results_itc_paper/comparison/industry_diagnosis_strength_profiles.csv`
+- `results_itc_paper/comparison/industry_timeline_profiles.csv`
+- `results_itc_paper/comparison/main_monitoring_profile_summary.csv`
+- `results_itc_paper/comparison/profile_config_comparison.csv`
+
+For timing and localization figures, use the notebook sections `Scenario diagnosis and localization figures` and `Case-by-case onset and hotspot figures`.
 
 ## Practical Reading Order
 
 1. `Execution Guard`
 2. `Notebook-Local Pipeline Engine`
 3. `Run End-to-End`
-4. `What Runs vs What Reads`
-5. result sections below that point
+4. `Reader Guide and Main Claims`
+5. front result sections below that point
 
 ## Split ITC Notebooks
 

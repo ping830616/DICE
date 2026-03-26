@@ -19,6 +19,22 @@ Open that notebook and run it from the first cell to the last cell. No repo bash
 - Optional uncertainty experiment: `tools/evaluate_dice_uncertainty.py`
 - Optional portable local LLM scorer: `tools/run_grounded_llm_local.py`
 
+## Start Here On GitHub
+
+If you want the same top-to-bottom story used for the ITC draft, open `dice_results_analysis.ipynb` and read the early sections in this order after running the notebook:
+
+1. `Run End-to-End`
+2. `Reader Guide and Main Claims`
+3. `Quick Paper-Safe Metrics`
+4. `Mixed vs Full Deployment Summary`
+5. `Operating-Point Rationale and Industry Metrics`
+6. `Diagnosis, Localization, and Hardware Scorecard`
+7. `Scenario diagnosis and localization figures`
+8. `Case-by-case onset and hotspot figures`
+9. `Six-Cell Paper Storyboard`
+
+These sections are placed near the front of the notebook so the GitHub page reads like a paper storyboard instead of a raw analysis dump.
+
 ## Step-By-Step Setup On Any Machine
 
 Clone the repo, or update an existing clone:
@@ -176,7 +192,7 @@ The main notebook is meant to be executed in this order:
 
 1. Validate the released repository and dataset layout.
 2. Build the analysis/setup figures and released-data inventory.
-3. Run the mixed and full DICE evaluations, including tuning, global evaluation, and holdout robustness when enabled.
+3. Run the mixed and full DICE evaluations, including tuning, global evaluation, and cross-workload transfer analysis when enabled.
 4. Generate the detection, diagnosis, attribution, uncertainty-aware, two-stage, and feature-budget summaries.
 5. Export the paper and appendix bundles.
 6. Export the grounded LLM triage case cards, model catalog, prompt bundles, and any saved scored LLM outputs that match the released portable baseline.
@@ -196,10 +212,15 @@ After a successful notebook run, the main artifacts are written under:
 - `data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/`
 - `data generation/dataset/ITC_M2Pro_DATA/results_portable/run_manifest.json`
 
+The `*_holdout*` directories keep the legacy file naming used by earlier scripts. In the paper-facing notebook and documentation, the same evaluation is described as cross-workload transfer.
+
 Key checkpoints:
 
 - `results_dice_full/overall_metrics.csv`
+- `results_dice_full/case_inventory.csv`
 - `results_dice_full/stressor_feature_diagnosis_metrics.csv`
+- `results_dice_full/stressor_family_diagnosis_metrics.csv`
+- `results_dice_full/stressor_supervised_diagnosis_metrics.csv`
 - `results_dice_full_full/overall_metrics.csv`
 - `results_dice_full_full/stressor_feature_diagnosis_metrics.csv`
 - `results_itc_paper/comparison/digital_twin_variant_summary_profiles.csv`
@@ -211,6 +232,113 @@ Key checkpoints:
 - `results_itc_appendix/mixed/llm_case_cards.csv`
 - `results_itc_appendix/full/llm_case_cards.csv`
 
+## Released Operating Points
+
+The notebook keeps the full sweeps, but the released paper-facing operating points are:
+
+- Mixed profile: `gain=0.15`, `block_B=30`, `alpha=0.10`, `persist_k=1`
+- Full profile: `gain=0.35`, `block_B=60`, `alpha=0.02`, `persist_k=1`
+
+These settings were selected from the two-stage sweep recorded in:
+
+- `results_itc_paper/comparison/tuning_parameter_sweep_best_points.csv`
+- `results_itc_paper/comparison/tuning_parameter_sweep_summary_profiles.csv`
+
+The notebook section `Operating-Point Rationale and Industry Metrics` explains why these settings were chosen. In short:
+
+- the mixed profile uses a lower synchronization gain and shorter block so sparse deployment-visible signals remain sensitive to early anomalies
+- the full profile uses a moderate gain and longer block so the richer telemetry set is more stable before scoring
+- the stage-two `alpha` and `persist_k` settings were selected to improve anomaly detection and diagnosis while keeping benign run alerts low
+
+## Suggested Complete Sweep Plan
+
+If you want to rerun the full design study, use this sweep structure:
+
+- Profiles: `mixed`, `full`
+- Configurations: `Tier-0`, `Tier-0/1`, `Tier-0/1/2`
+- Stage 1: `gain in {0.15, 0.25, 0.35, 0.50}` and `block_B in {30, 60, 90, 120}` with `alpha=0.05`, `persist_k=3`
+- Stage 2: fix the best Stage-1 pair, then sweep `alpha in {0.01, 0.02, 0.05, 0.10}` and `persist_k in {1, 2, 3, 5}`
+- Feature budgets: `10, 20, 30, 40, 50, 60, 70, 80, 90, 100` percent
+- Two-stage screening quantiles: `0.90, 0.95, 0.98`
+- Diagnosis views: whole-run, post-alert, and hierarchical selective diagnosis
+
+The notebook already uses this structure for the released paper and appendix bundles.
+
+## How To Read The Results
+
+The recommended paper-facing metrics are split into four groups.
+
+Monitoring quality:
+
+- `ROC-AUC`
+- `AUC-PR`
+- anomaly detection rate
+- benign run-alert rate
+- median time to detection
+
+Diagnosis quality:
+
+- exact `Top-1` accuracy
+- exact `Top-2` accuracy
+- selective `Top-2` accuracy at coverage
+- mechanism `Top-3` coverage
+- `Macro-F1` as a secondary diagnosis metric
+
+Localization quality:
+
+- first abnormal block time
+- second through fifth abnormal block times
+- dominant telemetry tier
+- dominant mechanism
+
+Resource-aware results:
+
+- low-overhead profile comparisons
+- feature-budget sweeps
+- projected DICE-score accelerator complexity
+
+## Where The Main Paper Claims Live
+
+Use these files first when drafting:
+
+- `results_itc_paper/comparison/industry_paper_scorecard_profiles.csv`
+- `results_itc_paper/comparison/industry_diagnosis_strength_profiles.csv`
+- `results_itc_paper/comparison/industry_timeline_profiles.csv`
+- `results_itc_paper/comparison/main_monitoring_profile_summary.csv`
+- `results_itc_paper/comparison/profile_config_comparison.csv`
+- `results_itc_paper/comparison/two_stage_dice_profiles.csv`
+- `results_itc_paper/comparison/projected_dice_score_accelerator_complexity_profiles.csv`
+
+The most important front-of-notebook cells load these same files and reformat them into paper-ready tables and figures.
+
+## Localization And Timing Outputs
+
+If you want figures that show where and when anomalies emerge, start with:
+
+- `results_itc_paper/comparison/industry_timeline_profiles.csv`
+- `results_itc_paper/comparison/industry_hardware_hotspots_profiles.csv`
+- `results_itc_paper/comparison/industry_hardware_feature_map_profiles.csv`
+- `results_itc_paper/comparison/industry_top_features_profiles.csv`
+- `results_itc_paper/comparison/figures/`
+
+The notebook sections `Scenario diagnosis and localization figures` and `Case-by-case onset and hotspot figures` turn these files into the main localization dashboards. They show:
+
+- when the first abnormal block appears
+- how quickly later abnormal blocks follow
+- which tier contributes most strongly
+- which mechanism and feature groups dominate the anomaly evidence
+
+## Cross-Workload Transfer Outputs
+
+For generalization across workloads, use:
+
+- `results_itc_paper/comparison/holdout_robustness_profiles.csv`
+- `results_itc_paper/comparison/uncertainty_holdout_profiles.csv`
+- `results_dice_full_holdout/`
+- `results_dice_full_full_holdout/`
+
+The filenames keep the historical `holdout` label, but the notebook and paper text refer to this evaluation as cross-workload transfer.
+
 ## Reproducibility Notes
 
 - The environment is pinned in [environment.yml](environment.yml) and [requirements.txt](requirements.txt).
@@ -220,6 +348,26 @@ Key checkpoints:
 - The practical goal is reproducible regenerated results from the released dataset, not bit-identical floating-point outputs across every OS, CPU, or BLAS stack.
 - Portable reproduction applies to the released results workflow, not to raw Tier-1/Tier-2 telemetry collection on arbitrary non-macOS hosts.
 - The scored local LLM baseline is reproducible from the released case cards and prompt bundle, but the exact regenerated text depends on using the same model revision and runtime settings recorded in the emitted `llm_runtime_*.json` files.
+
+## Expanded Diagnosis Workflows
+
+The main release still ships one run per workload-stressor pair, but the CLI pipeline now supports larger anomaly collections more directly:
+
+- repeated runs can be added as extra case directories with suffixes such as `BROWSER__CACHE__r01` and `BROWSER__CACHE__r02`
+- `results_dice_full/case_inventory.csv` records the discovered run inventory, base case id, and repeat tags
+- `stressor_family_diagnosis_metrics.csv` reports the relaxed three-family diagnosis setting (`memory_pressure`, `control_flow`, `synchronization`)
+- `stressor_supervised_diagnosis_metrics.csv` is reserved for expanded anomaly sets and stays in a skipped state until each stressor has enough samples to train a supervised model without leaking repeated runs across folds
+
+For terminal-first runs, the full script accepts these optional controls:
+
+```bash
+python tools/train_eval_dice_pipeline.py \
+  --feature_profile mixed \
+  --supervised_diagnosis auto \
+  --supervised_min_class_samples 8 \
+  --supervised_group_key base_case_id \
+  --supervised_include_workload
+```
 
 ## Optional Automated Path
 
