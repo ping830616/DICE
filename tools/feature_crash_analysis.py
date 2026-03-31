@@ -301,7 +301,7 @@ def plot_feature_panels(
         plt.Line2D([0], [0], color=colors["ABORT"], lw=2, label="Abort"),
         plt.Line2D([0], [0], color="#2563EB", lw=1.2, linestyle="--", label="Pilot warning"),
         plt.Line2D([0], [0], color="#DC2626", lw=1.4, linestyle="-", label="Crash"),
-        plt.Line2D([0], [0], color="#111827", lw=1.4, linestyle=":", label="Original ITC warning"),
+        plt.Line2D([0], [0], color="#111827", lw=1.4, linestyle=":", label="Original anomaly warning"),
     ]
     fig.legend(handles=handles, loc="upper center", ncol=6, frameon=False, bbox_to_anchor=(0.5, 1.02))
     fig.suptitle(title, fontsize=17)
@@ -465,7 +465,7 @@ def plot_feature_storyboard(
     axes[-1].set_xlabel("Time from run start (s)")
     if np.isfinite(reference_warning_s):
         axes[0].annotate(
-            f"Original warning {reference_warning_s:.0f}s",
+            f"Original anomaly warning {reference_warning_s:.0f}s",
             xy=(reference_warning_s, 0.98),
             xycoords=("data", "axes fraction"),
             xytext=(5, -6),
@@ -477,7 +477,7 @@ def plot_feature_storyboard(
         )
     if np.isfinite(pilot_warning_s):
         axes[0].annotate(
-            f"Pilot warning {pilot_warning_s:.0f}s",
+            f"Crash-pilot anomaly warning {pilot_warning_s:.0f}s",
             xy=(pilot_warning_s, 0.98),
             xycoords=("data", "axes fraction"),
             xytext=(5, -20),
@@ -507,8 +507,8 @@ def plot_feature_storyboard(
         plt.Line2D([0], [0], color=abort_color, lw=2.2, label="Abort robust z-score"),
         plt.Line2D([0], [0], color=control_color, lw=1.8, label="Control robust z-score"),
         plt.Line2D([0], [0], color=threshold_color, lw=1.2, linestyle="--", label=f"Divergence threshold (|z|={z_threshold:.1f})"),
-        plt.Line2D([0], [0], color=reference_color, lw=1.4, linestyle=":", label="Original ITC warning"),
-        plt.Line2D([0], [0], color=pilot_color, lw=1.5, linestyle="--", label="Crash-pilot warning"),
+        plt.Line2D([0], [0], color=reference_color, lw=1.4, linestyle=":", label="Original anomaly warning"),
+        plt.Line2D([0], [0], color=pilot_color, lw=1.5, linestyle="--", label="Crash-pilot anomaly warning"),
         plt.Line2D([0], [0], color=crash_color, lw=1.6, linestyle="-", label="Real crash"),
     ]
     fig.legend(handles=handles, loc="upper center", ncol=3, frameon=False, bbox_to_anchor=(0.5, 1.02))
@@ -531,7 +531,7 @@ def feature_report(
         f"- Workload: `{workload}`",
         f"- Stressor family: `{base_stressor}`",
         f"- Config: `{CONFIG_LABELS.get(config, config)}`",
-        f"- Original ITC warning: `{reference_warning_s:.1f}s`" if np.isfinite(reference_warning_s) else "- Original ITC warning: unavailable",
+        f"- Original anomaly warning: `{reference_warning_s:.1f}s`" if np.isfinite(reference_warning_s) else "- Original anomaly warning: unavailable",
         "",
         "## Feature onset summary",
         "",
@@ -650,7 +650,9 @@ def run_feature_analysis(
                         "tier": feature.tier,
                         "column_name": feature.column,
                         "reference_warning_s": reference_warning_s,
+                        "original_anomaly_warning_s": reference_warning_s,
                         "pilot_warning_s": warning_s,
+                        "crash_pilot_anomaly_warning_s": warning_s,
                         "crash_time_s": crash_s,
                         "feature_first_divergence_s": first_divergence_time(series_df, center, scale, z_threshold),
                         "feature_value_at_warning": nearest_value(series_df, warning_s),
@@ -679,13 +681,20 @@ def run_feature_analysis(
                 "base_stressor": base_stressor,
                 "original_case_id": f"{workload}__{base_stressor}",
                 "original_warning_s": reference_warning_s,
+                "original_anomaly_warning_s": reference_warning_s,
                 "original_top_feature_1": ref_top_feature,
                 "original_top_feature_2": ref_top_feature_2,
                 "pilot_control_case_id": control_case,
                 "pilot_abort_case_id": abort_case,
                 "pilot_warning_s": float(case_meta["ABORT"]["warning_s"]),
+                "crash_pilot_anomaly_warning_s": float(case_meta["ABORT"]["warning_s"]),
                 "crash_time_s": float(case_meta["ABORT"]["crash_s"]),
                 "warning_shift_s": (
+                    float(case_meta["ABORT"]["warning_s"]) - reference_warning_s
+                    if np.isfinite(reference_warning_s) and np.isfinite(float(case_meta["ABORT"]["warning_s"]))
+                    else float("nan")
+                ),
+                "anomaly_warning_shift_s": (
                     float(case_meta["ABORT"]["warning_s"]) - reference_warning_s
                     if np.isfinite(reference_warning_s) and np.isfinite(float(case_meta["ABORT"]["warning_s"]))
                     else float("nan")
