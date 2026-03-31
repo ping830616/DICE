@@ -19,6 +19,7 @@ Open that notebook and run it from the first cell to the last cell. No repo bash
 - Optional uncertainty experiment: `tools/evaluate_dice_uncertainty.py`
 - Optional crash-aware early-warning analysis: `tools/early_warning_analysis.py`
 - Optional crash-evidence card export: `tools/generate_crash_evidence_cards.py`
+- Optional feature-level crash analysis: `tools/feature_crash_analysis.py`
 - Optional portable local LLM scorer: `tools/run_grounded_llm_local.py`
 - Terminal crash collection runbooks: [data generation/docs/controlled-crash-harness.md](data%20generation/docs/controlled-crash-harness.md) and [data generation/docs/workload-matched-crash-matrix.md](data%20generation/docs/workload-matched-crash-matrix.md)
 
@@ -39,6 +40,7 @@ If you want the same top-to-bottom story used for the ITC draft, open `dice_resu
 11. `8E. Crash Evidence Cards and Artifact Gallery` to show paper-ready warning/crash evidence cards
 12. `8F. Controlled Crash-Harness Analysis` when you want to analyze the safe user-space crash dataset collected from the terminal
 13. `8G. Workload-Matched Crash Matrix` when you want crash-aware runs across the original four workloads after terminal collection
+14. `8H. Feature-Level Warning and Crash Trajectories` when you want richer per-column crash-pilot figures that still reference the original ITC anomaly warnings
 
 These sections are placed near the front of the notebook so the GitHub page reads like a paper storyboard instead of a raw analysis dump.
 
@@ -173,6 +175,18 @@ python tools/generate_crash_evidence_cards.py \
 ```
 
 The same command works for the full profile by swapping the `mixed` paths for `full`.
+
+For workload-matched crash pilots, you can also generate richer per-column feature plots that keep the original ITC warning time as a reference line:
+
+```bash
+python tools/feature_crash_analysis.py \
+  --dataset_root "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_py_ai_cache" \
+  --result_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_py_ai_cache/results_dice_workload_crash_mixed" \
+  --warning_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_py_ai_cache/results_workload_crash_paper/mixed" \
+  --out_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_py_ai_cache/results_feature_crash_analysis/mixed"
+```
+
+These feature-level figures supplement the original anomaly/localization results; they do not replace the main ITC tables and figures.
 
 ## Across Different Machines
 

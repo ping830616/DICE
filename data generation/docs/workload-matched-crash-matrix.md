@@ -192,7 +192,19 @@ python tools/generate_crash_evidence_cards.py \
   --title "DICE Workload-Matched Crash Gallery (Mixed Profile)"
 ```
 
-If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix`. The notebook now auto-detects the newest `ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_*` folder and prints the crash output locations before it runs.
+If you want richer per-column plots after the crash bundle exists, generate the feature-level overlay bundle with:
+
+```bash
+python tools/feature_crash_analysis.py \
+  --dataset_root "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix" \
+  --result_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/results_dice_workload_crash_mixed" \
+  --warning_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/results_itc_workload_crash/mixed" \
+  --out_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/results_feature_crash_analysis/mixed"
+```
+
+These feature-level figures keep the original ITC warning time as a reference line, so they complement the anomaly-only paper results instead of replacing them.
+
+If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix`, then `8H. Feature-Level Warning and Crash Trajectories`. The notebook now auto-detects the newest `ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_*` folder and prints the crash output locations before it runs.
 
 ## Safety Notes
 
