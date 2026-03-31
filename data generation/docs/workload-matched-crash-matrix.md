@@ -42,7 +42,7 @@ cd DICE/"data generation"
 python generate_workload_matched_crash_dataset.py \
   --phase recommended \
   --duration_s 240 \
-  --out_dir ./data_workload_crash_matrix \
+  --out_dir ./dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix \
   --tier1_alt_bin macmon \
   --tier2_template "Time Profiler" \
   --capture_crash_evidence \
@@ -66,7 +66,7 @@ If you want the anomaly onset and crash target to differ across workloads, use:
 python generate_workload_matched_crash_dataset.py \
   --phase recommended \
   --duration_s 240 \
-  --out_dir ./data_workload_crash_matrix \
+  --out_dir ./dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix \
   --schedule_profile staggered \
   --tier1_alt_bin macmon \
   --tier2_template "Time Profiler" \
@@ -95,7 +95,7 @@ python generate_workload_matched_crash_dataset.py \
   --warmup_s 10 \
   --ramp_s 20 \
   --hold_s 20 \
-  --out_dir ./data_workload_crash_smoke \
+  --out_dir ./dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_smoke \
   --workloads BROWSER,PY_AI \
   --stressors CACHE,ATOMIC \
   --wrapper_dry_run
@@ -109,7 +109,7 @@ For one-workload pilots, it is often clearer to run one stressor at a time with 
 python generate_workload_matched_crash_dataset.py \
   --phase recommended \
   --duration_s 240 \
-  --out_dir ./data_workload_crash_pilot_real_py_ai_cache \
+  --out_dir ./dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_py_ai_cache \
   --workloads PY_AI \
   --stressors CACHE \
   --schedule_profile staggered \
@@ -149,12 +149,12 @@ python src/dice/workload_crash_wrapper.py \
 
 The collector writes the normal DICE tier folders plus:
 
-- `data_workload_crash_matrix/case_inventory.csv`
-- `data_workload_crash_matrix/workload_crash_collection_config.json`
+- `dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/case_inventory.csv`
+- `dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/workload_crash_collection_config.json`
 
 When crash capture is enabled, it also writes:
 
-- `data_workload_crash_matrix/crash_evidence/crash_events.csv`
+- `dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/crash_evidence/crash_events.csv`
 - per-case copied diagnostic reports
 - filtered `log show` windows
 - optional screenshots
@@ -167,32 +167,32 @@ After collection, run the standard detector on the new dataset root:
 cd DICE
 
 python tools/train_eval_dice_pipeline.py \
-  --root "data generation/data_workload_crash_matrix" \
+  --root "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix" \
   --feature_profile mixed \
   --protocol global \
-  --out_dir "data generation/data_workload_crash_matrix/results_dice_workload_crash_mixed"
+  --out_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/results_dice_workload_crash_mixed"
 ```
 
 Then export the warning-to-crash bundle:
 
 ```bash
 python tools/early_warning_analysis.py \
-  --result_dir "data generation/data_workload_crash_matrix/results_dice_workload_crash_mixed" \
-  --out_dir "data generation/data_workload_crash_matrix/results_itc_workload_crash/mixed" \
+  --result_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/results_dice_workload_crash_mixed" \
+  --out_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/results_itc_workload_crash/mixed" \
   --feature_profile mixed \
-  --crash_manifest "data generation/data_workload_crash_matrix/crash_evidence/crash_events.csv"
+  --crash_manifest "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/crash_evidence/crash_events.csv"
 ```
 
 You can then render crash-evidence cards in the same way as the main ITC path:
 
 ```bash
 python tools/generate_crash_evidence_cards.py \
-  --alignment_csv "data generation/data_workload_crash_matrix/results_itc_workload_crash/mixed/early_warning_crash_alignment.csv" \
-  --out_dir "data generation/data_workload_crash_matrix/results_itc_workload_crash/mixed/crash_evidence_cards" \
+  --alignment_csv "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/results_itc_workload_crash/mixed/early_warning_crash_alignment.csv" \
+  --out_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/results_itc_workload_crash/mixed/crash_evidence_cards" \
   --title "DICE Workload-Matched Crash Gallery (Mixed Profile)"
 ```
 
-If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix`. The notebook now auto-detects the newest `data_workload_crash_*` pilot folder and prints the crash output locations before it runs.
+If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix`. The notebook now auto-detects the newest `ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_*` folder and prints the crash output locations before it runs.
 
 ## Safety Notes
 

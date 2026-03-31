@@ -155,7 +155,7 @@ If you want the same crash-aware workflow extended across the original four work
 python generate_workload_matched_crash_dataset.py \
   --phase recommended \
   --duration_s 240 \
-  --out_dir ./data_workload_crash_matrix \
+  --out_dir ./dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix \
   --schedule_profile staggered \
   --tier1_alt_bin macmon \
   --tier2_template "Time Profiler" \
@@ -164,7 +164,7 @@ python generate_workload_matched_crash_dataset.py \
   --wrapper_gui
 ```
 
-That path creates one `NOMINAL` case plus `*_CONTROL` and `*_ABORT` variants for each selected anomaly family under each original workload. `--schedule_profile staggered` gives each workload a different anomaly-onset/crash target so the warning and lead-time results are less synchronized across workloads. Start smaller with `--workloads` and `--stressors` if you want a pilot run first.
+That path creates one `NOMINAL` case plus `*_CONTROL` and `*_ABORT` variants for each selected anomaly family under each original workload. `--schedule_profile staggered` gives each workload a different anomaly-onset/crash target so the warning and lead-time results are less synchronized across workloads. By default, this keeps the crash pilots under `dataset/ITC_M2Pro_DATA/workload_crash_pilots/` so they stay next to the main ITC dataset without mixing with the released anomaly bundle. Start smaller with `--workloads` and `--stressors` if you want a pilot run first.
 
 After collection, you can either run:
 
@@ -184,13 +184,13 @@ For the workload-matched crash matrix, analyze the new dataset root with:
 ```bash
 cd DICE
 python tools/train_eval_dice_pipeline.py \
-  --root "data generation/data_workload_crash_matrix" \
+  --root "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix" \
   --feature_profile mixed \
   --protocol global \
-  --out_dir "data generation/data_workload_crash_matrix/results_dice_workload_crash_mixed"
+  --out_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_matrix/results_dice_workload_crash_mixed"
 ```
 
-Then open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix` if you want the notebook-side summary, lead-time tables, and crash-card preview for that dataset. The notebook auto-detects the newest `data_workload_crash_*` dataset root.
+Then open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix` if you want the notebook-side summary, lead-time tables, and crash-card preview for that dataset. The notebook auto-detects the newest `ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_*` dataset root first, then falls back to the older `data generation/data_workload_crash_*` locations.
 
 If you prefer to run the tiers separately:
 
