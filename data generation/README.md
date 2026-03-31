@@ -17,6 +17,7 @@ The repository now supports the public Apple Silicon collection procedure direct
 4. Follow the practical collection runbook: [docs/end-to-end.md](docs/end-to-end.md)
 5. Review the collection methodology used for the ITC dataset: [docs/ITC_COLLECTION_METHODOLOGY.md](docs/ITC_COLLECTION_METHODOLOGY.md)
 6. Use the feature references if you need harmonized column descriptions: [docs/feature-dictionary.md](docs/feature-dictionary.md) and [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
+7. For crash-aware recollection and early-warning manifests: [docs/crash-evidence.md](docs/crash-evidence.md)
 
 ## Dataset Release
 
@@ -114,6 +115,22 @@ mkdir -p "$OUT"
 ```bash
 python generate_dataset.py --phase recommended --duration_s 1000 --out_dir "$OUT" --tier1_alt_bin macmon --tier2_template "Time Profiler"
 ```
+
+To capture reproducible crash evidence during recollection, add:
+
+```bash
+python generate_dataset.py \
+  --phase recommended \
+  --duration_s 1000 \
+  --out_dir "$OUT" \
+  --tier1_alt_bin macmon \
+  --tier2_template "Time Profiler" \
+  --capture_crash_evidence \
+  --crash_log_grace_s 60
+```
+
+This writes `crash_evidence/crash_events.csv` plus per-case copied diagnostic reports and filtered `log show` windows.
+After `early_warning_crash_alignment.csv` has been exported, you can also generate paper-ready crash evidence cards with `python ../tools/generate_crash_evidence_cards.py ...` as documented in [docs/crash-evidence.md](docs/crash-evidence.md).
 
 If you prefer to run the tiers separately:
 
@@ -214,6 +231,7 @@ DICE/
       tier1_alt_macmon.py
       tier2_xctrace_parse.py
       run_itc_two_phase.py
+      crash_evidence.py
     tools/
       export_release_snapshot.py
       validate_itc_dataset.py

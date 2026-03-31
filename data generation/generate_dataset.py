@@ -101,6 +101,9 @@ def main():
     ap.add_argument("--scripts_dir", "--scripts-dir", dest="scripts_dir", type=Path, default=REPO_ROOT / "scripts")
     ap.add_argument("--tier2_template", "--tier2-template", dest="tier2_template", default="Time Profiler")
     ap.add_argument("--tier1_alt_bin", "--tier1-alt-bin", dest="tier1_alt_bin", default="macmon")
+    ap.add_argument("--capture_crash_evidence", "--capture-crash-evidence", dest="capture_crash_evidence", action="store_true")
+    ap.add_argument("--capture_crash_screenshot", "--capture-crash-screenshot", dest="capture_crash_screenshot", action="store_true")
+    ap.add_argument("--crash_log_grace_s", "--crash-log-grace-s", dest="crash_log_grace_s", type=int, default=60)
     args = ap.parse_args()
 
     out_root = Path(args.out_dir)
@@ -124,6 +127,9 @@ def main():
                 c.label,
                 args.duration_s,
                 out_root=out_root,
+                capture_crash_evidence=args.capture_crash_evidence,
+                crash_log_grace_s=args.crash_log_grace_s,
+                capture_crash_screenshot=args.capture_crash_screenshot,
             ),
             args.duration_s,
         )
@@ -139,6 +145,9 @@ def main():
                 args.duration_s,
                 out_root=out_root,
                 scripts_dir=scripts_dir,
+                capture_crash_evidence=args.capture_crash_evidence,
+                crash_log_grace_s=args.crash_log_grace_s,
+                capture_crash_screenshot=args.capture_crash_screenshot,
             ),
             args.duration_s,
         )
@@ -155,6 +164,9 @@ def main():
                 out_root=out_root,
                 scripts_dir=scripts_dir,
                 macmon_bin=args.tier1_alt_bin,
+                capture_crash_evidence=args.capture_crash_evidence,
+                crash_log_grace_s=args.crash_log_grace_s,
+                capture_crash_screenshot=args.capture_crash_screenshot,
             ),
             args.duration_s,
         )
@@ -171,6 +183,9 @@ def main():
                     out_root=out_root,
                     scripts_dir=scripts_dir,
                     macmon_bin=args.tier1_alt_bin,
+                    capture_crash_evidence=args.capture_crash_evidence,
+                    crash_log_grace_s=args.crash_log_grace_s,
+                    capture_crash_screenshot=args.capture_crash_screenshot,
                 ),
                 args.duration_s,
             )
@@ -186,6 +201,9 @@ def main():
                     args.duration_s,
                     out_root=out_root,
                     scripts_dir=scripts_dir,
+                    capture_crash_evidence=args.capture_crash_evidence,
+                    crash_log_grace_s=args.crash_log_grace_s,
+                    capture_crash_screenshot=args.capture_crash_screenshot,
                 ),
                 args.duration_s,
             )
@@ -205,6 +223,9 @@ def main():
                 out_root=out_root,
                 scripts_dir=scripts_dir,
                 template=args.tier2_template,
+                capture_crash_evidence=args.capture_crash_evidence,
+                crash_log_grace_s=args.crash_log_grace_s,
+                capture_crash_screenshot=args.capture_crash_screenshot,
             ),
             args.duration_s,
         )
@@ -221,6 +242,9 @@ def main():
                     out_root=out_root,
                     scripts_dir=scripts_dir,
                     template=args.tier2_template,
+                    capture_crash_evidence=args.capture_crash_evidence,
+                    crash_log_grace_s=args.crash_log_grace_s,
+                    capture_crash_screenshot=args.capture_crash_screenshot,
                 ),
                 args.duration_s,
             )

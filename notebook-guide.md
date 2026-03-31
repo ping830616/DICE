@@ -42,6 +42,8 @@ After the notebook finishes, the clearest GitHub reading order is:
 7. `Scenario diagnosis and localization figures`
 8. `Case-by-case onset and hotspot figures`
 9. `Six-Cell Paper Storyboard`
+10. `8D. Early-Warning Readiness and Crash Lead Time`
+11. `8E. Crash Evidence Cards and Artifact Gallery`
 
 These sections pull the main paper-facing outputs to the front of the notebook.
 
@@ -64,7 +66,17 @@ If you want to inspect the results without reading the full notebook first, star
 - `results_itc_paper/comparison/main_monitoring_profile_summary.csv`
 - `results_itc_paper/comparison/profile_config_comparison.csv`
 
+If a crash manifest has been collected, the notebook also exports:
+
+- `results_itc_paper/<profile>/early_warning_case_summary.csv`
+- `results_itc_paper/<profile>/early_warning_metrics.csv`
+- `results_itc_paper/<profile>/fig_early_warning_timeline.png`
+- `results_itc_paper/<profile>/early_warning_crash_alignment.csv`
+- `results_itc_paper/<profile>/crash_evidence_cards/` after running `tools/generate_crash_evidence_cards.py`
+
 For timing and localization figures, use the notebook sections `Scenario diagnosis and localization figures` and `Case-by-case onset and hotspot figures`.
+For crash-aware lead-time analysis, use the notebook section `8D. Early-Warning Readiness and Crash Lead Time`.
+For paper-ready evidence panels, use the notebook section `8E. Crash Evidence Cards and Artifact Gallery`.
 
 ## Practical Reading Order
 

@@ -38,14 +38,52 @@ def runtime_availability() -> dict[str, bool]:
     return modules
 
 
+def load_optional_early_warning_summary(out_full: Path, feature_profile: str) -> pd.DataFrame:
+    dataset_root = out_full.parent
+    candidates = [
+        out_full / "early_warning_case_summary.csv",
+        dataset_root / "results_itc_paper" / feature_profile / "early_warning_case_summary.csv",
+        dataset_root / "results_itc_appendix" / feature_profile / "early_warning_case_summary.csv",
+    ]
+    for path in candidates:
+        if path.exists():
+            return pd.read_csv(path)
+    return pd.DataFrame()
+
+
 def export_llm_case_cards(out_full: Path, appendix_full: Path) -> pd.DataFrame:
     appendix_full.mkdir(parents=True, exist_ok=True)
     case_diag = pd.read_csv(out_full / "case_diagnosis_summary.csv")
+    feature_profile = ""
+    if "feature_profile" in case_diag.columns and case_diag["feature_profile"].notna().any():
+        feature_profile = str(case_diag["feature_profile"].dropna().astype(str).mode().iloc[0])
     cards = case_diag[case_diag["config"] == "tier0_tier1_tier2"].copy()
     if "label" in cards.columns:
         cards = cards[cards["label"] == 1].copy()
     elif "stressor" in cards.columns:
         cards = cards[cards["stressor"].astype(str) != "NOMINAL"].copy()
+    early_warning = load_optional_early_warning_summary(out_full, feature_profile) if feature_profile else pd.DataFrame()
+    if not early_warning.empty:
+        keep_warning_cols = [
+            "case_id",
+            "warning_source",
+            "first_warning_s",
+            "first_warning_window_start_s",
+            "first_warning_window_end_s",
+            "warning_dominant_tier",
+            "warning_dominant_mechanism",
+            "warning_top_feature_1",
+            "warning_top_feature_score_1",
+            "warning_top_feature_2",
+            "warning_top_feature_score_2",
+        ]
+        merge_cols = [col for col in keep_warning_cols if col in early_warning.columns]
+        if merge_cols:
+            cards = cards.merge(
+                early_warning[merge_cols].drop_duplicates(subset=["case_id"]),
+                on="case_id",
+                how="left",
+            )
     keep_cols = [
         "case_id",
         "workload",
@@ -76,6 +114,16 @@ def export_llm_case_cards(out_full: Path, appendix_full: Path) -> pd.DataFrame:
         "top_mechanism_score_2",
         "top_mechanism_3",
         "top_mechanism_score_3",
+        "warning_source",
+        "first_warning_s",
+        "first_warning_window_start_s",
+        "first_warning_window_end_s",
+        "warning_dominant_tier",
+        "warning_dominant_mechanism",
+        "warning_top_feature_1",
+        "warning_top_feature_score_1",
+        "warning_top_feature_2",
+        "warning_top_feature_score_2",
     ]
     cards = cards[[c for c in keep_cols if c in cards.columns]].copy()
     supported_tier_threshold = 0.05
@@ -111,6 +159,19 @@ def export_llm_case_cards(out_full: Path, appendix_full: Path) -> pd.DataFrame:
                 if pd.notna(row.get(f"top_mechanism_{i}"))
             ],
         }
+        if pd.notna(row.get("first_warning_s")):
+            payload["early_warning"] = {
+                "warning_source": row.get("warning_source"),
+                "first_warning_s": row.get("first_warning_s"),
+                "first_warning_window_start_s": row.get("first_warning_window_start_s"),
+                "first_warning_window_end_s": row.get("first_warning_window_end_s"),
+                "warning_dominant_tier": row.get("warning_dominant_tier"),
+                "warning_dominant_mechanism": row.get("warning_dominant_mechanism"),
+                "warning_top_features": [
+                    {"name": row.get("warning_top_feature_1"), "score": row.get("warning_top_feature_score_1")},
+                    {"name": row.get("warning_top_feature_2"), "score": row.get("warning_top_feature_score_2")},
+                ],
+            }
         return json.dumps(payload, sort_keys=True)
 
     def _grounded_evidence_text(row: pd.Series) -> str:
@@ -157,6 +218,23 @@ def export_llm_case_cards(out_full: Path, appendix_full: Path) -> pd.DataFrame:
             "top_features: " + (", ".join(top_features) if top_features else "none"),
             "top_mechanisms: " + (", ".join(top_mechanisms) if top_mechanisms else "none"),
         ]
+        if pd.notna(row.get("first_warning_s")):
+            lines.extend(
+                [
+                    f"first_warning_s: {float(row.get('first_warning_s')):.1f}",
+                    f"warning_source: {row.get('warning_source')}",
+                    f"warning_interval_s: {float(row.get('first_warning_window_start_s', 0.0)):.1f}-{float(row.get('first_warning_window_end_s', 0.0)):.1f}",
+                    "warning_features: "
+                    + ", ".join(
+                        f"{name} ({float(score):.3f})"
+                        for name, score in [
+                            (row.get("warning_top_feature_1"), row.get("warning_top_feature_score_1")),
+                            (row.get("warning_top_feature_2"), row.get("warning_top_feature_score_2")),
+                        ]
+                        if pd.notna(name)
+                    ),
+                ]
+            )
         return "\n".join(lines)
 
     cards["diagnostic_case_card_json"] = cards.apply(_case_card_json, axis=1)
@@ -166,6 +244,7 @@ def export_llm_case_cards(out_full: Path, appendix_full: Path) -> pd.DataFrame:
             "You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. "
             "Use only the supplied evidence block. Do not quote or restate full JSON. "
             "Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. "
+            "If a first-warning time is listed, fold it into the reviewer note. "
             "Do not mention any tier, mechanism, or feature that is not explicitly listed.\n\n"
             f"Grounded evidence:\n{s}"
         )
@@ -174,6 +253,7 @@ def export_llm_case_cards(out_full: Path, appendix_full: Path) -> pd.DataFrame:
         lambda s: (
             "Use only the supplied DICE evidence block. Write exactly five lines with these labels: "
             "severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. "
+            "If warning timing is listed, mention whether it suggests early-warning potential. "
             "Do not mention any tier, mechanism, or feature that is not explicitly listed.\n\n"
             f"Grounded evidence:\n{s}"
         )
@@ -182,6 +262,7 @@ def export_llm_case_cards(out_full: Path, appendix_full: Path) -> pd.DataFrame:
         lambda s: (
             "Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. "
             "Each step must cite the specific listed feature or mechanism that motivated it. "
+            "If warning timing is listed, allow one step to focus on validating the early-warning path. "
             "Do not mention any unsupported signals.\n\n"
             f"Grounded evidence:\n{s}"
         )

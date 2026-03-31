@@ -24,6 +24,7 @@ The main paper should emphasize:
    - time-to-detect under persistent alerting
    - final-config mechanism diagnosis metrics
    - tier and mechanism contribution figures
+   - optional crash-aware early-warning lead time when a crash manifest is available
 3. The portability story:
    - released dataset
    - pinned environment
@@ -72,6 +73,7 @@ The updated portable analysis path now adds:
 - sequential decision metrics including false alarms and time-to-detect
 - mechanism-group diagnosis summaries in addition to raw feature attribution
 - workload-holdout robustness as a portable drift proxy
+- optional crash-aware early-warning analysis that pairs the first persistent anomaly with a reproducible crash-evidence manifest
 - packaged paper and appendix artifact folders
 
 This keeps the code portable because all of these artifacts are generated from the released CSV dataset with pinned Python dependencies and without macOS-only collection tools.

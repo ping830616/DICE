@@ -17,6 +17,8 @@ Open that notebook and run it from the first cell to the last cell. No repo bash
 - ITC notebook suite: [itc_notebooks/README.md](itc_notebooks/README.md)
 - Paper-method notes: [itc-paper-methodology.md](itc-paper-methodology.md)
 - Optional uncertainty experiment: `tools/evaluate_dice_uncertainty.py`
+- Optional crash-aware early-warning analysis: `tools/early_warning_analysis.py`
+- Optional crash-evidence card export: `tools/generate_crash_evidence_cards.py`
 - Optional portable local LLM scorer: `tools/run_grounded_llm_local.py`
 
 ## Start Here On GitHub
@@ -32,6 +34,8 @@ If you want the same top-to-bottom story used for the ITC draft, open `dice_resu
 7. `Scenario diagnosis and localization figures`
 8. `Case-by-case onset and hotspot figures`
 9. `Six-Cell Paper Storyboard`
+10. `8D. Early-Warning Readiness and Crash Lead Time` when a crash manifest is available
+11. `8E. Crash Evidence Cards and Artifact Gallery` to show paper-ready warning/crash evidence cards
 
 These sections are placed near the front of the notebook so the GitHub page reads like a paper storyboard instead of a raw analysis dump.
 
@@ -144,6 +148,29 @@ python tools/run_grounded_llm_local.py \
 
 These commands write the paper-facing uncertainty summaries, scored LLM outputs, grounding summaries, and runtime metadata under the released dataset tree so the notebook can pick them up automatically.
 
+Crash-aware early warning is optional because the released processed dataset does not include a crash manifest. When you recollect data with crash evidence enabled, generate the case-level warning and lead-time bundle with:
+
+```bash
+python tools/early_warning_analysis.py \
+  --result_dir "data generation/dataset/ITC_M2Pro_DATA/results_dice_full" \
+  --out_dir "data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/mixed" \
+  --feature_profile mixed \
+  --crash_manifest "data generation/dataset/ITC_M2Pro_DATA/crash_evidence/crash_events.csv"
+```
+
+Repeat with `results_dice_full_full` and `results_itc_paper/full` for the full profile.
+
+To generate a paper-ready crash-evidence gallery after `early_warning_crash_alignment.csv` exists:
+
+```bash
+python tools/generate_crash_evidence_cards.py \
+  --alignment_csv "data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/mixed/early_warning_crash_alignment.csv" \
+  --out_dir "data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/mixed/crash_evidence_cards" \
+  --title "DICE Crash Evidence Gallery (Mixed Profile)"
+```
+
+The same command works for the full profile by swapping the `mixed` paths for `full`.
+
 ## Across Different Machines
 
 To compare notebook runs across machines, keep these aligned:
@@ -194,8 +221,9 @@ The main notebook is meant to be executed in this order:
 2. Build the analysis/setup figures and released-data inventory.
 3. Run the mixed and full DICE evaluations, including tuning, global evaluation, and cross-workload transfer analysis when enabled.
 4. Generate the detection, diagnosis, attribution, uncertainty-aware, two-stage, and feature-budget summaries.
-5. Export the paper and appendix bundles.
-6. Export the grounded LLM triage case cards, model catalog, prompt bundles, and any saved scored LLM outputs that match the released portable baseline.
+5. If a crash manifest exists, export the crash-aware early-warning tables and lead-time figures.
+6. Export the paper and appendix bundles.
+7. Export the grounded LLM triage case cards, model catalog, prompt bundles, and any saved scored LLM outputs that match the released portable baseline.
 
 If you prefer the split paper-oriented workflow, use the notebook order in [itc_notebooks/README.md](itc_notebooks/README.md).
 
