@@ -36,6 +36,7 @@ If you want the same top-to-bottom story used for the ITC draft, open `dice_resu
 9. `Six-Cell Paper Storyboard`
 10. `8D. Early-Warning Readiness and Crash Lead Time` when a crash manifest is available
 11. `8E. Crash Evidence Cards and Artifact Gallery` to show paper-ready warning/crash evidence cards
+12. `8F. Controlled Crash-Harness Analysis` when you want to analyze the safe user-space crash dataset collected from the terminal
 
 These sections are placed near the front of the notebook so the GitHub page reads like a paper storyboard instead of a raw analysis dump.
 

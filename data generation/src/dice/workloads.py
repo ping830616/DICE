@@ -1,4 +1,5 @@
-import os, time, threading, random, zlib
+import os, time, threading, random, zlib, sys, subprocess
+from pathlib import Path
 import numpy as np
 import urllib.request
 from .cfg import SEED
@@ -70,11 +71,43 @@ def workload_stats_streaming(stop_evt: threading.Event):
         _ = float(x.sum()); _ = float(x.mean())
         x[::16] += 1.0
 
+
+def workload_crash_app(stop_evt: threading.Event):
+    _seed_all()
+    while not stop_evt.is_set():
+        time.sleep(0.2)
+
+
+def _crash_harness_path() -> Path:
+    return Path(__file__).resolve().with_name("crash_harness.py")
+
+
+def _run_crash_harness_subprocess(scenario: str, stop_evt: threading.Event):
+    script = _crash_harness_path()
+    cmd = [sys.executable, str(script), "--scenario", str(scenario)]
+    proc = subprocess.Popen(cmd)
+    try:
+        while not stop_evt.is_set():
+            rc = proc.poll()
+            if rc is not None:
+                # Abort scenarios are expected to exit via SIGABRT (-6 on macOS).
+                return
+            time.sleep(0.25)
+    finally:
+        if proc.poll() is None:
+            proc.terminate()
+            try:
+                proc.wait(timeout=3.0)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait(timeout=3.0)
+
 def run_workload(workload: str, stop_evt: threading.Event):
     if workload == "BROWSER": return workload_browser(stop_evt)
     if workload == "VIDEO_SW": return workload_video_sw(stop_evt)
     if workload == "PY_AI": return workload_ai_numpy_torch(stop_evt, phase_s=5.0)
     if workload == "PY_STATS": return workload_stats_streaming(stop_evt)
+    if workload == "CRASH_APP": return workload_crash_app(stop_evt)
     raise ValueError(f"Unknown workload: {workload}")
 
 def run_stressor(stressor: str, stop_evt: threading.Event):
@@ -82,6 +115,9 @@ def run_stressor(stressor: str, stop_evt: threading.Event):
     if stressor == "NOMINAL":
         while not stop_evt.is_set(): time.sleep(0.2)
         return
+
+    if stressor in {"MEM_RAMP_CONTROL", "MEM_RAMP_ABORT", "CPU_RAMP_CONTROL", "CPU_RAMP_ABORT"}:
+        return _run_crash_harness_subprocess(stressor, stop_evt)
 
     if stressor == "MEMBW":
         arr = np.zeros((200_000_000,), dtype=np.uint8)

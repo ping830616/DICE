@@ -18,6 +18,7 @@ The repository now supports the public Apple Silicon collection procedure direct
 5. Review the collection methodology used for the ITC dataset: [docs/ITC_COLLECTION_METHODOLOGY.md](docs/ITC_COLLECTION_METHODOLOGY.md)
 6. Use the feature references if you need harmonized column descriptions: [docs/feature-dictionary.md](docs/feature-dictionary.md) and [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
 7. For crash-aware recollection and early-warning manifests: [docs/crash-evidence.md](docs/crash-evidence.md)
+8. For safe user-space crash experiments on a daily laptop: [docs/controlled-crash-harness.md](docs/controlled-crash-harness.md)
 
 ## Dataset Release
 
@@ -131,6 +132,34 @@ python generate_dataset.py \
 
 This writes `crash_evidence/crash_events.csv` plus per-case copied diagnostic reports and filtered `log show` windows.
 After `early_warning_crash_alignment.csv` has been exported, you can also generate paper-ready crash evidence cards with `python ../tools/generate_crash_evidence_cards.py ...` as documented in [docs/crash-evidence.md](docs/crash-evidence.md).
+
+If you want **real crash artifacts** without risking a full-machine crash on your laptop, use the dedicated crash harness:
+
+```bash
+python generate_crash_harness_dataset.py \
+  --phase recommended \
+  --duration_s 300 \
+  --out_dir ./data_crash_harness \
+  --tier1_alt_bin macmon \
+  --tier2_template "Time Profiler" \
+  --capture_crash_evidence \
+  --capture_crash_screenshot
+```
+
+That path is terminal-first. The notebook is used later for analysis.
+
+After collection, you can either run:
+
+```bash
+cd DICE
+python tools/train_eval_dice_pipeline.py \
+  --root "data generation/data_crash_harness" \
+  --feature_profile mixed \
+  --protocol global \
+  --out_dir "data generation/data_crash_harness/results_dice_crash_harness_mixed"
+```
+
+or open `dice_results_analysis.ipynb` and run `8F. Controlled Crash-Harness Analysis` for the crash-focused notebook summary, early-warning alignment table, and evidence-card preview.
 
 If you prefer to run the tiers separately:
 

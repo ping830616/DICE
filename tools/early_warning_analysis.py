@@ -89,6 +89,13 @@ def infer_profile_label(feature_profile: str) -> str:
     return PROFILE_LABELS.get(str(feature_profile), str(feature_profile).title())
 
 
+def ordered_categories(values: Iterable[object], preferred: list[str]) -> list[str]:
+    observed = [str(value) for value in values if pd.notna(value)]
+    extras = sorted({value for value in observed if value not in preferred})
+    present_preferred = [value for value in preferred if value in observed]
+    return [*present_preferred, *extras]
+
+
 def markdown_table(df: pd.DataFrame) -> str:
     cols = list(df.columns)
     header = "| " + " | ".join(cols) + " |"
@@ -199,8 +206,10 @@ def build_warning_summary(
     out = pd.DataFrame(rows)
     if out.empty:
         return out
-    out["workload"] = pd.Categorical(out["workload"], WORKLOAD_ORDER, ordered=True)
-    out["stressor"] = pd.Categorical(out["stressor"], STRESSOR_ORDER, ordered=True)
+    workload_order = ordered_categories(out["workload"], WORKLOAD_ORDER)
+    stressor_order = ordered_categories(out["stressor"], STRESSOR_ORDER)
+    out["workload"] = pd.Categorical(out["workload"], workload_order, ordered=True)
+    out["stressor"] = pd.Categorical(out["stressor"], stressor_order, ordered=True)
     return out.sort_values(["workload", "stressor", "case_id"]).reset_index(drop=True)
 
 
@@ -528,7 +537,8 @@ def plot_lead_time_by_workload(by_workload: pd.DataFrame, out_png: Path) -> None
         view = by_workload.copy()
         view["workload"] = view["scope_value"]
         view = view[view["scope"] == "workload"].copy()
-        view["workload"] = pd.Categorical(view["workload"], WORKLOAD_ORDER, ordered=True)
+        workload_order = ordered_categories(view["workload"], WORKLOAD_ORDER)
+        view["workload"] = pd.Categorical(view["workload"], workload_order, ordered=True)
         view = view.sort_values("workload")
         xpos = np.arange(len(view))
         ax.bar(xpos, view["warning_recall_before_crash"], color="#2563EB", width=0.48, label="Warning recall")

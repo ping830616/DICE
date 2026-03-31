@@ -4,6 +4,10 @@ The released `ITC_M2Pro_DATA` snapshot does not include a crash manifest. As a r
 
 This repo now supports a reproducible crash-evidence path for future recollection.
 
+If you need a safe way to generate **real user-space crash artifacts** on a daily laptop, use the dedicated harness described in [controlled-crash-harness.md](controlled-crash-harness.md). That path is terminal-first and avoids intentionally provoking a kernel panic or full-machine freeze.
+
+The crash-harness collector also writes `case_inventory.csv` and `crash_harness_collection_config.json` so later analysis can recover the intended benign/anomalous labels and collection schedule directly from the dataset root.
+
 ## What Gets Captured
 
 When `generate_dataset.py` or `run_itc_two_phase.py` is launched with `--capture_crash_evidence`, DICE writes:
@@ -105,6 +109,8 @@ This writes:
 - `cards/<case_id>.md`: per-case Markdown card with log and report excerpts
 
 If the alignment table was produced without a crash manifest, the generator still renders warning-only template cards so you can validate the layout before recollection.
+
+If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8F. Controlled Crash-Harness Analysis`. That section reuses the same detector, early-warning exporter, and crash-card generator on `data generation/data_crash_harness/`.
 
 ## Interpretation
 

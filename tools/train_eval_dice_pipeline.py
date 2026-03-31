@@ -61,6 +61,10 @@ STRESSOR_FAMILY = {
     "MEMBW": "memory_pressure",
     "BRANCH": "control_flow",
     "ATOMIC": "synchronization",
+    "MEM_RAMP_CONTROL": "benign",
+    "CPU_RAMP_CONTROL": "benign",
+    "MEM_RAMP_ABORT": "memory_pressure",
+    "CPU_RAMP_ABORT": "scheduler_runtime",
 }
 DIAGNOSIS_FAMILIES = ["memory_pressure", "control_flow", "synchronization"]
 
@@ -138,6 +142,10 @@ STRESSOR_COLORS = {
     "CACHE": "#577590",
     "MEMBW": "#F4A261",
     "TLB": "#8D5A97",
+    "MEM_RAMP_ABORT": "#C44E52",
+    "CPU_RAMP_ABORT": "#4C78A8",
+    "MEM_RAMP_CONTROL": "#A7C7E7",
+    "CPU_RAMP_CONTROL": "#9EC1A3",
 }
 SQRT3 = float(np.sqrt(3.0))
 SQRT2 = float(np.sqrt(2.0))
@@ -149,6 +157,7 @@ DIAG_CONFIDENCE_GATE_QUANTILE = 0.45
 class CaseRef:
     workload: str
     stressor: str
+    label_name: str = ""
     repeat_tag: str = ""
     raw_case_id: str | None = None
 
@@ -164,7 +173,11 @@ class CaseRef:
 
     @property
     def label(self) -> int:
-        return 0 if self.stressor == "NOMINAL" else 1
+        return 0 if self.label_text == "NOMINAL" else 1
+
+    @property
+    def label_text(self) -> str:
+        return normalize_case_label(self.label_name, self.stressor)
 
     @property
     def repeat_index(self) -> int:
@@ -201,16 +214,75 @@ def ordered_stressors(values: Sequence[str]) -> List[str]:
     return sorted(set(values), key=lambda item: (order.get(str(item), len(order)), str(item)))
 
 
-def parse_case_dir_name(case_id: str) -> CaseRef | None:
+def normalize_case_label(label_name: object, stressor: str) -> str:
+    raw = "" if label_name is None else str(label_name).strip().upper()
+    if raw in {"", "NAN", "NONE"}:
+        return "NOMINAL" if str(stressor) == "NOMINAL" else "ANOMALY"
+    if raw in {"0", "0.0", "NOMINAL", "BENIGN", "NORMAL"}:
+        return "NOMINAL"
+    if raw in {"1", "1.0", "ANOMALY", "ANOMALOUS", "FAULT", "POSITIVE"}:
+        return "ANOMALY"
+    return "NOMINAL" if str(stressor) == "NOMINAL" else "ANOMALY"
+
+
+def load_case_label_map(root: Path, case_ids: Sequence[str]) -> Dict[str, str]:
+    label_map: Dict[str, str] = {}
+    inventory_candidates = [
+        root / "case_inventory.csv",
+        root / "meta" / "case_inventory.csv",
+    ]
+    for inventory_path in inventory_candidates:
+        if not inventory_path.exists():
+            continue
+        try:
+            inv = pd.read_csv(inventory_path)
+        except Exception:
+            continue
+        if "case_id" not in inv.columns:
+            continue
+        label_col = next((col for col in ["label_name", "label"] if col in inv.columns), None)
+        if label_col is None:
+            continue
+        for row in inv[["case_id", label_col]].dropna(subset=["case_id"]).itertuples(index=False):
+            case_id_value = str(row.case_id)
+            label_map[case_id_value] = normalize_case_label(getattr(row, label_col), case_id_value.split("__", 2)[1] if "__" in case_id_value else "")
+
+    meta_root = root / "meta"
+    if meta_root.exists():
+        for case_id in case_ids:
+            if case_id in label_map:
+                continue
+            meta_dir = meta_root / case_id
+            if not meta_dir.exists():
+                continue
+            for meta_path in sorted(meta_dir.glob("meta_tier*.json")):
+                try:
+                    meta = json.loads(meta_path.read_text())
+                except Exception:
+                    continue
+                if "label" in meta:
+                    parts = str(case_id).split("__", 2)
+                    stressor = parts[1] if len(parts) > 1 else ""
+                    label_map[str(case_id)] = normalize_case_label(meta.get("label"), stressor)
+                    break
+
+    return label_map
+
+
+def parse_case_dir_name(case_id: str, label_name: object | None = None) -> CaseRef | None:
     parts = str(case_id).split("__")
     if len(parts) < 2:
         return None
     workload = parts[0]
     stressor = parts[1]
-    if workload not in WORKLOADS or stressor not in STRESSORS:
-        return None
     repeat_tag = "__".join(parts[2:]) if len(parts) > 2 else ""
-    return CaseRef(workload=workload, stressor=stressor, repeat_tag=repeat_tag, raw_case_id=str(case_id))
+    return CaseRef(
+        workload=workload,
+        stressor=stressor,
+        label_name=normalize_case_label(label_name, stressor),
+        repeat_tag=repeat_tag,
+        raw_case_id=str(case_id),
+    )
 
 
 def discover_cases(root: Path, tier_files: Dict[str, str]) -> List[CaseRef]:
@@ -227,16 +299,21 @@ def discover_cases(root: Path, tier_files: Dict[str, str]) -> List[CaseRef]:
         tier_case_sets[tier] = case_ids
 
     shared_case_ids = sorted(set.intersection(*tier_case_sets.values())) if tier_case_sets else []
-    cases = [parse_case_dir_name(case_id) for case_id in shared_case_ids]
+    label_map = load_case_label_map(root, shared_case_ids)
+    cases = [parse_case_dir_name(case_id, label_map.get(case_id)) for case_id in shared_case_ids]
     valid_cases = [case for case in cases if case is not None]
     if not valid_cases:
         raise RuntimeError(f"No valid cases discovered under {root}")
 
+    workload_order = {name: idx for idx, name in enumerate(WORKLOADS)}
+    stressor_order = {name: idx for idx, name in enumerate(STRESSORS)}
     return sorted(
         valid_cases,
         key=lambda case: (
-            WORKLOADS.index(case.workload),
-            STRESSORS.index(case.stressor),
+            workload_order.get(case.workload, len(workload_order)),
+            case.workload,
+            stressor_order.get(case.stressor, len(stressor_order)),
+            case.stressor,
             case.repeat_index,
             case.repeat_tag,
             case.case_id,
@@ -716,7 +793,7 @@ def finite_percentile(x: Sequence[float], q: float) -> float:
 
 def workload_conditioned_scores(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
     nominal_map = (
-        df[df["stressor"] == "NOMINAL"]
+        df[df["label"] == 0]
         .groupby("workload", sort=False)["run_score"]
         .median()
         .to_dict()
@@ -1366,6 +1443,7 @@ def build_diagnostic_record(
         "repeat_index": case.repeat_index,
         "workload": case.workload,
         "stressor": case.stressor,
+        "label_name": case.label_text,
         "stressor_family": stressor_family(case.stressor),
         "label": case.label,
         "diagnosis_block_mode": str(diagnosis_meta.get("diagnosis_block_mode", "none")),
@@ -1450,6 +1528,7 @@ def append_case_outputs(
             "case_id": case.case_id,
             "workload": case.workload,
             "stressor": case.stressor,
+            "label_name": case.label_text,
             "label": case.label,
             **metrics,
             "n_features": len(bundle.feature_names),
@@ -1464,6 +1543,7 @@ def append_case_outputs(
                 "case_id": case.case_id,
                 "workload": case.workload,
                 "stressor": case.stressor,
+                "label_name": case.label_text,
                 "label": case.label,
                 **row,
             }
@@ -2484,6 +2564,23 @@ def main() -> None:
     cases = discover_cases(root, tier_files)
     case_index = {case.case_id: case for case in cases}
     workloads = ordered_workloads([case.workload for case in cases])
+    stressors = ordered_stressors([case.stressor for case in cases])
+    anomalies = [
+        stressor
+        for stressor in stressors
+        if any(case.stressor == stressor and case.label == 1 for case in cases)
+    ]
+    if not anomalies:
+        raise RuntimeError("No anomalous cases were discovered. DICE evaluation requires at least one anomalous run.")
+    global WORKLOADS, STRESSORS, ANOMALIES
+    WORKLOADS = workloads
+    STRESSORS = stressors
+    ANOMALIES = anomalies
+    if args.protocol == "workload_holdout" and len(workloads) < 2:
+        raise ValueError(
+            "The workload_holdout protocol requires at least two workloads in the dataset. "
+            "Use --protocol global for single-workload datasets such as the crash harness."
+        )
     out_dir = args.out_dir.expanduser().resolve() if args.out_dir else default_results_dir(
         root,
         protocol=args.protocol,
@@ -2528,7 +2625,7 @@ def main() -> None:
                 train_benign = {
                     case_id: X
                     for case_id, X in case_X.items()
-                    if case_index[case_id].stressor == "NOMINAL" and case_index[case_id].workload != holdout_w
+                    if case_index[case_id].label == 0 and case_index[case_id].workload != holdout_w
                 }
 
                 bundle = train_bundle(
@@ -2581,7 +2678,7 @@ def main() -> None:
             train_benign = {
                 case.case_id: case_X[case.case_id]
                 for case in cases
-                if case.stressor == "NOMINAL"
+                if case.label == 0
             }
             bundle = train_bundle(
                 train_benign_runs=train_benign,
@@ -2648,6 +2745,7 @@ def main() -> None:
                 "repeat_index": case.repeat_index,
                 "workload": case.workload,
                 "stressor": case.stressor,
+                "label_name": case.label_text,
                 "label": case.label,
             }
             for case in cases
@@ -2692,13 +2790,13 @@ def main() -> None:
     final_cfg = "tier0_tier1_tier2"
     fin = pred_df[pred_df["config"] == final_cfg]
     stress_rows = []
-    for a in ANOMALIES:
+    for a in anomalies:
         neg_scores: List[float] = []
         pos_scores: List[float] = []
         neg_scores_wc: List[float] = []
         pos_scores_wc: List[float] = []
         for workload in workloads:
-            neg_part = fin[(fin["workload"] == workload) & (fin["stressor"] == "NOMINAL")]
+            neg_part = fin[(fin["workload"] == workload) & (fin["label"] == 0)]
             pos_part = fin[(fin["workload"] == workload) & (fin["stressor"] == a)]
             if neg_part.empty or pos_part.empty:
                 continue
@@ -2930,6 +3028,9 @@ def main() -> None:
                 "persist_k": args.persist_k,
                 "gain": args.gain,
                 "ridge_lambda": args.ridge_lambda,
+                "workloads_discovered": workloads,
+                "stressors_discovered": stressors,
+                "anomalies_discovered": anomalies,
                 "n_cases_discovered": len(cases),
                 "n_base_cases_discovered": len({case.base_case_id for case in cases}),
                 "config_runtime_seconds": config_runtime,

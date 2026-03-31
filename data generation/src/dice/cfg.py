@@ -7,6 +7,14 @@ SEED = 1337
 
 WORKLOADS = ["BROWSER", "VIDEO_SW", "PY_AI", "PY_STATS"]
 STRESSORS = ["NOMINAL", "CACHE", "TLB", "BRANCH", "MEMBW", "ATOMIC"]
+CRASH_HARNESS_WORKLOAD = "CRASH_APP"
+CRASH_HARNESS_CASES = [
+    ("NOMINAL", "NOMINAL"),
+    ("MEM_RAMP_CONTROL", "NOMINAL"),
+    ("MEM_RAMP_ABORT", "ANOMALY"),
+    ("CPU_RAMP_CONTROL", "NOMINAL"),
+    ("CPU_RAMP_ABORT", "ANOMALY"),
+]
 
 TIER1_CORE_FIELDS = [
     "cpu_power_w", "gpu_power_w", "ane_power_w",
@@ -90,6 +98,10 @@ def all_cases() -> List[Case]:
         for s in STRESSORS:
             out.append(Case(w, s, "NOMINAL" if s == "NOMINAL" else "ANOMALY"))
     return out
+
+
+def crash_harness_cases() -> List[Case]:
+    return [Case(CRASH_HARNESS_WORKLOAD, stressor, label) for stressor, label in CRASH_HARNESS_CASES]
 
 def case_id(w: str, s: str) -> str:
     return f"{w}__{s}"
