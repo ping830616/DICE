@@ -15,6 +15,17 @@ REPO_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 WRAPPER_COMPLETION_GRACE_S = 5
+SCHEDULE_ENV_KEYS = [
+    "DICE_MATCHED_WORKLOAD_CRASH_WARMUP_S",
+    "DICE_MATCHED_WORKLOAD_CRASH_RAMP_S",
+    "DICE_MATCHED_WORKLOAD_CRASH_HOLD_S",
+]
+STAGGERED_WORKLOAD_SCHEDULES = {
+    "BROWSER": {"warmup_s": 25.0, "ramp_s": 105.0, "hold_s": 30.0},
+    "VIDEO_SW": {"warmup_s": 50.0, "ramp_s": 95.0, "hold_s": 25.0},
+    "PY_AI": {"warmup_s": 65.0, "ramp_s": 115.0, "hold_s": 30.0},
+    "PY_STATS": {"warmup_s": 35.0, "ramp_s": 130.0, "hold_s": 25.0},
+}
 
 from dice.cfg import (
     ANOMALOUS_STRESSORS,
@@ -83,10 +94,36 @@ def print_tier_timing_note(phase: str, duration_s: int, n_cases: int) -> None:
     print(note)
 
 
-def write_case_inventory(out_root: Path, cases, args: argparse.Namespace) -> None:
+def workload_schedule_for_case(workload: str, args: argparse.Namespace) -> dict[str, float]:
+    if args.schedule_profile == "staggered":
+        if workload not in STAGGERED_WORKLOAD_SCHEDULES:
+            raise ValueError(f"No staggered schedule is defined for workload: {workload}")
+        return dict(STAGGERED_WORKLOAD_SCHEDULES[workload])
+    return {
+        "warmup_s": float(args.warmup_s),
+        "ramp_s": float(args.ramp_s),
+        "hold_s": float(args.hold_s),
+    }
+
+
+def build_workload_schedule_map(workloads: list[str], args: argparse.Namespace) -> dict[str, dict[str, float]]:
+    return {workload: workload_schedule_for_case(workload, args) for workload in workloads}
+
+
+def schedule_summary(schedule: dict[str, float]) -> str:
+    return (
+        f"warmup={schedule['warmup_s']:.0f}s "
+        f"ramp={schedule['ramp_s']:.0f}s "
+        f"hold={schedule['hold_s']:.0f}s "
+        f"crash≈{schedule['warmup_s'] + schedule['ramp_s'] + schedule['hold_s']:.0f}s"
+    )
+
+
+def write_case_inventory(out_root: Path, cases, args: argparse.Namespace, schedule_map: dict[str, dict[str, float]]) -> None:
     rows = []
     for case in cases:
         parsed = parse_workload_crash_stressor(case.stressor)
+        schedule = dict(schedule_map[case.workload])
         if parsed is None:
             base_stressor = case.stressor
             crash_mode = "NONE"
@@ -101,6 +138,11 @@ def write_case_inventory(out_root: Path, cases, args: argparse.Namespace) -> Non
                 "crash_mode": crash_mode,
                 "label_name": case.label,
                 "label": 0 if str(case.label).upper() == "NOMINAL" else 1,
+                "warmup_s": float(schedule["warmup_s"]),
+                "ramp_s": float(schedule["ramp_s"]),
+                "hold_s": float(schedule["hold_s"]),
+                "anomaly_onset_target_s": float(schedule["warmup_s"]),
+                "crash_target_s": float(schedule["warmup_s"] + schedule["ramp_s"] + schedule["hold_s"]),
             }
         )
 
@@ -119,25 +161,30 @@ def write_case_inventory(out_root: Path, cases, args: argparse.Namespace) -> Non
         "workloads": parse_csv_list(args.workloads, WORKLOADS),
         "stressors": parse_csv_list(args.stressors, ANOMALOUS_STRESSORS),
         "include_nominal": bool(args.include_nominal),
+        "schedule_profile": str(args.schedule_profile),
         "wrapper_gui": bool(args.wrapper_gui),
         "wrapper_dry_run": bool(args.wrapper_dry_run),
         "capture_crash_evidence": bool(args.capture_crash_evidence),
         "capture_crash_screenshot": bool(args.capture_crash_screenshot),
         "tier1_alt_bin": str(args.tier1_alt_bin),
         "tier2_template": str(args.tier2_template),
+        "workload_schedules": schedule_map,
         "cases": rows,
     }
     (out_root / "workload_crash_collection_config.json").write_text(json.dumps(collection_config, indent=2) + "\n")
 
 
 def apply_wrapper_env(args: argparse.Namespace) -> None:
-    env_updates = {
-        "DICE_MATCHED_WORKLOAD_CRASH_WARMUP_S": str(float(args.warmup_s)),
-        "DICE_MATCHED_WORKLOAD_CRASH_RAMP_S": str(float(args.ramp_s)),
-        "DICE_MATCHED_WORKLOAD_CRASH_HOLD_S": str(float(args.hold_s)),
-    }
-    for key, value in env_updates.items():
-        os.environ[key] = value
+    for key in SCHEDULE_ENV_KEYS:
+        os.environ.pop(key, None)
+    if args.schedule_profile == "uniform":
+        env_updates = {
+            "DICE_MATCHED_WORKLOAD_CRASH_WARMUP_S": str(float(args.warmup_s)),
+            "DICE_MATCHED_WORKLOAD_CRASH_RAMP_S": str(float(args.ramp_s)),
+            "DICE_MATCHED_WORKLOAD_CRASH_HOLD_S": str(float(args.hold_s)),
+        }
+        for key, value in env_updates.items():
+            os.environ[key] = value
     if args.wrapper_gui:
         os.environ["DICE_MATCHED_WORKLOAD_CRASH_GUI"] = "1"
     else:
@@ -149,8 +196,9 @@ def apply_wrapper_env(args: argparse.Namespace) -> None:
 
 
 @contextmanager
-def case_wrapper_env(case) -> None:
+def case_wrapper_env(case, schedule_map: dict[str, dict[str, float]]) -> None:
     parsed = parse_workload_crash_stressor(case.stressor)
+    schedule = dict(schedule_map[case.workload])
     updates = {}
     if parsed is not None:
         base_stressor, mode = parsed
@@ -158,11 +206,15 @@ def case_wrapper_env(case) -> None:
             "DICE_MATCHED_WORKLOAD_CRASH_WORKLOAD": str(case.workload),
             "DICE_MATCHED_WORKLOAD_CRASH_STRESSOR": str(base_stressor),
             "DICE_MATCHED_WORKLOAD_CRASH_MODE": str(mode),
+            "DICE_MATCHED_WORKLOAD_CRASH_WARMUP_S": str(float(schedule["warmup_s"])),
+            "DICE_MATCHED_WORKLOAD_CRASH_RAMP_S": str(float(schedule["ramp_s"])),
+            "DICE_MATCHED_WORKLOAD_CRASH_HOLD_S": str(float(schedule["hold_s"])),
         }
     keys = [
         "DICE_MATCHED_WORKLOAD_CRASH_WORKLOAD",
         "DICE_MATCHED_WORKLOAD_CRASH_STRESSOR",
         "DICE_MATCHED_WORKLOAD_CRASH_MODE",
+        *SCHEDULE_ENV_KEYS,
     ]
     old_values = {key: os.environ.get(key) for key in keys}
     try:
@@ -179,7 +231,7 @@ def case_wrapper_env(case) -> None:
                 os.environ[key] = value
 
 
-def run_phase(phase: str, cases, runner, duration_s: int) -> None:
+def run_phase(phase: str, cases, runner, duration_s: int, schedule_map: dict[str, dict[str, float]]) -> None:
     tier_start = perf_counter()
     total = len(cases)
     print(f"[DICE workload-crash] Generating {phase} for {total} cases...")
@@ -188,9 +240,10 @@ def run_phase(phase: str, cases, runner, duration_s: int) -> None:
     for idx, case in enumerate(cases, start=1):
         cid = case_id(case.workload, case.stressor)
         case_start = perf_counter()
-        print(f"[DICE workload-crash] [{phase}] {idx}/{total} starting {cid}")
+        schedule = dict(schedule_map[case.workload])
+        print(f"[DICE workload-crash] [{phase}] {idx}/{total} starting {cid} [{schedule_summary(schedule)}]")
         try:
-            with case_wrapper_env(case):
+            with case_wrapper_env(case, schedule_map):
                 runner(case)
         except Exception:
             case_elapsed = perf_counter() - case_start
@@ -232,19 +285,23 @@ def main() -> None:
     ap.add_argument("--workloads", default=",".join(WORKLOADS))
     ap.add_argument("--stressors", default=",".join(ANOMALOUS_STRESSORS))
     ap.add_argument("--include_nominal", "--include-nominal", dest="include_nominal", action=argparse.BooleanOptionalAction, default=True)
+    ap.add_argument(
+        "--schedule_profile",
+        "--schedule-profile",
+        dest="schedule_profile",
+        choices=["uniform", "staggered"],
+        default="uniform",
+        help=(
+            "Wrapper timing profile. 'uniform' uses the global warmup/ramp/hold values for every workload; "
+            "'staggered' uses workload-specific schedules so anomaly onset and crash targets differ by workload."
+        ),
+    )
     ap.add_argument("--warmup_s", "--warmup-s", dest="warmup_s", type=float, default=45.0)
     ap.add_argument("--ramp_s", "--ramp-s", dest="ramp_s", type=float, default=120.0)
     ap.add_argument("--hold_s", "--hold-s", dest="hold_s", type=float, default=45.0)
     ap.add_argument("--wrapper_gui", "--wrapper-gui", dest="wrapper_gui", action="store_true")
     ap.add_argument("--wrapper_dry_run", "--wrapper-dry-run", dest="wrapper_dry_run", action="store_true")
     args = ap.parse_args()
-
-    min_duration = int(round(args.warmup_s + args.ramp_s + args.hold_s + WRAPPER_COMPLETION_GRACE_S))
-    if args.duration_s < min_duration:
-        raise ValueError(
-            "duration_s is too short for the requested workload-crash schedule. "
-            f"Set duration_s to at least warmup_s + ramp_s + hold_s + {WRAPPER_COMPLETION_GRACE_S}s."
-        )
 
     workloads = parse_csv_list(args.workloads, WORKLOADS)
     stressors = parse_csv_list(args.stressors, ANOMALOUS_STRESSORS)
@@ -256,6 +313,18 @@ def main() -> None:
         raise ValueError(f"Unknown stressors: {invalid_stressors}")
     validate_workload_dependencies(workloads)
 
+    schedule_map = build_workload_schedule_map(workloads, args)
+    max_schedule_s = max(
+        schedule["warmup_s"] + schedule["ramp_s"] + schedule["hold_s"]
+        for schedule in schedule_map.values()
+    )
+    min_duration = int(round(max_schedule_s + WRAPPER_COMPLETION_GRACE_S))
+    if args.duration_s < min_duration:
+        raise ValueError(
+            "duration_s is too short for the requested workload-crash schedule. "
+            f"Set duration_s to at least {min_duration}s for the selected workloads and schedule profile."
+        )
+
     apply_wrapper_env(args)
 
     out_root = Path(args.out_dir)
@@ -264,11 +333,14 @@ def main() -> None:
         mkdirp(out_root / subdir)
 
     cases = workload_matched_crash_cases(workloads=workloads, stressors=stressors, include_nominal=args.include_nominal)
-    write_case_inventory(out_root, cases, args)
+    write_case_inventory(out_root, cases, args, schedule_map)
 
     print("[DICE workload-crash] Cases:")
     for case in cases:
         print(f"  - {case_id(case.workload, case.stressor)} ({case.label})")
+    print(f"[DICE workload-crash] Schedule profile: {args.schedule_profile}")
+    for workload in workloads:
+        print(f"[DICE workload-crash]   {workload}: {schedule_summary(schedule_map[workload])}")
 
     if args.phase in ("tier0", "recommended", "portable"):
         run_phase(
@@ -285,6 +357,7 @@ def main() -> None:
                 capture_crash_screenshot=args.capture_crash_screenshot,
             ),
             args.duration_s,
+            schedule_map,
         )
 
     if args.phase in ("tier1",):
@@ -303,6 +376,7 @@ def main() -> None:
                 capture_crash_screenshot=args.capture_crash_screenshot,
             ),
             args.duration_s,
+            schedule_map,
         )
 
     if args.phase in ("tier1_alt", "recommended"):
@@ -322,6 +396,7 @@ def main() -> None:
                 capture_crash_screenshot=args.capture_crash_screenshot,
             ),
             args.duration_s,
+            schedule_map,
         )
     elif args.phase == "portable":
         if can_run_tier1_alt(args.tier1_alt_bin):
@@ -341,6 +416,7 @@ def main() -> None:
                     capture_crash_screenshot=args.capture_crash_screenshot,
                 ),
                 args.duration_s,
+                schedule_map,
             )
         elif can_run_tier1():
             print("[DICE workload-crash] portable mode: macmon is unavailable; falling back to legacy Tier-1 powermetrics collection.")
@@ -359,6 +435,7 @@ def main() -> None:
                     capture_crash_screenshot=args.capture_crash_screenshot,
                 ),
                 args.duration_s,
+                schedule_map,
             )
         else:
             print("[DICE workload-crash] portable mode: skipping Tier-1 because neither macmon nor powermetrics is available on this machine.")
@@ -381,6 +458,7 @@ def main() -> None:
                 capture_crash_screenshot=args.capture_crash_screenshot,
             ),
             args.duration_s,
+            schedule_map,
         )
     elif args.phase == "portable":
         if can_run_tier2():
@@ -400,6 +478,7 @@ def main() -> None:
                     capture_crash_screenshot=args.capture_crash_screenshot,
                 ),
                 args.duration_s,
+                schedule_map,
             )
         else:
             print("[DICE workload-crash] portable mode: skipping Tier-2 because xctrace is unavailable on this machine.")

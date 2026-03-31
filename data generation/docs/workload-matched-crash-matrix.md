@@ -58,6 +58,32 @@ The default wrapper schedule is:
 
 and `duration_s = 240` leaves `30s` of slack after the wrapper schedule so the abort can complete before the collector closes the case.
 
+## Staggered Workload Schedules
+
+If you want the anomaly onset and crash target to differ across workloads, use:
+
+```bash
+python generate_workload_matched_crash_dataset.py \
+  --phase recommended \
+  --duration_s 240 \
+  --out_dir ./data_workload_crash_matrix \
+  --schedule_profile staggered \
+  --tier1_alt_bin macmon \
+  --tier2_template "Time Profiler" \
+  --capture_crash_evidence \
+  --capture_crash_screenshot \
+  --wrapper_gui
+```
+
+The built-in staggered profile is:
+
+- `BROWSER`: warmup `25s`, ramp `105s`, hold `30s`, crash target about `160s`
+- `VIDEO_SW`: warmup `50s`, ramp `95s`, hold `25s`, crash target about `170s`
+- `PY_AI`: warmup `65s`, ramp `115s`, hold `30s`, crash target about `210s`
+- `PY_STATS`: warmup `35s`, ramp `130s`, hold `25s`, crash target about `190s`
+
+This profile is useful when you want the first warning time and the warning-to-crash lead time to differ more clearly across workload families.
+
 ## Run a Smaller Subset First
 
 If you want a lighter smoke run, restrict the workloads and stressors:
@@ -76,6 +102,23 @@ python generate_workload_matched_crash_dataset.py \
 ```
 
 `--wrapper_dry_run` keeps the abort cases from actually crashing while still validating the staged control/abort workflow.
+
+For one-workload pilots, it is often clearer to run one stressor at a time with the staggered profile:
+
+```bash
+python generate_workload_matched_crash_dataset.py \
+  --phase recommended \
+  --duration_s 240 \
+  --out_dir ./data_workload_crash_pilot_real_py_ai_cache \
+  --workloads PY_AI \
+  --stressors CACHE \
+  --schedule_profile staggered \
+  --tier1_alt_bin macmon \
+  --tier2_template "Time Profiler" \
+  --capture_crash_evidence \
+  --capture_crash_screenshot \
+  --wrapper_gui
+```
 
 ## Direct Wrapper Commands
 
@@ -149,7 +192,7 @@ python tools/generate_crash_evidence_cards.py \
   --title "DICE Workload-Matched Crash Gallery (Mixed Profile)"
 ```
 
-If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix`.
+If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix`. The notebook now auto-detects the newest `data_workload_crash_*` pilot folder and prints the crash output locations before it runs.
 
 ## Safety Notes
 

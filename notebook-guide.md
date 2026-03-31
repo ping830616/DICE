@@ -80,7 +80,7 @@ For timing and localization figures, use the notebook sections `Scenario diagnos
 For crash-aware lead-time analysis, use the notebook section `8D. Early-Warning Readiness and Crash Lead Time`.
 For paper-ready evidence panels, use the notebook section `8E. Crash Evidence Cards and Artifact Gallery`.
 For the safe user-space crash-harness dataset, use the notebook section `8F. Controlled Crash-Harness Analysis` after collecting `data generation/data_crash_harness/` in the terminal.
-For the workload-matched crash dataset, use the notebook section `8G. Workload-Matched Crash Matrix` after collecting `data generation/data_workload_crash_matrix/` in the terminal.
+For the workload-matched crash dataset, use the notebook section `8G. Workload-Matched Crash Matrix` after collecting a `data generation/data_workload_crash_*` folder in the terminal. The notebook now auto-detects the newest matching crash dataset root and prints the crash output folders before analysis starts.
 
 ## Practical Reading Order
 

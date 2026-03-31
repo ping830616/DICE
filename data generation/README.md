@@ -156,6 +156,7 @@ python generate_workload_matched_crash_dataset.py \
   --phase recommended \
   --duration_s 240 \
   --out_dir ./data_workload_crash_matrix \
+  --schedule_profile staggered \
   --tier1_alt_bin macmon \
   --tier2_template "Time Profiler" \
   --capture_crash_evidence \
@@ -163,7 +164,7 @@ python generate_workload_matched_crash_dataset.py \
   --wrapper_gui
 ```
 
-That path creates one `NOMINAL` case plus `*_CONTROL` and `*_ABORT` variants for each selected anomaly family under each original workload. Start smaller with `--workloads` and `--stressors` if you want a pilot run first.
+That path creates one `NOMINAL` case plus `*_CONTROL` and `*_ABORT` variants for each selected anomaly family under each original workload. `--schedule_profile staggered` gives each workload a different anomaly-onset/crash target so the warning and lead-time results are less synchronized across workloads. Start smaller with `--workloads` and `--stressors` if you want a pilot run first.
 
 After collection, you can either run:
 
@@ -189,7 +190,7 @@ python tools/train_eval_dice_pipeline.py \
   --out_dir "data generation/data_workload_crash_matrix/results_dice_workload_crash_mixed"
 ```
 
-Then open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix` if you want the notebook-side summary, lead-time tables, and crash-card preview for that dataset.
+Then open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix` if you want the notebook-side summary, lead-time tables, and crash-card preview for that dataset. The notebook auto-detects the newest `data_workload_crash_*` dataset root.
 
 If you prefer to run the tiers separately:
 
