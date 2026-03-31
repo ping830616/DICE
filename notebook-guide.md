@@ -47,6 +47,7 @@ After the notebook finishes, the clearest GitHub reading order is:
 12. `8F. Controlled Crash-Harness Analysis` when you want to analyze the safe user-space crash dataset collected from the terminal
 13. `8G. Workload-Matched Crash Matrix` when you want crash-aware runs across the original four workloads after terminal collection
 14. `8H. Feature-Level Warning and Crash Trajectories` when you want per-column bridge plots that retain the original ITC anomaly warning and align it with the matched crash-pilot anomaly warning and the real crash time
+15. `8I. ITC-Study Crash Bridge Overview` when you want a whole-study extension that joins the original ITC warning table to all matched crash pilots
 
 These sections pull the main paper-facing outputs to the front of the notebook.
 
@@ -83,6 +84,7 @@ For paper-ready evidence panels, use the notebook section `8E. Crash Evidence Ca
 For the safe user-space crash-harness dataset, use the notebook section `8F. Controlled Crash-Harness Analysis` after collecting `data generation/data_crash_harness/` in the terminal.
 For the workload-matched crash dataset, use the notebook section `8G. Workload-Matched Crash Matrix` after collecting a crash pilot under `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/` in the terminal. The notebook now auto-detects the newest matching crash dataset root there first, prints the crash output folders before analysis starts, and still falls back to the older `data generation/data_workload_crash_*` locations.
 For richer per-column figures that align selected telemetry columns to the full ITC-study bridge, use `8H. Feature-Level Warning and Crash Trajectories` after `8G` has produced the workload-matched crash bundle. The key bridge fields are `original_anomaly_warning_s`, `crash_pilot_anomaly_warning_s`, and `crash_time_s`.
+For a whole-study bridge table and figures under the main ITC dataset root, use `8I. ITC-Study Crash Bridge Overview` after you have at least one pilot with `results_feature_crash_analysis/`. This section aggregates the original warning table, the crash-pilot warning table, and the strongest pre-crash features into one ITC-study extension bundle.
 
 ## Practical Reading Order
 

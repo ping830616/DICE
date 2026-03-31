@@ -20,6 +20,7 @@ Open that notebook and run it from the first cell to the last cell. No repo bash
 - Optional crash-aware early-warning analysis: `tools/early_warning_analysis.py`
 - Optional crash-evidence card export: `tools/generate_crash_evidence_cards.py`
 - Optional feature-level crash analysis: `tools/feature_crash_analysis.py`
+- Optional ITC-study crash bridge aggregation: `tools/aggregate_itc_crash_bridge.py`
 - Optional portable local LLM scorer: `tools/run_grounded_llm_local.py`
 - Terminal crash collection runbooks: [data generation/docs/controlled-crash-harness.md](data%20generation/docs/controlled-crash-harness.md) and [data generation/docs/workload-matched-crash-matrix.md](data%20generation/docs/workload-matched-crash-matrix.md)
 
@@ -41,6 +42,7 @@ If you want the same top-to-bottom story used for the ITC draft, open `dice_resu
 12. `8F. Controlled Crash-Harness Analysis` when you want to analyze the safe user-space crash dataset collected from the terminal
 13. `8G. Workload-Matched Crash Matrix` when you want crash-aware runs across the original four workloads after terminal collection
 14. `8H. Feature-Level Warning and Crash Trajectories` when you want richer per-column figures that explicitly bridge the original ITC anomaly warning, the matched crash-pilot anomaly warning, and the real crash time
+15. `8I. ITC-Study Crash Bridge Overview` when you want a whole-study extension table that joins the original ITC results to all available matched crash pilots
 
 These sections are placed near the front of the notebook so the GitHub page reads like a paper storyboard instead of a raw analysis dump.
 
@@ -187,6 +189,18 @@ python tools/feature_crash_analysis.py \
 ```
 
 These feature-level figures supplement the original anomaly/localization results; they do not replace the main ITC tables and figures. Their bridge tables foreground `original_anomaly_warning_s`, `crash_pilot_anomaly_warning_s`, and `crash_time_s` so the crash pilot stays tied to the overall ITC study.
+
+If you have collected more than one workload-matched crash pilot and want one whole-study extension table back under the main ITC dataset root, run:
+
+```bash
+python tools/aggregate_itc_crash_bridge.py \
+  --itc_root "data generation/dataset/ITC_M2Pro_DATA" \
+  --pilots_root "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots" \
+  --out_dir "data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed" \
+  --feature_profile mixed
+```
+
+This bridge bundle joins each matched pilot back to the original ITC case and includes both the original warning features and the crash-side warning/peak features.
 
 ## Across Different Machines
 

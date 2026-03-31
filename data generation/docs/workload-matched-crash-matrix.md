@@ -204,7 +204,19 @@ python tools/feature_crash_analysis.py \
 
 These feature-level figures keep the original ITC warning time as a reference line and foreground the ITC-study bridge fields `original_anomaly_warning_s`, `crash_pilot_anomaly_warning_s`, and `crash_time_s`, so they complement the anomaly-only paper results instead of replacing them.
 
-If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix`, then `8H. Feature-Level Warning and Crash Trajectories`. The notebook now auto-detects the newest `ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_*` folder and prints the crash output locations before it runs.
+If you collect multiple workload-matched pilots and want one whole-study bridge bundle under the main ITC dataset root, aggregate them with:
+
+```bash
+python tools/aggregate_itc_crash_bridge.py \
+  --itc_root "data generation/dataset/ITC_M2Pro_DATA" \
+  --pilots_root "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots" \
+  --out_dir "data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed" \
+  --feature_profile mixed
+```
+
+This aggregate keeps the original ITC warning features, adds the matched crash-pilot warning features, and adds the strongest abort-side pre-crash features so the bridge is defined by both stressor and feature evidence.
+
+If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix`, then `8H. Feature-Level Warning and Crash Trajectories`, then `8I. ITC-Study Crash Bridge Overview`. The notebook now auto-detects the newest `ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_*` folder and prints the crash output locations before it runs.
 
 ## Safety Notes
 
