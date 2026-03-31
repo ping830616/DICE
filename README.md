@@ -40,7 +40,7 @@ If you want the same top-to-bottom story used for the ITC draft, open `dice_resu
 11. `8E. Crash Evidence Cards and Artifact Gallery` to show paper-ready warning/crash evidence cards
 12. `8F. Controlled Crash-Harness Analysis` when you want to analyze the safe user-space crash dataset collected from the terminal
 13. `8G. Workload-Matched Crash Matrix` when you want crash-aware runs across the original four workloads after terminal collection
-14. `8H. Feature-Level Warning and Crash Trajectories` when you want richer per-column crash-pilot figures that still reference the original ITC anomaly warnings
+14. `8H. Feature-Level Warning and Crash Trajectories` when you want richer per-column figures that explicitly bridge the original ITC anomaly warning, the matched crash-pilot anomaly warning, and the real crash time
 
 These sections are placed near the front of the notebook so the GitHub page reads like a paper storyboard instead of a raw analysis dump.
 
@@ -186,7 +186,7 @@ python tools/feature_crash_analysis.py \
   --out_dir "data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_py_ai_cache/results_feature_crash_analysis/mixed"
 ```
 
-These feature-level figures supplement the original anomaly/localization results; they do not replace the main ITC tables and figures.
+These feature-level figures supplement the original anomaly/localization results; they do not replace the main ITC tables and figures. Their bridge tables foreground `original_anomaly_warning_s`, `crash_pilot_anomaly_warning_s`, and `crash_time_s` so the crash pilot stays tied to the overall ITC study.
 
 ## Across Different Machines
 

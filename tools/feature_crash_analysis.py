@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Feature-level warning-to-crash analysis for DICE crash pilots."""
+"""Feature-level ITC-study bridge analysis for DICE crash pilots."""
 
 from __future__ import annotations
 
@@ -523,17 +523,27 @@ def feature_report(
     base_stressor: str,
     config: str,
     reference_warning_s: float,
+    crash_pilot_anomaly_warning_s: float,
+    crash_time_s: float,
+    lead_time_s: float,
     rows: pd.DataFrame,
 ) -> None:
     lines = [
-        f"# Feature-Level Warning-to-Crash Analysis",
+        f"# Feature-Level ITC-Study Bridge Analysis",
         "",
         f"- Workload: `{workload}`",
         f"- Stressor family: `{base_stressor}`",
         f"- Config: `{CONFIG_LABELS.get(config, config)}`",
         f"- Original anomaly warning: `{reference_warning_s:.1f}s`" if np.isfinite(reference_warning_s) else "- Original anomaly warning: unavailable",
+        (
+            f"- Crash-pilot anomaly warning: `{crash_pilot_anomaly_warning_s:.1f}s`"
+            if np.isfinite(crash_pilot_anomaly_warning_s)
+            else "- Crash-pilot anomaly warning: unavailable"
+        ),
+        f"- Crash time: `{crash_time_s:.1f}s`" if np.isfinite(crash_time_s) else "- Crash time: unavailable",
+        f"- Lead time: `{lead_time_s:.1f}s`" if np.isfinite(lead_time_s) else "- Lead time: unavailable",
         "",
-        "## Feature onset summary",
+        "## ITC-study bridge feature summary",
         "",
         markdown_table(rows),
         "",
@@ -709,7 +719,7 @@ def run_feature_analysis(
 
         plot_feature_storyboard(
             out_path=storyboard_path,
-            title=f"{workload} / {base_stressor}: matched warning-to-crash feature storyboard",
+            title=f"{workload} / {base_stressor}: ITC-study bridge feature storyboard",
             selected_features=selected_features,
             case_series=case_series,
             case_meta=case_meta,
@@ -719,7 +729,7 @@ def run_feature_analysis(
 
         plot_feature_panels(
             out_path=panel_path,
-            title=f"{workload} / {base_stressor}: feature trajectories from anomaly to crash",
+            title=f"{workload} / {base_stressor}: ITC-study feature trajectories from anomaly to crash",
             selected_features=selected_features,
             case_series=case_series,
             case_meta=case_meta,
@@ -741,16 +751,68 @@ def run_feature_analysis(
             base_stressor=base_stressor,
             config=config,
             reference_warning_s=reference_warning_s,
+            crash_pilot_anomaly_warning_s=float(case_meta["ABORT"]["warning_s"]),
+            crash_time_s=float(case_meta["ABORT"]["crash_s"]),
+            lead_time_s=(
+                float(case_meta["ABORT"]["crash_s"]) - float(case_meta["ABORT"]["warning_s"])
+                if np.isfinite(float(case_meta["ABORT"]["crash_s"])) and np.isfinite(float(case_meta["ABORT"]["warning_s"]))
+                else float("nan")
+            ),
             rows=group_rows,
         )
 
     out_df = pd.DataFrame(all_rows)
     if not out_df.empty:
         out_df = out_df.sort_values(["workload", "base_stressor", "mode", "tier", "feature_name"]).reset_index(drop=True)
+        preferred_feature_cols = [
+            "workload",
+            "base_stressor",
+            "case_id",
+            "mode",
+            "feature_name",
+            "tier",
+            "column_name",
+            "original_anomaly_warning_s",
+            "crash_pilot_anomaly_warning_s",
+            "crash_time_s",
+            "feature_first_divergence_s",
+            "feature_value_at_warning",
+            "feature_value_pre_crash",
+            "nominal_median",
+            "nominal_scale",
+            "peak_abs_z",
+            "reference_warning_s",
+            "pilot_warning_s",
+        ]
+        feature_cols = [col for col in preferred_feature_cols if col in out_df.columns] + [
+            col for col in out_df.columns if col not in preferred_feature_cols
+        ]
+        out_df = out_df[feature_cols]
         out_df.to_csv(out_dir / "feature_onset_summary.csv", index=False)
     bridge_df = pd.DataFrame(bridge_rows)
     if not bridge_df.empty:
         bridge_df = bridge_df.sort_values(["workload", "base_stressor"]).reset_index(drop=True)
+        preferred_bridge_cols = [
+            "workload",
+            "base_stressor",
+            "original_case_id",
+            "original_anomaly_warning_s",
+            "crash_pilot_anomaly_warning_s",
+            "crash_time_s",
+            "lead_time_s",
+            "anomaly_warning_shift_s",
+            "original_top_feature_1",
+            "original_top_feature_2",
+            "pilot_control_case_id",
+            "pilot_abort_case_id",
+            "original_warning_s",
+            "pilot_warning_s",
+            "warning_shift_s",
+        ]
+        bridge_cols = [col for col in preferred_bridge_cols if col in bridge_df.columns] + [
+            col for col in bridge_df.columns if col not in preferred_bridge_cols
+        ]
+        bridge_df = bridge_df[bridge_cols]
         bridge_df.to_csv(out_dir / "warning_bridge_summary.csv", index=False)
 
     status = {
@@ -777,7 +839,7 @@ def default_reference_warning_csv(dataset_root: Path) -> Path | None:
 
 
 def parser() -> argparse.ArgumentParser:
-    ap = argparse.ArgumentParser(description="Generate feature-level warning-to-crash plots for DICE crash pilots.")
+    ap = argparse.ArgumentParser(description="Generate feature-level ITC-study bridge plots for DICE crash pilots.")
     ap.add_argument("--dataset_root", "--dataset-root", dest="dataset_root", type=Path, required=True)
     ap.add_argument("--result_dir", "--result-dir", dest="result_dir", type=Path, required=True)
     ap.add_argument("--warning_dir", "--warning-dir", dest="warning_dir", type=Path, required=True)
