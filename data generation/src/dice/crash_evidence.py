@@ -27,6 +27,10 @@ def iso_utc(ts: datetime) -> str:
     return ts.astimezone(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
+def apple_log_utc(ts: datetime) -> str:
+    return ts.astimezone(timezone.utc).replace(microsecond=0).strftime("%Y-%m-%d %H:%M:%S")
+
+
 def mkdirp(path: Path) -> None:
     path.mkdir(parents=True, exist_ok=True)
 
@@ -89,14 +93,21 @@ def parse_first_log_timestamp(path: Path) -> Optional[datetime]:
                 payload = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            for key in ("timestamp", "time", "date"):
-                value = payload.get(key)
-                if not value:
-                    continue
-                try:
-                    return datetime.fromisoformat(str(value).replace("Z", "+00:00")).astimezone(timezone.utc)
-                except ValueError:
-                    continue
+            if isinstance(payload, dict):
+                events = [payload]
+            elif isinstance(payload, list):
+                events = [event for event in payload if isinstance(event, dict)]
+            else:
+                continue
+            for event in events:
+                for key in ("timestamp", "time", "date"):
+                    value = event.get(key)
+                    if not value:
+                        continue
+                    try:
+                        return datetime.fromisoformat(str(value).replace("Z", "+00:00")).astimezone(timezone.utc)
+                    except ValueError:
+                        continue
     return None
 
 
@@ -131,9 +142,9 @@ def export_log_window(start_utc: datetime, end_utc: datetime, out_path: Path, pr
         "--style",
         "json",
         "--start",
-        iso_utc(start_utc),
+        apple_log_utc(start_utc),
         "--end",
-        iso_utc(end_utc),
+        apple_log_utc(end_utc),
         "--predicate",
         predicate,
     ]
