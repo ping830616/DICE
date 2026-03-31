@@ -20,6 +20,7 @@ Open that notebook and run it from the first cell to the last cell. No repo bash
 - Optional crash-aware early-warning analysis: `tools/early_warning_analysis.py`
 - Optional crash-evidence card export: `tools/generate_crash_evidence_cards.py`
 - Optional portable local LLM scorer: `tools/run_grounded_llm_local.py`
+- Terminal crash collection runbooks: [data generation/docs/controlled-crash-harness.md](data%20generation/docs/controlled-crash-harness.md) and [data generation/docs/workload-matched-crash-matrix.md](data%20generation/docs/workload-matched-crash-matrix.md)
 
 ## Start Here On GitHub
 
@@ -37,6 +38,7 @@ If you want the same top-to-bottom story used for the ITC draft, open `dice_resu
 10. `8D. Early-Warning Readiness and Crash Lead Time` when a crash manifest is available
 11. `8E. Crash Evidence Cards and Artifact Gallery` to show paper-ready warning/crash evidence cards
 12. `8F. Controlled Crash-Harness Analysis` when you want to analyze the safe user-space crash dataset collected from the terminal
+13. `8G. Workload-Matched Crash Matrix` when you want crash-aware runs across the original four workloads after terminal collection
 
 These sections are placed near the front of the notebook so the GitHub page reads like a paper storyboard instead of a raw analysis dump.
 

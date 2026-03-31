@@ -6,6 +6,8 @@ This repo now supports a reproducible crash-evidence path for future recollectio
 
 If you need a safe way to generate **real user-space crash artifacts** on a daily laptop, use the dedicated harness described in [controlled-crash-harness.md](controlled-crash-harness.md). That path is terminal-first and avoids intentionally provoking a kernel panic or full-machine freeze.
 
+If you want the same crash-aware workflow extended across the original four workloads and five anomaly families, use [workload-matched-crash-matrix.md](workload-matched-crash-matrix.md).
+
 The crash-harness collector also writes `case_inventory.csv` and `crash_harness_collection_config.json` so later analysis can recover the intended benign/anomalous labels and collection schedule directly from the dataset root.
 
 ## What Gets Captured
@@ -110,7 +112,7 @@ This writes:
 
 If the alignment table was produced without a crash manifest, the generator still renders warning-only template cards so you can validate the layout before recollection.
 
-If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8F. Controlled Crash-Harness Analysis`. That section reuses the same detector, early-warning exporter, and crash-card generator on `data generation/data_crash_harness/`.
+If you prefer the notebook path after collection, open `dice_results_analysis.ipynb` and run `8F. Controlled Crash-Harness Analysis` for the safe `CRASH_APP` dataset or `8G. Workload-Matched Crash Matrix` for the four-workload crash matrix.
 
 ## Interpretation
 

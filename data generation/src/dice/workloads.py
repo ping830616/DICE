@@ -2,7 +2,7 @@ import os, time, threading, random, zlib, sys, subprocess
 from pathlib import Path
 import numpy as np
 import urllib.request
-from .cfg import SEED
+from .cfg import SEED, parse_workload_crash_stressor
 
 def _seed_all():
     random.seed(SEED)
@@ -82,6 +82,10 @@ def _crash_harness_path() -> Path:
     return Path(__file__).resolve().with_name("crash_harness.py")
 
 
+def _workload_crash_wrapper_path() -> Path:
+    return Path(__file__).resolve().with_name("workload_crash_wrapper.py")
+
+
 def _run_crash_harness_subprocess(scenario: str, stop_evt: threading.Event):
     script = _crash_harness_path()
     cmd = [sys.executable, str(script), "--scenario", str(scenario)]
@@ -102,7 +106,56 @@ def _run_crash_harness_subprocess(scenario: str, stop_evt: threading.Event):
                 proc.kill()
                 proc.wait(timeout=3.0)
 
-def run_workload(workload: str, stop_evt: threading.Event):
+
+def _wrapped_crash_mode_for_workload(workload: str) -> tuple[str, str] | None:
+    wrap_workload = str(os.environ.get("DICE_MATCHED_WORKLOAD_CRASH_WORKLOAD", "")).strip().upper()
+    wrap_stressor = str(os.environ.get("DICE_MATCHED_WORKLOAD_CRASH_STRESSOR", "")).strip().upper()
+    wrap_mode = str(os.environ.get("DICE_MATCHED_WORKLOAD_CRASH_MODE", "")).strip().upper()
+    if wrap_workload != str(workload).strip().upper():
+        return None
+    if not wrap_stressor or wrap_mode not in {"CONTROL", "ABORT"}:
+        return None
+    parsed = parse_workload_crash_stressor(f"{wrap_stressor}_{wrap_mode}")
+    if parsed is None:
+        return None
+    return parsed
+
+
+def _run_workload_crash_wrapper_subprocess(workload: str, stressor: str, mode: str, stop_evt: threading.Event):
+    script = _workload_crash_wrapper_path()
+    cmd = [
+        sys.executable,
+        str(script),
+        "--workload",
+        str(workload),
+        "--stressor",
+        str(stressor),
+        "--mode",
+        str(mode).lower(),
+    ]
+    if str(os.environ.get("DICE_MATCHED_WORKLOAD_CRASH_GUI", "")).strip().lower() in {"1", "true", "yes", "on"}:
+        cmd.append("--gui")
+    if str(os.environ.get("DICE_MATCHED_WORKLOAD_CRASH_DRY_RUN", "")).strip().lower() in {"1", "true", "yes", "on"}:
+        cmd.append("--dry_run")
+    proc = subprocess.Popen(cmd)
+    try:
+        while not stop_evt.is_set():
+            rc = proc.poll()
+            if rc is not None:
+                stop_evt.set()
+                return
+            time.sleep(0.25)
+    finally:
+        if proc.poll() is None:
+            proc.terminate()
+            try:
+                proc.wait(timeout=3.0)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait(timeout=3.0)
+
+
+def run_base_workload(workload: str, stop_evt: threading.Event):
     if workload == "BROWSER": return workload_browser(stop_evt)
     if workload == "VIDEO_SW": return workload_video_sw(stop_evt)
     if workload == "PY_AI": return workload_ai_numpy_torch(stop_evt, phase_s=5.0)
@@ -110,7 +163,16 @@ def run_workload(workload: str, stop_evt: threading.Event):
     if workload == "CRASH_APP": return workload_crash_app(stop_evt)
     raise ValueError(f"Unknown workload: {workload}")
 
-def run_stressor(stressor: str, stop_evt: threading.Event):
+
+def run_workload(workload: str, stop_evt: threading.Event):
+    wrapped = _wrapped_crash_mode_for_workload(workload)
+    if wrapped is not None:
+        base_stressor, mode = wrapped
+        return _run_workload_crash_wrapper_subprocess(workload, base_stressor, mode, stop_evt)
+    return run_base_workload(workload, stop_evt)
+
+
+def run_base_stressor(stressor: str, stop_evt: threading.Event):
     _seed_all()
     if stressor == "NOMINAL":
         while not stop_evt.is_set(): time.sleep(0.2)
@@ -162,3 +224,12 @@ def run_stressor(stressor: str, stop_evt: threading.Event):
 
     else:
         raise ValueError(f"Unknown stressor: {stressor}")
+
+
+def run_stressor(stressor: str, stop_evt: threading.Event):
+    parsed = parse_workload_crash_stressor(stressor)
+    if parsed is not None:
+        while not stop_evt.is_set():
+            time.sleep(0.2)
+        return
+    return run_base_stressor(stressor, stop_evt)

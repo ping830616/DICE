@@ -211,7 +211,14 @@ def ordered_workloads(values: Sequence[str]) -> List[str]:
 
 def ordered_stressors(values: Sequence[str]) -> List[str]:
     order = {name: idx for idx, name in enumerate(STRESSORS)}
-    return sorted(set(values), key=lambda item: (order.get(str(item), len(order)), str(item)))
+    def _variant_rank(name: str) -> tuple[int, str]:
+        text = str(name)
+        if text.endswith("_CONTROL"):
+            return (0, text)
+        if text.endswith("_ABORT"):
+            return (1, text)
+        return (0, text)
+    return sorted(set(values), key=lambda item: (order.get(canonical_stressor_name(str(item)), len(order)), *_variant_rank(str(item))))
 
 
 def normalize_case_label(label_name: object, stressor: str) -> str:
@@ -223,6 +230,16 @@ def normalize_case_label(label_name: object, stressor: str) -> str:
     if raw in {"1", "1.0", "ANOMALY", "ANOMALOUS", "FAULT", "POSITIVE"}:
         return "ANOMALY"
     return "NOMINAL" if str(stressor) == "NOMINAL" else "ANOMALY"
+
+
+def canonical_stressor_name(stressor: str) -> str:
+    text = str(stressor)
+    for suffix in ("_CONTROL", "_ABORT"):
+        if text.endswith(suffix):
+            base = text[: -len(suffix)]
+            if base in STRESSOR_FAMILY:
+                return base
+    return text
 
 
 def load_case_label_map(root: Path, case_ids: Sequence[str]) -> Dict[str, str]:
@@ -804,7 +821,7 @@ def workload_conditioned_scores(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarra
 
 
 def stressor_family(stressor: str) -> str:
-    return STRESSOR_FAMILY.get(str(stressor), "unknown")
+    return STRESSOR_FAMILY.get(canonical_stressor_name(str(stressor)), "unknown")
 
 
 def normalize_attribution_vector(x: np.ndarray) -> np.ndarray:
@@ -1253,7 +1270,16 @@ def _cfg_color(cfg: str) -> str:
 
 
 def _stressor_color(stressor: str) -> str:
-    return STRESSOR_COLORS.get(stressor, "#4E79A7")
+    text = str(stressor)
+    if text in STRESSOR_COLORS:
+        return STRESSOR_COLORS[text]
+    base = canonical_stressor_name(text)
+    color = STRESSOR_COLORS.get(base, "#4E79A7")
+    if text.endswith("_CONTROL"):
+        return color
+    if text.endswith("_ABORT"):
+        return color
+    return color
 
 
 def _ternary_xy(share0: float, share1: float, share2: float) -> Tuple[float, float]:

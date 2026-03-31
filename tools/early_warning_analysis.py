@@ -96,6 +96,20 @@ def ordered_categories(values: Iterable[object], preferred: list[str]) -> list[s
     return [*present_preferred, *extras]
 
 
+def ordered_stressor_categories(values: Iterable[object]) -> list[str]:
+    observed = [str(value) for value in values if pd.notna(value)]
+    base_order = {name: idx for idx, name in enumerate(STRESSOR_ORDER)}
+
+    def key(name: str) -> tuple[int, int, str]:
+        for variant_rank, suffix in enumerate(["", "_CONTROL", "_ABORT"]):
+            if suffix and name.endswith(suffix):
+                base = name[: -len(suffix)]
+                return (base_order.get(base, len(base_order)), variant_rank, name)
+        return (base_order.get(name, len(base_order)), 0, name)
+
+    return sorted(set(observed), key=key)
+
+
 def markdown_table(df: pd.DataFrame) -> str:
     cols = list(df.columns)
     header = "| " + " | ".join(cols) + " |"
@@ -207,7 +221,7 @@ def build_warning_summary(
     if out.empty:
         return out
     workload_order = ordered_categories(out["workload"], WORKLOAD_ORDER)
-    stressor_order = ordered_categories(out["stressor"], STRESSOR_ORDER)
+    stressor_order = ordered_stressor_categories(out["stressor"])
     out["workload"] = pd.Categorical(out["workload"], workload_order, ordered=True)
     out["stressor"] = pd.Categorical(out["stressor"], stressor_order, ordered=True)
     return out.sort_values(["workload", "stressor", "case_id"]).reset_index(drop=True)

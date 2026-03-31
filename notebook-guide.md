@@ -45,6 +45,7 @@ After the notebook finishes, the clearest GitHub reading order is:
 10. `8D. Early-Warning Readiness and Crash Lead Time`
 11. `8E. Crash Evidence Cards and Artifact Gallery`
 12. `8F. Controlled Crash-Harness Analysis` when you want to analyze the safe user-space crash dataset collected from the terminal
+13. `8G. Workload-Matched Crash Matrix` when you want crash-aware runs across the original four workloads after terminal collection
 
 These sections pull the main paper-facing outputs to the front of the notebook.
 
@@ -79,6 +80,7 @@ For timing and localization figures, use the notebook sections `Scenario diagnos
 For crash-aware lead-time analysis, use the notebook section `8D. Early-Warning Readiness and Crash Lead Time`.
 For paper-ready evidence panels, use the notebook section `8E. Crash Evidence Cards and Artifact Gallery`.
 For the safe user-space crash-harness dataset, use the notebook section `8F. Controlled Crash-Harness Analysis` after collecting `data generation/data_crash_harness/` in the terminal.
+For the workload-matched crash dataset, use the notebook section `8G. Workload-Matched Crash Matrix` after collecting `data generation/data_workload_crash_matrix/` in the terminal.
 
 ## Practical Reading Order
 

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Sequence
 
 HZ = 5
 DT = 1.0 / HZ
@@ -7,6 +7,7 @@ SEED = 1337
 
 WORKLOADS = ["BROWSER", "VIDEO_SW", "PY_AI", "PY_STATS"]
 STRESSORS = ["NOMINAL", "CACHE", "TLB", "BRANCH", "MEMBW", "ATOMIC"]
+ANOMALOUS_STRESSORS = [s for s in STRESSORS if s != "NOMINAL"]
 CRASH_HARNESS_WORKLOAD = "CRASH_APP"
 CRASH_HARNESS_CASES = [
     ("NOMINAL", "NOMINAL"),
@@ -15,6 +16,7 @@ CRASH_HARNESS_CASES = [
     ("CPU_RAMP_CONTROL", "NOMINAL"),
     ("CPU_RAMP_ABORT", "ANOMALY"),
 ]
+WORKLOAD_MATCHED_CRASH_MODES = ("CONTROL", "ABORT")
 
 TIER1_CORE_FIELDS = [
     "cpu_power_w", "gpu_power_w", "ane_power_w",
@@ -102,6 +104,38 @@ def all_cases() -> List[Case]:
 
 def crash_harness_cases() -> List[Case]:
     return [Case(CRASH_HARNESS_WORKLOAD, stressor, label) for stressor, label in CRASH_HARNESS_CASES]
+
+
+def workload_crash_stressor(base_stressor: str, mode: str) -> str:
+    return f"{str(base_stressor).upper()}_{str(mode).upper()}"
+
+
+def parse_workload_crash_stressor(stressor: str) -> tuple[str, str] | None:
+    name = str(stressor).upper().strip()
+    for mode in WORKLOAD_MATCHED_CRASH_MODES:
+        suffix = f"_{mode}"
+        if name.endswith(suffix):
+            base = name[: -len(suffix)]
+            if base in ANOMALOUS_STRESSORS:
+                return base, mode
+    return None
+
+
+def workload_matched_crash_cases(
+    workloads: Sequence[str] | None = None,
+    stressors: Sequence[str] | None = None,
+    include_nominal: bool = True,
+) -> List[Case]:
+    selected_workloads = [str(item).upper() for item in (workloads if workloads is not None else WORKLOADS)]
+    selected_stressors = [str(item).upper() for item in (stressors if stressors is not None else ANOMALOUS_STRESSORS)]
+    out: List[Case] = []
+    for workload in selected_workloads:
+        if include_nominal:
+            out.append(Case(workload, "NOMINAL", "NOMINAL"))
+        for stressor in selected_stressors:
+            out.append(Case(workload, workload_crash_stressor(stressor, "CONTROL"), "ANOMALY"))
+            out.append(Case(workload, workload_crash_stressor(stressor, "ABORT"), "ANOMALY"))
+    return out
 
 def case_id(w: str, s: str) -> str:
     return f"{w}__{s}"

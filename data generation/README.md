@@ -19,6 +19,7 @@ The repository now supports the public Apple Silicon collection procedure direct
 6. Use the feature references if you need harmonized column descriptions: [docs/feature-dictionary.md](docs/feature-dictionary.md) and [docs/dataset-feature-map-clean-tier1-consistent.md](docs/dataset-feature-map-clean-tier1-consistent.md)
 7. For crash-aware recollection and early-warning manifests: [docs/crash-evidence.md](docs/crash-evidence.md)
 8. For safe user-space crash experiments on a daily laptop: [docs/controlled-crash-harness.md](docs/controlled-crash-harness.md)
+9. For workload-matched crash studies across the original four workloads: [docs/workload-matched-crash-matrix.md](docs/workload-matched-crash-matrix.md)
 
 ## Dataset Release
 
@@ -148,6 +149,22 @@ python generate_crash_harness_dataset.py \
 
 That path is terminal-first. The notebook is used later for analysis.
 
+If you want the same crash-aware workflow extended across the original four workloads and five anomaly families, use the workload-matched crash matrix:
+
+```bash
+python generate_workload_matched_crash_dataset.py \
+  --phase recommended \
+  --duration_s 240 \
+  --out_dir ./data_workload_crash_matrix \
+  --tier1_alt_bin macmon \
+  --tier2_template "Time Profiler" \
+  --capture_crash_evidence \
+  --capture_crash_screenshot \
+  --wrapper_gui
+```
+
+That path creates one `NOMINAL` case plus `*_CONTROL` and `*_ABORT` variants for each selected anomaly family under each original workload. Start smaller with `--workloads` and `--stressors` if you want a pilot run first.
+
 After collection, you can either run:
 
 ```bash
@@ -160,6 +177,19 @@ python tools/train_eval_dice_pipeline.py \
 ```
 
 or open `dice_results_analysis.ipynb` and run `8F. Controlled Crash-Harness Analysis` for the crash-focused notebook summary, early-warning alignment table, and evidence-card preview.
+
+For the workload-matched crash matrix, analyze the new dataset root with:
+
+```bash
+cd DICE
+python tools/train_eval_dice_pipeline.py \
+  --root "data generation/data_workload_crash_matrix" \
+  --feature_profile mixed \
+  --protocol global \
+  --out_dir "data generation/data_workload_crash_matrix/results_dice_workload_crash_mixed"
+```
+
+Then open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix` if you want the notebook-side summary, lead-time tables, and crash-card preview for that dataset.
 
 If you prefer to run the tiers separately:
 
