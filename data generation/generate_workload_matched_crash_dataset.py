@@ -3,6 +3,7 @@
 
 import argparse
 import csv
+import importlib.util
 import json
 import os
 import sys
@@ -54,6 +55,18 @@ def parse_csv_list(raw: str | None, default: list[str]) -> list[str]:
         return list(default)
     values = [item.strip().upper() for item in str(raw).split(",") if item.strip()]
     return values if values else list(default)
+
+
+def validate_workload_dependencies(workloads: list[str]) -> None:
+    missing: list[str] = []
+    if "PY_AI" in workloads and importlib.util.find_spec("torch") is None:
+        missing.append("torch (required for PY_AI)")
+    if missing:
+        joined = ", ".join(missing)
+        raise RuntimeError(
+            "Missing workload dependency: "
+            f"{joined}. Install it in the active environment before collecting this dataset."
+        )
 
 
 def print_tier_timing_note(phase: str, duration_s: int, n_cases: int) -> None:
@@ -241,6 +254,7 @@ def main() -> None:
         raise ValueError(f"Unknown workloads: {invalid_workloads}")
     if invalid_stressors:
         raise ValueError(f"Unknown stressors: {invalid_stressors}")
+    validate_workload_dependencies(workloads)
 
     apply_wrapper_env(args)
 
