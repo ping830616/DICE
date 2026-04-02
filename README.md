@@ -161,6 +161,13 @@ Some crash-pilot roots are intentionally treated as local machine-generated arti
 
 These folders can be very large and may contain local crash evidence, screenshots, logs, or pilot reruns. They are ignored by default so the repository stays reviewable and portable. The tracked paper-facing summaries derived from those pilots belong under `results_itc_paper/`, `results_itc_appendix/`, or `results_itc_crash_bridge/`.
 
+To make the pilot set visible on GitHub without committing the full bundle, the repo now tracks:
+
+- `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/README.md`
+- `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/pilot_manifest.csv`
+
+Those two files document the current four one-workload pilots and the exact commands used to generate them.
+
 ## Additional Docs
 
 - [notebook-guide.md](notebook-guide.md)
