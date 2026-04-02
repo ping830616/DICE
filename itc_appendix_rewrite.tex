@@ -1,0 +1,376 @@
+\clearpage
+\appendices
+\section{Additional Design-Space, Case-Level, and Interpretation Results}\label{app:extra}
+\suppressfloats[t]
+
+This appendix mirrors the flow of Section~\ref{sec:results}. It first adds the design-space evidence behind the selected operating points, then turns to case-level onset and localization behavior, uncertainty and window-length sensitivity, host and hardware context, crash-aware replay detail, and grounded LLM interpretation. The emphasis throughout is on compact supporting evidence that clarifies why the selected heads were chosen and how the figures and tables should be read.
+
+\subsection{Design-Space Evidence for the Selected Heads}\label{app:tuning_screening}
+
+Section~\ref{subsec:results_monitoring} identified the mixed Tier-0/1/2 head as the preferred deployment-facing operating point. This subsection shows the sweep evidence behind that choice. A full rerun of the sweep selects a mixed operating point at gain $0.20$, block length $45$\,s, $\alpha=0.10$, and persistence $k=1$, while the full-profile operating point remains gain $0.35$, block length $90$\,s, $\alpha=0.05$, and persistence $k=2$. Table~\ref{tab:app_tuned_points} records these sweep-selected heads together with nearby strong exported rows that are useful operational reference points. Figs.~\ref{fig:app_tuning_mixed} and~\ref{fig:app_tuning_full} show the same trend visually: the mixed profile prefers shorter windows and lighter persistence to preserve timeliness, whereas the full profile remains strong under longer windows because its richer observability can absorb a slower decision window.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.98\columnwidth]{fig_app_tuning_mixed.png}
+    \caption{Mixed-profile tuning sweep across gain, block length, and persistence settings.}
+    \label{fig:app_tuning_mixed}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.98\columnwidth]{fig_app_tuning_full.png}
+    \caption{Full-profile tuning sweep across gain, block length, and persistence settings.}
+    \label{fig:app_tuning_full}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Selected tuning points from the sweep and nearby exported rows.}
+\label{tab:app_tuned_points}
+{\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}llccccccc@{}}
+\toprule
+Profile & Row & Gain & $B$ & $\alpha$ & $k$ & Detect. & Benign & TTD (s) \\
+\midrule
+Mixed & Sweep-selected & 0.20 & 45 & 0.10 & 1 & -- & -- & -- \\
+Mixed & Strong Stage 1 & 0.15 & 30 & 0.05 & 3 & 0.60 & 0.25 & 56.5 \\
+Mixed & Strong Stage 2 & 0.15 & 30 & 0.10 & 1 & 0.85 & 0.00 & 72.0 \\
+Full  & Sweep-selected & 0.35 & 90 & 0.05 & 2 & -- & -- & -- \\
+Full  & Strong Stage 1 & 0.35 & 60 & 0.05 & 3 & 0.95 & 0.25 & 62.0 \\
+Full  & Strong Stage 2 & 0.35 & 60 & 0.02 & 1 & 0.95 & 0.00 & 60.0 \\
+\bottomrule
+\end{tabular*}
+
+\vspace{2pt}
+{\scriptsize\raggedright
+`Detect.' and `Benign' denote anomalous-run detection rate and benign run-alert rate at the stated operating point. `TTD' denotes median time to detect.\par
+}
+}
+\end{table}
+
+Fig.~\ref{fig:app_feature_budget} adds the feature-budget view that sits behind the compact mixed deployment claim. The mixed profile reaches a practical knee near 40\% budget, or 26 features, where ROC-AUC and AUC-PR reach 0.8375 and 0.9598, respectively, and then improve gradually toward the full 64-feature point. The full profile reaches its knee earlier, near 20\% of its budget, and then remains strong across the remaining budgets. This difference is useful operationally. The mixed profile is the stronger choice when workload portability and compact deployment matter most, whereas the full profile remains the richer-observability upper bound.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.98\columnwidth]{fig_app_feature_budget.png}
+    \caption{Run-level monitoring tradeoffs versus retained feature budget.}
+    \label{fig:app_feature_budget}
+\end{figure}
+
+The two-stage screening study is best read as an efficiency tradeoff rather than as a replacement for the selected always-on heads. In the mixed profile, the $q=0.90$ two-stage policy reduces the average active feature budget from 64.0 to 59.5 features while retaining a detection rate of 0.40. In the full profile, the same policy reduces the average active feature budget from 75.0 to 67.75 features while retaining a detection rate of 0.85. Table~\ref{tab:app_two_stage} and Fig.~\ref{fig:app_two_stage} therefore add an engineering tradeoff: some sensing cost can be saved, but always-on Tier-0/1/2 remains the stronger deployment choice when maximum coverage matters.
+
+\begin{table}[t]
+\centering
+\caption{Selected two-stage screening tradeoffs.}
+\label{tab:app_two_stage}
+{\scriptsize
+\setlength{\tabcolsep}{2.8pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}llccccc@{}}
+\toprule
+Profile & Policy & Avg. feats. & Trig. B\textsuperscript{a} & Trig. A\textsuperscript{a} & Detect. & TTD (s) \\
+\midrule
+Mixed & Two-stage $q=0.90$ & 59.50 & 0.25 & 0.85 & 0.40 & 74.0 \\
+Mixed & Always Tier-0/1/2 & 64.00 & 1.00 & 1.00 & 0.45 & 62.0 \\
+Full  & Two-stage $q=0.90$ & 67.75 & 0.25 & 0.85 & 0.85 & 62.0 \\
+Full  & Always Tier-0/1/2 & 75.00 & 1.00 & 1.00 & 0.95 & 62.0 \\
+\bottomrule
+\end{tabular*}
+
+\vspace{2pt}
+{\scriptsize\raggedright
+\textsuperscript{a}`Trig. B' and `Trig. A' denote the fractions of benign and anomalous runs that activate Stage~2.\par
+}
+}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.96\columnwidth]{fig_app_two_stage.png}
+    \caption{Two-stage screening tradeoffs between active feature budget and alert coverage.}
+    \label{fig:app_two_stage}
+\end{figure}
+
+The clearest benign-alert edge case appears in the more permissive mixed low-threshold settings. In the workload-level reliability breakdown, \texttt{VIDEO\_SW} is the only benign workload that produces a run-level alert under the mixed Tier-0 and Tier-0/1 heads at $\alpha=0.10$. The behavior is effectively identical in both lightweight stacks: block-level and persistent false-alarm rates remain only 0.0031, but the long benign run still accumulates one persistent alert at the run level. This is a narrow threshold-sensitivity note rather than a broad reliability failure, and it helps explain why the selected deployment-facing heads avoid the most permissive calibration settings.
+
+\FloatBarrier
+
+\subsection{Case-Level Onset and Localization Behavior}\label{app:case_behavior}
+
+Section~\ref{subsec:results_diagnosis_localization} summarized onset timing by stressor and recurring hotspots across cases. This subsection adds the case-level view behind those aggregates. Fig.~\ref{fig:app_case_gallery} shows that the mixed profile separates some cases within the first minute, while others emerge much later. The contrast is especially clear for \texttt{PY\_AI}: \texttt{CACHE} becomes visible at 30\,s, \texttt{MEMBW} at 469\,s, and \texttt{TLB} only near the end of the run. The same figure also shows that the dominant localization cues remain concentrated in a small set of hardware-facing subsystems and top features rather than spreading diffusely across the telemetry stack.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=1\textwidth]{fig_app_case_gallery.png}
+    \caption{Case-level onset times and dominant localization cues for the mixed profile.}
+    \label{fig:app_case_gallery}
+\end{figure*}
+
+Table~\ref{tab:app_mixed_cases} and Fig.~\ref{fig:app_localization_traces} connect those onset times to representative mixed Tier-0/1/2 traces. Four of the five representative cases remain dominated by Tier-0 memory/I/O evidence, whereas \texttt{PY\_AI/CACHE} shifts toward Tier-1 compute evidence. The trace view also clarifies severity. Early-separating cases tend to show stronger sustained divergence from the benign reference, whereas late-separating cases such as \texttt{PY\_AI/TLB} remain closer to benign behavior for much of the run. Together, the table and trace figure support the earlier diagnosis claim that onset timing, evidence strength, and subsystem attribution are linked.
+
+\begin{table}[t]
+\centering
+\caption{Representative mixed Tier-0/1/2 onset cases.}
+\label{tab:app_mixed_cases}
+{\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lccc@{}}
+\toprule
+Case & First abnormal (s) & Dominant tier & Dominant mech. \\
+\midrule
+\texttt{PY\_STATS/ATOMIC} & 45  & Tier-0 & memory\_io \\
+\texttt{PY\_AI/BRANCH}    & 45  & Tier-0 & memory\_io \\
+\texttt{PY\_AI/CACHE}     & 45  & Tier-1 & compute \\
+\texttt{PY\_AI/MEMBW}     & 469 & Tier-0 & memory\_io \\
+\texttt{PY\_AI/TLB}       & 972 & Tier-0 & memory\_io \\
+\bottomrule
+\end{tabular*}
+}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.94\columnwidth]{fig_app_localization_traces.png}
+    \caption{Representative mixed-profile localization traces for early and late separating cases.}
+    \label{fig:app_localization_traces}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Uncertainty and Window-Length Sensitivity}\label{app:uncertainty}
+
+The selected operating points summarize one point in a broader design space. Table~\ref{tab:app_uncertainty} adds a compact uncertainty view for the mixed profile. With only 24 runs, interval estimates are naturally broader for ROC-AUC than for AUC-PR, so the table should be read as stability context rather than as a new ranking criterion. In practice, the block-length trends in Figs.~\ref{fig:app_tuning_mixed} and~\ref{fig:app_tuning_full} are the more actionable sensitivity study: shorter windows remain preferable in the mixed profile because they preserve early warning without materially weakening separability.
+
+\begin{table}[t]
+\centering
+\caption{Resampled confidence intervals for the mixed profile.}
+\label{tab:app_uncertainty}
+{\scriptsize
+\setlength{\tabcolsep}{3.2pt}
+\renewcommand{\arraystretch}{1}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lcccc@{}}
+\toprule
+Metric & Mean & P05 & P50 & P95 \\
+\midrule
+ROC-AUC & 0.8493 & 0.5579 & 0.8632 & 1.0000 \\
+AUC-PR  & 0.9547 & 0.8684 & 0.9603 & 1.0000 \\
+\bottomrule
+\end{tabular*}
+}
+\end{table}
+
+\FloatBarrier
+
+\subsection{Host Platform and System-Level Interpretation}\label{app:hardware}
+
+The next group of appendix tables grounds the interpretation layer in the actual study platform. Table~\ref{tab:app_host_hw} records the Apple Silicon host detail used for the experiments. This context matters because the Tier-1 proxy channels and hotspot labels reported earlier are meaningful only relative to the unified-memory host on which they were measured.
+
+\begin{table}[t]
+\centering
+\caption{Experimental host hardware detail for the Apple Silicon study platform.}
+\label{tab:app_host_hw}
+{\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabularx}{\columnwidth}{@{}l >{\raggedright\arraybackslash}X@{}}
+\toprule
+Item & Value \\
+\midrule
+Model & MacBook Pro (16-inch, 2023) \\
+Model identifier & Mac14,10 \\
+Chip & Apple M2 Pro \\
+CPU & 12-core (8 performance, 4 efficiency) \\
+GPU & 19-core integrated GPU \\
+Neural Engine & 16-core \\
+Memory & 16\,GB unified LPDDR5 memory \\
+Bandwidth & 200\,GB/s \\
+Storage & \(\sim\)512\,GB SSD \\
+Storage device & APPLE SSD AP0512Z \\
+Display & Built-in XDR plus external-display support \\
+Firmware & 13822.81.10 \\
+\bottomrule
+\end{tabularx}
+}
+\end{table}
+
+\textsc{DICE} can reliably localize subsystem-level anomalies that remain visible through host telemetry and OS-mediated hardware proxies. It cannot identify a physical defect site such as a particular transistor, a specific cache-bank instance, or an exact on-die wire. Table~\ref{tab:app_stressor_map} should therefore be read as an operational hardware interpretation rather than a microscopic one. It maps each stressor to the subsystem and hardware-visible path that best matches the observed evidence.
+
+\begin{table}[t]
+\centering
+\caption{Operational stressor-to-hardware interpretation used in the appendix.}
+\label{tab:app_stressor_map}
+\scriptsize
+\setlength{\tabcolsep}{1.5pt}
+\renewcommand{\arraystretch}{0.90}
+\begin{tabularx}{\columnwidth}{@{}
+>{\raggedright\arraybackslash}p{0.12\columnwidth}
+>{\raggedright\arraybackslash}p{0.20\columnwidth}
+>{\raggedright\arraybackslash}p{0.27\columnwidth}
+>{\raggedright\arraybackslash}X
+@{}}
+\toprule
+Stressor & Subsystem & Hardware block & Summary \\
+\midrule
+ATOMIC & CPU synchronization & CPU cluster and coherence path & Shared-state contention becomes visible. \\
+BRANCH & CPU front-end & Fetch, decode, and branch-prediction path & Control instability becomes visible. \\
+CACHE & Memory hierarchy & Caches and memory interfaces & Cache pressure dominates the anomaly. \\
+MEMBW & Memory fabric & Controllers and bandwidth path & Shared memory bandwidth saturates. \\
+TLB & MMU path & Translation and page-walk path & Address-translation pressure dominates. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Table~\ref{tab:app_power_context} adds Tier-1 power context by workload. \texttt{PY\_AI} is the most power-intensive workload by a large margin, while \texttt{BROWSER} and \texttt{VIDEO\_SW} remain relatively light. This helps explain why some Tier-1 cues become more visible in the mixed and full profiles even when Tier-0 remains the dominant sensing tier.
+
+\begin{table}[t]
+\centering
+\caption{Tier-1 host power context by workload.}
+\label{tab:app_power_context}
+{\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lccc@{}}
+\toprule
+Workload & Mean power (W) & P95 power (W) & Energy (kJ) \\
+\midrule
+\texttt{BROWSER}  & 10.41 & 15.75 & 10.41 \\
+\texttt{VIDEO\_SW}& 12.99 & 16.14 & 12.99 \\
+\texttt{PY\_STATS}& 24.38 & 32.92 & 24.38 \\
+\texttt{PY\_AI}   & 63.74 & 97.93 & 63.74 \\
+\bottomrule
+\end{tabular*}
+}
+\end{table}
+
+Table~\ref{tab:app_accel_cost} and Fig.~\ref{fig:app_accel_cost} translate the online path into a simple projected fixed-point score engine for the mixed stacks. The important point is not the absolute index value, but the gradual scaling: state size and per-block operations increase steadily from Tier-0 to Tier-0/1/2 rather than exploding at the richest mixed head. This supports the feasibility argument made in Section~\ref{subsec:accel}.
+
+\begin{table}[t]
+\centering
+\caption{Projected mixed-profile \textsc{DICE}-score cost across deployment stacks.}
+\label{tab:app_accel_cost}
+{\scriptsize
+\setlength{\tabcolsep}{2.8pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lcccc@{}}
+\toprule
+Stack & Feat. & State (B) & Ops/block & Index \\
+\midrule
+Tier-0     & 46 & 302 & 5843 & 1.000 \\
+Tier-0/1   & 57 & 368 & 7240 & 1.234 \\
+Tier-0/1/2 & 64 & 410 & 8129 & 1.382 \\
+\bottomrule
+\end{tabular*}
+}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.99\columnwidth]{fig_app_accel_cost.png}
+    \caption{Projected complexity of a compact \textsc{DICE}-score accelerator.}
+    \label{fig:app_accel_cost}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Crash-Aware Replay and Warning-to-Crash Detail}\label{app:crash_protocol}
+
+Section~\ref{subsec:results_crash} reported the aggregate crash-aware warning and localization results. This subsection adds family-level replay timing context for all four crash families and then keeps \texttt{PY\_AI/CACHE} as the detailed matched bridge case. The \texttt{workload\_crash\_pilots} folder contains four crash-data families: \texttt{BROWSER/BRANCH}, \texttt{VIDEO\_SW/MEMBW}, \texttt{PY\_AI/CACHE}, and \texttt{PY\_STATS/ATOMIC}. Each family is organized as a nominal-control-abort triad. Across the four families, this yields 12 logical cases. Each family is then recollected under Tier-0, Tier-1, and Tier-2 capture, for a total of 36 phase-specific acquisition runs. Table~\ref{tab:app_crash_family_timing} combines that replay structure with the warning times from the matched original ITC anomaly cases.
+
+\begin{table}[t]
+\centering
+\caption{Crash-pilot families, replay timing, and matched warning context.}
+\label{tab:app_crash_family_timing}
+{\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lccccc@{}}
+\toprule
+Family & Warm/Ramp/Hold (s) & Mixed warn.\textsuperscript{a} & Full warn.\textsuperscript{a} & Crash tgt. (s) & Obs. abort crash\textsuperscript{b} \\
+\midrule
+\texttt{BROWSER/BRANCH}   & 25 / 105 / 30 & 30.0 & 60.0  & 160 & 167.5 (Tier-2) \\
+\texttt{VIDEO\_SW/MEMBW}  & 50 / 95 / 25  & 30.0 & 100.0 & 170 & 174.6 (Tier-1) \\
+\texttt{PY\_AI/CACHE}     & 65 / 115 / 30 & 30.0 & 60.0  & 210 & 214.8 (Tier-2) \\
+\texttt{PY\_STATS/ATOMIC} & 35 / 130 / 25 & 30.0 & 60.0  & 190 & 194.5 (Tier-1) \\
+\bottomrule
+\end{tabular*}
+
+\vspace{2pt}
+{\scriptsize\raggedright
+\textsuperscript{a}First warning time from the matched original ITC anomaly case at the selected Tier-0/1/2 operating point.\par
+\textsuperscript{b}Best-aligned positive abort-crash timestamp observed across capture phases; negative out-of-window diagnostic timestamps were excluded.\par
+}
+}
+\end{table}
+
+Across the four families, the selected mixed Tier-0/1/2 head warns at 30\,s in each matched original anomaly case, whereas the full Tier-0/1/2 head warns at 60\,s in three families and 100\,s for \texttt{VIDEO\_SW/MEMBW}. The observed abort crashes remain close to their scheduled targets, from 167.5\,s to 214.8\,s after run start. This family-level view is useful because it shows that the replay set stays temporally well behaved even though only one family currently has a full exported feature-bridge bundle.
+
+For the bridge analysis itself, the currently matched portable case is \texttt{PY\_AI/CACHE}. This is the family for which the original ITC anomaly run and the crash-pilot replay align cleanly in the exported bridge bundle. Table~\ref{tab:app_crash_case_study} records that handoff. The original ITC anomaly warning appears at 30.0\,s, the crash-pilot warning appears at 62.0\,s, and the observed crash occurs at 214.8\,s, leaving 152.8\,s of lead time. The dominant evidence also becomes more specific as the failure approaches, moving from Tier-1 GPU-frequency proxy evidence in the original ITC run to Tier-0 soft-interrupt activity at the crash-pilot warning and then to Tier-0 swap-out activity at the pre-crash peak.
+
+\begin{table}[t]
+\centering
+\caption{Detailed matched warning-to-crash bridge for \texttt{PY\_AI/CACHE}.}
+\label{tab:app_crash_case_study}
+{\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabularx}{\columnwidth}{@{}lcccc>{\raggedright\arraybackslash}X@{}}
+\toprule
+Case & Orig. warn (s) & Crash warn (s) & Crash (s) & Lead (s) & Evidence progression \\
+\midrule
+\texttt{PY\_AI/CACHE} & 30.0 & 62.0 & 214.8 & 152.8 & Original ITC warning: Tier-1 GPU-frequency proxy. Crash-pilot warning: Tier-0 soft interrupts. Pre-crash peak: Tier-0 swap-out activity. \\
+\bottomrule
+\end{tabularx}
+
+\vspace{2pt}
+{\scriptsize\raggedright
+This bridge row summarizes the family for which the full matched feature-bridge export is currently available.\par
+}
+}
+\end{table}
+
+\FloatBarrier
+
+\subsection{Grounded LLM Interpretation}\label{app:llm_role}
+
+The grounded LLM layer remains an interpretation layer rather than a detector. In the appendix scoring bundle, the portable local reviewer-summary baseline is \texttt{mlx-community/Qwen2.5-0.5B-Instruct-4bit} running through \texttt{mlx\_lm}. The input is a structured \textsc{DICE} case card containing the dominant tier, dominant mechanism, tier and mechanism shares, top localized features, and warning timing when available. The model does not receive raw traces, hidden logs, or external telemetry sources.
+
+Table~\ref{tab:app_llm_runtime} reports the runtime overhead of that layer. Generating 20 reviewer summaries takes 18.76\,s in the mixed profile and 17.57\,s in the full profile, which is under one second per case in both settings. The runtime is therefore small enough for reviewer-facing triage, but the semantic layer should still be read as optional explanation support rather than as part of the detector.
+
+\begin{table}[t]
+\centering
+\caption{Reviewer-summary runtime for the grounded LLM layer.}
+\label{tab:app_llm_runtime}
+{\scriptsize
+\setlength{\tabcolsep}{3.0pt}
+\renewcommand{\arraystretch}{1.02}
+\begin{tabularx}{\columnwidth}{@{}l >{\raggedright\arraybackslash}X c c@{}}
+\toprule
+Profile & Model / backend & 20 cases (s) & Case (s) \\
+\midrule
+Mixed & \texttt{Qwen2.5-0.5B-Instruct-4bit} / \texttt{mlx\_lm} & 18.76 & 0.94 \\
+Full  & \texttt{Qwen2.5-0.5B-Instruct-4bit} / \texttt{mlx\_lm} & 17.57 & 0.88 \\
+\bottomrule
+\end{tabularx}
+}
+\end{table}
+
+Fig.~\ref{fig:app_llm_triptych} shows an example grounded case-level audit for \texttt{PY\_AI/CACHE}. It is most useful as a semantic handoff view: the figure shows how structured \textsc{DICE} evidence is converted into a compact reviewer-facing explanation and then checked against the source evidence. Fig.~\ref{fig:app_llm_scorecard} adds the profile-level grounding summary behind the aggregate claim in Section~\ref{subsec:results_llm}. The practical point is usability rather than detector gain: the summaries remain tied to the \textsc{DICE} evidence, preserve the dominant tier cues, and remain hallucination-free on the scored set.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.98\columnwidth]{fig_app_llm_triptych.png}
+    \caption{Example grounded case-level audit for \texttt{PY\_AI/CACHE}.}
+    \label{fig:app_llm_triptych}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.98\columnwidth]{fig_app_llm_scorecard.png}
+    \caption{Profile-level grounded LLM scorecard for the reviewer-summary prompt.}
+    \label{fig:app_llm_scorecard}
+\end{figure}
+
+\FloatBarrier
