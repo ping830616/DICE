@@ -1,108 +1,73 @@
 # Notebook Guide
 
-## What Runs the Digital Twin?
+## Purpose
 
-The digital twin is executed in the `Run End-to-End` section of `dice_results_analysis.ipynb`.
+[`dice_results_analysis.ipynb`](dice_results_analysis.ipynb) is the main reproducible results notebook for DICE. It is organized to read like the paper draft first and like a deeper appendix second.
 
-That execution cell calls `run_notebook_pipeline(...)`, which runs:
-- tier-level analysis artifact generation
-- the full benign-trained DICE digital-twin pipeline
-- the optional cross-workload transfer pass
-- the optional tuning sweep
+## Execution Model
 
-## What Only Defines Code?
-
-The `Notebook-Local Pipeline Engine` section defines the embedded backend inside the notebook. It does not run experiments by itself.
-
-## What Only Reads Results?
-
-Everything after `What Runs vs What Reads` mostly loads generated CSV/PNG outputs and turns them into paper-ready tables, figures, dashboards, and appendix artifacts.
-
-## Main Parameters in the Run Cell
-
-- `fit_ratio`: benign fit/calibration split
-- `block_B`: decision-block length
-- `alpha`: split-conformal false-alarm target
-- `persist_k`: persistent-alert requirement
-- `gain`: fixed-gain synchronization strength
-- `ridge_lambda`: ridge regularization for the benign dynamics model
-- `RUN_HOLDOUT`: whether to run the cross-workload transfer pass
-- `INCLUDE_TUNING`: whether to run the tuning sweep
+- The first code cell owns the shared imports and notebook bootstrap.
+- Early cells resolve `REPO_ROOT`, `DATASET_ROOT`, seeds, output folders, and runtime limits.
+- `Run End-to-End` is the cell that triggers the main DICE pipeline.
+- Most later cells load saved outputs and turn them into paper-ready tables, figures, markdown snippets, and manifests.
 
 ## Recommended Reading Order
 
-After the notebook finishes, the clearest GitHub reading order is:
+1. `1. Experimental Setup, Released Data Inventory, and Hardware Context`
+2. `2A. Abstract-Ready Headline Metrics`
+3. `2B. Mixed vs Full Deployment Summary`
+4. `2. Main DICE Performance`
+5. `3. Operational Alerting Reliability`
+6. `4. Diagnosis and Anomaly Localization`
+7. `5. Cross-Workload Robustness and Design-Space Tradeoffs`
+8. `6. Crash-Aware Early Warning and Real Crash Localization`
+9. `7. Grounded LLM Triage Support`
+10. `Appendix A` through `Appendix F`
+11. `8. Paper Bundle and Appendix Exports`
+12. `9. Reproducibility Manifest`
 
-1. `Run End-to-End`
-2. `Reader Guide and Main Claims`
-3. `Quick Paper-Safe Metrics`
-4. `Mixed vs Full Deployment Summary`
-5. `Operating-Point Rationale and Industry Metrics`
-6. `Diagnosis, Localization, and Hardware Scorecard`
-7. `Scenario diagnosis and localization figures`
-8. `Case-by-case onset and hotspot figures`
-9. `Six-Cell Paper Storyboard`
-10. `8D. Early-Warning Readiness and Crash Lead Time`
-11. `8E. Crash Evidence Cards and Artifact Gallery`
-12. `8F. Controlled Crash-Harness Analysis` when you want to analyze the safe user-space crash dataset collected from the terminal
-13. `8G. Workload-Matched Crash Matrix` when you want crash-aware runs across the original four workloads after terminal collection
-14. `8H. Feature-Level Warning and Crash Trajectories` when you want per-column bridge plots that retain the original ITC anomaly warning and align it with the matched crash-pilot anomaly warning and the real crash time
-15. `8I. ITC-Study Crash Bridge Overview` when you want a whole-study extension that joins the original ITC warning table to all matched crash pilots
+## Draft Mapping
 
-These sections pull the main paper-facing outputs to the front of the notebook.
+- draft result `A`: `2. Main DICE Performance`
+- draft result `B`: `3. Operational Alerting Reliability`
+- draft result `C`: `4. Diagnosis and Anomaly Localization`
+- draft result `D`: `5. Cross-Workload Robustness and Design-Space Tradeoffs`
+- draft result `E`: `6. Crash-Aware Early Warning and Real Crash Localization`
+- draft result `F`: `7. Grounded LLM Triage Support`
 
-## Released Operating Points
+## Main Output Roots
 
-The released paper-facing operating points are:
+The notebook saves results automatically under `data generation/dataset/ITC_M2Pro_DATA/`.
 
-- mixed: `gain=0.15`, `block_B=30`, `alpha=0.10`, `persist_k=1`
-- full: `gain=0.35`, `block_B=60`, `alpha=0.02`, `persist_k=1`
+- `results_itc_paper/comparison/`: cross-profile tables and figures
+- `results_itc_paper/mixed/`: mixed-profile outputs
+- `results_itc_paper/full/`: full-profile outputs
+- `results_itc_appendix/`: appendix tables, figures, LLM bundles, and supporting diagnostics
+- `results_itc_crash_bridge/mixed/`: whole-study crash-bridge summaries when crash pilot data is available
+- `results_portable/run_manifest.json`: portable runtime manifest
 
-These settings come from the two-stage sweep and are summarized in the notebook section `Operating-Point Rationale and Industry Metrics`.
+## Key Files To Inspect First
 
-## Main Result Files
-
-If you want to inspect the results without reading the full notebook first, start here:
-
-- `results_itc_paper/comparison/industry_paper_scorecard_profiles.csv`
-- `results_itc_paper/comparison/industry_diagnosis_strength_profiles.csv`
-- `results_itc_paper/comparison/industry_timeline_profiles.csv`
 - `results_itc_paper/comparison/main_monitoring_profile_summary.csv`
-- `results_itc_paper/comparison/profile_config_comparison.csv`
+- `results_itc_paper/comparison/industry_paper_scorecard_profiles.csv`
+- `results_itc_paper/comparison/holdout_robustness_profiles.csv`
+- `results_itc_paper/comparison/figures/fig_main_monitoring_profile_comparison.png`
+- `results_itc_paper/comparison/figures/fig_conformal_reliability_profiles.png`
+- `results_itc_paper/comparison/figures/fig_scenario_diagnosis_localization_profiles.png`
+- `results_itc_paper/comparison/figures/fig_case_onset_and_hotspots_profiles.png`
+- `results_itc_paper/comparison/figures/fig_design_space_profile_comparison.png`
 
-If a crash manifest has been collected, the notebook also exports:
+## Reproducibility Checks
 
-- `results_itc_paper/<profile>/early_warning_case_summary.csv`
-- `results_itc_paper/<profile>/early_warning_metrics.csv`
-- `results_itc_paper/<profile>/fig_early_warning_timeline.png`
-- `results_itc_paper/<profile>/early_warning_crash_alignment.csv`
-- `results_itc_paper/<profile>/crash_evidence_cards/` after running `tools/generate_crash_evidence_cards.py`
+- Use [`scripts/validate_env.py`](scripts/validate_env.py) for repo and dataset validation.
+- Use [`tools/check_notebook_environment.py`](tools/check_notebook_environment.py) for notebook-specific dependency and layout checks.
+- Export `DICE_REPO_ROOT`, `PYTHONHASHSEED=0`, and the single-thread environment variables before execution when you want the strictest reproducible run.
+- Run the notebook from top to bottom without skipping cells.
 
-For timing and localization figures, use the notebook sections `Scenario diagnosis and localization figures` and `Case-by-case onset and hotspot figures`.
-For crash-aware lead-time analysis, use the notebook section `8D. Early-Warning Readiness and Crash Lead Time`.
-For paper-ready evidence panels, use the notebook section `8E. Crash Evidence Cards and Artifact Gallery`.
-For the safe user-space crash-harness dataset, use the notebook section `8F. Controlled Crash-Harness Analysis` after collecting `data generation/data_crash_harness/` in the terminal.
-For the workload-matched crash dataset, use the notebook section `8G. Workload-Matched Crash Matrix` after collecting a crash pilot under `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/` in the terminal. The notebook now auto-detects the newest matching crash dataset root there first, prints the crash output folders before analysis starts, and still falls back to the older `data generation/data_workload_crash_*` locations.
-For richer per-column figures that align selected telemetry columns to the full ITC-study bridge, use `8H. Feature-Level Warning and Crash Trajectories` after `8G` has produced the workload-matched crash bundle. The key bridge fields are `original_anomaly_warning_s`, `crash_pilot_anomaly_warning_s`, and `crash_time_s`.
-For a whole-study bridge table and figures under the main ITC dataset root, use `8I. ITC-Study Crash Bridge Overview` after you have at least one pilot with `results_feature_crash_analysis/`. This section aggregates the original warning table, the crash-pilot warning table, and the strongest pre-crash features into one ITC-study extension bundle.
+## Optional Extensions
 
-## Practical Reading Order
-
-1. `Execution Guard`
-2. `Notebook-Local Pipeline Engine`
-3. `Run End-to-End`
-4. `Reader Guide and Main Claims`
-5. front result sections below that point
-
-## Split ITC Notebooks
-
-If you want a smaller paper-oriented workflow instead of the all-in-one notebook, use the suite in `itc_notebooks/`.
-
-Recommended order:
-
-1. `dice_itc_00_notebook_map.ipynb`
-2. `dice_itc_01_run_and_setup.ipynb`
-3. `dice_itc_02_core_results.ipynb`
-4. `dice_itc_03_dse_and_complexity.ipynb`
-5. `dice_itc_04_case_study_and_llm.ipynb`
-6. `dice_itc_05_paper_bundle_and_repro.ipynb`
+- crash-aware lead-time export: `tools/early_warning_analysis.py`
+- crash evidence galleries: `tools/generate_crash_evidence_cards.py`
+- feature-level crash traces: `tools/feature_crash_analysis.py`
+- crash-bridge aggregation: `tools/aggregate_itc_crash_bridge.py`
+- grounded LLM local scoring: `tools/run_grounded_llm_local.py`
