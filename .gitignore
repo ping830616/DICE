@@ -28,5 +28,8 @@ data generation/dataset/*/workload_crash_pilots/*
 !data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_py_stats_atomic/**
 !data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_video_membw/
 !data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_video_membw/**
+data generation/dataset/*/workload_crash_pilots/**/screenshots/
+data generation/dataset/*/workload_crash_pilots/**/screenshots/**
 data generation/dataset/*/workload_crash_pilots/**/.DS_Store
 *.log
+!data generation/dataset/*/workload_crash_pilots/**/*.log
