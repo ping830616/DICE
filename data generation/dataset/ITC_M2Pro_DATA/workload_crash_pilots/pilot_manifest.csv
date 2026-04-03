@@ -1,0 +1,5 @@
+pilot_dir,workload,base_stressor,phase,duration_s,schedule_profile,warmup_s,ramp_s,hold_s,anomaly_onset_target_s,crash_target_s,wrapper_gui,capture_crash_evidence,capture_crash_screenshot,tier1_alt_bin,tier2_template,nominal_case,control_case,abort_case
+data_workload_crash_pilot_real_browser_branch,BROWSER,BRANCH,recommended,240,staggered,25,105,30,25,160,true,true,true,macmon,Time Profiler,BROWSER__NOMINAL,BROWSER__BRANCH_CONTROL,BROWSER__BRANCH_ABORT
+data_workload_crash_pilot_real_py_ai_cache,PY_AI,CACHE,recommended,240,staggered,65,115,30,65,210,true,true,true,macmon,Time Profiler,PY_AI__NOMINAL,PY_AI__CACHE_CONTROL,PY_AI__CACHE_ABORT
+data_workload_crash_pilot_real_py_stats_atomic,PY_STATS,ATOMIC,recommended,240,staggered,35,130,25,35,190,true,true,true,macmon,Time Profiler,PY_STATS__NOMINAL,PY_STATS__ATOMIC_CONTROL,PY_STATS__ATOMIC_ABORT
+data_workload_crash_pilot_real_video_membw,VIDEO_SW,MEMBW,recommended,240,staggered,50,95,25,50,170,true,true,true,macmon,Time Profiler,VIDEO_SW__NOMINAL,VIDEO_SW__MEMBW_CONTROL,VIDEO_SW__MEMBW_ABORT

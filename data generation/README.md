@@ -168,6 +168,8 @@ That path creates one `NOMINAL` case plus `*_CONTROL` and `*_ABORT` variants for
 
 These crash-pilot folders are intended to stay local by default. They can be large and may include copied crash evidence, screenshots, logs, and reruns, so the GitHub repository tracks the derived paper-facing summaries instead of the raw pilot roots. Commit outputs such as `results_itc_paper/`, `results_itc_appendix/`, or `results_itc_crash_bridge/` when you need reviewable artifacts; keep `data_workload_crash_*` and `workload_crash_pilots/` as local collections unless you are curating a smaller release.
 
+For the current four one-workload pilots, the repository now tracks a lightweight manifest at `dataset/ITC_M2Pro_DATA/workload_crash_pilots/README.md` and `dataset/ITC_M2Pro_DATA/workload_crash_pilots/pilot_manifest.csv`. Those files document the exact `BROWSER/BRANCH`, `PY_AI/CACHE`, `PY_STATS/ATOMIC`, and `VIDEO_SW/MEMBW` pilot commands without committing the full local pilot trees.
+
 After collection, you can either run:
 
 ```bash

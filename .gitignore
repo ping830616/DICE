@@ -16,5 +16,8 @@ data generation/dataset/*/results_dice_full/
 data generation/dataset/*/results_dice_full_holdout/
 data generation/dataset/*/results_dice_tuning/
 data generation/dataset/*/results_portable/
-data generation/dataset/*/workload_crash_pilots/
+data generation/dataset/*/workload_crash_pilots/*
+!data generation/dataset/*/workload_crash_pilots/
+!data generation/dataset/*/workload_crash_pilots/README.md
+!data generation/dataset/*/workload_crash_pilots/pilot_manifest.csv
 *.log

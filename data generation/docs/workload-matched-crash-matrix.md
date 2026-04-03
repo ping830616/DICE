@@ -120,6 +120,20 @@ python generate_workload_matched_crash_dataset.py \
   --wrapper_gui
 ```
 
+The repository now includes a lightweight tracked manifest for the four collected one-workload pilots at:
+
+- `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/README.md`
+- `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/pilot_manifest.csv`
+
+Those files document the exact local pilot roots and commands for:
+
+- `BROWSER / BRANCH`
+- `PY_AI / CACHE`
+- `PY_STATS / ATOMIC`
+- `VIDEO_SW / MEMBW`
+
+without committing the full local pilot bundle into normal git history.
+
 ## Direct Wrapper Commands
 
 You can also test one workload wrapper directly before running the full collection:
