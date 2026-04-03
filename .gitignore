@@ -20,4 +20,13 @@ data generation/dataset/*/workload_crash_pilots/*
 !data generation/dataset/*/workload_crash_pilots/
 !data generation/dataset/*/workload_crash_pilots/README.md
 !data generation/dataset/*/workload_crash_pilots/pilot_manifest.csv
+!data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_browser_branch/
+!data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_browser_branch/**
+!data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_py_ai_cache/
+!data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_py_ai_cache/**
+!data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_py_stats_atomic/
+!data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_py_stats_atomic/**
+!data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_video_membw/
+!data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_video_membw/**
+data generation/dataset/*/workload_crash_pilots/**/.DS_Store
 *.log
