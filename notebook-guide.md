@@ -38,6 +38,7 @@
 ## Main Output Roots
 
 The notebook saves results automatically under `data generation/dataset/ITC_M2Pro_DATA/`.
+These output folders are generated locally and are ignored by Git, so they will appear after you run the notebook rather than in a fresh clone.
 
 - `results_itc_paper/comparison/`: cross-profile tables and figures
 - `results_itc_paper/mixed/`: mixed-profile outputs

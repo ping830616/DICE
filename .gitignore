@@ -15,6 +15,8 @@ data generation/dataset/*/results_analysis/
 data generation/dataset/*/results_dice_full/
 data generation/dataset/*/results_dice_full_holdout/
 data generation/dataset/*/results_dice_tuning/
+data generation/dataset/*/results_*/
+data generation/dataset/*/results_*/**
 data generation/dataset/*/results_portable/
 data generation/dataset/*/workload_crash_pilots/*
 !data generation/dataset/*/workload_crash_pilots/
@@ -28,5 +30,7 @@ data generation/dataset/*/workload_crash_pilots/*
 !data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_py_stats_atomic/**
 !data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_video_membw/
 !data generation/dataset/*/workload_crash_pilots/data_workload_crash_pilot_real_video_membw/**
+data generation/dataset/*/workload_crash_pilots/**/results_*/
+data generation/dataset/*/workload_crash_pilots/**/results_*/**
 data generation/dataset/*/workload_crash_pilots/**/.DS_Store
 *.log

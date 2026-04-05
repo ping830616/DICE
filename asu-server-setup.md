@@ -71,7 +71,7 @@ After Jupyter opens:
 
 1. Open `dice_results_analysis.ipynb`.
 2. Run the notebook from top to bottom.
-3. Check `results_itc_paper/`, `results_itc_appendix/`, and `results_portable/run_manifest.json`.
+3. Check the newly generated `results_itc_paper/`, `results_itc_appendix/`, and `results_portable/run_manifest.json` outputs under the dataset root.
 
 ## Reproducibility Notes
 

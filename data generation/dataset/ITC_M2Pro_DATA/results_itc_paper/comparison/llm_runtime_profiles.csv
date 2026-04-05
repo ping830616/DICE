@@ -1,3 +1,0 @@
-feature_profile,profile_label,model_id,backend,seed,max_tokens,resolved_cached_revision,n_outputs,elapsed_s,runtime_json
-mixed,Mixed,mlx-community/Qwen2.5-0.5B-Instruct-4bit,mlx_lm,7,120,a5339a4131f135d0fdc6a5c8b5bbed2753bbe0f3,20,18.757,/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/mixed/llm_runtime_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.json
-full,Full,mlx-community/Qwen2.5-0.5B-Instruct-4bit,mlx_lm,7,120,a5339a4131f135d0fdc6a5c8b5bbed2753bbe0f3,20,17.57,/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/full/llm_runtime_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.json

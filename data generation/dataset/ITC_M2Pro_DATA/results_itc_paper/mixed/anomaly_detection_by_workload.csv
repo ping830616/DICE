@@ -1,5 +1,0 @@
-feature_profile,profile_label,config,config_label,scope,scope_value,n_cases,n_positive,n_negative,roc_auc,pr_auc,precision,recall,f1_score,balanced_accuracy,specificity,false_alarm_rate,true_positive_rate,benign_alert_rate,anomaly_detect_rate,median_time_to_detect_s
-mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,workload,BROWSER,6,5,1,1.0,1.0,1.0,0.8,0.8888888888888888,0.9,1.0,0.0,0.8,0.0,0.8,51.0
-mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,workload,PY_AI,6,5,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,0.0,1.0,393.0
-mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,workload,PY_STATS,6,5,1,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.0,1.0,0.0,1.0,30.0
-mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,workload,VIDEO_SW,6,5,1,0.4,0.8766666666666667,1.0,0.6,0.75,0.8,1.0,0.0,0.6,0.0,0.6,80.0

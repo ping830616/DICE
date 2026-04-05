@@ -1,7 +1,0 @@
-config,n_cases,top1_acc,top2_acc,balanced_acc,macro_f1,mean_margin_to_second,median_margin_to_second,feature_profile,profile_label,config_label,diagnosis_source
-tier0,20,0.4,0.6,0.4,0.3224242424242424,0.0238113077980322,0.0182278686290714,full,Full,Tier-0,feature-level (diagnosis-weighted)
-tier0_tier1,20,0.2,0.35,0.2,0.1641025641025641,0.0133777506531444,0.0111843533118061,full,Full,Tier-0/1,feature-level (diagnosis-weighted)
-tier0_tier1_tier2,20,0.3,0.4,0.3,0.2,0.0236686454053034,0.021294482840072,full,Full,Tier-0/1/2,feature-level (diagnosis-weighted)
-tier0,20,0.3,0.55,0.3,0.2329004329004328,0.0270167514382844,0.0210208338777903,mixed,Mixed,Tier-0,feature-level (diagnosis-weighted)
-tier0_tier1,20,0.3,0.65,0.3,0.2742368742368742,0.0170392136171164,0.0131431294247151,mixed,Mixed,Tier-0/1,feature-level (diagnosis-weighted)
-tier0_tier1_tier2,20,0.5,0.8,0.5,0.5285714285714286,0.0148318418937822,0.0100303028318848,mixed,Mixed,Tier-0/1/2,feature-level (diagnosis-weighted)

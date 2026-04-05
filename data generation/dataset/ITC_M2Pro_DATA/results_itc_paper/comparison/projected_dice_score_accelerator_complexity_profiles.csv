@@ -1,4 +1,0 @@
-feature_profile,profile_label,config,config_label,n_features,sample_path_ops_per_block,block_end_ops_per_block,total_state_bytes,complexity_index
-mixed,Mixed,tier0,Tier-0,46,5520,323,302,1.0
-mixed,Mixed,tier0_tier1,Tier-0/1,57,6840,400,368,1.2337244680101875
-mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,64,7680,449,410,1.3824582203803066
