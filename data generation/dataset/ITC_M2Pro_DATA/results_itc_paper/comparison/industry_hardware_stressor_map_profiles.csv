@@ -1,6 +1,0 @@
-stressor,likely_subsystem,likely_hardware_block,layperson_summary
-ATOMIC,CPU cores and synchronization path,"CPU cluster, shared caches, and cache-coherence / lock-contention path","Many workers are fighting over shared data, so CPU-side contention becomes visible."
-BRANCH,CPU front-end and control flow,CPU fetch / decode / branch-prediction path on the M2 Pro cores,The anomaly looks most like unstable instruction-flow behavior on the CPU side.
-CACHE,CPU cache and memory hierarchy,CPU cache hierarchy and its interface to the unified-memory system,The anomaly looks most like cache-pressure behavior rather than pure software noise.
-MEMBW,Unified memory and memory fabric,"Unified-memory bandwidth path, memory controller, and possible swap spillover",The anomaly looks most like the system pushing hard on shared memory bandwidth.
-TLB,Address translation and MMU path,CPU-side translation structures and page-walk behavior,The anomaly looks most like address-translation pressure rather than raw arithmetic load.

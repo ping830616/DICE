@@ -100,6 +100,7 @@ python tools/check_notebook_environment.py \
 ## What The Notebook Saves
 
 All major outputs are written automatically under `data generation/dataset/ITC_M2Pro_DATA/`.
+Those generated result bundles are meant to be produced locally and are ignored by Git by default, so a fresh clone starts clean.
 
 Main destinations:
 
@@ -159,7 +160,7 @@ Some crash-pilot roots are intentionally treated as local machine-generated arti
 - `data generation/data_workload_crash_*`
 - `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/`
 
-These folders can be very large and may contain local crash evidence, screenshots, logs, or pilot reruns. They are ignored by default so the repository stays reviewable and portable. The tracked paper-facing summaries derived from those pilots belong under `results_itc_paper/`, `results_itc_appendix/`, or `results_itc_crash_bridge/`.
+These folders can be very large and may contain local crash evidence, screenshots, logs, or pilot reruns. They are ignored by default so the repository stays reviewable and portable. The paper-facing summaries derived from those pilots are regenerated into `results_itc_paper/`, `results_itc_appendix/`, or `results_itc_crash_bridge/` when you run the pipeline locally.
 
 To make the pilot set visible on GitHub without committing the full bundle, the repo now tracks:
 

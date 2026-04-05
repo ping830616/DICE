@@ -1,2 +1,0 @@
-feature_profile,profile_label,config,config_label,scope,scope_value,n_cases,observed_outcomes,observed_crashes,observed_noncrashes,warning_precision,warning_recall_before_crash,warning_f1,warning_balanced_accuracy,late_warning_rate,false_alarm_rate_runs,false_alarm_rate_per_monitored_hour,median_lead_time_s,mean_lead_time_s,p10_lead_time_s,p90_lead_time_s,lead_time_ge_30s_rate,lead_time_ge_60s_rate,lead_time_ge_120s_rate,lead_time_ge_300s_rate
-mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,overall,ALL,24,0,0,0,,,,,,,,,,,,,,,
