@@ -166,9 +166,9 @@ python generate_workload_matched_crash_dataset.py \
 
 That path creates one `NOMINAL` case plus `*_CONTROL` and `*_ABORT` variants for each selected anomaly family under each original workload. `--schedule_profile staggered` gives each workload a different anomaly-onset/crash target so the warning and lead-time results are less synchronized across workloads. By default, this keeps the crash pilots under `dataset/ITC_M2Pro_DATA/workload_crash_pilots/` so they stay next to the main ITC dataset without mixing with the released anomaly bundle. Start smaller with `--workloads` and `--stressors` if you want a pilot run first.
 
-These crash-pilot folders are intended to stay local by default. They can be large and may include copied crash evidence, screenshots, logs, and reruns, so the GitHub repository keeps the raw pilot roots out of version control. Generate outputs such as `results_itc_paper/`, `results_itc_appendix/`, or `results_itc_crash_bridge/` locally when you need reviewable artifacts; keep `data_workload_crash_*` and `workload_crash_pilots/` as local collections unless you are curating a smaller release.
+These crash-pilot folders are still large and may include copied crash evidence, screenshots, logs, and reruns. The current GitHub repository tracks the four one-workload pilot roots through Git LFS, so a normal clone can fail when the repository LFS budget is exhausted. Clone with `GIT_LFS_SKIP_SMUDGE=1` when you only need the released ITC dataset plus the tracked paper-facing result folders, and pull the pilot bundle later only if Git LFS access is available.
 
-For the current four one-workload pilots, the repository now tracks a lightweight manifest at `dataset/ITC_M2Pro_DATA/workload_crash_pilots/README.md` and `dataset/ITC_M2Pro_DATA/workload_crash_pilots/pilot_manifest.csv`. Those files document the exact `BROWSER/BRANCH`, `PY_AI/CACHE`, `PY_STATS/ATOMIC`, and `VIDEO_SW/MEMBW` pilot commands without committing the full local pilot trees.
+The lightweight manifest entry points remain `dataset/ITC_M2Pro_DATA/workload_crash_pilots/README.md` and `dataset/ITC_M2Pro_DATA/workload_crash_pilots/pilot_manifest.csv`. Those files document the exact `BROWSER/BRANCH`, `PY_AI/CACHE`, `PY_STATS/ATOMIC`, and `VIDEO_SW/MEMBW` pilot commands even when the full LFS payload is not present locally.
 
 After collection, you can either run:
 

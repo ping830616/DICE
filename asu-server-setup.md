@@ -31,10 +31,13 @@ ssh <ASURITE_ID>@<ASU_SERVER_HOST>
 Clone and set up the environment:
 
 ```bash
-git clone https://github.com/ping830616/DICE.git
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 cd DICE
+git lfs install
 conda env create -f environment.yml
 ```
+
+This uses `GIT_LFS_SKIP_SMUDGE=1` because `workload_crash_pilots/` is stored through Git LFS and may fail a normal checkout when the repository LFS budget is exhausted. The released ITC dataset and tracked `results_*` folders still work without those optional pilot objects.
 
 Launch Jupyter without opening a browser on the server:
 

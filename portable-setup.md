@@ -27,8 +27,9 @@ Not guaranteed to be identical on every machine:
 ## Local
 
 ```bash
-git clone https://github.com/ping830616/DICE.git
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 cd DICE
+git lfs install
 conda env create -f environment.yml
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
@@ -50,11 +51,14 @@ conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 On the server:
 
 ```bash
-git clone https://github.com/ping830616/DICE.git
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 cd DICE
+git lfs install
 conda env create -f environment.yml
 conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice_results_analysis.ipynb
 ```
+
+The clone uses `GIT_LFS_SKIP_SMUDGE=1` because `workload_crash_pilots/` is Git LFS-backed and may exceed the current GitHub LFS budget. The released ITC dataset and tracked `results_*` folders remain usable without downloading the optional pilot payloads.
 
 From your local machine:
 

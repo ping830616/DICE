@@ -46,10 +46,19 @@ That mapping corresponds directly to the draft results sequence:
 Clone the repo and create the pinned environment:
 
 ```bash
-git clone https://github.com/ping830616/DICE.git
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 cd DICE
+git lfs install
 conda env create -f environment.yml
 conda activate dice-results
+```
+
+`workload_crash_pilots/` is currently tracked through Git LFS. Cloning with `GIT_LFS_SKIP_SMUDGE=1` skips downloading those pilot objects during checkout, which avoids clone failures when the repository LFS budget is temporarily exhausted. The main ITC dataset, notebook, and tracked `results_*` folders still work without those pilot payloads.
+
+If Git LFS access is available later and you need the pilot bundle, pull it explicitly:
+
+```bash
+git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
 ```
 
 If the environment already exists:
@@ -100,7 +109,7 @@ python tools/check_notebook_environment.py \
 ## What The Notebook Saves
 
 All major outputs are written automatically under `data generation/dataset/ITC_M2Pro_DATA/`.
-Those generated result bundles are meant to be produced locally and are ignored by Git by default, so a fresh clone starts clean.
+For `ITC_M2Pro_DATA`, the main paper-facing `results_*` folders are now tracked in Git so GitHub exposes a reproducible baseline. Re-running the notebook refreshes those folders locally.
 
 Main destinations:
 
@@ -160,14 +169,14 @@ Some crash-pilot roots are intentionally treated as local machine-generated arti
 - `data generation/data_workload_crash_*`
 - `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/`
 
-These folders can be very large and may contain local crash evidence, screenshots, logs, or pilot reruns. They are ignored by default so the repository stays reviewable and portable. The paper-facing summaries derived from those pilots are regenerated into `results_itc_paper/`, `results_itc_appendix/`, or `results_itc_crash_bridge/` when you run the pipeline locally.
+These folders can be very large and may contain crash evidence, screenshots, logs, or pilot reruns. The repository currently tracks the four one-workload pilot roots through Git LFS, which means a normal checkout may fail if the repository LFS budget is exhausted. Use `GIT_LFS_SKIP_SMUDGE=1` for the initial clone when you only need the released ITC dataset and the tracked paper-facing result folders.
 
-To make the pilot set visible on GitHub without committing the full bundle, the repo now tracks:
+The lightweight entry points remain:
 
 - `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/README.md`
 - `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/pilot_manifest.csv`
 
-Those two files document the current four one-workload pilots and the exact commands used to generate them.
+Those files document the current four one-workload pilots and the exact commands used to generate them, even when the full LFS payload is not available locally.
 
 ## Additional Docs
 
