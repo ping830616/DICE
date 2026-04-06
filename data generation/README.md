@@ -168,7 +168,18 @@ That path creates one `NOMINAL` case plus `*_CONTROL` and `*_ABORT` variants for
 
 These crash-pilot folders are still large and may include copied crash evidence, screenshots, logs, and reruns. The current GitHub repository tracks the four one-workload pilot roots through Git LFS, so a normal clone can fail when the repository LFS budget is exhausted. Clone with `GIT_LFS_SKIP_SMUDGE=1` when you only need the released ITC dataset plus the tracked paper-facing result folders, and pull the pilot bundle later only if Git LFS access is available.
 
+Important: `GIT_LFS_SKIP_SMUDGE=1` avoids the clone failure, but it does not make the pilot payload usable for notebook crash-analysis cells. Sections that read `workload_crash_pilots/.../crash_events.csv`, copied diagnostic reports, or per-case crash logs still need the real files rather than Git LFS pointer stubs. If the payload is unavailable through Git LFS, point the notebook at a local materialized `workload_crash_pilots/` tree instead.
+
 The lightweight manifest entry points remain `dataset/ITC_M2Pro_DATA/workload_crash_pilots/README.md` and `dataset/ITC_M2Pro_DATA/workload_crash_pilots/pilot_manifest.csv`. Those files document the exact `BROWSER/BRANCH`, `PY_AI/CACHE`, `PY_STATS/ATOMIC`, and `VIDEO_SW/MEMBW` pilot commands even when the full LFS payload is not present locally.
+
+Quick check:
+
+```bash
+PILOT_CSV="dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_browser_branch/crash_evidence/crash_events.csv"
+sed -n '1,3p' "$PILOT_CSV"
+```
+
+If the file starts with `version https://git-lfs.github.com/spec/v1`, you only have the pointer stub and the crash-pilot notebook sections will not be able to parse the pilot cases yet.
 
 After collection, you can either run:
 
@@ -195,6 +206,8 @@ python tools/train_eval_dice_pipeline.py \
 ```
 
 Then open `dice_results_analysis.ipynb` and run `8G. Workload-Matched Crash Matrix` if you want the notebook-side summary, lead-time tables, and crash-card preview for that dataset. The notebook auto-detects the newest `ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_*` dataset root first, then falls back to the older `data generation/data_workload_crash_*` locations.
+
+If your repo clone was created with `GIT_LFS_SKIP_SMUDGE=1` and the pilot payload was never pulled, override the notebook to use a local materialized crash-pilot root before running the crash-card cells.
 
 If you prefer to run the tiers separately:
 

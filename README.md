@@ -61,6 +61,20 @@ If Git LFS access is available later and you need the pilot bundle, pull it expl
 git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
 ```
 
+Crash-aware notebook sections need more than the lightweight manifest files. If you cloned with `GIT_LFS_SKIP_SMUDGE=1`, sections that read pilot `crash_events.csv`, copied diagnostic reports, or crash logs will still see Git LFS pointer stubs until the pilot payload is materialized. In practice, `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix` require either:
+
+- a successful `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"`
+- or a local materialized copy of `workload_crash_pilots/` with `DATASET_ROOT` or `CRASH_PILOTS_ROOT` pointed at that copy
+
+Quick check:
+
+```bash
+PILOT_CSV="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_browser_branch/crash_evidence/crash_events.csv"
+sed -n '1,3p' "$PILOT_CSV"
+```
+
+If the file starts with `version https://git-lfs.github.com/spec/v1`, the crash-pilot payload is not checked out yet.
+
 If the environment already exists:
 
 ```bash
@@ -170,6 +184,8 @@ Some crash-pilot roots are intentionally treated as local machine-generated arti
 - `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/`
 
 These folders can be very large and may contain crash evidence, screenshots, logs, or pilot reruns. The repository currently tracks the four one-workload pilot roots through Git LFS, which means a normal checkout may fail if the repository LFS budget is exhausted. Use `GIT_LFS_SKIP_SMUDGE=1` for the initial clone when you only need the released ITC dataset and the tracked paper-facing result folders.
+
+That clone mode is enough for the main released ITC dataset and tracked paper outputs, but it is not enough for notebook cells that parse crash-pilot `crash_events.csv`, copied diagnostic reports, or per-case crash logs. Those cells require the real pilot payload rather than the Git LFS pointer stubs left behind by a skip-smudge clone.
 
 The lightweight entry points remain:
 

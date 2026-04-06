@@ -10,6 +10,7 @@
 - Early cells resolve `REPO_ROOT`, `DATASET_ROOT`, seeds, output folders, and runtime limits.
 - `Run End-to-End` is the cell that triggers the main DICE pipeline.
 - Most later cells load saved outputs and turn them into paper-ready tables, figures, markdown snippets, and manifests.
+- Crash-pilot sections only work when `workload_crash_pilots/` is materialized locally. A skip-smudge clone can still run the main released ITC analysis, but crash-evidence cells will see Git LFS pointer stubs until you pull the pilot payload or point the notebook at a materialized local copy.
 
 ## Recommended Reading Order
 

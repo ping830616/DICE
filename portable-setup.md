@@ -60,6 +60,20 @@ conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice
 
 The clone uses `GIT_LFS_SKIP_SMUDGE=1` because `workload_crash_pilots/` is Git LFS-backed and may exceed the current GitHub LFS budget. The released ITC dataset and tracked `results_*` folders remain usable without downloading the optional pilot payloads.
 
+That skip-smudge clone is not sufficient for crash-pilot notebook sections that read `workload_crash_pilots/.../crash_events.csv`, copied diagnostic reports, or crash logs. For `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`, either:
+
+- run `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"`
+- or point the notebook at a local materialized copy of `workload_crash_pilots/`
+
+Quick check:
+
+```bash
+PILOT_CSV="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_browser_branch/crash_evidence/crash_events.csv"
+sed -n '1,3p' "$PILOT_CSV"
+```
+
+If the file starts with `version https://git-lfs.github.com/spec/v1`, the crash-pilot payload is still only a pointer stub.
+
 From your local machine:
 
 ```bash
