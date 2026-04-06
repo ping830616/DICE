@@ -1,0 +1,11 @@
+feature_profile,profile_label,config,config_label,stressor,workload,first_block_s,second_block_s,third_block_s,fourth_block_s,fifth_block_s,dominant_tier,dominant_mechanism
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,ATOMIC,PY_STATS,45.0,46.0,47.0,48.0,49.0,tier0,memory_io
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,BRANCH,BROWSER,45.0,46.0,47.0,48.0,49.0,tier0,memory_io
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,CACHE,PY_AI,45.0,46.0,47.0,48.0,49.0,tier1_alt,compute
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,MEMBW,PY_AI,469.0,470.0,471.0,472.0,473.0,tier0,memory_io
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,TLB,PY_AI,972.0,973.0,974.0,975.0,976.0,tier0,memory_io
+full,Full,tier0_tier1_tier2,Tier-0/1/2,ATOMIC,VIDEO_SW,91.0,92.0,93.0,94.0,95.0,tier0,compute
+full,Full,tier0_tier1_tier2,Tier-0/1/2,BRANCH,BROWSER,91.0,92.0,93.0,94.0,95.0,tier0,memory_io
+full,Full,tier0_tier1_tier2,Tier-0/1/2,CACHE,PY_AI,91.0,92.0,93.0,94.0,95.0,tier2,compute
+full,Full,tier0_tier1_tier2,Tier-0/1/2,MEMBW,PY_AI,91.0,92.0,93.0,94.0,95.0,tier0,memory_io
+full,Full,tier0_tier1_tier2,Tier-0/1/2,TLB,BROWSER,91.0,92.0,93.0,94.0,95.0,tier0,memory_io

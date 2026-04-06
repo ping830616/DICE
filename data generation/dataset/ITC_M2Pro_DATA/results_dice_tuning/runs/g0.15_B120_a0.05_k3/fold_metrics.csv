@@ -1,0 +1,4 @@
+feature_profile,config,holdout_workload,roc_auc,pr_auc,roc_auc_wc,pr_auc_wc,fpr,tpr,n_features
+mixed,tier0,ALL,0.7875,0.9218987314285301,1.0,1.0000000000000002,0.0,0.25,46
+mixed,tier0_tier1,ALL,0.8,0.9318987314285302,1.0,1.0000000000000002,0.0,0.375,57
+mixed,tier0_tier1_tier2,ALL,0.8125,0.9402320647618635,1.0,1.0000000000000002,0.0,0.375,64

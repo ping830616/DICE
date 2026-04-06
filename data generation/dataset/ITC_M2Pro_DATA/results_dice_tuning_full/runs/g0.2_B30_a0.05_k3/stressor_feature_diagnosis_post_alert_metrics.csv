@@ -1,0 +1,4 @@
+config,n_cases,top1_acc,top2_acc,balanced_acc,macro_f1,mean_margin_to_second,median_margin_to_second,feature_profile
+tier0,20,0.3,0.5,0.3,0.2688888888888889,0.014782162420837717,0.010176539536850396,full
+tier0_tier1,20,0.1,0.3,0.1,0.1,0.10135249017168665,0.045605758992660006,full
+tier0_tier1_tier2,20,0.1,0.15,0.1,0.08,0.02567903938206214,0.02021184669639306,full

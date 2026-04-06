@@ -1,0 +1,4 @@
+config,tier0_share,tier1_alt_share,tier2_share,feature_profile,profile_label,config_label
+tier0,1.0,0.0,0.0,mixed,Mixed,Tier-0
+tier0_tier1,0.867576640925978,0.13242335907402208,0.0,mixed,Mixed,Tier-0/1
+tier0_tier1_tier2,0.7873319809418461,0.12391174335218005,0.08875627570597382,mixed,Mixed,Tier-0/1/2

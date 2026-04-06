@@ -1,0 +1,7 @@
+config,n_features,roc_auc,pr_auc,roc_auc_wc,pr_auc_wc,fit_eval_seconds,benign_run_alert_rate,benign_run_keep_rate,anomaly_detect_rate,median_time_to_detect_s,top1_acc,top2_acc,macro_f1,balanced_acc,mean_margin_to_second,feature_profile,diagnosis_source,profile_label,config_label
+tier0,46,0.8125,0.9402320647618636,1.0,1.0000000000000002,2.403670375002548,0.0,1.0,0.4,45.0,0.3,0.55,0.2389610389610389,0.3,0.0268741849175125,mixed,feature-level (diagnosis-weighted),Mixed,Tier-0
+tier0_tier1,57,0.8375,0.957015975295774,1.0,1.0000000000000002,2.918510042014532,0.0,1.0,0.75,84.0,0.4,0.7,0.3478632478632478,0.4,0.0182871664554313,mixed,feature-level (diagnosis-weighted),Mixed,Tier-0/1
+tier0_tier1_tier2,64,0.85,0.9591804774602762,1.0,1.0000000000000002,3.2676140829571523,0.0,1.0,0.75,45.0,0.55,0.75,0.5732600732600732,0.55,0.0168914120395129,mixed,feature-level (diagnosis-weighted),Mixed,Tier-0/1/2
+tier0,46,0.8,0.9318987314285302,1.0,1.0000000000000002,2.287009624997154,0.0,1.0,0.3,91.5,0.4,0.6,0.3224242424242424,0.4,0.0252617153503272,full,feature-level (diagnosis-weighted),Full,Tier-0
+tier0_tier1,64,0.7874999999999999,0.9414225409523396,1.0,1.0000000000000002,3.031997542013414,0.0,1.0,0.55,91.0,0.2,0.3,0.1857142857142857,0.2,0.0137043501843743,full,feature-level (diagnosis-weighted),Full,Tier-0/1
+tier0_tier1_tier2,75,0.95,0.9897096908939014,1.0,1.0000000000000002,3.758938124985434,0.0,1.0,0.95,91.0,0.3,0.4,0.2,0.3,0.0253124417530615,full,feature-level (diagnosis-weighted),Full,Tier-0/1/2

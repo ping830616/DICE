@@ -1,0 +1,121 @@
+{
+  "created_at_utc": "2026-04-03T04:26:05.097524+00:00",
+  "repo_root": "/Users/hsiaopingni/DICE",
+  "dataset_root": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA",
+  "dataset_digest": {
+    "file_count": 14009,
+    "sha256": "02e93f80840854eb2bd597dd662e869491b2b00f0e836ec6cb182e80f22e2442"
+  },
+  "python": {
+    "executable": "/opt/anaconda3/envs/dice-results/bin/python",
+    "version": "3.11.4 | packaged by conda-forge | (main, Jun 10 2023, 18:08:41) [Clang 15.0.7 ]"
+  },
+  "platform": {
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "processor": "arm"
+  },
+  "package_versions": {
+    "matplotlib": "3.10.5",
+    "numpy": "2.3.2",
+    "pandas": "2.3.1",
+    "psutil": "7.0.0",
+    "scikit_learn": "1.7.1",
+    "scipy": "1.16.1",
+    "joblib": "1.5.1",
+    "threadpoolctl": "3.6.0",
+    "python_dateutil": "2.9.0.post0",
+    "pytz": "2025.2",
+    "tzdata": "2025.2"
+  },
+  "deterministic_env": {
+    "MPLCONFIGDIR": "/Users/hsiaopingni/DICE/.mplconfig",
+    "MPLBACKEND": "module://matplotlib_inline.backend_inline",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1",
+    "PYTHONHASHSEED": "0"
+  },
+  "environment_files": {
+    "requirements_txt": {
+      "path": "/Users/hsiaopingni/DICE/requirements.txt",
+      "sha256": "39815d96470e2d25a6e87627b202a083bfd157947b801c54990275a88289a225"
+    },
+    "environment_yml": {
+      "path": "/Users/hsiaopingni/DICE/environment.yml",
+      "sha256": "f74eeaae1c6fda004a806ef00c10ffabcf57f2d27ac45b9a568a0baf8c48fe71"
+    }
+  },
+  "parameters": {
+    "source_hz": 5,
+    "fit_ratio": 0.6,
+    "block_B": 60,
+    "alpha": 0.05,
+    "persist_k": 3,
+    "gain": 0.35,
+    "ridge_lambda": 0.001,
+    "run_holdout": true,
+    "include_tuning": true,
+    "feature_profiles_swept": [
+      "mixed",
+      "full"
+    ],
+    "display_feature_profile": "mixed",
+    "alert_tuning_objective": "diagnosis_low_fp",
+    "use_tuned_alert_config": true,
+    "tuned_alert_config_path": "",
+    "profile_runs": {
+      "mixed": {
+        "feature_profile": "mixed",
+        "global_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full",
+        "holdout_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full_holdout",
+        "tuning_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning",
+        "operating_point": {
+          "source_hz": 5,
+          "fit_ratio": 0.6,
+          "block_B": 45,
+          "alpha": 0.1,
+          "persist_k": 1,
+          "gain": 0.2,
+          "ridge_lambda": 0.001
+        },
+        "tuned_operating_point": {
+          "block_B": 45,
+          "alpha": 0.1,
+          "persist_k": 1,
+          "gain": 0.2
+        }
+      },
+      "full": {
+        "feature_profile": "full",
+        "global_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full_full",
+        "holdout_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full_full_holdout",
+        "tuning_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning_full",
+        "operating_point": {
+          "source_hz": 5,
+          "fit_ratio": 0.6,
+          "block_B": 90,
+          "alpha": 0.05,
+          "persist_k": 2,
+          "gain": 0.35,
+          "ridge_lambda": 0.001
+        },
+        "tuned_operating_point": {
+          "block_B": 90,
+          "alpha": 0.05,
+          "persist_k": 2,
+          "gain": 0.35
+        }
+      }
+    }
+  },
+  "outputs": {
+    "results_analysis": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_analysis",
+    "results_dice_full": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full",
+    "results_dice_full_holdout": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full_holdout",
+    "results_dice_tuning": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning"
+  }
+}

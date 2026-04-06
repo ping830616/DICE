@@ -1,0 +1,63 @@
+{
+  "runtime_seconds": 6618.81,
+  "runtime_minutes": 110.31,
+  "run_end_to_end": true,
+  "run_holdout": true,
+  "include_tuning": true,
+  "feature_profiles_swept": [
+    "mixed",
+    "full"
+  ],
+  "display_feature_profile": "mixed",
+  "repo_root": "/Users/hsiaopingni/DICE",
+  "dataset_root": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA",
+  "analysis_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_analysis",
+  "full_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full",
+  "holdout_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full_holdout",
+  "tuning_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning",
+  "manifest_path": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_portable/run_manifest.json",
+  "profile_runs": {
+    "mixed": {
+      "feature_profile": "mixed",
+      "global_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full",
+      "holdout_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full_holdout",
+      "tuning_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning",
+      "operating_point": {
+        "source_hz": 5,
+        "fit_ratio": 0.6,
+        "block_B": 45,
+        "alpha": 0.1,
+        "persist_k": 1,
+        "gain": 0.2,
+        "ridge_lambda": 0.001
+      },
+      "tuned_operating_point": {
+        "block_B": 45,
+        "alpha": 0.1,
+        "persist_k": 1,
+        "gain": 0.2
+      }
+    },
+    "full": {
+      "feature_profile": "full",
+      "global_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full_full",
+      "holdout_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_full_full_holdout",
+      "tuning_out": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning_full",
+      "operating_point": {
+        "source_hz": 5,
+        "fit_ratio": 0.6,
+        "block_B": 90,
+        "alpha": 0.05,
+        "persist_k": 2,
+        "gain": 0.35,
+        "ridge_lambda": 0.001
+      },
+      "tuned_operating_point": {
+        "block_B": 90,
+        "alpha": 0.05,
+        "persist_k": 2,
+        "gain": 0.35
+      }
+    }
+  }
+}

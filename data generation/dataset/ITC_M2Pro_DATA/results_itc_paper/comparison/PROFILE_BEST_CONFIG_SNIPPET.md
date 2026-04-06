@@ -1,0 +1,4 @@
+Primary paper profile: Mixed. Use the mixed profile for draft headline claims unless a later revision explicitly switches to full.
+Mixed profile: best overall config is Tier-0/1/2 (64 features), with base AUC-PR 0.9592, holdout mean/worst AUC-PR 0.8742/0.8100, detect rate 0.7500, benign alert rate 0.0000, top-2 diagnosis 0.7500, Macro-F1 0.5733, and diagnosis source feature-level (diagnosis-weighted).
+Full profile: best overall config is Tier-0/1/2 (75 features), with base AUC-PR 0.9897, holdout mean/worst AUC-PR 0.8075/0.7100, detect rate 0.9500, benign alert rate 0.0000, top-2 diagnosis 0.4000, Macro-F1 0.2000, and diagnosis source feature-level (diagnosis-weighted).
+Compared at their profile-specific best configs, switching from mixed to full changes holdout mean AUC-PR by -0.0667, detect rate by +0.2000, Macro-F1 by -0.3733, and benign alert rate by +0.0000.

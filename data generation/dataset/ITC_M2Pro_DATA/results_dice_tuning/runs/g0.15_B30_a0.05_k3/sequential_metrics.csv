@@ -1,0 +1,4 @@
+config,benign_run_alert_rate,benign_persist_alerts_per_hour,benign_block_alerts_per_hour,anomaly_detect_rate,median_time_to_detect_s,p90_time_to_detect_s,detect_within_120s,detect_within_300s,detect_within_600s,feature_profile
+tier0,0.25,0.9278350515463918,2.783505154639175,0.3,54.0,603.5,0.2,0.2,0.25,mixed
+tier0_tier1,0.25,0.9278350515463918,2.783505154639175,0.55,77.0,819.0,0.3,0.3,0.45,mixed
+tier0_tier1_tier2,0.0,0.0,0.0,0.55,38.0,818.0,0.35,0.35,0.45,mixed

@@ -1,0 +1,16 @@
+feature_profile,profile_label,config,config_label,case_id,workload,stressor,run_score,run_alert,localization_source,dominant_tier,dominant_mechanism,n_recorded_blocks,first_block_s,second_block_s,third_block_s,fourth_block_s,fifth_block_s
+full,Full,tier0,Tier-0,PY_STATS__ATOMIC,PY_STATS,ATOMIC,0.0229404772037742,1,post-persist abnormal windows,tier0,memory_io,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0,Tier-0,BROWSER__BRANCH,BROWSER,BRANCH,0.0232367818593669,1,post-persist abnormal windows,tier0,memory_io,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0,Tier-0,VIDEO_SW__CACHE,VIDEO_SW,CACHE,0.0107342789783028,0,diagnosis-selected windows,tier0,memory_io,5,185.0,186.0,187.0,188.0,189.0
+full,Full,tier0,Tier-0,PY_STATS__MEMBW,PY_STATS,MEMBW,0.0204002164254354,1,post-persist abnormal windows,tier0,memory_io,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0,Tier-0,PY_STATS__TLB,PY_STATS,TLB,0.013089053668466,0,diagnosis-selected windows,tier0,memory_io,5,942.0,943.0,944.0,945.0,946.0
+full,Full,tier0_tier1,Tier-0/1,PY_STATS__ATOMIC,PY_STATS,ATOMIC,0.0333485067427494,1,post-persist abnormal windows,tier0,memory_io,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0_tier1,Tier-0/1,PY_AI__BRANCH,PY_AI,BRANCH,0.0339418768347306,1,post-persist abnormal windows,tier0,memory_io,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0_tier1,Tier-0/1,PY_AI__CACHE,PY_AI,CACHE,0.0387006313769578,1,post-persist abnormal windows,tier0,memory_io,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0_tier1,Tier-0/1,PY_AI__MEMBW,PY_AI,MEMBW,0.0385851853114999,1,post-persist abnormal windows,tier0,memory_io,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0_tier1,Tier-0/1,PY_AI__TLB,PY_AI,TLB,0.0229562001185645,1,post-persist abnormal windows,tier0,compute,5,990.0,991.0,992.0,993.0,994.0
+full,Full,tier0_tier1_tier2,Tier-0/1/2,VIDEO_SW__ATOMIC,VIDEO_SW,ATOMIC,0.009217522468373,1,post-persist abnormal windows,tier0,compute,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0_tier1_tier2,Tier-0/1/2,BROWSER__BRANCH,BROWSER,BRANCH,0.0139301118700387,1,post-persist abnormal windows,tier0,memory_io,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0_tier1_tier2,Tier-0/1/2,PY_AI__CACHE,PY_AI,CACHE,0.0397484557535657,1,post-persist abnormal windows,tier2,compute,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0_tier1_tier2,Tier-0/1/2,PY_AI__MEMBW,PY_AI,MEMBW,0.0094732006510703,1,post-persist abnormal windows,tier0,memory_io,5,91.0,92.0,93.0,94.0,95.0
+full,Full,tier0_tier1_tier2,Tier-0/1/2,BROWSER__TLB,BROWSER,TLB,0.0172078963725322,1,post-persist abnormal windows,tier0,memory_io,5,91.0,92.0,93.0,94.0,95.0

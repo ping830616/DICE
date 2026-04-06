@@ -1,0 +1,12 @@
+{
+  "feature_profile": "mixed",
+  "protocol": "global",
+  "elapsed_s": 33.564971875021,
+  "source_hz": 5,
+  "fit_ratio": 0.6,
+  "block_B": 30,
+  "alpha": 0.1,
+  "persist_k": 2,
+  "gain": 0.15,
+  "ridge_lambda": 0.001
+}

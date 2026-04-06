@@ -1,0 +1,11 @@
+feature_profile,scenario,scenario_label,config,config_label,n_features,score,roc_auc,pr_auc,mean_pr_auc,worst_pr_auc,pooled_pr_auc,anomaly_detect_rate,benign_run_alert_rate,median_time_to_detect_s,top1_acc,top2_acc,macro_f1,diagnosis_source
+mixed,global,Global separation,tier0_tier1_tier2,Tier-0/1/2,64,0.8500000000000001,0.85,0.9591804774602762,0.8741666666666666,0.81,0.8065009028620382,0.75,0.0,45.0,0.55,0.75,0.5732600732600732,feature-level (diagnosis-weighted)
+mixed,holdout,Cross-workload portability,tier0_tier1_tier2,Tier-0/1/2,64,0.9,0.85,0.9591804774602762,0.8741666666666666,0.81,0.8065009028620382,0.75,0.0,45.0,0.55,0.75,0.5732600732600732,feature-level (diagnosis-weighted)
+mixed,alert,Persistent alerting,tier0_tier1_tier2,Tier-0/1/2,64,0.525,0.85,0.9591804774602762,0.8741666666666666,0.81,0.8065009028620382,0.75,0.0,45.0,0.55,0.75,0.5732600732600732,feature-level (diagnosis-weighted)
+mixed,diagnosis,Diagnosis,tier0_tier1_tier2,Tier-0/1/2,64,1.0,0.85,0.9591804774602762,0.8741666666666666,0.81,0.8065009028620382,0.75,0.0,45.0,0.55,0.75,0.5732600732600732,feature-level (diagnosis-weighted)
+mixed,overall,Overall,tier0_tier1_tier2,Tier-0/1/2,64,0.8225,0.85,0.9591804774602762,0.8741666666666666,0.81,0.8065009028620382,0.75,0.0,45.0,0.55,0.75,0.5732600732600732,feature-level (diagnosis-weighted)
+full,global,Global separation,tier0_tier1_tier2,Tier-0/1/2,75,0.8500000000000001,0.95,0.9897096908939014,0.8075,0.71,0.7503971016924476,0.95,0.0,91.0,0.3,0.4,0.2,feature-level (diagnosis-weighted)
+full,holdout,Cross-workload portability,tier0_tier1_tier2,Tier-0/1/2,75,0.6,0.95,0.9897096908939014,0.8075,0.71,0.7503971016924476,0.95,0.0,91.0,0.3,0.4,0.2,feature-level (diagnosis-weighted)
+full,alert,Persistent alerting,tier0_tier1_tier2,Tier-0/1/2,75,0.65,0.95,0.9897096908939014,0.8075,0.71,0.7503971016924476,0.95,0.0,91.0,0.3,0.4,0.2,feature-level (diagnosis-weighted)
+full,diagnosis,Diagnosis,tier0,Tier-0,46,1.0,0.8,0.9318987314285302,0.7825,0.71,0.7671418846872305,0.3,0.0,91.5,0.4,0.6,0.3224242424242424,feature-level (diagnosis-weighted)
+full,overall,Overall,tier0_tier1_tier2,Tier-0/1/2,75,0.6625000000000001,0.95,0.9897096908939014,0.8075,0.71,0.7503971016924476,0.95,0.0,91.0,0.3,0.4,0.2,feature-level (diagnosis-weighted)

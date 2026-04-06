@@ -1,0 +1,4 @@
+config,status,n_cases,top1_acc,top2_acc,balanced_acc,macro_f1,min_class_count,min_group_count,group_key,include_workload,feature_profile
+tier0,skipped_insufficient_samples,20,,,,,4,4,base_case_id,1,mixed
+tier0_tier1,skipped_insufficient_samples,20,,,,,4,4,base_case_id,1,mixed
+tier0_tier1_tier2,skipped_insufficient_samples,20,,,,,4,4,base_case_id,1,mixed

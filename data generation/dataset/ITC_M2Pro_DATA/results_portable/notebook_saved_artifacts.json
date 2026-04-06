@@ -1,0 +1,1916 @@
+[
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_case_quality.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_case_quality.csv",
+    "suffix":".csv",
+    "bytes":4336
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_feature_inventory.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_feature_inventory.csv",
+    "suffix":".csv",
+    "bytes":1328
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_overall_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_overall_metrics.csv",
+    "suffix":".csv",
+    "bytes":534
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_run_scores.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_run_scores.csv",
+    "suffix":".csv",
+    "bytes":6146
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_stressor_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_stressor_metrics.csv",
+    "suffix":".csv",
+    "bytes":1433
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_workload_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/table_workload_summary.csv",
+    "suffix":".csv",
+    "bytes":1260
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/case_block_traces.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/case_block_traces.csv",
+    "suffix":".csv",
+    "bytes":22052805
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/case_diagnosis_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/case_diagnosis_summary.csv",
+    "suffix":".csv",
+    "bytes":57787
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/case_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/case_predictions.csv",
+    "suffix":".csv",
+    "bytes":18259
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/config_runtime_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/config_runtime_summary.csv",
+    "suffix":".csv",
+    "bytes":149
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/diagnosis_mode_comparison.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/diagnosis_mode_comparison.csv",
+    "suffix":".csv",
+    "bytes":2766
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/fold_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/fold_metrics.csv",
+    "suffix":".csv",
+    "bytes":388
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/holdout_robustness_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/holdout_robustness_summary.csv",
+    "suffix":".csv",
+    "bytes":174
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/mechanism_group_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/mechanism_group_summary.csv",
+    "suffix":".csv",
+    "bytes":748
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/overall_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/overall_metrics.csv",
+    "suffix":".csv",
+    "bytes":719
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/sequential_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/sequential_metrics.csv",
+    "suffix":".csv",
+    "bytes":471
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":400
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":5630
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_confusion_matrix_post_alert.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_confusion_matrix_post_alert.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_confusion_matrix_runlevel.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_confusion_matrix_runlevel.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_confusion_matrix_top_blocks.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_confusion_matrix_top_blocks.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":400
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_post_alert_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_post_alert_metrics.csv",
+    "suffix":".csv",
+    "bytes":403
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_post_alert_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_post_alert_predictions.csv",
+    "suffix":".csv",
+    "bytes":5588
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":5604
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_runlevel_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_runlevel_metrics.csv",
+    "suffix":".csv",
+    "bytes":400
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_runlevel_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_runlevel_predictions.csv",
+    "suffix":".csv",
+    "bytes":5604
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_top_blocks_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_top_blocks_metrics.csv",
+    "suffix":".csv",
+    "bytes":403
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_top_blocks_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_feature_diagnosis_top_blocks_predictions.csv",
+    "suffix":".csv",
+    "bytes":5588
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_abstain_sweep.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_abstain_sweep.csv",
+    "suffix":".csv",
+    "bytes":2045
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_abstain_sweep_post_alert.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_abstain_sweep_post_alert.csv",
+    "suffix":".csv",
+    "bytes":1780
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_abstain_sweep_top_blocks.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_abstain_sweep_top_blocks.csv",
+    "suffix":".csv",
+    "bytes":1780
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":142
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_confusion_matrix_post_alert.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_confusion_matrix_post_alert.csv",
+    "suffix":".csv",
+    "bytes":142
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_confusion_matrix_top_blocks.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_confusion_matrix_top_blocks.csv",
+    "suffix":".csv",
+    "bytes":142
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":1042
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_post_alert_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_post_alert_metrics.csv",
+    "suffix":".csv",
+    "bytes":1030
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_post_alert_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_post_alert_predictions.csv",
+    "suffix":".csv",
+    "bytes":16141
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":16157
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_top_blocks_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_top_blocks_metrics.csv",
+    "suffix":".csv",
+    "bytes":1030
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_top_blocks_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_hierarchical_diagnosis_top_blocks_predictions.csv",
+    "suffix":".csv",
+    "bytes":16141
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_metrics_final_config.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_metrics_final_config.csv",
+    "suffix":".csv",
+    "bytes":1150
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_tier_contributions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/stressor_tier_contributions.csv",
+    "suffix":".csv",
+    "bytes":464
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/case_block_traces.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/case_block_traces.csv",
+    "suffix":".csv",
+    "bytes":21235102
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/case_diagnosis_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/case_diagnosis_summary.csv",
+    "suffix":".csv",
+    "bytes":56984
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/case_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/case_predictions.csv",
+    "suffix":".csv",
+    "bytes":17521
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/config_runtime_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/config_runtime_summary.csv",
+    "suffix":".csv",
+    "bytes":146
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/diagnosis_mode_comparison.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/diagnosis_mode_comparison.csv",
+    "suffix":".csv",
+    "bytes":2779
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/fold_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/fold_metrics.csv",
+    "suffix":".csv",
+    "bytes":378
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/holdout_robustness_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/holdout_robustness_summary.csv",
+    "suffix":".csv",
+    "bytes":174
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/mechanism_group_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/mechanism_group_summary.csv",
+    "suffix":".csv",
+    "bytes":732
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/overall_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/overall_metrics.csv",
+    "suffix":".csv",
+    "bytes":720
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/sequential_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/sequential_metrics.csv",
+    "suffix":".csv",
+    "bytes":400
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":387
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":5647
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_confusion_matrix_post_alert.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_confusion_matrix_post_alert.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_confusion_matrix_runlevel.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_confusion_matrix_runlevel.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_confusion_matrix_top_blocks.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_confusion_matrix_top_blocks.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":378
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_post_alert_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_post_alert_metrics.csv",
+    "suffix":".csv",
+    "bytes":383
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_post_alert_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_post_alert_predictions.csv",
+    "suffix":".csv",
+    "bytes":5617
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":5605
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_runlevel_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_runlevel_metrics.csv",
+    "suffix":".csv",
+    "bytes":378
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_runlevel_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_runlevel_predictions.csv",
+    "suffix":".csv",
+    "bytes":5605
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_top_blocks_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_top_blocks_metrics.csv",
+    "suffix":".csv",
+    "bytes":383
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_top_blocks_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_feature_diagnosis_top_blocks_predictions.csv",
+    "suffix":".csv",
+    "bytes":5617
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_abstain_sweep.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_abstain_sweep.csv",
+    "suffix":".csv",
+    "bytes":1810
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_abstain_sweep_post_alert.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_abstain_sweep_post_alert.csv",
+    "suffix":".csv",
+    "bytes":2104
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_abstain_sweep_top_blocks.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_abstain_sweep_top_blocks.csv",
+    "suffix":".csv",
+    "bytes":2104
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":142
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_confusion_matrix_post_alert.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_confusion_matrix_post_alert.csv",
+    "suffix":".csv",
+    "bytes":142
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_confusion_matrix_top_blocks.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_confusion_matrix_top_blocks.csv",
+    "suffix":".csv",
+    "bytes":142
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":1040
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_post_alert_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_post_alert_metrics.csv",
+    "suffix":".csv",
+    "bytes":1087
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_post_alert_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_post_alert_predictions.csv",
+    "suffix":".csv",
+    "bytes":16098
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":16053
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_top_blocks_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_top_blocks_metrics.csv",
+    "suffix":".csv",
+    "bytes":1087
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_top_blocks_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_hierarchical_diagnosis_top_blocks_predictions.csv",
+    "suffix":".csv",
+    "bytes":16098
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_metrics_final_config.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_metrics_final_config.csv",
+    "suffix":".csv",
+    "bytes":1075
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_tier_contributions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/stressor_tier_contributions.csv",
+    "suffix":".csv",
+    "bytes":460
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/case_block_traces.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/case_block_traces.csv",
+    "suffix":".csv",
+    "bytes":9286194
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/case_diagnosis_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/case_diagnosis_summary.csv",
+    "suffix":".csv",
+    "bytes":48218
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/case_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/case_predictions.csv",
+    "suffix":".csv",
+    "bytes":16145
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/fold_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/fold_metrics.csv",
+    "suffix":".csv",
+    "bytes":721
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/holdout_robustness_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/holdout_robustness_summary.csv",
+    "suffix":".csv",
+    "bytes":562
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/mechanism_group_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/mechanism_group_summary.csv",
+    "suffix":".csv",
+    "bytes":704
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/overall_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/overall_metrics.csv",
+    "suffix":".csv",
+    "bytes":612
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/sequential_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/sequential_metrics.csv",
+    "suffix":".csv",
+    "bytes":452
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":369
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":5600
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_feature_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_feature_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_feature_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_feature_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":372
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_feature_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_feature_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":5650
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_metrics_final_config.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_metrics_final_config.csv",
+    "suffix":".csv",
+    "bytes":1070
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_tier_contributions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/stressor_tier_contributions.csv",
+    "suffix":".csv",
+    "bytes":417
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/case_block_traces.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/case_block_traces.csv",
+    "suffix":".csv",
+    "bytes":9546607
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/case_diagnosis_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/case_diagnosis_summary.csv",
+    "suffix":".csv",
+    "bytes":48924
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/case_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/case_predictions.csv",
+    "suffix":".csv",
+    "bytes":16378
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/config_runtime_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/config_runtime_summary.csv",
+    "suffix":".csv",
+    "bytes":151
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/fold_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/fold_metrics.csv",
+    "suffix":".csv",
+    "bytes":763
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/holdout_robustness_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/holdout_robustness_summary.csv",
+    "suffix":".csv",
+    "bytes":610
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/mechanism_group_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/mechanism_group_summary.csv",
+    "suffix":".csv",
+    "bytes":706
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/overall_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/overall_metrics.csv",
+    "suffix":".csv",
+    "bytes":633
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/sequential_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/sequential_metrics.csv",
+    "suffix":".csv",
+    "bytes":448
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":370
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":5604
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_feature_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_feature_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_feature_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_feature_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":373
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_feature_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_feature_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":5623
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_metrics_final_config.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_metrics_final_config.csv",
+    "suffix":".csv",
+    "bytes":1123
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_tier_contributions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/stressor_tier_contributions.csv",
+    "suffix":".csv",
+    "bytes":421
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/table_case_quality.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/table_case_quality.csv",
+    "suffix":".csv",
+    "bytes":4336
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/table_feature_inventory.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/table_feature_inventory.csv",
+    "suffix":".csv",
+    "bytes":1328
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/table_run_scores.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/table_run_scores.csv",
+    "suffix":".csv",
+    "bytes":6146
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/case_diagnosis_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/case_diagnosis_summary.csv",
+    "suffix":".csv",
+    "bytes":49098
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/case_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/case_predictions.csv",
+    "suffix":".csv",
+    "bytes":16456
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_case_cards.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_case_cards.csv",
+    "suffix":".csv",
+    "bytes":82762
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_diagnostic_model_catalog.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_diagnostic_model_catalog.csv",
+    "suffix":".csv",
+    "bytes":1660
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_diagnostic_prompt_bundle.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_diagnostic_prompt_bundle.csv",
+    "suffix":".csv",
+    "bytes":317046
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_grounding_detail_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_grounding_detail_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "suffix":".csv",
+    "bytes":2671
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_grounding_summary_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_grounding_summary_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "suffix":".csv",
+    "bytes":260
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_outputs_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/llm_outputs_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "suffix":".csv",
+    "bytes":11764
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/mechanism_group_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/mechanism_group_summary.csv",
+    "suffix":".csv",
+    "bytes":754
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/overall_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/overall_metrics.csv",
+    "suffix":".csv",
+    "bytes":724
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/sequential_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/sequential_metrics.csv",
+    "suffix":".csv",
+    "bytes":510
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":280
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":5830
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_feature_confusion_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_feature_confusion_matrix.csv",
+    "suffix":".csv",
+    "bytes":124
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_feature_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_feature_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":297
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_feature_diagnosis_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_feature_diagnosis_predictions.csv",
+    "suffix":".csv",
+    "bytes":5856
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_metrics_final_config.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_metrics_final_config.csv",
+    "suffix":".csv",
+    "bytes":1164
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_tier_contributions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/full\/stressor_tier_contributions.csv",
+    "suffix":".csv",
+    "bytes":470
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/holdout\/case_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/holdout\/case_predictions.csv",
+    "suffix":".csv",
+    "bytes":17567
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/holdout\/fold_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/holdout\/fold_metrics.csv",
+    "suffix":".csv",
+    "bytes":1095
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/holdout\/holdout_robustness_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/holdout\/holdout_robustness_summary.csv",
+    "suffix":".csv",
+    "bytes":614
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/holdout\/overall_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/holdout\/overall_metrics.csv",
+    "suffix":".csv",
+    "bytes":714
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/conformal_reliability_by_workload.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/conformal_reliability_by_workload.csv",
+    "suffix":".csv",
+    "bytes":953
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_case_cards.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_case_cards.csv",
+    "suffix":".csv",
+    "bytes":83290
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_diagnostic_model_catalog.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_diagnostic_model_catalog.csv",
+    "suffix":".csv",
+    "bytes":1660
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_diagnostic_prompt_bundle.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_diagnostic_prompt_bundle.csv",
+    "suffix":".csv",
+    "bytes":313236
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_grounding_detail_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_grounding_detail_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "suffix":".csv",
+    "bytes":2677
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_grounding_summary_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_grounding_summary_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "suffix":".csv",
+    "bytes":259
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_outputs_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/mixed\/llm_outputs_mlx_community__Qwen2_5_0_5B_Instruct_4bit_reviewer_summary.csv",
+    "suffix":".csv",
+    "bytes":11702
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_dataset_design_matrix.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_dataset_design_matrix.csv",
+    "suffix":".csv",
+    "bytes":127
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_dataset_profile_inventory.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_dataset_profile_inventory.csv",
+    "suffix":".csv",
+    "bytes":126
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_overall_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_overall_metrics.csv",
+    "suffix":".csv",
+    "bytes":534
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_run_scores.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_run_scores.csv",
+    "suffix":".csv",
+    "bytes":6797
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_run_scores_full.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_run_scores_full.csv",
+    "suffix":".csv",
+    "bytes":6730
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_run_scores_mixed.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_run_scores_mixed.csv",
+    "suffix":".csv",
+    "bytes":6797
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_run_scores_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_run_scores_profiles.csv",
+    "suffix":".csv",
+    "bytes":13413
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_stressor_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_stressor_metrics.csv",
+    "suffix":".csv",
+    "bytes":1433
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_tier_feature_categories_long.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_tier_feature_categories_long.csv",
+    "suffix":".csv",
+    "bytes":8490
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_tier_feature_categories_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_tier_feature_categories_summary.csv",
+    "suffix":".csv",
+    "bytes":3728
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_workload_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/table_workload_summary.csv",
+    "suffix":".csv",
+    "bytes":1260
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/bootstrap_confidence_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/bootstrap_confidence_profiles.csv",
+    "suffix":".csv",
+    "bytes":323
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/conformal_reliability_by_workload_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/conformal_reliability_by_workload_profiles.csv",
+    "suffix":".csv",
+    "bytes":1586
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/conformal_reliability_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/conformal_reliability_profiles.csv",
+    "suffix":".csv",
+    "bytes":636
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/design_space_recommendations_by_profile.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/design_space_recommendations_by_profile.csv",
+    "suffix":".csv",
+    "bytes":449
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/diagnosis_summary_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/diagnosis_summary_profiles.csv",
+    "suffix":".csv",
+    "bytes":982
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/digital_twin_variant_summary_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/digital_twin_variant_summary_profiles.csv",
+    "suffix":".csv",
+    "bytes":1185
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/final_head_monitoring_profile_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/final_head_monitoring_profile_summary.csv",
+    "suffix":".csv",
+    "bytes":361
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/final_head_score_distribution_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/final_head_score_distribution_profiles.csv",
+    "suffix":".csv",
+    "bytes":1892
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/holdout_robustness_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/holdout_robustness_profiles.csv",
+    "suffix":".csv",
+    "bytes":683
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_diagnosis_strength_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_diagnosis_strength_profiles.csv",
+    "suffix":".csv",
+    "bytes":827
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_hardware_feature_map_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_hardware_feature_map_profiles.csv",
+    "suffix":".csv",
+    "bytes":7003
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_hardware_hotspots_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_hardware_hotspots_profiles.csv",
+    "suffix":".csv",
+    "bytes":1456
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_hardware_stressor_map_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_hardware_stressor_map_profiles.csv",
+    "suffix":".csv",
+    "bytes":1019
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_paper_scorecard_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_paper_scorecard_profiles.csv",
+    "suffix":".csv",
+    "bytes":999
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_stressor_mechanism_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_stressor_mechanism_profiles.csv",
+    "suffix":".csv",
+    "bytes":3063
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_stressor_recall_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_stressor_recall_profiles.csv",
+    "suffix":".csv",
+    "bytes":2475
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_timeline_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_timeline_profiles.csv",
+    "suffix":".csv",
+    "bytes":1121
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_top_features_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_top_features_profiles.csv",
+    "suffix":".csv",
+    "bytes":6629
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/llm_grounded_triage_assets_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/llm_grounded_triage_assets_profiles.csv",
+    "suffix":".csv",
+    "bytes":482
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/llm_grounding_summary_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/llm_grounding_summary_profiles.csv",
+    "suffix":".csv",
+    "bytes":942
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/llm_runtime_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/llm_runtime_profiles.csv",
+    "suffix":".csv",
+    "bytes":727
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/low_overhead_story_by_profile.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/low_overhead_story_by_profile.csv",
+    "suffix":".csv",
+    "bytes":363
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/main_monitoring_profile_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/main_monitoring_profile_summary.csv",
+    "suffix":".csv",
+    "bytes":1058
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/mechanism_attribution_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/mechanism_attribution_profiles.csv",
+    "suffix":".csv",
+    "bytes":528
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/paper_ready_bundle_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/paper_ready_bundle_summary.csv",
+    "suffix":".csv",
+    "bytes":308
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/profile_best_config_by_scenario.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/profile_best_config_by_scenario.csv",
+    "suffix":".csv",
+    "bytes":1001
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/profile_config_comparison.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/profile_config_comparison.csv",
+    "suffix":".csv",
+    "bytes":2406
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/projected_dice_score_accelerator_complexity_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/projected_dice_score_accelerator_complexity_profiles.csv",
+    "suffix":".csv",
+    "bytes":335
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/residual_evidence_concentration_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/residual_evidence_concentration_profiles.csv",
+    "suffix":".csv",
+    "bytes":793
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/stressor_residual_evidence_concentration_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/stressor_residual_evidence_concentration_profiles.csv",
+    "suffix":".csv",
+    "bytes":842
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/tier_attribution_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/tier_attribution_profiles.csv",
+    "suffix":".csv",
+    "bytes":302
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/tuning_parameter_sweep_best_points.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/tuning_parameter_sweep_best_points.csv",
+    "suffix":".csv",
+    "bytes":1111
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/tuning_parameter_sweep_strong_rows.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/tuning_parameter_sweep_strong_rows.csv",
+    "suffix":".csv",
+    "bytes":23880
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/tuning_parameter_sweep_summary_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/tuning_parameter_sweep_summary_profiles.csv",
+    "suffix":".csv",
+    "bytes":23816
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/two_stage_dice_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/two_stage_dice_profiles.csv",
+    "suffix":".csv",
+    "bytes":2491
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/uncertainty_holdout_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/uncertainty_holdout_profiles.csv",
+    "suffix":".csv",
+    "bytes":4246
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/uncertainty_summary_profiles.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/uncertainty_summary_profiles.csv",
+    "suffix":".csv",
+    "bytes":4193
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/abstract_metrics_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/abstract_metrics_summary.csv",
+    "suffix":".csv",
+    "bytes":700
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/dse_feature_budget_case_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/dse_feature_budget_case_predictions.csv",
+    "suffix":".csv",
+    "bytes":26524
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/dse_feature_budget_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/dse_feature_budget_summary.csv",
+    "suffix":".csv",
+    "bytes":2408
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/dse_feature_ranking.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/dse_feature_ranking.csv",
+    "suffix":".csv",
+    "bytes":6420
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/industry_localization_representative_cases.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/industry_localization_representative_cases.csv",
+    "suffix":".csv",
+    "bytes":2539
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/industry_localization_stressors.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/industry_localization_stressors.csv",
+    "suffix":".csv",
+    "bytes":1754
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/industry_localization_timelines.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/industry_localization_timelines.csv",
+    "suffix":".csv",
+    "bytes":8557
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/industry_localization_top_features.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/industry_localization_top_features.csv",
+    "suffix":".csv",
+    "bytes":2564
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/mechanism_group_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/mechanism_group_summary.csv",
+    "suffix":".csv",
+    "bytes":754
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/overall_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/overall_metrics.csv",
+    "suffix":".csv",
+    "bytes":724
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/profile_best_config_by_scenario.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/profile_best_config_by_scenario.csv",
+    "suffix":".csv",
+    "bytes":1001
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/profile_config_comparison.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/profile_config_comparison.csv",
+    "suffix":".csv",
+    "bytes":2406
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/sequential_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/sequential_metrics.csv",
+    "suffix":".csv",
+    "bytes":510
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/stressor_diagnosis_metrics.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/stressor_diagnosis_metrics.csv",
+    "suffix":".csv",
+    "bytes":280
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/stressor_metrics_final_config.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/stressor_metrics_final_config.csv",
+    "suffix":".csv",
+    "bytes":1164
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/tier1_power_context_cases.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/tier1_power_context_cases.csv",
+    "suffix":".csv",
+    "bytes":3969
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/tier1_power_context_stressors.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/tier1_power_context_stressors.csv",
+    "suffix":".csv",
+    "bytes":513
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/tier1_power_context_workloads.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/tier1_power_context_workloads.csv",
+    "suffix":".csv",
+    "bytes":454
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/uncertainty_case_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/uncertainty_case_predictions.csv",
+    "suffix":".csv",
+    "bytes":33209
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/uncertainty_holdout_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/uncertainty_holdout_summary.csv",
+    "suffix":".csv",
+    "bytes":2006
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/uncertainty_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/uncertainty_summary.csv",
+    "suffix":".csv",
+    "bytes":2222
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/conformal_reliability_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/conformal_reliability_summary.csv",
+    "suffix":".csv",
+    "bytes":493
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/dse_feature_budget_case_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/dse_feature_budget_case_predictions.csv",
+    "suffix":".csv",
+    "bytes":26243
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/dse_feature_budget_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/dse_feature_budget_summary.csv",
+    "suffix":".csv",
+    "bytes":2508
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/dse_feature_ranking.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/dse_feature_ranking.csv",
+    "suffix":".csv",
+    "bytes":5414
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/industry_localization_representative_cases.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/industry_localization_representative_cases.csv",
+    "suffix":".csv",
+    "bytes":2588
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/industry_localization_stressors.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/industry_localization_stressors.csv",
+    "suffix":".csv",
+    "bytes":1793
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/industry_localization_timelines.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/industry_localization_timelines.csv",
+    "suffix":".csv",
+    "bytes":8710
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/industry_localization_top_features.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/industry_localization_top_features.csv",
+    "suffix":".csv",
+    "bytes":2660
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/two_stage_dice_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/two_stage_dice_summary.csv",
+    "suffix":".csv",
+    "bytes":1363
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/uncertainty_case_predictions.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/uncertainty_case_predictions.csv",
+    "suffix":".csv",
+    "bytes":34430
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/uncertainty_holdout_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/uncertainty_holdout_summary.csv",
+    "suffix":".csv",
+    "bytes":2091
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/uncertainty_summary.csv",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/uncertainty_summary.csv",
+    "suffix":".csv",
+    "bytes":2275
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_af_timeseries_tier0.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_af_timeseries_tier0.png",
+    "suffix":".png",
+    "bytes":1124549
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_af_timeseries_tier1_alt.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_af_timeseries_tier1_alt.png",
+    "suffix":".png",
+    "bytes":1897366
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_af_timeseries_tier2.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_af_timeseries_tier2.png",
+    "suffix":".png",
+    "bytes":1918878
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_heatmap_pr_auc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_heatmap_pr_auc.png",
+    "suffix":".png",
+    "bytes":70714
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_heatmap_roc_auc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_heatmap_roc_auc.png",
+    "suffix":".png",
+    "bytes":72750
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_run_score_distributions.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_run_score_distributions.png",
+    "suffix":".png",
+    "bytes":248194
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_detection_latency.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_detection_latency.png",
+    "suffix":".png",
+    "bytes":145560
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_exec_localization_validation_mixed.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_exec_localization_validation_mixed.png",
+    "suffix":".png",
+    "bytes":288697
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_exec_summary_validation_mixed.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_exec_summary_validation_mixed.png",
+    "suffix":".png",
+    "bytes":276854
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_mechanism_group_summary.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_mechanism_group_summary.png",
+    "suffix":".png",
+    "bytes":424725
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_roc_pr_by_config.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_roc_pr_by_config.png",
+    "suffix":".png",
+    "bytes":195339
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_roc_pr_by_config_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_roc_pr_by_config_wc.png",
+    "suffix":".png",
+    "bytes":187687
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_run_score_boxplot.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_run_score_boxplot.png",
+    "suffix":".png",
+    "bytes":233032
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_run_score_boxplot_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_run_score_boxplot_wc.png",
+    "suffix":".png",
+    "bytes":211040
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_stressor_confusion_matrix.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_stressor_confusion_matrix.png",
+    "suffix":".png",
+    "bytes":230906
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_stressor_confusion_matrix_feature.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_stressor_confusion_matrix_feature.png",
+    "suffix":".png",
+    "bytes":236302
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_stressor_confusion_matrix_feature_top_blocks.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_stressor_confusion_matrix_feature_top_blocks.png",
+    "suffix":".png",
+    "bytes":230048
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_stressor_tier_contributions.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/figures\/fig_stressor_tier_contributions.png",
+    "suffix":".png",
+    "bytes":193590
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_detection_latency.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_detection_latency.png",
+    "suffix":".png",
+    "bytes":147473
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_exec_localization_validation_full.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_exec_localization_validation_full.png",
+    "suffix":".png",
+    "bytes":345711
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_exec_summary_validation_full.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_exec_summary_validation_full.png",
+    "suffix":".png",
+    "bytes":249541
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_mechanism_group_summary.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_mechanism_group_summary.png",
+    "suffix":".png",
+    "bytes":421221
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_roc_pr_by_config.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_roc_pr_by_config.png",
+    "suffix":".png",
+    "bytes":195423
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_roc_pr_by_config_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_roc_pr_by_config_wc.png",
+    "suffix":".png",
+    "bytes":187687
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_run_score_boxplot.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_run_score_boxplot.png",
+    "suffix":".png",
+    "bytes":270830
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_run_score_boxplot_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_run_score_boxplot_wc.png",
+    "suffix":".png",
+    "bytes":262013
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_stressor_confusion_matrix.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_stressor_confusion_matrix.png",
+    "suffix":".png",
+    "bytes":231775
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_stressor_confusion_matrix_feature.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_stressor_confusion_matrix_feature.png",
+    "suffix":".png",
+    "bytes":217492
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_stressor_confusion_matrix_feature_top_blocks.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_stressor_confusion_matrix_feature_top_blocks.png",
+    "suffix":".png",
+    "bytes":243931
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_stressor_tier_contributions.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full\/figures\/fig_stressor_tier_contributions.png",
+    "suffix":".png",
+    "bytes":192711
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_detection_latency.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_detection_latency.png",
+    "suffix":".png",
+    "bytes":136668
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_mechanism_group_summary.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_mechanism_group_summary.png",
+    "suffix":".png",
+    "bytes":534508
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_roc_pr_by_config.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_roc_pr_by_config.png",
+    "suffix":".png",
+    "bytes":180074
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_roc_pr_by_config_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_roc_pr_by_config_wc.png",
+    "suffix":".png",
+    "bytes":160583
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_run_score_boxplot.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_run_score_boxplot.png",
+    "suffix":".png",
+    "bytes":221566
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_run_score_boxplot_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_run_score_boxplot_wc.png",
+    "suffix":".png",
+    "bytes":216299
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_stressor_confusion_matrix.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_stressor_confusion_matrix.png",
+    "suffix":".png",
+    "bytes":205361
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_stressor_tier_contributions.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_full_holdout\/figures\/fig_stressor_tier_contributions.png",
+    "suffix":".png",
+    "bytes":180525
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_detection_latency.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_detection_latency.png",
+    "suffix":".png",
+    "bytes":136218
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_mechanism_group_summary.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_mechanism_group_summary.png",
+    "suffix":".png",
+    "bytes":526237
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_roc_pr_by_config.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_roc_pr_by_config.png",
+    "suffix":".png",
+    "bytes":178345
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_roc_pr_by_config_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_roc_pr_by_config_wc.png",
+    "suffix":".png",
+    "bytes":160583
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_run_score_boxplot.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_run_score_boxplot.png",
+    "suffix":".png",
+    "bytes":209768
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_run_score_boxplot_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_run_score_boxplot_wc.png",
+    "suffix":".png",
+    "bytes":182969
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_stressor_confusion_matrix.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_stressor_confusion_matrix.png",
+    "suffix":".png",
+    "bytes":201678
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_stressor_tier_contributions.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/figures\/fig_stressor_tier_contributions.png",
+    "suffix":".png",
+    "bytes":178411
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/fig_af_timeseries_tier0.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/fig_af_timeseries_tier0.png",
+    "suffix":".png",
+    "bytes":1236010
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/fig_af_timeseries_tier1_alt.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/fig_af_timeseries_tier1_alt.png",
+    "suffix":".png",
+    "bytes":2091637
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/fig_af_timeseries_tier2.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/fig_af_timeseries_tier2.png",
+    "suffix":".png",
+    "bytes":2063840
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/fig_heatmap_roc_auc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/analysis\/fig_heatmap_roc_auc.png",
+    "suffix":".png",
+    "bytes":66100
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/holdout\/fig_roc_pr_by_config_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_appendix\/holdout\/fig_roc_pr_by_config_wc.png",
+    "suffix":".png",
+    "bytes":151528
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_af_timeseries_tier2.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_af_timeseries_tier2.png",
+    "suffix":".png",
+    "bytes":2063840
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_dataset_overview.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_dataset_overview.png",
+    "suffix":".png",
+    "bytes":515265
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_heatmap_pr_auc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_heatmap_pr_auc.png",
+    "suffix":".png",
+    "bytes":64293
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_run_score_distributions.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_run_score_distributions.png",
+    "suffix":".png",
+    "bytes":217541
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_run_score_distributions_full.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_run_score_distributions_full.png",
+    "suffix":".png",
+    "bytes":210831
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_run_score_distributions_mixed.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_run_score_distributions_mixed.png",
+    "suffix":".png",
+    "bytes":217541
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_tier_feature_categories.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/analysis\/fig_tier_feature_categories.png",
+    "suffix":".png",
+    "bytes":496370
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_attribution_profile_comparison.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_attribution_profile_comparison.png",
+    "suffix":".png",
+    "bytes":186445
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_bootstrap_confidence_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_bootstrap_confidence_profiles.png",
+    "suffix":".png",
+    "bytes":131607
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_case_onset_and_hotspots_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_case_onset_and_hotspots_profiles.png",
+    "suffix":".png",
+    "bytes":576112
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_conformal_reliability_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_conformal_reliability_profiles.png",
+    "suffix":".png",
+    "bytes":103722
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_design_space_profile_comparison.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_design_space_profile_comparison.png",
+    "suffix":".png",
+    "bytes":239169
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_dse_diagnosis_story_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_dse_diagnosis_story_profiles.png",
+    "suffix":".png",
+    "bytes":414837
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_holdout_profile_comparison.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_holdout_profile_comparison.png",
+    "suffix":".png",
+    "bytes":119014
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_main_monitoring_profile_comparison.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_main_monitoring_profile_comparison.png",
+    "suffix":".png",
+    "bytes":105118
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_observability_variant_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_observability_variant_profiles.png",
+    "suffix":".png",
+    "bytes":202388
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_projected_dice_score_accelerator_complexity_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_projected_dice_score_accelerator_complexity_profiles.png",
+    "suffix":".png",
+    "bytes":107791
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_residual_evidence_concentration_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_residual_evidence_concentration_profiles.png",
+    "suffix":".png",
+    "bytes":227148
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_scenario_diagnosis_localization_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_scenario_diagnosis_localization_profiles.png",
+    "suffix":".png",
+    "bytes":286512
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_scenario_exact_recall_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_scenario_exact_recall_profiles.png",
+    "suffix":".png",
+    "bytes":139368
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_scenario_mechanism_top3_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_scenario_mechanism_top3_profiles.png",
+    "suffix":".png",
+    "bytes":159806
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_scenario_onset_profiles.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_scenario_onset_profiles.png",
+    "suffix":".png",
+    "bytes":189239
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_two_stage_profile_comparison.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_two_stage_profile_comparison.png",
+    "suffix":".png",
+    "bytes":146811
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_detection_latency.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_detection_latency.png",
+    "suffix":".png",
+    "bytes":63589
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_mechanism_group_summary.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_mechanism_group_summary.png",
+    "suffix":".png",
+    "bytes":83674
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_roc_pr_by_config_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_roc_pr_by_config_wc.png",
+    "suffix":".png",
+    "bytes":151528
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_run_score_boxplot_wc.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_run_score_boxplot_wc.png",
+    "suffix":".png",
+    "bytes":180174
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_stressor_confusion_matrix.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_stressor_confusion_matrix.png",
+    "suffix":".png",
+    "bytes":100476
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_stressor_tier_contributions.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_stressor_tier_contributions.png",
+    "suffix":".png",
+    "bytes":62882
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0.png",
+    "suffix":".png",
+    "bytes":457221
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1.png",
+    "suffix":".png",
+    "bytes":483068
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1_tier2.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1_tier2.png",
+    "suffix":".png",
+    "bytes":466945
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_tuning_parameter_sweep_diagnostics.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_tuning_parameter_sweep_diagnostics.png",
+    "suffix":".png",
+    "bytes":264030
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0.png",
+    "suffix":".png",
+    "bytes":525044
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1.png",
+    "suffix":".png",
+    "bytes":550352
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1_tier2.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1_tier2.png",
+    "suffix":".png",
+    "bytes":556008
+  },
+  {
+    "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_tuning_parameter_sweep_diagnostics.png",
+    "absolute_path":"\/Users\/hsiaopingni\/Documents\/New project\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_tuning_parameter_sweep_diagnostics.png",
+    "suffix":".png",
+    "bytes":242298
+  }
+]

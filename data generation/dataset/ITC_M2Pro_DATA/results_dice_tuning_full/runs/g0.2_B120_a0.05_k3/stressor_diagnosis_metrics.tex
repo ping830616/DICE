@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\caption{Mechanism-group stressor attribution from DICE residual contributions across workloads.}
+\label{tab:dice_stressor_diagnosis}
+\footnotesize
+\begin{tabular}{lrrrrrrrl}
+\toprule
+Configuration & Cases & Top-1 Acc. & Top-2 Acc. & balanced_acc & Macro-F1 & Mean Margin & median_margin_to_second & feature_profile \\
+\midrule
+tier0 & 20 & 0.3000 & 0.6000 & 0.3000 & 0.2905 & 0.0168 & 0.0153 & full \\
+tier0_tier1 & 20 & 0.3000 & 0.4500 & 0.3000 & 0.2861 & 0.0194 & 0.0162 & full \\
+tier0_tier1_tier2 & 20 & 0.4000 & 0.5500 & 0.4000 & 0.3522 & 0.0132 & 0.0093 & full \\
+\bottomrule
+\end{tabular}
+
+\end{table}

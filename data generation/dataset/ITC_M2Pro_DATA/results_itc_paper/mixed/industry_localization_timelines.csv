@@ -1,0 +1,61 @@
+feature_profile,profile_label,config,config_label,case_id,workload,stressor,run_score,run_alert,localization_source,first_block_s,second_block_s,third_block_s,fourth_block_s,fifth_block_s,n_recorded_blocks
+mixed,Mixed,tier0,Tier-0,BROWSER__ATOMIC,BROWSER,ATOMIC,0.0097845216296288,0,diagnosis-selected windows,47.0,48.0,49.0,50.0,51.0,5
+mixed,Mixed,tier0,Tier-0,BROWSER__BRANCH,BROWSER,BRANCH,0.0506399981197682,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0,Tier-0,BROWSER__CACHE,BROWSER,CACHE,0.0147151205416963,0,diagnosis-selected windows,585.0,586.0,587.0,588.0,589.0,5
+mixed,Mixed,tier0,Tier-0,BROWSER__MEMBW,BROWSER,MEMBW,0.0189800781852126,0,diagnosis-selected windows,68.0,69.0,70.0,71.0,72.0,5
+mixed,Mixed,tier0,Tier-0,BROWSER__TLB,BROWSER,TLB,0.0171355637293825,0,diagnosis-selected windows,223.0,224.0,225.0,226.0,227.0,5
+mixed,Mixed,tier0,Tier-0,PY_AI__ATOMIC,PY_AI,ATOMIC,0.0208733950317625,1,post-persist abnormal windows,384.0,385.0,386.0,387.0,388.0,5
+mixed,Mixed,tier0,Tier-0,PY_AI__BRANCH,PY_AI,BRANCH,0.0151249010314033,0,diagnosis-selected windows,605.0,606.0,607.0,608.0,609.0,5
+mixed,Mixed,tier0,Tier-0,PY_AI__CACHE,PY_AI,CACHE,0.0098912383191709,0,diagnosis-selected windows,772.0,773.0,774.0,775.0,776.0,5
+mixed,Mixed,tier0,Tier-0,PY_AI__MEMBW,PY_AI,MEMBW,0.0149371191259925,0,diagnosis-selected windows,561.0,562.0,563.0,564.0,565.0,5
+mixed,Mixed,tier0,Tier-0,PY_AI__TLB,PY_AI,TLB,0.0123032637032892,0,diagnosis-selected windows,791.0,792.0,793.0,794.0,795.0,5
+mixed,Mixed,tier0,Tier-0,PY_STATS__ATOMIC,PY_STATS,ATOMIC,0.0400061935197735,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0,Tier-0,PY_STATS__BRANCH,PY_STATS,BRANCH,0.0300982313186232,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0,Tier-0,PY_STATS__CACHE,PY_STATS,CACHE,0.0180138155676068,0,diagnosis-selected windows,983.0,984.0,985.0,986.0,987.0,5
+mixed,Mixed,tier0,Tier-0,PY_STATS__MEMBW,PY_STATS,MEMBW,0.0357072529522674,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0,Tier-0,PY_STATS__TLB,PY_STATS,TLB,0.0228112817489172,1,post-persist abnormal windows,607.0,608.0,609.0,610.0,611.0,5
+mixed,Mixed,tier0,Tier-0,VIDEO_SW__ATOMIC,VIDEO_SW,ATOMIC,0.0204849149184963,0,diagnosis-selected windows,98.0,99.0,100.0,101.0,102.0,5
+mixed,Mixed,tier0,Tier-0,VIDEO_SW__BRANCH,VIDEO_SW,BRANCH,0.0341927616158677,1,post-persist abnormal windows,815.0,816.0,817.0,818.0,819.0,5
+mixed,Mixed,tier0,Tier-0,VIDEO_SW__CACHE,VIDEO_SW,CACHE,0.0185999931792195,0,diagnosis-selected windows,173.0,174.0,175.0,176.0,177.0,5
+mixed,Mixed,tier0,Tier-0,VIDEO_SW__MEMBW,VIDEO_SW,MEMBW,0.0334676345111232,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0,Tier-0,VIDEO_SW__TLB,VIDEO_SW,TLB,0.0152618887904047,0,diagnosis-selected windows,855.0,856.0,857.0,858.0,859.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,BROWSER__ATOMIC,BROWSER,ATOMIC,4.113716197953521e-05,0,diagnosis-selected windows,47.0,48.0,49.0,50.0,51.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,BROWSER__BRANCH,BROWSER,BRANCH,0.0002151206499263,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,BROWSER__CACHE,BROWSER,CACHE,7.495654491744814e-05,0,diagnosis-selected windows,96.0,97.0,98.0,99.0,100.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,BROWSER__MEMBW,BROWSER,MEMBW,8.66762491040868e-05,1,post-persist abnormal windows,890.0,891.0,892.0,893.0,894.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,BROWSER__TLB,BROWSER,TLB,8.033873385567005e-05,0,diagnosis-selected windows,222.0,223.0,224.0,225.0,226.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,PY_AI__ATOMIC,PY_AI,ATOMIC,8.83401273378758e-05,1,post-persist abnormal windows,381.0,382.0,383.0,384.0,385.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,PY_AI__BRANCH,PY_AI,BRANCH,0.0002023715566555,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,PY_AI__CACHE,PY_AI,CACHE,282.565751423508,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,PY_AI__MEMBW,PY_AI,MEMBW,0.0002167787165351,1,post-persist abnormal windows,469.0,470.0,471.0,472.0,473.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,PY_AI__TLB,PY_AI,TLB,0.0001153583979391,1,post-persist abnormal windows,972.0,973.0,974.0,975.0,976.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,PY_STATS__ATOMIC,PY_STATS,ATOMIC,0.0001674820904154,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,PY_STATS__BRANCH,PY_STATS,BRANCH,0.0001259217420313,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,PY_STATS__CACHE,PY_STATS,CACHE,9.974038934409213e-05,1,post-persist abnormal windows,486.0,487.0,488.0,489.0,490.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,PY_STATS__MEMBW,PY_STATS,MEMBW,0.0001517257046329,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,PY_STATS__TLB,PY_STATS,TLB,9.678597325031843e-05,1,post-persist abnormal windows,572.0,573.0,574.0,575.0,584.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,VIDEO_SW__ATOMIC,VIDEO_SW,ATOMIC,8.989078124198783e-05,1,post-persist abnormal windows,84.0,85.0,86.0,87.0,88.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,VIDEO_SW__BRANCH,VIDEO_SW,BRANCH,0.0001389856530664,1,post-persist abnormal windows,816.0,817.0,818.0,819.0,820.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,VIDEO_SW__CACHE,VIDEO_SW,CACHE,7.983603843491755e-05,0,diagnosis-selected windows,173.0,174.0,175.0,176.0,177.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,VIDEO_SW__MEMBW,VIDEO_SW,MEMBW,0.0001379570742546,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1,Tier-0/1,VIDEO_SW__TLB,VIDEO_SW,TLB,9.711609590474432e-05,0,diagnosis-selected windows,661.0,662.0,663.0,664.0,665.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,BROWSER__ATOMIC,BROWSER,ATOMIC,4.8866115534866805e-05,0,diagnosis-selected windows,47.0,48.0,49.0,50.0,51.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,BROWSER__BRANCH,BROWSER,BRANCH,0.00023476003657,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,BROWSER__CACHE,BROWSER,CACHE,8.742706349904428e-05,0,diagnosis-selected windows,96.0,97.0,98.0,99.0,100.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,BROWSER__MEMBW,BROWSER,MEMBW,0.0001056960086334,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,BROWSER__TLB,BROWSER,TLB,8.769128441395927e-05,0,diagnosis-selected windows,222.0,223.0,224.0,225.0,226.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,PY_AI__ATOMIC,PY_AI,ATOMIC,9.27227706578422e-05,1,post-persist abnormal windows,383.0,384.0,385.0,386.0,387.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,PY_AI__BRANCH,PY_AI,BRANCH,0.0002079942872569,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,PY_AI__CACHE,PY_AI,CACHE,282.5633348343998,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,PY_AI__MEMBW,PY_AI,MEMBW,0.0002243389154948,1,post-persist abnormal windows,469.0,470.0,471.0,472.0,473.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,PY_AI__TLB,PY_AI,TLB,0.0001205698208201,1,post-persist abnormal windows,972.0,973.0,974.0,975.0,976.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,PY_STATS__ATOMIC,PY_STATS,ATOMIC,0.0001799344410357,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,PY_STATS__BRANCH,PY_STATS,BRANCH,0.000135074120768,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,PY_STATS__CACHE,PY_STATS,CACHE,0.0001050216340559,1,post-persist abnormal windows,487.0,488.0,489.0,490.0,491.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,PY_STATS__MEMBW,PY_STATS,MEMBW,0.0001621364421504,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,PY_STATS__TLB,PY_STATS,TLB,0.000105740887409,1,post-persist abnormal windows,372.0,373.0,374.0,375.0,376.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,VIDEO_SW__ATOMIC,VIDEO_SW,ATOMIC,9.41875222594646e-05,1,post-persist abnormal windows,84.0,85.0,86.0,87.0,88.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,VIDEO_SW__BRANCH,VIDEO_SW,BRANCH,0.0001523302389147,1,post-persist abnormal windows,576.0,577.0,578.0,815.0,816.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,VIDEO_SW__CACHE,VIDEO_SW,CACHE,8.601643672570441e-05,0,diagnosis-selected windows,141.0,142.0,143.0,144.0,145.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,VIDEO_SW__MEMBW,VIDEO_SW,MEMBW,0.000149871184338,1,post-persist abnormal windows,45.0,46.0,47.0,48.0,49.0,5
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,VIDEO_SW__TLB,VIDEO_SW,TLB,0.0001104719402386,0,diagnosis-selected windows,661.0,662.0,663.0,664.0,665.0,5

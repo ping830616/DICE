@@ -1,0 +1,4 @@
+feature_profile,config,target_alpha,benign_block_false_alarm_rate,benign_persist_false_alarm_rate,benign_run_false_alarm_rate,benign_run_keep_rate,anomaly_run_detection_rate,median_anomaly_time_to_detect_s,profile_label,config_label
+full,tier0,0.02,0.0,0.0,0.0,1.0,0.3,91.5,Full,Tier-0
+full,tier0_tier1,0.02,0.0,0.0,0.0,1.0,0.55,91.0,Full,Tier-0/1
+full,tier0_tier1_tier2,0.02,0.0,0.0,0.0,1.0,0.95,91.0,Full,Tier-0/1/2

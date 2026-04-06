@@ -1,0 +1,94 @@
+tier_family,view,profile_variant,category_id,category_label,category_short,feature,category_order
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu0_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu10_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu11_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu1_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu2_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu3_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu4_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu5_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu6_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu7_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu8_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu9_pct,0
+Tier-0,Tier-0,base,t0_cpu_util,CPU utilization / core balance,CPU util / balance,cpu_pct,0
+Tier-0,Tier-0,base,t0_cpu_times,CPU time composition,CPU time mix,cpu_times_idle_pct,1
+Tier-0,Tier-0,base,t0_cpu_times,CPU time composition,CPU time mix,cpu_times_system_pct,1
+Tier-0,Tier-0,base,t0_cpu_times,CPU time composition,CPU time mix,cpu_times_user_pct,1
+Tier-0,Tier-0,base,t0_sched,Scheduler / kernel activity,Scheduler / kernel,ctx_switches,2
+Tier-0,Tier-0,base,t0_sched,Scheduler / kernel activity,Scheduler / kernel,interrupts,2
+Tier-0,Tier-0,base,t0_sched,Scheduler / kernel activity,Scheduler / kernel,soft_interrupts,2
+Tier-0,Tier-0,base,t0_sched,Scheduler / kernel activity,Scheduler / kernel,syscalls,2
+Tier-0,Tier-0,base,t0_load_proc,System load / process activity,Load / process,load1,3
+Tier-0,Tier-0,base,t0_load_proc,System load / process activity,Load / process,load15,3
+Tier-0,Tier-0,base,t0_load_proc,System load / process activity,Load / process,load5,3
+Tier-0,Tier-0,base,t0_load_proc,System load / process activity,Load / process,pids_count,3
+Tier-0,Tier-0,base,t0_load_proc,System load / process activity,Load / process,uptime_s,3
+Tier-0,Tier-0,base,t0_memory,Memory footprint,Memory footprint,mem_active_bytes,4
+Tier-0,Tier-0,base,t0_memory,Memory footprint,Memory footprint,mem_available_bytes,4
+Tier-0,Tier-0,base,t0_memory,Memory footprint,Memory footprint,mem_free_bytes,4
+Tier-0,Tier-0,base,t0_memory,Memory footprint,Memory footprint,mem_inactive_bytes,4
+Tier-0,Tier-0,base,t0_memory,Memory footprint,Memory footprint,mem_percent,4
+Tier-0,Tier-0,base,t0_memory,Memory footprint,Memory footprint,mem_used_bytes,4
+Tier-0,Tier-0,base,t0_memory,Memory footprint,Memory footprint,mem_wired_bytes,4
+Tier-0,Tier-0,base,t0_swap,Swap pressure,Swap pressure,swap_free_bytes,5
+Tier-0,Tier-0,base,t0_swap,Swap pressure,Swap pressure,swap_percent,5
+Tier-0,Tier-0,base,t0_swap,Swap pressure,Swap pressure,swap_sin_bytes,5
+Tier-0,Tier-0,base,t0_swap,Swap pressure,Swap pressure,swap_sout_bytes,5
+Tier-0,Tier-0,base,t0_swap,Swap pressure,Swap pressure,swap_total_bytes,5
+Tier-0,Tier-0,base,t0_swap,Swap pressure,Swap pressure,swap_used_bytes,5
+Tier-0,Tier-0,base,t0_disk,Disk I/O,Disk I/O,disk_read_Bps,6
+Tier-0,Tier-0,base,t0_disk,Disk I/O,Disk I/O,disk_read_IOPS,6
+Tier-0,Tier-0,base,t0_disk,Disk I/O,Disk I/O,disk_write_Bps,6
+Tier-0,Tier-0,base,t0_disk,Disk I/O,Disk I/O,disk_write_IOPS,6
+Tier-0,Tier-0,base,t0_network,Network I/O,Network I/O,net_recv_Bps,7
+Tier-0,Tier-0,base,t0_network,Network I/O,Network I/O,net_recv_Pps,7
+Tier-0,Tier-0,base,t0_network,Network I/O,Network I/O,net_sent_Bps,7
+Tier-0,Tier-0,base,t0_network,Network I/O,Network I/O,net_sent_Pps,7
+Tier-1,Tier-1 core,core,t1c_cpu_perf,CPU power / frequency / thermal,CPU power/freq/temp,cpu_avg_freq_mhz,0
+Tier-1,Tier-1 core,core,t1c_cpu_perf,CPU power / frequency / thermal,CPU power/freq/temp,cpu_power_w,0
+Tier-1,Tier-1 core,core,t1c_cpu_perf,CPU power / frequency / thermal,CPU power/freq/temp,cpu_temp_c,0
+Tier-1,Tier-1 core,core,t1c_cpu_act,CPU activity / residency,CPU usage/residency,cpu_residency_active_pct,1
+Tier-1,Tier-1 core,core,t1c_cpu_act,CPU activity / residency,CPU usage/residency,cpu_usage_pct,1
+Tier-1,Tier-1 core,core,t1c_gpu_perf,GPU power / frequency / thermal,GPU power/freq/temp,gpu_avg_freq_mhz,2
+Tier-1,Tier-1 core,core,t1c_gpu_perf,GPU power / frequency / thermal,GPU power/freq/temp,gpu_power_w,2
+Tier-1,Tier-1 core,core,t1c_gpu_perf,GPU power / frequency / thermal,GPU power/freq/temp,gpu_temp_c,2
+Tier-1,Tier-1 core,core,t1c_gpu_act,GPU activity / residency,GPU usage/residency,gpu_residency_active_pct,3
+Tier-1,Tier-1 core,core,t1c_gpu_act,GPU activity / residency,GPU usage/residency,gpu_usage_pct,3
+Tier-1,Tier-1 core,core,t1c_accel,Accelerator power,Accelerator power,ane_power_w,4
+Tier-1,Tier-1 full,full,t1f_system_power,System-level power,System power,all_power,0
+Tier-1,Tier-1 full,full,t1f_system_power,System-level power,System power,sys_power,0
+Tier-1,Tier-1 full,full,t1f_cpu_domain,CPU cluster power / usage,CPU cluster power/usage,cpu_power,1
+Tier-1,Tier-1 full,full,t1f_cpu_domain,CPU cluster power / usage,CPU cluster power/usage,ecpu_usage_0,1
+Tier-1,Tier-1 full,full,t1f_cpu_domain,CPU cluster power / usage,CPU cluster power/usage,ecpu_usage_1,1
+Tier-1,Tier-1 full,full,t1f_cpu_domain,CPU cluster power / usage,CPU cluster power/usage,pcpu_usage_0,1
+Tier-1,Tier-1 full,full,t1f_cpu_domain,CPU cluster power / usage,CPU cluster power/usage,pcpu_usage_1,1
+Tier-1,Tier-1 full,full,t1f_gpu_domain,GPU power / engine usage,GPU power/engine usage,gpu_power,2
+Tier-1,Tier-1 full,full,t1f_gpu_domain,GPU power / engine usage,GPU power/engine usage,gpu_ram_power,2
+Tier-1,Tier-1 full,full,t1f_gpu_domain,GPU power / engine usage,GPU power/engine usage,gpu_usage_0,2
+Tier-1,Tier-1 full,full,t1f_gpu_domain,GPU power / engine usage,GPU power/engine usage,gpu_usage_1,2
+Tier-1,Tier-1 full,full,t1f_memory,Memory / swap / power,Memory/swap/power,memory_ram_usage,3
+Tier-1,Tier-1 full,full,t1f_memory,Memory / swap / power,Memory/swap/power,memory_swap_total,3
+Tier-1,Tier-1 full,full,t1f_memory,Memory / swap / power,Memory/swap/power,memory_swap_usage,3
+Tier-1,Tier-1 full,full,t1f_memory,Memory / swap / power,Memory/swap/power,ram_power,3
+Tier-1,Tier-1 full,full,t1f_accel,Accelerator power,Accelerator power,ane_power,4
+Tier-1,Tier-1 full,full,t1f_thermal,Thermal,Thermal,temp_cpu_temp_avg,5
+Tier-1,Tier-1 full,full,t1f_thermal,Thermal,Thermal,temp_gpu_temp_avg,5
+Tier-2,Tier-2 core,core,t2_place,Execution placement / affinity,Core placement,avg_core_id,0
+Tier-2,Tier-2 core,core,t2_place,Execution placement / affinity,Core placement,max_core_id,0
+Tier-2,Tier-2 core,core,t2_density,Execution density / workload volume,Execution density,samples_per_bucket,1
+Tier-2,Tier-2 core,core,t2_density,Execution density / workload volume,Execution density,total_weight_ns,1
+Tier-2,Tier-2 core,core,t2_concurrency,Concurrency diversity,Concurrency,unique_process_count,2
+Tier-2,Tier-2 core,core,t2_concurrency,Concurrency diversity,Concurrency,unique_thread_count,2
+Tier-2,Tier-2 core,core,t2_bookkeeping,Profiler bookkeeping,Trace bookkeeping,sentinel_count,3
+Tier-2,Tier-2 full,full,t2_place,Execution placement / affinity,Core placement,avg_core_id,0
+Tier-2,Tier-2 full,full,t2_place,Execution placement / affinity,Core placement,max_core_id,0
+Tier-2,Tier-2 full,full,t2_density,Execution density / workload volume,Execution density,running_count,1
+Tier-2,Tier-2 full,full,t2_density,Execution density / workload volume,Execution density,samples_per_bucket,1
+Tier-2,Tier-2 full,full,t2_density,Execution density / workload volume,Execution density,total_weight_ns,1
+Tier-2,Tier-2 full,full,t2_concurrency,Concurrency diversity,Concurrency,unique_process_count,2
+Tier-2,Tier-2 full,full,t2_concurrency,Concurrency diversity,Concurrency,unique_thread_count,2
+Tier-2,Tier-2 full,full,t2_temporal,Temporal coverage / trace span,Temporal coverage,first_sample_time_ns,3
+Tier-2,Tier-2 full,full,t2_temporal,Temporal coverage / trace span,Temporal coverage,last_sample_time_ns,3
+Tier-2,Tier-2 full,full,t2_temporal,Temporal coverage / trace span,Temporal coverage,sample_span_ns,3
+Tier-2,Tier-2 full,full,t2_bookkeeping,Profiler bookkeeping,Trace bookkeeping,sentinel_count,4

@@ -1,0 +1,9 @@
+feature_profile,stage_group,metric,gain,block_B,alpha,persist_k,metric_value,anomaly_detect_rate,benign_run_alert_rate,median_time_to_detect_s
+mixed,Stage 1,AUC-PR,0.1,30,0.05,3,0.9665614298412286,0.55,0.0,37.0
+mixed,Stage 1,ROC-AUC,0.1,30,0.05,3,0.8625,0.55,0.0,37.0
+mixed,Stage 2,Detection rate,0.2,45,0.1,1,0.75,0.75,0.0,45.0
+mixed,Stage 2,Fastest TTD,0.2,45,0.1,1,45.0,0.75,0.0,45.0
+full,Stage 1,AUC-PR,0.1,30,0.05,3,0.9976190476190476,1.0,0.0,32.0
+full,Stage 1,ROC-AUC,0.1,30,0.05,3,0.9875,1.0,0.0,32.0
+full,Stage 2,Detection rate,0.35,90,0.05,1,0.95,0.95,0.0,90.0
+full,Stage 2,Fastest TTD,0.35,90,0.05,1,90.0,0.95,0.0,90.0

@@ -1,0 +1,9 @@
+{
+  "out_dir": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/mixed/crash_evidence_cards",
+  "alignment_csv": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/mixed/early_warning_crash_alignment.csv",
+  "warning_csv": "",
+  "crash_manifest": "",
+  "n_cards": 6,
+  "include_noncrash": false,
+  "max_cards": 6
+}
