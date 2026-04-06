@@ -181,6 +181,23 @@ sed -n '1,3p' "$PILOT_CSV"
 
 If the file starts with `version https://git-lfs.github.com/spec/v1`, you only have the pointer stub and the crash-pilot notebook sections will not be able to parse the pilot cases yet.
 
+For a fully usable local clone of the repository, the practical sequence is:
+
+```bash
+cd /Users/<you>
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
+cd DICE
+git lfs install
+git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
+```
+
+If the pilot payload still does not materialize, copy it from a known-good local source:
+
+```bash
+rsync -a "/absolute/path/to/materialized/workload_crash_pilots/" \
+  "$PWD/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/"
+```
+
 After collection, you can either run:
 
 ```bash

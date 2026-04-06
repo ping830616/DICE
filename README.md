@@ -75,6 +75,29 @@ sed -n '1,3p' "$PILOT_CSV"
 
 If the file starts with `version https://git-lfs.github.com/spec/v1`, the crash-pilot payload is not checked out yet.
 
+If you want a fully usable local clone for both the released paper bundle and the crash-pilot notebook sections, use a clone-plus-materialization workflow:
+
+```bash
+cd /Users/<you>
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
+cd DICE
+git lfs install
+git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
+```
+
+If the crash-pilot payload is still incomplete, materialize it from a known-good local copy:
+
+```bash
+rsync -a "/absolute/path/to/materialized/workload_crash_pilots/" \
+  "$PWD/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/"
+```
+
+Then rerun the quick check above. A real payload starts with:
+
+```text
+case_id,workload,stressor,...
+```
+
 If the environment already exists:
 
 ```bash

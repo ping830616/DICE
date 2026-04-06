@@ -74,6 +74,25 @@ sed -n '1,3p' "$PILOT_CSV"
 
 If the file starts with `version https://git-lfs.github.com/spec/v1`, the crash-pilot payload is still only a pointer stub.
 
+If you want a fully usable local clone rather than a released-results-only clone, use:
+
+```bash
+cd /Users/<you>
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
+cd DICE
+git lfs install
+git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
+```
+
+If that still leaves pointer stubs, materialize the pilot payload from a known-good local copy:
+
+```bash
+rsync -a "/absolute/path/to/materialized/workload_crash_pilots/" \
+  "$PWD/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/"
+```
+
+Then verify `crash_events.csv` again. Real payloads start with `case_id,workload,stressor,...`.
+
 From your local machine:
 
 ```bash
