@@ -27,10 +27,29 @@ Not guaranteed to be identical on every machine:
 ## Local
 
 ```bash
+cd ~/Documents
+git lfs install
 git clone https://github.com/ping830616/DICE.git
 cd DICE
 conda env create -f environment.yml
-conda run -n dice-results jupyter lab dice_results_analysis.ipynb
+conda activate dice-results
+export DICE_REPO_ROOT="$PWD"
+export PYTHONHASHSEED=0
+export MPLCONFIGDIR="$PWD/.mplconfig"
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export VECLIB_MAXIMUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export BLIS_NUM_THREADS=1
+mkdir -p "$MPLCONFIGDIR"
+jupyter lab dice_results_analysis.ipynb
+```
+
+If you need the crash-pilot payload too, run:
+
+```bash
+git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
 ```
 
 Run the notebook from top to bottom.
@@ -56,7 +75,9 @@ conda env create -f environment.yml
 conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice_results_analysis.ipynb
 ```
 
-Normal goal: plain `git clone` should give you the whole DICE repo on your laptop or server. If the crash-pilot files do not materialize correctly, repair just that part afterward.
+A complete GitHub-provided clone requires Git LFS to be installed locally, `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"` to succeed, and the quick check below to show real CSV content instead of a Git LFS pointer.
+
+If GitHub returns an LFS quota or LFS budget error during `git clone` or `git lfs pull`, GitHub alone cannot currently provide a 100% complete clone of this repository.
 
 For `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`, if `workload_crash_pilots/.../crash_events.csv` is missing or only contains Git LFS pointer text, run:
 

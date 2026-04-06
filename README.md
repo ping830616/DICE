@@ -43,44 +43,75 @@ That mapping corresponds directly to the draft results sequence:
 
 ## Quick Start
 
-Clone the repo and create the pinned environment:
+Clone DICE from GitHub to your laptop:
 
 ```bash
+cd ~/Documents
+git lfs install
 git clone https://github.com/ping830616/DICE.git
 cd DICE
 conda env create -f environment.yml
 conda activate dice-results
 ```
 
-Normal goal: a plain `git clone` should give you the whole DICE repo on your laptop. In practice, most of the repo comes down that way immediately, including the main released ITC dataset and tracked `results_*` folders.
-
-`workload_crash_pilots/` is currently tracked through Git LFS. On machines where Git LFS is already configured and healthy, the crash-pilot payload may materialize during the normal clone automatically. If the crash-pilot files are missing or only show Git LFS pointer text, repair that part afterward with:
+Run the notebook on your laptop:
 
 ```bash
-git lfs install
+cd ~/Documents/DICE
+export DICE_REPO_ROOT="$PWD"
+export PYTHONHASHSEED=0
+export MPLCONFIGDIR="$PWD/.mplconfig"
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export VECLIB_MAXIMUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export BLIS_NUM_THREADS=1
+mkdir -p "$MPLCONFIGDIR"
+jupyter lab dice_results_analysis.ipynb
+```
+
+If you need the crash-pilot payload too, run:
+
+```bash
 git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
 ```
 
-Crash-aware notebook sections need more than the lightweight manifest files. If a plain clone leaves `workload_crash_pilots/` incomplete, sections that read pilot `crash_events.csv`, copied diagnostic reports, or crash logs will still need that payload to be materialized. In practice, `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix` require either:
-
-- a successful `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"`
-- or a local materialized copy of `workload_crash_pilots/` with `DATASET_ROOT` or `CRASH_PILOTS_ROOT` pointed at that copy
-
-Quick check:
+Then verify that the crash-pilot data is real and not a Git LFS pointer:
 
 ```bash
 PILOT_CSV="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_browser_branch/crash_evidence/crash_events.csv"
 sed -n '1,3p' "$PILOT_CSV"
 ```
 
-If the file starts with `version https://git-lfs.github.com/spec/v1`, the crash-pilot payload is not checked out yet. If that happens even after `git lfs pull`, materialize it from a known-good local copy:
+A complete GitHub-provided clone requires all of the following:
+
+- Git LFS is installed and initialized on the local machine
+- `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"` succeeds
+- the quick check file below starts with real CSV content such as `case_id,workload,stressor,...` rather than the Git LFS pointer header
+
+If GitHub returns an LFS quota or LFS budget error during `git clone` or `git lfs pull`, GitHub alone cannot currently provide a 100% complete clone of this repository.
+
+Crash-aware notebook sections need more than the lightweight manifest files. If `workload_crash_pilots/` is incomplete, sections that read pilot `crash_events.csv`, copied diagnostic reports, or crash logs will still need that payload to be materialized. In practice, `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix` require either:
+
+- a successful `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"`
+- or a local materialized copy of `workload_crash_pilots/` with `DATASET_ROOT` or `CRASH_PILOTS_ROOT` pointed at that copy
+
+Quick check for a complete clone:
+
+```bash
+PILOT_CSV="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_browser_branch/crash_evidence/crash_events.csv"
+sed -n '1,3p' "$PILOT_CSV"
+```
+
+If the file starts with `version https://git-lfs.github.com/spec/v1`, the crash-pilot payload is not checked out yet. If `git lfs pull` fails with an LFS quota or budget error, GitHub is not currently serving the full payload for this repository:
 
 ```bash
 rsync -a "/absolute/path/to/materialized/workload_crash_pilots/" \
   "$PWD/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/"
 ```
 
-If you only want a lightweight released-results clone and do not need the crash-pilot payload immediately, you can still use:
+If you only want the main released-results clone and do not need the crash-pilot payload immediately, you can still use:
 
 ```bash
 GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
