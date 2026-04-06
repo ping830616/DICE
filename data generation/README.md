@@ -166,9 +166,16 @@ python generate_workload_matched_crash_dataset.py \
 
 That path creates one `NOMINAL` case plus `*_CONTROL` and `*_ABORT` variants for each selected anomaly family under each original workload. `--schedule_profile staggered` gives each workload a different anomaly-onset/crash target so the warning and lead-time results are less synchronized across workloads. By default, this keeps the crash pilots under `dataset/ITC_M2Pro_DATA/workload_crash_pilots/` so they stay next to the main ITC dataset without mixing with the released anomaly bundle. Start smaller with `--workloads` and `--stressors` if you want a pilot run first.
 
-These crash-pilot folders are still large and may include copied crash evidence, screenshots, logs, and reruns. The current GitHub repository tracks the four one-workload pilot roots through Git LFS, so a normal clone can fail when the repository LFS budget is exhausted. Clone with `GIT_LFS_SKIP_SMUDGE=1` when you only need the released ITC dataset plus the tracked paper-facing result folders, and pull the pilot bundle later only if Git LFS access is available.
+These crash-pilot folders are still large and may include copied crash evidence, screenshots, logs, and reruns. The current GitHub repository tracks the four one-workload pilot roots through Git LFS. Normal goal: a plain `git clone` should give you the whole DICE repo on your laptop. If the crash-pilot payload does not materialize correctly, repair just that part afterward with Git LFS or a known-good local copy.
 
-Important: `GIT_LFS_SKIP_SMUDGE=1` avoids the clone failure, but it does not make the pilot payload usable for notebook crash-analysis cells. Sections that read `workload_crash_pilots/.../crash_events.csv`, copied diagnostic reports, or per-case crash logs still need the real files rather than Git LFS pointer stubs. If the payload is unavailable through Git LFS, point the notebook at a local materialized `workload_crash_pilots/` tree instead.
+If a plain clone leaves `workload_crash_pilots/.../crash_events.csv`, copied diagnostic reports, or per-case crash logs incomplete, run:
+
+```bash
+git lfs install
+git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
+```
+
+If the payload is still incomplete afterward, point the notebook at a local materialized `workload_crash_pilots/` tree instead.
 
 The lightweight manifest entry points remain `dataset/ITC_M2Pro_DATA/workload_crash_pilots/README.md` and `dataset/ITC_M2Pro_DATA/workload_crash_pilots/pilot_manifest.csv`. Those files document the exact `BROWSER/BRANCH`, `PY_AI/CACHE`, `PY_STATS/ATOMIC`, and `VIDEO_SW/MEMBW` pilot commands even when the full LFS payload is not present locally.
 
@@ -181,21 +188,17 @@ sed -n '1,3p' "$PILOT_CSV"
 
 If the file starts with `version https://git-lfs.github.com/spec/v1`, you only have the pointer stub and the crash-pilot notebook sections will not be able to parse the pilot cases yet.
 
-For a fully usable local clone of the repository, the practical sequence is:
-
-```bash
-cd /Users/<you>
-GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
-cd DICE
-git lfs install
-git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
-```
-
 If the pilot payload still does not materialize, copy it from a known-good local source:
 
 ```bash
 rsync -a "/absolute/path/to/materialized/workload_crash_pilots/" \
   "$PWD/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/"
+```
+
+If you only want a lightweight released-results clone, you can start with:
+
+```bash
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 ```
 
 After collection, you can either run:

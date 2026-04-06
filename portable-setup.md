@@ -27,9 +27,8 @@ Not guaranteed to be identical on every machine:
 ## Local
 
 ```bash
-GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
+git clone https://github.com/ping830616/DICE.git
 cd DICE
-git lfs install
 conda env create -f environment.yml
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
@@ -51,17 +50,17 @@ conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 On the server:
 
 ```bash
-GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
+git clone https://github.com/ping830616/DICE.git
 cd DICE
-git lfs install
 conda env create -f environment.yml
 conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice_results_analysis.ipynb
 ```
 
-The clone uses `GIT_LFS_SKIP_SMUDGE=1` because `workload_crash_pilots/` is Git LFS-backed and may exceed the current GitHub LFS budget. The released ITC dataset and tracked `results_*` folders remain usable without downloading the optional pilot payloads.
+Normal goal: plain `git clone` should give you the whole DICE repo on your laptop or server. If the crash-pilot files do not materialize correctly, repair just that part afterward.
 
-That skip-smudge clone is not sufficient for crash-pilot notebook sections that read `workload_crash_pilots/.../crash_events.csv`, copied diagnostic reports, or crash logs. For `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`, either:
+For `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`, if `workload_crash_pilots/.../crash_events.csv` is missing or only contains Git LFS pointer text, run:
 
+- run `git lfs install`
 - run `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"`
 - or point the notebook at a local materialized copy of `workload_crash_pilots/`
 
@@ -74,21 +73,17 @@ sed -n '1,3p' "$PILOT_CSV"
 
 If the file starts with `version https://git-lfs.github.com/spec/v1`, the crash-pilot payload is still only a pointer stub.
 
-If you want a fully usable local clone rather than a released-results-only clone, use:
-
-```bash
-cd /Users/<you>
-GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
-cd DICE
-git lfs install
-git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
-```
-
-If that still leaves pointer stubs, materialize the pilot payload from a known-good local copy:
+If that happens even after `git lfs pull`, materialize the pilot payload from a known-good local copy:
 
 ```bash
 rsync -a "/absolute/path/to/materialized/workload_crash_pilots/" \
   "$PWD/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/"
+```
+
+If you only want a lightweight released-results clone, you can still start with:
+
+```bash
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 ```
 
 Then verify `crash_events.csv` again. Real payloads start with `case_id,workload,stressor,...`.
