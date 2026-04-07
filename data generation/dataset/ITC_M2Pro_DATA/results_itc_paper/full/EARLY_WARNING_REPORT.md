@@ -19,22 +19,19 @@
 
 ## Crash-Evidence Status
 
-Crash manifest used: `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/comparison/early_warning_merged_crash_events.csv`
+No crash manifest was supplied for this export, so crash-specific precision, recall, and lead-time claims remain unavailable.
+The warning-time tables and plots are still useful because they define the anomaly timestamps that will be paired with crash evidence in future collections.
 
 ## Headline Monitoring Result
 
 The selected Full Tier-0/1/2 operating point achieves ROC-AUC 0.9500, PR-AUC 0.9897, precision 1.0000, recall 0.9500, and F1-score 0.9744.
-
-## Headline Early-Warning Result
-
-Across 4 observed crashes, DICE warns before the crash in 100.0% of cases, with a median lead time of 90.0s.
 
 ## Case Preview
 
 | case_id | workload | stressor | first_warning_s | crash_time_s | lead_time_s | warning_source |
 | --- | --- | --- | --- | --- | --- | --- |
 | BROWSER__ATOMIC | BROWSER | ATOMIC |  |  |  | no_detected_warning |
-| BROWSER__BRANCH | BROWSER | BRANCH | 91.0 | 167.478639 | 76.47863899999999 | first_persistent_alert |
+| BROWSER__BRANCH | BROWSER | BRANCH | 91.0 |  |  | first_persistent_alert |
 | BROWSER__CACHE | BROWSER | CACHE | 91.0 |  |  | first_persistent_alert |
 | BROWSER__MEMBW | BROWSER | MEMBW | 91.0 |  |  | first_persistent_alert |
 | BROWSER__TLB | BROWSER | TLB | 91.0 |  |  | first_persistent_alert |

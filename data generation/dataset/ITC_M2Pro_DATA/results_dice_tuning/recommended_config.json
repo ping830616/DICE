@@ -5,5 +5,5 @@
   "persist_k": 1,
   "feature_profile": "mixed",
   "selection_mode": "diagnosis_low_fp",
-  "out_dir": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.2_B45_a0.1_k1"
+  "out_dir": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.2_B45_a0.1_k1"
 }

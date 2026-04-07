@@ -69,13 +69,17 @@ jupyter lab dice_results_analysis.ipynb
 
 This path is sufficient for the main released-results workflow. Notebook outputs are written under `data generation/dataset/ITC_M2Pro_DATA/` inside the chosen clone directory.
 
-For crash-aware sections that depend on `workload_crash_pilots/`, run:
+For crash-aware sections that depend on `workload_crash_pilots/`, a normal `git clone` is not enough. Materialize that folder and verify it before running those notebook cells:
 
 ```bash
 git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
+PILOT_CSV="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_browser_branch/crash_evidence/crash_events.csv"
+sed -n '1,3p' "$PILOT_CSV"
 ```
 
-If GitHub returns an LFS budget or quota error, the reviewer will need either restored Git LFS access for `ping830616/DICE` or a provided local copy of `workload_crash_pilots/`. The sections that require this payload are `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`.
+The clone is only complete for crash-aware workflows when that quick check prints real CSV headers such as `case_id,workload,stressor,...`. If it prints `version https://git-lfs.github.com/spec/v1`, the `workload_crash_pilots/` tree is still only partially cloned on that laptop.
+
+If GitHub returns an LFS budget or quota error, the reviewer will need either restored Git LFS access for `ping830616/DICE` or a provided local copy of `workload_crash_pilots/`. The sections that require this payload are `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`. Without that payload, those sections may fail, show no abort pilot cases, or only read Git LFS pointer stubs instead of real crash manifests, reports, and logs.
 
 Expected outputs reviewers should compare after a successful run:
 
@@ -139,6 +143,8 @@ Crash-aware notebook sections need more than the lightweight manifest files. If 
 
 - a successful `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"`
 - or a local materialized copy of `workload_crash_pilots/` with `DATASET_ROOT` or `CRASH_PILOTS_ROOT` pointed at that copy
+
+A normal `git clone` can therefore finish while the repository is still incomplete for crash-aware analysis. Treat the repo as fully cloned only after the quick check below shows real CSV content for `workload_crash_pilots/.../crash_events.csv`.
 
 Quick check for a complete clone:
 

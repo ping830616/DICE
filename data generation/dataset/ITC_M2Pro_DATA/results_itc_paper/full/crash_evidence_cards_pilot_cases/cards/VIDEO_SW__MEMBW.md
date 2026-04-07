@@ -16,18 +16,18 @@
 
 ## Primary Crash Evidence
 
-- Diagnostic report: `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_video_membw/crash_evidence/VIDEO_SW__MEMBW_ABORT/diagnostic_reports/python3.11-2026-03-31-172455.ips`
+- Diagnostic report: `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_video_membw/crash_evidence/VIDEO_SW__MEMBW_ABORT/diagnostic_reports/python3.11-2026-03-31-145551.ips`
 - System / collection log: `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_video_membw/logs/VIDEO_SW__MEMBW_ABORT/tier2_collect.log`
 
 ## Diagnostic Report Excerpt
 
 ```text
-{"app_name":"python3.11","timestamp":"2026-03-31 17:24:55.00
+{"app_name":"python3.11","timestamp":"2026-03-31 14:55:51.00
 -0700","app_version":"","slice_uuid":"f1fbfc29-e42f-359f-81ae-6730313605a7","build_version":"","platform":1,"share_with_app_devs":0,"is_first_party":1,"bug_type":"309","os_version":"macOS
 26.3.1
-(25D2128)","roots_installed":0,"incident_id":"8E3F4CEF-C658-49D8-AB7D-C64A2A79581E","name":"python3.11"}
+(25D2128)","roots_installed":0,"incident_id":"6893539B-8384-40C0-85EA-E7896CE1DF51","name":"python3.11"}
 {
-  "uptime" : 200000,
+  "uptime" : 190000,
   "procRole" : "Background",
   "version" : 2,
   "userID" : 502,
@@ -47,4 +47,4 @@ generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilo
 
 ## Notes
 
-nan
+No crash manifest was supplied for this run.

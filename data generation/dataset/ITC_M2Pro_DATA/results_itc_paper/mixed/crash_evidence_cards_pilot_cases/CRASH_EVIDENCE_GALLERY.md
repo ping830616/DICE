@@ -7,7 +7,7 @@ This gallery summarizes the joined DICE warning-to-crash evidence available for 
 | case_id | card_status_label | first_warning_s | crash_time_s | lead_time_s | crash_source |
 | --- | --- | --- | --- | --- | --- |
 | PY_AI__CACHE | Warning before crash | 45.0 s | 214.8 s | 169.8 s | diagnostic_report,screenshot |
-| PY_STATS__ATOMIC | Warning before crash | 45.0 s | 194.5 s | 149.5 s | diagnostic_report,screenshot |
+| PY_STATS__ATOMIC | Warning before crash | 45.0 s | 196.7 s | 151.7 s | diagnostic_report,screenshot |
 | VIDEO_SW__MEMBW | Warning before crash | 45.0 s | 174.6 s | 129.6 s | diagnostic_report,screenshot |
 | BROWSER__BRANCH | Warning before crash | 45.0 s | 167.5 s | 122.5 s | diagnostic_report,screenshot |
 

@@ -1,6 +1,6 @@
 {
-  "out_dir": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/full/crash_evidence_cards_pilot_cases",
-  "alignment_csv": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/full/early_warning_crash_alignment_pilot_cases.csv",
+  "out_dir": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/full/crash_evidence_cards_pilot_cases",
+  "alignment_csv": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/full/early_warning_crash_alignment_pilot_cases.csv",
   "warning_csv": "",
   "crash_manifest": "",
   "n_cards": 4,

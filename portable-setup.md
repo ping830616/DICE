@@ -75,11 +75,11 @@ conda env create -f environment.yml
 conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice_results_analysis.ipynb
 ```
 
-A complete GitHub-provided clone requires Git LFS to be installed locally, `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"` to succeed, and the quick check below to show real CSV content instead of a Git LFS pointer.
+A complete GitHub-provided clone requires Git LFS to be installed locally, `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"` to succeed, and the quick check below to show real CSV content instead of a Git LFS pointer. A normal `git clone` can finish while `workload_crash_pilots/` is still incomplete.
 
 If GitHub returns an LFS quota or LFS budget error during `git clone` or `git lfs pull`, GitHub alone cannot currently provide a 100% complete clone of this repository.
 
-For `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`, if `workload_crash_pilots/.../crash_events.csv` is missing or only contains Git LFS pointer text, run:
+For `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`, treat the repo as incomplete until `workload_crash_pilots/.../crash_events.csv` shows real CSV content. If that file is missing or only contains Git LFS pointer text, run:
 
 - run `git lfs install`
 - run `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"`
@@ -93,6 +93,8 @@ sed -n '1,3p' "$PILOT_CSV"
 ```
 
 If the file starts with `version https://git-lfs.github.com/spec/v1`, the crash-pilot payload is still only a pointer stub.
+
+When that happens, crash-aware notebook cells that read pilot manifests, copied diagnostic reports, or per-case logs may fail, show no abort pilot cases, or only read pointer text rather than the real payload.
 
 If that happens even after `git lfs pull`, materialize the pilot payload from a known-good local copy:
 

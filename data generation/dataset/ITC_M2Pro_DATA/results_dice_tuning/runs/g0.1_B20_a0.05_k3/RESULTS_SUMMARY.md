@@ -8,9 +8,9 @@
 ## Overall
 ```text
 feature_profile            config  n_cases  n_features  fit_eval_seconds  roc_auc   pr_auc  roc_auc_wc  pr_auc_wc  fpr_run_alert  tpr_run_alert  median_nominal_score  median_anomaly_score  median_nominal_score_wc  median_anomaly_score_wc
-          mixed             tier0       24          46          2.466143   0.7750 0.919734         1.0        1.0           0.25           0.35              0.015544              0.031791                      0.0                 0.016567
-          mixed       tier0_tier1       24          57          2.844188   0.8375 0.960040         1.0        1.0           0.25           0.65              0.000046              0.000111                      0.0                 0.000046
-          mixed tier0_tier1_tier2       24          64          3.323650   0.8625 0.966561         1.0        1.0           0.25           0.70              0.000048              0.000119                      0.0                 0.000056
+          mixed             tier0       24          46          2.251607   0.7750 0.919734         1.0        1.0           0.25           0.35              0.015544              0.031791                      0.0                 0.016567
+          mixed       tier0_tier1       24          57          2.756748   0.8375 0.960040         1.0        1.0           0.25           0.65              0.000046              0.000111                      0.0                 0.000046
+          mixed tier0_tier1_tier2       24          64          3.074779   0.8625 0.966561         1.0        1.0           0.25           0.70              0.000048              0.000119                      0.0                 0.000056
 ```
 
 ## Final Config Stressors
@@ -200,46 +200,46 @@ tier0_tier1_tier2                   0.25                        2.755102        
 ```
 
 ## Files
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/overall_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/config_runtime_summary.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/run_context.json`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/case_inventory.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/case_block_traces.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_metrics_final_config.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/sequential_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/case_diagnosis_summary.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_diagnosis_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_family_diagnosis_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_feature_diagnosis_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_feature_diagnosis_runlevel_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_feature_diagnosis_post_alert_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_feature_diagnosis_top_blocks_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_diagnosis_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_supervised_diagnosis_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_abstain_sweep.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_diagnosis_post_alert_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_abstain_sweep_post_alert.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_diagnosis_top_blocks_metrics.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_abstain_sweep_top_blocks.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/diagnosis_mode_comparison.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/mechanism_group_summary.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_confusion_matrix.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_family_confusion_matrix.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_confusion_matrix.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_supervised_confusion_matrix.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_tier_contributions.csv`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/overall_metrics.tex`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_metrics_final_config.tex`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_diagnosis_metrics.tex`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_diagnosis_metrics.tex`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/sequential_metrics.tex`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_roc_pr_by_config.png`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_roc_pr_by_config_wc.png`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_run_score_boxplot.png`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_run_score_boxplot_wc.png`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_stressor_confusion_matrix.png`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_stressor_confusion_matrix_feature.png`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_stressor_confusion_matrix_feature_top_blocks.png`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_stressor_tier_contributions.png`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_mechanism_group_summary.png`
-- `/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_detection_latency.png`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/overall_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/config_runtime_summary.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/run_context.json`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/case_inventory.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/case_block_traces.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_metrics_final_config.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/sequential_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/case_diagnosis_summary.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_diagnosis_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_family_diagnosis_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_feature_diagnosis_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_feature_diagnosis_runlevel_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_feature_diagnosis_post_alert_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_feature_diagnosis_top_blocks_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_diagnosis_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_supervised_diagnosis_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_abstain_sweep.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_diagnosis_post_alert_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_abstain_sweep_post_alert.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_diagnosis_top_blocks_metrics.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_abstain_sweep_top_blocks.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/diagnosis_mode_comparison.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/mechanism_group_summary.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_confusion_matrix.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_family_confusion_matrix.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_confusion_matrix.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_supervised_confusion_matrix.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_tier_contributions.csv`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/overall_metrics.tex`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_metrics_final_config.tex`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_diagnosis_metrics.tex`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/stressor_hierarchical_diagnosis_metrics.tex`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/sequential_metrics.tex`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_roc_pr_by_config.png`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_roc_pr_by_config_wc.png`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_run_score_boxplot.png`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_run_score_boxplot_wc.png`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_stressor_confusion_matrix.png`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_stressor_confusion_matrix_feature.png`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_stressor_confusion_matrix_feature_top_blocks.png`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_stressor_tier_contributions.png`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_mechanism_group_summary.png`
+- `/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning/runs/g0.1_B20_a0.05_k3/figures/fig_detection_latency.png`

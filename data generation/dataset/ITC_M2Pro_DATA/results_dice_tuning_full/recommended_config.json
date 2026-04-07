@@ -5,5 +5,5 @@
   "persist_k": 2,
   "feature_profile": "full",
   "selection_mode": "diagnosis_low_fp",
-  "out_dir": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning_full/runs/g0.35_B90_a0.05_k2"
+  "out_dir": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_dice_tuning_full/runs/g0.35_B90_a0.05_k2"
 }
