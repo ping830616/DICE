@@ -41,23 +41,66 @@ That mapping corresponds directly to the draft results sequence:
 - draft result `E`: crash-aware early warning -> notebook section `6. Crash-Aware Early Warning and Real Crash Localization`
 - draft result `F`: grounded LLM triage -> notebook section `7. Grounded LLM Triage Support`
 
-## Quick Start
+## Reviewer Quick Start
 
-Clone DICE from GitHub to your laptop:
+For a standard reviewer run on a laptop or server, clone the repo into any working directory and use:
 
 ```bash
-cd ~/Documents
 git lfs install
-git clone https://github.com/ping830616/DICE.git
-cd DICE
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git <repo-dir>
+cd <repo-dir>
+conda env create -f environment.yml
+conda activate dice-results
+python scripts/validate_env.py \
+  --repo-root "$PWD" \
+  --dataset-root "$PWD/data generation/dataset/ITC_M2Pro_DATA"
+export DICE_REPO_ROOT="$PWD"
+export PYTHONHASHSEED=0
+export MPLCONFIGDIR="$PWD/.mplconfig"
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export VECLIB_MAXIMUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export BLIS_NUM_THREADS=1
+mkdir -p "$MPLCONFIGDIR"
+jupyter lab dice_results_analysis.ipynb
+```
+
+This path is sufficient for the main released-results workflow. Notebook outputs are written under `data generation/dataset/ITC_M2Pro_DATA/` inside the chosen clone directory.
+
+For crash-aware sections that depend on `workload_crash_pilots/`, run:
+
+```bash
+git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"
+```
+
+If GitHub returns an LFS budget or quota error, the reviewer will need either restored Git LFS access for `ping830616/DICE` or a provided local copy of `workload_crash_pilots/`. The sections that require this payload are `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`.
+
+Expected outputs reviewers should compare after a successful run:
+
+- `data generation/dataset/ITC_M2Pro_DATA/results_portable/run_manifest.json`
+- `data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/comparison/main_monitoring_profile_summary.csv`
+- `data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/comparison/industry_paper_scorecard_profiles.csv`
+- `data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/comparison/holdout_robustness_profiles.csv`
+- `data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/mixed/early_warning_case_summary.csv`
+- `data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/mixed/llm_case_cards.csv`
+
+## Quick Start
+
+Clone DICE into any directory where you want to keep the repo and generated outputs:
+
+```bash
+git lfs install
+git clone https://github.com/ping830616/DICE.git <repo-dir>
+cd <repo-dir>
 conda env create -f environment.yml
 conda activate dice-results
 ```
 
-Run the notebook on your laptop:
+Run the notebook:
 
 ```bash
-cd ~/Documents/DICE
 export DICE_REPO_ROOT="$PWD"
 export PYTHONHASHSEED=0
 export MPLCONFIGDIR="$PWD/.mplconfig"
