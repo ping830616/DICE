@@ -47,8 +47,8 @@ For a standard reviewer run on a laptop or server, clone the repo into any worki
 
 ```bash
 git lfs install
-GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git <repo-dir>
-cd <repo-dir>
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git 
+cd DICE
 conda env create -f environment.yml
 conda activate dice-results
 python scripts/validate_env.py \
