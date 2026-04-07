@@ -1,0 +1,5 @@
+workload,base_stressor,original_case_id,original_anomaly_warning_s,crash_pilot_anomaly_warning_s,crash_time_s,lead_time_s,anomaly_warning_shift_s,original_top_feature_1,original_top_feature_2,pilot_control_case_id,pilot_abort_case_id,original_warning_s,pilot_warning_s,warning_shift_s,pilot_key,pilot_label,pilot_order
+BROWSER,BRANCH,BROWSER__BRANCH,45.0,62.0,167.478639,105.478639,17.0,tier0:swap_sout_bytes,tier0:uptime_s,BROWSER__BRANCH_CONTROL,BROWSER__BRANCH_ABORT,45.0,62.0,17.0,browser_branch,BROWSER / BRANCH,0
+VIDEO_SW,MEMBW,VIDEO_SW__MEMBW,45.0,62.0,174.566567,112.566567,17.0,tier0:uptime_s,tier0:mem_inactive_bytes,VIDEO_SW__MEMBW_CONTROL,VIDEO_SW__MEMBW_ABORT,45.0,62.0,17.0,video_membw,VIDEO_SW / MEMBW,1
+PY_AI,CACHE,PY_AI__CACHE,45.0,62.0,214.779384,152.779384,17.0,tier1_alt:gpu_avg_freq_mhz,tier1_alt:cpu_avg_freq_mhz,PY_AI__CACHE_CONTROL,PY_AI__CACHE_ABORT,45.0,62.0,17.0,py_ai_cache,PY_AI / CACHE,2
+PY_STATS,ATOMIC,PY_STATS__ATOMIC,45.0,62.0,196.682946,134.682946,17.0,tier0:uptime_s,tier0:mem_inactive_bytes,PY_STATS__ATOMIC_CONTROL,PY_STATS__ATOMIC_ABORT,45.0,62.0,17.0,py_stats_atomic,PY_STATS / ATOMIC,3

@@ -1,0 +1,7 @@
+feature_profile,profile_label,config,config_label,diagnosis_source,top2_acc,mean_margin_to_second,median_margin_to_second
+mixed,Mixed,tier0,Tier-0,feature-level (diagnosis-weighted),0.55,0.0268741849175125,0.0196591719403168
+mixed,Mixed,tier0_tier1,Tier-0/1,feature-level (diagnosis-weighted),0.7,0.0182871664554313,0.0125275349513143
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,feature-level (diagnosis-weighted),0.75,0.0168914120395129,0.0157362112029087
+full,Full,tier0,Tier-0,feature-level (diagnosis-weighted),0.6,0.0252617153503272,0.0160506379673032
+full,Full,tier0_tier1,Tier-0/1,feature-level (diagnosis-weighted),0.3,0.0137043501843743,0.0119856551529803
+full,Full,tier0_tier1_tier2,Tier-0/1/2,feature-level (diagnosis-weighted),0.4,0.0253124417530615,0.019305490165557

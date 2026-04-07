@@ -1,0 +1,7 @@
+feature_profile,profile_label,config,config_label,diagnosis_source,top1_acc,balanced_acc,macro_f1
+mixed,Mixed,tier0,Tier-0,feature-level (diagnosis-weighted),0.3,0.3,0.2389610389610389
+mixed,Mixed,tier0_tier1,Tier-0/1,feature-level (diagnosis-weighted),0.4,0.4,0.3478632478632478
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,feature-level (diagnosis-weighted),0.55,0.55,0.5732600732600732
+full,Full,tier0,Tier-0,feature-level (diagnosis-weighted),0.4,0.4,0.3224242424242424
+full,Full,tier0_tier1,Tier-0/1,feature-level (diagnosis-weighted),0.2,0.2,0.1857142857142857
+full,Full,tier0_tier1_tier2,Tier-0/1/2,feature-level (diagnosis-weighted),0.3,0.3,0.2

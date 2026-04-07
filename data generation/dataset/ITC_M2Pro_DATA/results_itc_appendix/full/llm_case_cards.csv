@@ -1,11 +1,11 @@
 case_id,workload,stressor,dominant_tier,dominant_mechanism,tier0_share,tier1_alt_share,tier2_share,compute_share,memory_io_share,thermal_power_share,scheduler_runtime_share,platform_pressure_share,top_feature_1,top_feature_score_1,top_feature_2,top_feature_score_2,top_feature_3,top_feature_score_3,top_feature_4,top_feature_score_4,top_feature_5,top_feature_score_5,top_mechanism_1,top_mechanism_score_1,top_mechanism_2,top_mechanism_score_2,top_mechanism_3,top_mechanism_score_3,warning_source,first_warning_s,first_warning_window_start_s,first_warning_window_end_s,warning_dominant_tier,warning_dominant_mechanism,warning_top_feature_1,warning_top_feature_score_1,warning_top_feature_2,warning_top_feature_score_2,diagnostic_case_card_json,grounded_evidence_text,reviewer_prompt,triage_prompt,followup_prompt
-BROWSER__ATOMIC,BROWSER,ATOMIC,tier0,memory_io,0.6618589905329927,0.1998422868087194,0.1382987226582879,0.3335989970883546,0.3623974677494327,0.0488449210064029,0.1469107648977942,0.1082478492580151,tier1_alt:memory_swap_total,0.0001733009241412,tier0:net_sent_Pps,0.0001022542745689,tier0:load15,9.058256403093006e-05,tier0:load5,8.395213696827702e-05,tier0:net_sent_Bps,8.15241043910682e-05,memory_io,0.0008389018239087,compute,0.000772237203669,scheduler_runtime,0.0003400788349597,no_detected_warning,,,,,,,,,,"{""case_id"": ""BROWSER__ATOMIC"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""mechanism_share"": {""compute"": 0.3335989970883546, ""memory_io"": 0.3623974677494327, ""platform_pressure"": 0.1082478492580151, ""scheduler_runtime"": 0.1469107648977942, ""thermal_power"": 0.0488449210064029}, ""stressor"": ""ATOMIC"", ""tier_share"": {""tier0"": 0.6618589905329927, ""tier1"": 0.1998422868087194, ""tier2"": 0.1382987226582879}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001733009241412}, {""name"": ""tier0:net_sent_Pps"", ""score"": 0.0001022542745689}, {""name"": ""tier0:load15"", ""score"": 9.058256403093006e-05}, {""name"": ""tier0:load5"", ""score"": 8.395213696827702e-05}, {""name"": ""tier0:net_sent_Bps"", ""score"": 8.15241043910682e-05}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0008389018239087}, {""name"": ""compute"", ""score"": 0.000772237203669}, {""name"": ""scheduler_runtime"", ""score"": 0.0003400788349597}], ""workload"": ""BROWSER""}","case_id: BROWSER__ATOMIC
+BROWSER__ATOMIC,BROWSER,ATOMIC,tier0,memory_io,0.6648383170127504,0.2040264414216428,0.1311352415656067,0.32832453133322,0.3707698349896288,0.0465715425528396,0.1411603434085826,0.1131737477157288,tier1_alt:memory_swap_total,0.0001921485979051,tier0:net_sent_Pps,0.0001132963752713,tier0:load15,9.878984958026275e-05,tier0:load5,9.16853263260984e-05,tier0:net_sent_Bps,8.704235006989986e-05,memory_io,0.0008954480092235,compute,0.0007929381525058,scheduler_runtime,0.0003409170233335,no_detected_warning,,,,,,,,,,"{""case_id"": ""BROWSER__ATOMIC"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""mechanism_share"": {""compute"": 0.32832453133322, ""memory_io"": 0.3707698349896288, ""platform_pressure"": 0.1131737477157288, ""scheduler_runtime"": 0.1411603434085826, ""thermal_power"": 0.0465715425528396}, ""stressor"": ""ATOMIC"", ""tier_share"": {""tier0"": 0.6648383170127504, ""tier1"": 0.2040264414216428, ""tier2"": 0.1311352415656067}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001921485979051}, {""name"": ""tier0:net_sent_Pps"", ""score"": 0.0001132963752713}, {""name"": ""tier0:load15"", ""score"": 9.878984958026275e-05}, {""name"": ""tier0:load5"", ""score"": 9.16853263260984e-05}, {""name"": ""tier0:net_sent_Bps"", ""score"": 8.704235006989986e-05}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0008954480092235}, {""name"": ""compute"", ""score"": 0.0007929381525058}, {""name"": ""scheduler_runtime"", ""score"": 0.0003409170233335}], ""workload"": ""BROWSER""}","case_id: BROWSER__ATOMIC
 workload: BROWSER
 stressor: ATOMIC
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.662), tier1_alt (0.200), tier2 (0.138)
-supported_mechanisms: compute (0.334), memory_io (0.362), scheduler_runtime (0.147), platform_pressure (0.108)
+supported_tiers: tier0 (0.665), tier1_alt (0.204), tier2 (0.131)
+supported_mechanisms: compute (0.328), memory_io (0.371), scheduler_runtime (0.141), platform_pressure (0.113)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
@@ -15,8 +15,8 @@ workload: BROWSER
 stressor: ATOMIC
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.662), tier1_alt (0.200), tier2 (0.138)
-supported_mechanisms: compute (0.334), memory_io (0.362), scheduler_runtime (0.147), platform_pressure (0.108)
+supported_tiers: tier0 (0.665), tier1_alt (0.204), tier2 (0.131)
+supported_mechanisms: compute (0.328), memory_io (0.371), scheduler_runtime (0.141), platform_pressure (0.113)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
@@ -26,8 +26,8 @@ workload: BROWSER
 stressor: ATOMIC
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.662), tier1_alt (0.200), tier2 (0.138)
-supported_mechanisms: compute (0.334), memory_io (0.362), scheduler_runtime (0.147), platform_pressure (0.108)
+supported_tiers: tier0 (0.665), tier1_alt (0.204), tier2 (0.131)
+supported_mechanisms: compute (0.328), memory_io (0.371), scheduler_runtime (0.141), platform_pressure (0.113)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
@@ -37,23 +37,23 @@ workload: BROWSER
 stressor: ATOMIC
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.662), tier1_alt (0.200), tier2 (0.138)
-supported_mechanisms: compute (0.334), memory_io (0.362), scheduler_runtime (0.147), platform_pressure (0.108)
+supported_tiers: tier0 (0.665), tier1_alt (0.204), tier2 (0.131)
+supported_mechanisms: compute (0.328), memory_io (0.371), scheduler_runtime (0.141), platform_pressure (0.113)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)"
-BROWSER__BRANCH,BROWSER,BRANCH,tier0,memory_io,0.6438150990937206,0.2175441095068088,0.1386407913994705,0.3082105409803632,0.3608653295987076,0.0540770129158972,0.1492030749065978,0.1276440415984341,tier1_alt:memory_swap_total,0.0004799938697084,tier0:load15,0.0002950462988058,tier0:load5,0.0002733046514998,tier0:net_sent_Pps,0.0002721353426512,tier0:load1,0.0002493743175611,memory_io,0.0023118094241978,compute,0.0019744873636596,scheduler_runtime,0.0009558387752903,first_persistent_alert,60.0,0.0,60.0,tier0,memory_io,tier0:swap_sout_bytes,0.0016073876855121,tier0:soft_interrupts,0.0014110381304058,"{""case_id"": ""BROWSER__BRANCH"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:swap_sout_bytes"", ""score"": 0.0016073876855121}, {""name"": ""tier0:soft_interrupts"", ""score"": 0.0014110381304058}]}, ""mechanism_share"": {""compute"": 0.3082105409803632, ""memory_io"": 0.3608653295987076, ""platform_pressure"": 0.1276440415984341, ""scheduler_runtime"": 0.1492030749065978, ""thermal_power"": 0.0540770129158972}, ""stressor"": ""BRANCH"", ""tier_share"": {""tier0"": 0.6438150990937206, ""tier1"": 0.2175441095068088, ""tier2"": 0.1386407913994705}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0004799938697084}, {""name"": ""tier0:load15"", ""score"": 0.0002950462988058}, {""name"": ""tier0:load5"", ""score"": 0.0002733046514998}, {""name"": ""tier0:net_sent_Pps"", ""score"": 0.0002721353426512}, {""name"": ""tier0:load1"", ""score"": 0.0002493743175611}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0023118094241978}, {""name"": ""compute"", ""score"": 0.0019744873636596}, {""name"": ""scheduler_runtime"", ""score"": 0.0009558387752903}], ""workload"": ""BROWSER""}","case_id: BROWSER__BRANCH
+BROWSER__BRANCH,BROWSER,BRANCH,tier0,memory_io,0.6488621753637008,0.2218832905046236,0.1292545341316756,0.3016913005125961,0.3718606322024383,0.0513642245811212,0.1425181251604241,0.1325657175434202,tier1_alt:memory_swap_total,0.0005317800315277,tier0:load15,0.0003174924449348,tier0:net_sent_Pps,0.0003004687394173,tier0:load5,0.0002961106142013,tier0:load1,0.0002701898231571,memory_io,0.0024791310003507,compute,0.0020113241114207,scheduler_runtime,0.0009501438754203,first_persistent_alert,91.0,1.0,91.0,tier0,memory_io,tier0:soft_interrupts,0.0013381295875687,tier0:swap_sout_bytes,0.0012165508566988,"{""case_id"": ""BROWSER__BRANCH"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0013381295875687}, {""name"": ""tier0:swap_sout_bytes"", ""score"": 0.0012165508566988}]}, ""mechanism_share"": {""compute"": 0.3016913005125961, ""memory_io"": 0.3718606322024383, ""platform_pressure"": 0.1325657175434202, ""scheduler_runtime"": 0.1425181251604241, ""thermal_power"": 0.0513642245811212}, ""stressor"": ""BRANCH"", ""tier_share"": {""tier0"": 0.6488621753637008, ""tier1"": 0.2218832905046236, ""tier2"": 0.1292545341316756}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0005317800315277}, {""name"": ""tier0:load15"", ""score"": 0.0003174924449348}, {""name"": ""tier0:net_sent_Pps"", ""score"": 0.0003004687394173}, {""name"": ""tier0:load5"", ""score"": 0.0002961106142013}, {""name"": ""tier0:load1"", ""score"": 0.0002701898231571}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0024791310003507}, {""name"": ""compute"", ""score"": 0.0020113241114207}, {""name"": ""scheduler_runtime"", ""score"": 0.0009501438754203}], ""workload"": ""BROWSER""}","case_id: BROWSER__BRANCH
 workload: BROWSER
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.644), tier1_alt (0.218), tier2 (0.139)
-supported_mechanisms: compute (0.308), memory_io (0.361), scheduler_runtime (0.149), platform_pressure (0.128)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:load5 (0.000)
+supported_tiers: tier0 (0.649), tier1_alt (0.222), tier2 (0.129)
+supported_mechanisms: compute (0.302), memory_io (0.372), scheduler_runtime (0.143), platform_pressure (0.133)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:net_sent_Pps (0.000)
 top_mechanisms: memory_io (0.002), compute (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:swap_sout_bytes (0.002), tier0:soft_interrupts (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:swap_sout_bytes (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: BROWSER__BRANCH
@@ -61,14 +61,14 @@ workload: BROWSER
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.644), tier1_alt (0.218), tier2 (0.139)
-supported_mechanisms: compute (0.308), memory_io (0.361), scheduler_runtime (0.149), platform_pressure (0.128)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:load5 (0.000)
+supported_tiers: tier0 (0.649), tier1_alt (0.222), tier2 (0.129)
+supported_mechanisms: compute (0.302), memory_io (0.372), scheduler_runtime (0.143), platform_pressure (0.133)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:net_sent_Pps (0.000)
 top_mechanisms: memory_io (0.002), compute (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:swap_sout_bytes (0.002), tier0:soft_interrupts (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:swap_sout_bytes (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: BROWSER__BRANCH
@@ -76,14 +76,14 @@ workload: BROWSER
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.644), tier1_alt (0.218), tier2 (0.139)
-supported_mechanisms: compute (0.308), memory_io (0.361), scheduler_runtime (0.149), platform_pressure (0.128)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:load5 (0.000)
+supported_tiers: tier0 (0.649), tier1_alt (0.222), tier2 (0.129)
+supported_mechanisms: compute (0.302), memory_io (0.372), scheduler_runtime (0.143), platform_pressure (0.133)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:net_sent_Pps (0.000)
 top_mechanisms: memory_io (0.002), compute (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:swap_sout_bytes (0.002), tier0:soft_interrupts (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:swap_sout_bytes (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
 case_id: BROWSER__BRANCH
@@ -91,99 +91,99 @@ workload: BROWSER
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.644), tier1_alt (0.218), tier2 (0.139)
-supported_mechanisms: compute (0.308), memory_io (0.361), scheduler_runtime (0.149), platform_pressure (0.128)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:load5 (0.000)
+supported_tiers: tier0 (0.649), tier1_alt (0.222), tier2 (0.129)
+supported_mechanisms: compute (0.302), memory_io (0.372), scheduler_runtime (0.143), platform_pressure (0.133)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:net_sent_Pps (0.000)
 top_mechanisms: memory_io (0.002), compute (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:swap_sout_bytes (0.002), tier0:soft_interrupts (0.001)"
-BROWSER__CACHE,BROWSER,CACHE,tier0,memory_io,0.5629396754712527,0.304686415671819,0.1323739088569285,0.3166976514604555,0.3371847442542861,0.1058242702199901,0.1328836747404412,0.1074096593248271,tier1_alt:memory_swap_total,0.0007027885776075,tier0:load15,0.0003368409777833,tier0:pids_count,0.0003367288650369,tier0:load5,0.0003083308600064,tier1_alt:pcpu_usage_0,0.0002880185665655,memory_io,0.0029071406657939,compute,0.0027305049739374,scheduler_runtime,0.0011456969546841,first_persistent_alert,60.0,0.0,60.0,tier0,memory_io,tier0:soft_interrupts,0.0009372958570618,tier1_alt:memory_swap_total,0.0004801009131256,"{""case_id"": ""BROWSER__CACHE"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0009372958570618}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0004801009131256}]}, ""mechanism_share"": {""compute"": 0.3166976514604555, ""memory_io"": 0.3371847442542861, ""platform_pressure"": 0.1074096593248271, ""scheduler_runtime"": 0.1328836747404412, ""thermal_power"": 0.1058242702199901}, ""stressor"": ""CACHE"", ""tier_share"": {""tier0"": 0.5629396754712527, ""tier1"": 0.304686415671819, ""tier2"": 0.1323739088569285}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0007027885776075}, {""name"": ""tier0:load15"", ""score"": 0.0003368409777833}, {""name"": ""tier0:pids_count"", ""score"": 0.0003367288650369}, {""name"": ""tier0:load5"", ""score"": 0.0003083308600064}, {""name"": ""tier1_alt:pcpu_usage_0"", ""score"": 0.0002880185665655}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0029071406657939}, {""name"": ""compute"", ""score"": 0.0027305049739374}, {""name"": ""scheduler_runtime"", ""score"": 0.0011456969546841}], ""workload"": ""BROWSER""}","case_id: BROWSER__CACHE
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:swap_sout_bytes (0.001)"
+BROWSER__CACHE,BROWSER,CACHE,tier0,memory_io,0.5720782565087543,0.3044057479650726,0.123515995526173,0.3109921464110106,0.349728080454126,0.0993795274168969,0.1281066904600471,0.1117935552579191,tier1_alt:memory_swap_total,0.0007858067168748,tier0:load15,0.0003688750821423,tier0:pids_count,0.0003598663299627,tier0:load5,0.0003378111556951,tier1_alt:pcpu_usage_0,0.0003143484771376,memory_io,0.003170438225035,compute,0.0028192800171689,scheduler_runtime,0.0011613432578529,first_persistent_alert,91.0,1.0,91.0,tier0,memory_io,tier0:soft_interrupts,0.0011283504221181,tier1_alt:memory_swap_total,0.00056297997664,"{""case_id"": ""BROWSER__CACHE"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0011283504221181}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.00056297997664}]}, ""mechanism_share"": {""compute"": 0.3109921464110106, ""memory_io"": 0.349728080454126, ""platform_pressure"": 0.1117935552579191, ""scheduler_runtime"": 0.1281066904600471, ""thermal_power"": 0.0993795274168969}, ""stressor"": ""CACHE"", ""tier_share"": {""tier0"": 0.5720782565087543, ""tier1"": 0.3044057479650726, ""tier2"": 0.123515995526173}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0007858067168748}, {""name"": ""tier0:load15"", ""score"": 0.0003688750821423}, {""name"": ""tier0:pids_count"", ""score"": 0.0003598663299627}, {""name"": ""tier0:load5"", ""score"": 0.0003378111556951}, {""name"": ""tier1_alt:pcpu_usage_0"", ""score"": 0.0003143484771376}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.003170438225035}, {""name"": ""compute"", ""score"": 0.0028192800171689}, {""name"": ""scheduler_runtime"", ""score"": 0.0011613432578529}], ""workload"": ""BROWSER""}","case_id: BROWSER__CACHE
 workload: BROWSER
 stressor: CACHE
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.563), tier1_alt (0.305), tier2 (0.132)
-supported_mechanisms: compute (0.317), memory_io (0.337), thermal_power (0.106), scheduler_runtime (0.133), platform_pressure (0.107)
+supported_tiers: tier0 (0.572), tier1_alt (0.304), tier2 (0.124)
+supported_mechanisms: compute (0.311), memory_io (0.350), scheduler_runtime (0.128), platform_pressure (0.112)
 top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:pids_count (0.000)
 top_mechanisms: memory_io (0.003), compute (0.003)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+
+Grounded evidence:
+case_id: BROWSER__CACHE
+workload: BROWSER
+stressor: CACHE
+dominant_tier: tier0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.572), tier1_alt (0.304), tier2 (0.124)
+supported_mechanisms: compute (0.311), memory_io (0.350), scheduler_runtime (0.128), platform_pressure (0.112)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:pids_count (0.000)
+top_mechanisms: memory_io (0.003), compute (0.003)
+first_warning_s: 91.0
+warning_source: first_persistent_alert
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+
+Grounded evidence:
+case_id: BROWSER__CACHE
+workload: BROWSER
+stressor: CACHE
+dominant_tier: tier0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.572), tier1_alt (0.304), tier2 (0.124)
+supported_mechanisms: compute (0.311), memory_io (0.350), scheduler_runtime (0.128), platform_pressure (0.112)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:pids_count (0.000)
+top_mechanisms: memory_io (0.003), compute (0.003)
+first_warning_s: 91.0
+warning_source: first_persistent_alert
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
+
+Grounded evidence:
+case_id: BROWSER__CACHE
+workload: BROWSER
+stressor: CACHE
+dominant_tier: tier0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.572), tier1_alt (0.304), tier2 (0.124)
+supported_mechanisms: compute (0.311), memory_io (0.350), scheduler_runtime (0.128), platform_pressure (0.112)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:pids_count (0.000)
+top_mechanisms: memory_io (0.003), compute (0.003)
+first_warning_s: 91.0
+warning_source: first_persistent_alert
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.001)"
+BROWSER__MEMBW,BROWSER,MEMBW,tier0,memory_io,0.6734590769998691,0.2361349624839754,0.0904059605161552,0.3157631428980325,0.4202397913412043,0.0432269307952264,0.0987643171299292,0.1220058178356074,tier1_alt:memory_swap_total,0.0005165728669377,tier0:net_sent_Pps,0.000403132886104,tier0:load15,0.0002514024362391,tier0:net_sent_Bps,0.0002397352361355,tier0:load5,0.0002321754634502,memory_io,0.0023923800813315,compute,0.0017976057219068,platform_pressure,0.0006945660416042,first_persistent_alert,91.0,1.0,91.0,tier0,memory_io,tier0:soft_interrupts,0.0007931221699859,tier1_alt:memory_swap_total,0.0004894630272815,"{""case_id"": ""BROWSER__MEMBW"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0007931221699859}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0004894630272815}]}, ""mechanism_share"": {""compute"": 0.3157631428980325, ""memory_io"": 0.4202397913412043, ""platform_pressure"": 0.1220058178356074, ""scheduler_runtime"": 0.0987643171299292, ""thermal_power"": 0.0432269307952264}, ""stressor"": ""MEMBW"", ""tier_share"": {""tier0"": 0.6734590769998691, ""tier1"": 0.2361349624839754, ""tier2"": 0.0904059605161552}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0005165728669377}, {""name"": ""tier0:net_sent_Pps"", ""score"": 0.000403132886104}, {""name"": ""tier0:load15"", ""score"": 0.0002514024362391}, {""name"": ""tier0:net_sent_Bps"", ""score"": 0.0002397352361355}, {""name"": ""tier0:load5"", ""score"": 0.0002321754634502}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0023923800813315}, {""name"": ""compute"", ""score"": 0.0017976057219068}, {""name"": ""platform_pressure"", ""score"": 0.0006945660416042}], ""workload"": ""BROWSER""}","case_id: BROWSER__MEMBW
+workload: BROWSER
+stressor: MEMBW
+dominant_tier: tier0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.673), tier1_alt (0.236), tier2 (0.090)
+supported_mechanisms: compute (0.316), memory_io (0.420), platform_pressure (0.122)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
+top_mechanisms: memory_io (0.002), compute (0.002)
+first_warning_s: 91.0
+warning_source: first_persistent_alert
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
-case_id: BROWSER__CACHE
-workload: BROWSER
-stressor: CACHE
-dominant_tier: tier0
-dominant_mechanism: memory_io
-supported_tiers: tier0 (0.563), tier1_alt (0.305), tier2 (0.132)
-supported_mechanisms: compute (0.317), memory_io (0.337), thermal_power (0.106), scheduler_runtime (0.133), platform_pressure (0.107)
-top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:pids_count (0.000)
-top_mechanisms: memory_io (0.003), compute (0.003)
-first_warning_s: 60.0
-warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
-
-Grounded evidence:
-case_id: BROWSER__CACHE
-workload: BROWSER
-stressor: CACHE
-dominant_tier: tier0
-dominant_mechanism: memory_io
-supported_tiers: tier0 (0.563), tier1_alt (0.305), tier2 (0.132)
-supported_mechanisms: compute (0.317), memory_io (0.337), thermal_power (0.106), scheduler_runtime (0.133), platform_pressure (0.107)
-top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:pids_count (0.000)
-top_mechanisms: memory_io (0.003), compute (0.003)
-first_warning_s: 60.0
-warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
-
-Grounded evidence:
-case_id: BROWSER__CACHE
-workload: BROWSER
-stressor: CACHE
-dominant_tier: tier0
-dominant_mechanism: memory_io
-supported_tiers: tier0 (0.563), tier1_alt (0.305), tier2 (0.132)
-supported_mechanisms: compute (0.317), memory_io (0.337), thermal_power (0.106), scheduler_runtime (0.133), platform_pressure (0.107)
-top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier0:pids_count (0.000)
-top_mechanisms: memory_io (0.003), compute (0.003)
-first_warning_s: 60.0
-warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.000)"
-BROWSER__MEMBW,BROWSER,MEMBW,tier0,memory_io,0.6704609467661654,0.2324825189891796,0.097056534244655,0.3247718818418356,0.4086457046996826,0.0458339417900074,0.1026716093738041,0.11807686229467,tier1_alt:memory_swap_total,0.0004616467385489,tier0:net_sent_Pps,0.0003608460922565,tier0:load15,0.0002307345143829,tier0:net_sent_Bps,0.0002214023764358,tier0:load5,0.0002131877327197,memory_io,0.0022081464892504,compute,0.0017549282482324,platform_pressure,0.0006380368273522,first_persistent_alert,60.0,0.0,60.0,tier0,memory_io,tier0:soft_interrupts,0.0006724929809101,tier1_alt:memory_swap_total,0.000423718653689,"{""case_id"": ""BROWSER__MEMBW"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0006724929809101}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.000423718653689}]}, ""mechanism_share"": {""compute"": 0.3247718818418356, ""memory_io"": 0.4086457046996826, ""platform_pressure"": 0.11807686229467, ""scheduler_runtime"": 0.1026716093738041, ""thermal_power"": 0.0458339417900074}, ""stressor"": ""MEMBW"", ""tier_share"": {""tier0"": 0.6704609467661654, ""tier1"": 0.2324825189891796, ""tier2"": 0.097056534244655}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0004616467385489}, {""name"": ""tier0:net_sent_Pps"", ""score"": 0.0003608460922565}, {""name"": ""tier0:load15"", ""score"": 0.0002307345143829}, {""name"": ""tier0:net_sent_Bps"", ""score"": 0.0002214023764358}, {""name"": ""tier0:load5"", ""score"": 0.0002131877327197}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0022081464892504}, {""name"": ""compute"", ""score"": 0.0017549282482324}, {""name"": ""platform_pressure"", ""score"": 0.0006380368273522}], ""workload"": ""BROWSER""}","case_id: BROWSER__MEMBW
-workload: BROWSER
-stressor: MEMBW
-dominant_tier: tier0
-dominant_mechanism: memory_io
-supported_tiers: tier0 (0.670), tier1_alt (0.232), tier2 (0.097)
-supported_mechanisms: compute (0.325), memory_io (0.409), scheduler_runtime (0.103), platform_pressure (0.118)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
-top_mechanisms: memory_io (0.002), compute (0.002)
-first_warning_s: 60.0
-warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
-
-Grounded evidence:
 case_id: BROWSER__MEMBW
 workload: BROWSER
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.670), tier1_alt (0.232), tier2 (0.097)
-supported_mechanisms: compute (0.325), memory_io (0.409), scheduler_runtime (0.103), platform_pressure (0.118)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.673), tier1_alt (0.236), tier2 (0.090)
+supported_mechanisms: compute (0.316), memory_io (0.420), platform_pressure (0.122)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.002), compute (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -192,13 +192,13 @@ workload: BROWSER
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.670), tier1_alt (0.232), tier2 (0.097)
-supported_mechanisms: compute (0.325), memory_io (0.409), scheduler_runtime (0.103), platform_pressure (0.118)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.673), tier1_alt (0.236), tier2 (0.090)
+supported_mechanisms: compute (0.316), memory_io (0.420), platform_pressure (0.122)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.002), compute (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -207,26 +207,26 @@ workload: BROWSER
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.670), tier1_alt (0.232), tier2 (0.097)
-supported_mechanisms: compute (0.325), memory_io (0.409), scheduler_runtime (0.103), platform_pressure (0.118)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.673), tier1_alt (0.236), tier2 (0.090)
+supported_mechanisms: compute (0.316), memory_io (0.420), platform_pressure (0.122)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:net_sent_Pps (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.002), compute (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.001), tier1_alt:memory_swap_total (0.000)"
-BROWSER__TLB,BROWSER,TLB,tier0,memory_io,0.597785122153989,0.3019675428376211,0.1002473350083896,0.3297242586255285,0.3684450225121181,0.0934543423685305,0.0990957700942013,0.1092806063996214,tier1_alt:memory_swap_total,0.0008814741777788,tier1_alt:pcpu_usage_0,0.000426896676211,tier0:load15,0.0004250893706854,tier0:pids_count,0.0003974215028817,tier0:load5,0.0003877046005508,memory_io,0.0039282761385457,compute,0.0035154442544158,platform_pressure,0.0011651247059833,first_persistent_alert,60.0,0.0,60.0,tier0,memory_io,tier0:soft_interrupts,0.0016897623950126,tier1_alt:memory_swap_total,0.0009430211349845,"{""case_id"": ""BROWSER__TLB"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0016897623950126}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0009430211349845}]}, ""mechanism_share"": {""compute"": 0.3297242586255285, ""memory_io"": 0.3684450225121181, ""platform_pressure"": 0.1092806063996214, ""scheduler_runtime"": 0.0990957700942013, ""thermal_power"": 0.0934543423685305}, ""stressor"": ""TLB"", ""tier_share"": {""tier0"": 0.597785122153989, ""tier1"": 0.3019675428376211, ""tier2"": 0.1002473350083896}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0008814741777788}, {""name"": ""tier1_alt:pcpu_usage_0"", ""score"": 0.000426896676211}, {""name"": ""tier0:load15"", ""score"": 0.0004250893706854}, {""name"": ""tier0:pids_count"", ""score"": 0.0003974215028817}, {""name"": ""tier0:load5"", ""score"": 0.0003877046005508}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0039282761385457}, {""name"": ""compute"", ""score"": 0.0035154442544158}, {""name"": ""platform_pressure"", ""score"": 0.0011651247059833}], ""workload"": ""BROWSER""}","case_id: BROWSER__TLB
+BROWSER__TLB,BROWSER,TLB,tier0,memory_io,0.6030559771722434,0.3038259801529887,0.093118042674768,0.3238416247329788,0.379428710015276,0.0875158455191236,0.0952737101112358,0.1139401096213854,tier1_alt:memory_swap_total,0.0009848865363281,tier0:load15,0.0004651158582728,tier1_alt:pcpu_usage_0,0.0004648143147903,tier0:load5,0.000424725874623,tier0:pids_count,0.0004183140264991,memory_io,0.0042444109587269,compute,0.0036225960361651,platform_pressure,0.0012745705244499,first_persistent_alert,91.0,1.0,91.0,tier0,memory_io,tier0:soft_interrupts,0.00198249823194,tier1_alt:memory_swap_total,0.0010669184803593,"{""case_id"": ""BROWSER__TLB"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.00198249823194}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0010669184803593}]}, ""mechanism_share"": {""compute"": 0.3238416247329788, ""memory_io"": 0.379428710015276, ""platform_pressure"": 0.1139401096213854, ""scheduler_runtime"": 0.0952737101112358, ""thermal_power"": 0.0875158455191236}, ""stressor"": ""TLB"", ""tier_share"": {""tier0"": 0.6030559771722434, ""tier1"": 0.3038259801529887, ""tier2"": 0.093118042674768}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0009848865363281}, {""name"": ""tier0:load15"", ""score"": 0.0004651158582728}, {""name"": ""tier1_alt:pcpu_usage_0"", ""score"": 0.0004648143147903}, {""name"": ""tier0:load5"", ""score"": 0.000424725874623}, {""name"": ""tier0:pids_count"", ""score"": 0.0004183140264991}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0042444109587269}, {""name"": ""compute"", ""score"": 0.0036225960361651}, {""name"": ""platform_pressure"", ""score"": 0.0012745705244499}], ""workload"": ""BROWSER""}","case_id: BROWSER__TLB
 workload: BROWSER
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.598), tier1_alt (0.302), tier2 (0.100)
-supported_mechanisms: compute (0.330), memory_io (0.368), platform_pressure (0.109)
-top_features: tier1_alt:memory_swap_total (0.001), tier1_alt:pcpu_usage_0 (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.603), tier1_alt (0.304), tier2 (0.093)
+supported_mechanisms: compute (0.324), memory_io (0.379), platform_pressure (0.114)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier1_alt:pcpu_usage_0 (0.000)
 top_mechanisms: memory_io (0.004), compute (0.004)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.002), tier1_alt:memory_swap_total (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -235,13 +235,13 @@ workload: BROWSER
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.598), tier1_alt (0.302), tier2 (0.100)
-supported_mechanisms: compute (0.330), memory_io (0.368), platform_pressure (0.109)
-top_features: tier1_alt:memory_swap_total (0.001), tier1_alt:pcpu_usage_0 (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.603), tier1_alt (0.304), tier2 (0.093)
+supported_mechanisms: compute (0.324), memory_io (0.379), platform_pressure (0.114)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier1_alt:pcpu_usage_0 (0.000)
 top_mechanisms: memory_io (0.004), compute (0.004)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.002), tier1_alt:memory_swap_total (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -250,13 +250,13 @@ workload: BROWSER
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.598), tier1_alt (0.302), tier2 (0.100)
-supported_mechanisms: compute (0.330), memory_io (0.368), platform_pressure (0.109)
-top_features: tier1_alt:memory_swap_total (0.001), tier1_alt:pcpu_usage_0 (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.603), tier1_alt (0.304), tier2 (0.093)
+supported_mechanisms: compute (0.324), memory_io (0.379), platform_pressure (0.114)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier1_alt:pcpu_usage_0 (0.000)
 top_mechanisms: memory_io (0.004), compute (0.004)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.002), tier1_alt:memory_swap_total (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -265,85 +265,85 @@ workload: BROWSER
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.598), tier1_alt (0.302), tier2 (0.100)
-supported_mechanisms: compute (0.330), memory_io (0.368), platform_pressure (0.109)
-top_features: tier1_alt:memory_swap_total (0.001), tier1_alt:pcpu_usage_0 (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.603), tier1_alt (0.304), tier2 (0.093)
+supported_mechanisms: compute (0.324), memory_io (0.379), platform_pressure (0.114)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:load15 (0.000), tier1_alt:pcpu_usage_0 (0.000)
 top_mechanisms: memory_io (0.004), compute (0.004)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.002), tier1_alt:memory_swap_total (0.001)"
-PY_AI__ATOMIC,PY_AI,ATOMIC,tier0,compute,0.6175715737072526,0.276095202999129,0.1063332232936184,0.3314685789512374,0.3176885770024453,0.1041202366177204,0.1182178171690667,0.1285047902595299,tier1_alt:memory_swap_total,0.0002184908380545,tier0:pids_count,0.0001571699190541,tier0:load15,0.0001568093241362,tier0:load5,0.0001426545634679,tier0:load1,0.0001292557728256,compute,0.0011058505782089,memory_io,0.0010598775234747,platform_pressure,0.0004287196604298,first_persistent_alert,350.0,290.0,350.0,tier0,memory_io,tier0:mem_available_bytes,0.0002369511653097,tier0:mem_percent,0.000236767468907,"{""case_id"": ""PY_AI__ATOMIC"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 350.0, ""first_warning_window_end_s"": 350.0, ""first_warning_window_start_s"": 290.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:mem_available_bytes"", ""score"": 0.0002369511653097}, {""name"": ""tier0:mem_percent"", ""score"": 0.000236767468907}]}, ""mechanism_share"": {""compute"": 0.3314685789512374, ""memory_io"": 0.3176885770024453, ""platform_pressure"": 0.1285047902595299, ""scheduler_runtime"": 0.1182178171690667, ""thermal_power"": 0.1041202366177204}, ""stressor"": ""ATOMIC"", ""tier_share"": {""tier0"": 0.6175715737072526, ""tier1"": 0.276095202999129, ""tier2"": 0.1063332232936184}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0002184908380545}, {""name"": ""tier0:pids_count"", ""score"": 0.0001571699190541}, {""name"": ""tier0:load15"", ""score"": 0.0001568093241362}, {""name"": ""tier0:load5"", ""score"": 0.0001426545634679}, {""name"": ""tier0:load1"", ""score"": 0.0001292557728256}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0011058505782089}, {""name"": ""memory_io"", ""score"": 0.0010598775234747}, {""name"": ""platform_pressure"", ""score"": 0.0004287196604298}], ""workload"": ""PY_AI""}","case_id: PY_AI__ATOMIC
+PY_AI__ATOMIC,PY_AI,ATOMIC,tier0,memory_io,0.6270738980870096,0.2745747956765113,0.0983513062364788,0.3229485824412022,0.3291778887015225,0.0984627714475214,0.1148461681083898,0.1345645893013637,tier1_alt:memory_swap_total,0.000242739370249,tier0:load15,0.000174247992285,tier0:pids_count,0.0001710309659418,tier0:load5,0.0001589962455132,tier0:load1,0.0001436900188161,memory_io,0.0011666978100025,compute,0.0011446194194993,platform_pressure,0.0004769342566144,first_persistent_alert,345.0,255.0,345.0,tier0,memory_io,tier0:mem_free_bytes,0.0002899359928796,tier0:mem_available_bytes,0.0002367413065307,"{""case_id"": ""PY_AI__ATOMIC"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 345.0, ""first_warning_window_end_s"": 345.0, ""first_warning_window_start_s"": 255.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:mem_free_bytes"", ""score"": 0.0002899359928796}, {""name"": ""tier0:mem_available_bytes"", ""score"": 0.0002367413065307}]}, ""mechanism_share"": {""compute"": 0.3229485824412022, ""memory_io"": 0.3291778887015225, ""platform_pressure"": 0.1345645893013637, ""scheduler_runtime"": 0.1148461681083898, ""thermal_power"": 0.0984627714475214}, ""stressor"": ""ATOMIC"", ""tier_share"": {""tier0"": 0.6270738980870096, ""tier1"": 0.2745747956765113, ""tier2"": 0.0983513062364788}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.000242739370249}, {""name"": ""tier0:load15"", ""score"": 0.000174247992285}, {""name"": ""tier0:pids_count"", ""score"": 0.0001710309659418}, {""name"": ""tier0:load5"", ""score"": 0.0001589962455132}, {""name"": ""tier0:load1"", ""score"": 0.0001436900188161}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0011666978100025}, {""name"": ""compute"", ""score"": 0.0011446194194993}, {""name"": ""platform_pressure"", ""score"": 0.0004769342566144}], ""workload"": ""PY_AI""}","case_id: PY_AI__ATOMIC
 workload: PY_AI
 stressor: ATOMIC
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.618), tier1_alt (0.276), tier2 (0.106)
-supported_mechanisms: compute (0.331), memory_io (0.318), thermal_power (0.104), scheduler_runtime (0.118), platform_pressure (0.129)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:pids_count (0.000), tier0:load15 (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 350.0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.627), tier1_alt (0.275), tier2 (0.098)
+supported_mechanisms: compute (0.323), memory_io (0.329), scheduler_runtime (0.115), platform_pressure (0.135)
+top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:pids_count (0.000)
+top_mechanisms: memory_io (0.001), compute (0.001)
+first_warning_s: 345.0
 warning_source: first_persistent_alert
-warning_interval_s: 290.0-350.0
-warning_features: tier0:mem_available_bytes (0.000), tier0:mem_percent (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 255.0-345.0
+warning_features: tier0:mem_free_bytes (0.000), tier0:mem_available_bytes (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: PY_AI__ATOMIC
 workload: PY_AI
 stressor: ATOMIC
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.618), tier1_alt (0.276), tier2 (0.106)
-supported_mechanisms: compute (0.331), memory_io (0.318), thermal_power (0.104), scheduler_runtime (0.118), platform_pressure (0.129)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:pids_count (0.000), tier0:load15 (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 350.0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.627), tier1_alt (0.275), tier2 (0.098)
+supported_mechanisms: compute (0.323), memory_io (0.329), scheduler_runtime (0.115), platform_pressure (0.135)
+top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:pids_count (0.000)
+top_mechanisms: memory_io (0.001), compute (0.001)
+first_warning_s: 345.0
 warning_source: first_persistent_alert
-warning_interval_s: 290.0-350.0
-warning_features: tier0:mem_available_bytes (0.000), tier0:mem_percent (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 255.0-345.0
+warning_features: tier0:mem_free_bytes (0.000), tier0:mem_available_bytes (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: PY_AI__ATOMIC
 workload: PY_AI
 stressor: ATOMIC
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.618), tier1_alt (0.276), tier2 (0.106)
-supported_mechanisms: compute (0.331), memory_io (0.318), thermal_power (0.104), scheduler_runtime (0.118), platform_pressure (0.129)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:pids_count (0.000), tier0:load15 (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 350.0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.627), tier1_alt (0.275), tier2 (0.098)
+supported_mechanisms: compute (0.323), memory_io (0.329), scheduler_runtime (0.115), platform_pressure (0.135)
+top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:pids_count (0.000)
+top_mechanisms: memory_io (0.001), compute (0.001)
+first_warning_s: 345.0
 warning_source: first_persistent_alert
-warning_interval_s: 290.0-350.0
-warning_features: tier0:mem_available_bytes (0.000), tier0:mem_percent (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
+warning_interval_s: 255.0-345.0
+warning_features: tier0:mem_free_bytes (0.000), tier0:mem_available_bytes (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
 case_id: PY_AI__ATOMIC
 workload: PY_AI
 stressor: ATOMIC
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.618), tier1_alt (0.276), tier2 (0.106)
-supported_mechanisms: compute (0.331), memory_io (0.318), thermal_power (0.104), scheduler_runtime (0.118), platform_pressure (0.129)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:pids_count (0.000), tier0:load15 (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 350.0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.627), tier1_alt (0.275), tier2 (0.098)
+supported_mechanisms: compute (0.323), memory_io (0.329), scheduler_runtime (0.115), platform_pressure (0.135)
+top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:pids_count (0.000)
+top_mechanisms: memory_io (0.001), compute (0.001)
+first_warning_s: 345.0
 warning_source: first_persistent_alert
-warning_interval_s: 290.0-350.0
-warning_features: tier0:mem_available_bytes (0.000), tier0:mem_percent (0.000)"
-PY_AI__BRANCH,PY_AI,BRANCH,tier0,memory_io,0.7025940794996739,0.2053874714875934,0.0920184490127327,0.2528217850373717,0.4759913188522444,0.0862718191169218,0.1489109047269261,0.0360041722665357,tier0:mem_used_bytes,0.0002050638196312,tier0:interrupts,0.0001729859336599,tier0:mem_wired_bytes,0.0001586422113045,tier0:mem_active_bytes,0.0001286613841615,tier1_alt:memory_swap_total,0.0001177239382924,memory_io,0.001686074303602,compute,0.0008955548100545,scheduler_runtime,0.0005274777922244,first_persistent_alert,60.0,0.0,60.0,tier0,thermal_power,tier1_alt:ane_power,0.0029404123675154,tier0:mem_free_bytes,0.0003044241644438,"{""case_id"": ""PY_AI__BRANCH"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""thermal_power"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier1_alt:ane_power"", ""score"": 0.0029404123675154}, {""name"": ""tier0:mem_free_bytes"", ""score"": 0.0003044241644438}]}, ""mechanism_share"": {""compute"": 0.2528217850373717, ""memory_io"": 0.4759913188522444, ""platform_pressure"": 0.0360041722665357, ""scheduler_runtime"": 0.1489109047269261, ""thermal_power"": 0.0862718191169218}, ""stressor"": ""BRANCH"", ""tier_share"": {""tier0"": 0.7025940794996739, ""tier1"": 0.2053874714875934, ""tier2"": 0.0920184490127327}, ""top_features"": [{""name"": ""tier0:mem_used_bytes"", ""score"": 0.0002050638196312}, {""name"": ""tier0:interrupts"", ""score"": 0.0001729859336599}, {""name"": ""tier0:mem_wired_bytes"", ""score"": 0.0001586422113045}, {""name"": ""tier0:mem_active_bytes"", ""score"": 0.0001286613841615}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001177239382924}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.001686074303602}, {""name"": ""compute"", ""score"": 0.0008955548100545}, {""name"": ""scheduler_runtime"", ""score"": 0.0005274777922244}], ""workload"": ""PY_AI""}","case_id: PY_AI__BRANCH
+warning_interval_s: 255.0-345.0
+warning_features: tier0:mem_free_bytes (0.000), tier0:mem_available_bytes (0.000)"
+PY_AI__BRANCH,PY_AI,BRANCH,tier0,memory_io,0.7056868400041156,0.206110933977061,0.0882022260188234,0.2499357730092401,0.4883408044826973,0.0827238230496775,0.141761734363603,0.0372378650947819,tier0:mem_used_bytes,0.000205069129186,tier0:interrupts,0.000168679889403,tier0:mem_wired_bytes,0.0001544404677939,tier1_alt:memory_swap_total,0.0001307662780021,tier0:mem_active_bytes,0.0001247641119109,memory_io,0.0018154968569884,compute,0.0009291822558795,scheduler_runtime,0.0005270253495424,first_persistent_alert,91.0,1.0,91.0,tier0,memory_io,tier1_alt:ane_power,0.0021492369628122,tier0:mem_free_bytes,0.0003330025292621,"{""case_id"": ""PY_AI__BRANCH"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier1_alt:ane_power"", ""score"": 0.0021492369628122}, {""name"": ""tier0:mem_free_bytes"", ""score"": 0.0003330025292621}]}, ""mechanism_share"": {""compute"": 0.2499357730092401, ""memory_io"": 0.4883408044826973, ""platform_pressure"": 0.0372378650947819, ""scheduler_runtime"": 0.141761734363603, ""thermal_power"": 0.0827238230496775}, ""stressor"": ""BRANCH"", ""tier_share"": {""tier0"": 0.7056868400041156, ""tier1"": 0.206110933977061, ""tier2"": 0.0882022260188234}, ""top_features"": [{""name"": ""tier0:mem_used_bytes"", ""score"": 0.000205069129186}, {""name"": ""tier0:interrupts"", ""score"": 0.000168679889403}, {""name"": ""tier0:mem_wired_bytes"", ""score"": 0.0001544404677939}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001307662780021}, {""name"": ""tier0:mem_active_bytes"", ""score"": 0.0001247641119109}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0018154968569884}, {""name"": ""compute"", ""score"": 0.0009291822558795}, {""name"": ""scheduler_runtime"", ""score"": 0.0005270253495424}], ""workload"": ""PY_AI""}","case_id: PY_AI__BRANCH
 workload: PY_AI
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.703), tier1_alt (0.205), tier2 (0.092)
-supported_mechanisms: compute (0.253), memory_io (0.476), scheduler_runtime (0.149)
+supported_tiers: tier0 (0.706), tier1_alt (0.206), tier2 (0.088)
+supported_mechanisms: compute (0.250), memory_io (0.488), scheduler_runtime (0.142)
 top_features: tier0:mem_used_bytes (0.000), tier0:interrupts (0.000), tier0:mem_wired_bytes (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier1_alt:ane_power (0.003), tier0:mem_free_bytes (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 1.0-91.0
+warning_features: tier1_alt:ane_power (0.002), tier0:mem_free_bytes (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: PY_AI__BRANCH
@@ -351,14 +351,14 @@ workload: PY_AI
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.703), tier1_alt (0.205), tier2 (0.092)
-supported_mechanisms: compute (0.253), memory_io (0.476), scheduler_runtime (0.149)
+supported_tiers: tier0 (0.706), tier1_alt (0.206), tier2 (0.088)
+supported_mechanisms: compute (0.250), memory_io (0.488), scheduler_runtime (0.142)
 top_features: tier0:mem_used_bytes (0.000), tier0:interrupts (0.000), tier0:mem_wired_bytes (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier1_alt:ane_power (0.003), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 1.0-91.0
+warning_features: tier1_alt:ane_power (0.002), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: PY_AI__BRANCH
@@ -366,14 +366,14 @@ workload: PY_AI
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.703), tier1_alt (0.205), tier2 (0.092)
-supported_mechanisms: compute (0.253), memory_io (0.476), scheduler_runtime (0.149)
+supported_tiers: tier0 (0.706), tier1_alt (0.206), tier2 (0.088)
+supported_mechanisms: compute (0.250), memory_io (0.488), scheduler_runtime (0.142)
 top_features: tier0:mem_used_bytes (0.000), tier0:interrupts (0.000), tier0:mem_wired_bytes (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier1_alt:ane_power (0.003), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
+warning_interval_s: 1.0-91.0
+warning_features: tier1_alt:ane_power (0.002), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
 case_id: PY_AI__BRANCH
@@ -381,26 +381,26 @@ workload: PY_AI
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.703), tier1_alt (0.205), tier2 (0.092)
-supported_mechanisms: compute (0.253), memory_io (0.476), scheduler_runtime (0.149)
+supported_tiers: tier0 (0.706), tier1_alt (0.206), tier2 (0.088)
+supported_mechanisms: compute (0.250), memory_io (0.488), scheduler_runtime (0.142)
 top_features: tier0:mem_used_bytes (0.000), tier0:interrupts (0.000), tier0:mem_wired_bytes (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier1_alt:ane_power (0.003), tier0:mem_free_bytes (0.000)"
-PY_AI__CACHE,PY_AI,CACHE,tier2,compute,0.1547267914881703,0.0607402803706268,0.7845329281412028,0.8318966434755761,0.0916398508858247,0.018770557958048,0.0376968454326692,0.0199961022478817,tier2:first_sample_time_ns,0.0132178165339231,tier2:last_sample_time_ns,0.0122181504288777,tier1_alt:memory_swap_total,0.0005901451406134,tier0:swap_total_bytes,0.0005620349882012,tier0:pids_count,0.0003751126558799,compute,0.0279257786229376,memory_io,0.0030762405509713,scheduler_runtime,0.0012654381630122,first_persistent_alert,60.0,0.0,60.0,tier2,compute,tier2:first_sample_time_ns,0.0125582680832327,tier2:last_sample_time_ns,0.0116170869369985,"{""case_id"": ""PY_AI__CACHE"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier2"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""compute"", ""warning_dominant_tier"": ""tier2"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier2:first_sample_time_ns"", ""score"": 0.0125582680832327}, {""name"": ""tier2:last_sample_time_ns"", ""score"": 0.0116170869369985}]}, ""mechanism_share"": {""compute"": 0.8318966434755761, ""memory_io"": 0.0916398508858247, ""platform_pressure"": 0.0199961022478817, ""scheduler_runtime"": 0.0376968454326692, ""thermal_power"": 0.018770557958048}, ""stressor"": ""CACHE"", ""tier_share"": {""tier0"": 0.1547267914881703, ""tier1"": 0.0607402803706268, ""tier2"": 0.7845329281412028}, ""top_features"": [{""name"": ""tier2:first_sample_time_ns"", ""score"": 0.0132178165339231}, {""name"": ""tier2:last_sample_time_ns"", ""score"": 0.0122181504288777}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0005901451406134}, {""name"": ""tier0:swap_total_bytes"", ""score"": 0.0005620349882012}, {""name"": ""tier0:pids_count"", ""score"": 0.0003751126558799}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0279257786229376}, {""name"": ""memory_io"", ""score"": 0.0030762405509713}, {""name"": ""scheduler_runtime"", ""score"": 0.0012654381630122}], ""workload"": ""PY_AI""}","case_id: PY_AI__CACHE
+warning_interval_s: 1.0-91.0
+warning_features: tier1_alt:ane_power (0.002), tier0:mem_free_bytes (0.000)"
+PY_AI__CACHE,PY_AI,CACHE,tier2,compute,0.1684688045115867,0.0645925551862735,0.7669386403021395,0.8179846108585812,0.1033200127073955,0.0188301031413841,0.038209272941326,0.0216560003513128,tier2:first_sample_time_ns,0.0128695856306468,tier2:last_sample_time_ns,0.011914135745717,tier1_alt:memory_swap_total,0.000658029455829,tier0:swap_total_bytes,0.0006385055136414,tier0:pids_count,0.0003983580935672,compute,0.0273819408396277,memory_io,0.0034586255510772,scheduler_runtime,0.0012790510204176,first_persistent_alert,91.0,1.0,91.0,tier2,compute,tier2:first_sample_time_ns,0.0128496246889994,tier2:last_sample_time_ns,0.011900251444912,"{""case_id"": ""PY_AI__CACHE"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier2"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""compute"", ""warning_dominant_tier"": ""tier2"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier2:first_sample_time_ns"", ""score"": 0.0128496246889994}, {""name"": ""tier2:last_sample_time_ns"", ""score"": 0.011900251444912}]}, ""mechanism_share"": {""compute"": 0.8179846108585812, ""memory_io"": 0.1033200127073955, ""platform_pressure"": 0.0216560003513128, ""scheduler_runtime"": 0.038209272941326, ""thermal_power"": 0.0188301031413841}, ""stressor"": ""CACHE"", ""tier_share"": {""tier0"": 0.1684688045115867, ""tier1"": 0.0645925551862735, ""tier2"": 0.7669386403021395}, ""top_features"": [{""name"": ""tier2:first_sample_time_ns"", ""score"": 0.0128695856306468}, {""name"": ""tier2:last_sample_time_ns"", ""score"": 0.011914135745717}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.000658029455829}, {""name"": ""tier0:swap_total_bytes"", ""score"": 0.0006385055136414}, {""name"": ""tier0:pids_count"", ""score"": 0.0003983580935672}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0273819408396277}, {""name"": ""memory_io"", ""score"": 0.0034586255510772}, {""name"": ""scheduler_runtime"", ""score"": 0.0012790510204176}], ""workload"": ""PY_AI""}","case_id: PY_AI__CACHE
 workload: PY_AI
 stressor: CACHE
 dominant_tier: tier2
 dominant_mechanism: compute
-supported_tiers: tier0 (0.155), tier1_alt (0.061), tier2 (0.785)
-supported_mechanisms: compute (0.832)
+supported_tiers: tier0 (0.168), tier1_alt (0.065), tier2 (0.767)
+supported_mechanisms: compute (0.818), memory_io (0.103)
 top_features: tier2:first_sample_time_ns (0.013), tier2:last_sample_time_ns (0.012), tier1_alt:memory_swap_total (0.001)
-top_mechanisms: compute (0.028), memory_io (0.003)
-first_warning_s: 60.0
+top_mechanisms: compute (0.027), memory_io (0.003)
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier2:first_sample_time_ns (0.013), tier2:last_sample_time_ns (0.012)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -409,13 +409,13 @@ workload: PY_AI
 stressor: CACHE
 dominant_tier: tier2
 dominant_mechanism: compute
-supported_tiers: tier0 (0.155), tier1_alt (0.061), tier2 (0.785)
-supported_mechanisms: compute (0.832)
+supported_tiers: tier0 (0.168), tier1_alt (0.065), tier2 (0.767)
+supported_mechanisms: compute (0.818), memory_io (0.103)
 top_features: tier2:first_sample_time_ns (0.013), tier2:last_sample_time_ns (0.012), tier1_alt:memory_swap_total (0.001)
-top_mechanisms: compute (0.028), memory_io (0.003)
-first_warning_s: 60.0
+top_mechanisms: compute (0.027), memory_io (0.003)
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier2:first_sample_time_ns (0.013), tier2:last_sample_time_ns (0.012)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -424,13 +424,13 @@ workload: PY_AI
 stressor: CACHE
 dominant_tier: tier2
 dominant_mechanism: compute
-supported_tiers: tier0 (0.155), tier1_alt (0.061), tier2 (0.785)
-supported_mechanisms: compute (0.832)
+supported_tiers: tier0 (0.168), tier1_alt (0.065), tier2 (0.767)
+supported_mechanisms: compute (0.818), memory_io (0.103)
 top_features: tier2:first_sample_time_ns (0.013), tier2:last_sample_time_ns (0.012), tier1_alt:memory_swap_total (0.001)
-top_mechanisms: compute (0.028), memory_io (0.003)
-first_warning_s: 60.0
+top_mechanisms: compute (0.027), memory_io (0.003)
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier2:first_sample_time_ns (0.013), tier2:last_sample_time_ns (0.012)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -439,27 +439,27 @@ workload: PY_AI
 stressor: CACHE
 dominant_tier: tier2
 dominant_mechanism: compute
-supported_tiers: tier0 (0.155), tier1_alt (0.061), tier2 (0.785)
-supported_mechanisms: compute (0.832)
+supported_tiers: tier0 (0.168), tier1_alt (0.065), tier2 (0.767)
+supported_mechanisms: compute (0.818), memory_io (0.103)
 top_features: tier2:first_sample_time_ns (0.013), tier2:last_sample_time_ns (0.012), tier1_alt:memory_swap_total (0.001)
-top_mechanisms: compute (0.028), memory_io (0.003)
-first_warning_s: 60.0
+top_mechanisms: compute (0.027), memory_io (0.003)
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier2:first_sample_time_ns (0.013), tier2:last_sample_time_ns (0.012)"
-PY_AI__MEMBW,PY_AI,MEMBW,tier0,memory_io,0.6492244189870457,0.2653044316259512,0.0854711493870031,0.2626892913185282,0.4221989136489245,0.1389766745373659,0.1378177785799414,0.0383173419152397,tier0:mem_used_bytes,0.0002159893373203,tier0:interrupts,0.0001909030893469,tier0:mem_wired_bytes,0.0001802027740148,tier0:mem_active_bytes,0.0001519704817983,tier0:pids_count,0.0001455992945558,memory_io,0.001881951287513,compute,0.0011709372857929,thermal_power,0.0006194884049307,first_persistent_alert,60.0,0.0,60.0,tier0,memory_io,tier0:soft_interrupts,0.0006182604315138,tier0:uptime_s,0.0004554797715371,"{""case_id"": ""PY_AI__MEMBW"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0006182604315138}, {""name"": ""tier0:uptime_s"", ""score"": 0.0004554797715371}]}, ""mechanism_share"": {""compute"": 0.2626892913185282, ""memory_io"": 0.4221989136489245, ""platform_pressure"": 0.0383173419152397, ""scheduler_runtime"": 0.1378177785799414, ""thermal_power"": 0.1389766745373659}, ""stressor"": ""MEMBW"", ""tier_share"": {""tier0"": 0.6492244189870457, ""tier1"": 0.2653044316259512, ""tier2"": 0.0854711493870031}, ""top_features"": [{""name"": ""tier0:mem_used_bytes"", ""score"": 0.0002159893373203}, {""name"": ""tier0:interrupts"", ""score"": 0.0001909030893469}, {""name"": ""tier0:mem_wired_bytes"", ""score"": 0.0001802027740148}, {""name"": ""tier0:mem_active_bytes"", ""score"": 0.0001519704817983}, {""name"": ""tier0:pids_count"", ""score"": 0.0001455992945558}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.001881951287513}, {""name"": ""compute"", ""score"": 0.0011709372857929}, {""name"": ""thermal_power"", ""score"": 0.0006194884049307}], ""workload"": ""PY_AI""}","case_id: PY_AI__MEMBW
+PY_AI__MEMBW,PY_AI,MEMBW,tier0,memory_io,0.6579752915253552,0.2601774112663466,0.081847297208298,0.2578786682316444,0.4366547402095323,0.1323797790886907,0.1349908803435638,0.0380959321265685,tier0:mem_used_bytes,0.0002150667768019,tier0:interrupts,0.0001868738962316,tier0:mem_wired_bytes,0.0001763616646879,tier0:pids_count,0.0001602297207985,tier0:mem_active_bytes,0.0001486473460239,memory_io,0.0020371112639354,compute,0.0012030730263715,scheduler_runtime,0.0006297685964532,first_persistent_alert,91.0,1.0,91.0,tier0,memory_io,tier0:soft_interrupts,0.0007030983932862,tier0:uptime_s,0.0005220848855537,"{""case_id"": ""PY_AI__MEMBW"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0007030983932862}, {""name"": ""tier0:uptime_s"", ""score"": 0.0005220848855537}]}, ""mechanism_share"": {""compute"": 0.2578786682316444, ""memory_io"": 0.4366547402095323, ""platform_pressure"": 0.0380959321265685, ""scheduler_runtime"": 0.1349908803435638, ""thermal_power"": 0.1323797790886907}, ""stressor"": ""MEMBW"", ""tier_share"": {""tier0"": 0.6579752915253552, ""tier1"": 0.2601774112663466, ""tier2"": 0.081847297208298}, ""top_features"": [{""name"": ""tier0:mem_used_bytes"", ""score"": 0.0002150667768019}, {""name"": ""tier0:interrupts"", ""score"": 0.0001868738962316}, {""name"": ""tier0:mem_wired_bytes"", ""score"": 0.0001763616646879}, {""name"": ""tier0:pids_count"", ""score"": 0.0001602297207985}, {""name"": ""tier0:mem_active_bytes"", ""score"": 0.0001486473460239}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0020371112639354}, {""name"": ""compute"", ""score"": 0.0012030730263715}, {""name"": ""scheduler_runtime"", ""score"": 0.0006297685964532}], ""workload"": ""PY_AI""}","case_id: PY_AI__MEMBW
 workload: PY_AI
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.649), tier1_alt (0.265), tier2 (0.085)
-supported_mechanisms: compute (0.263), memory_io (0.422), thermal_power (0.139), scheduler_runtime (0.138)
+supported_tiers: tier0 (0.658), tier1_alt (0.260), tier2 (0.082)
+supported_mechanisms: compute (0.258), memory_io (0.437), thermal_power (0.132), scheduler_runtime (0.135)
 top_features: tier0:mem_used_bytes (0.000), tier0:interrupts (0.000), tier0:mem_wired_bytes (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: PY_AI__MEMBW
@@ -467,14 +467,14 @@ workload: PY_AI
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.649), tier1_alt (0.265), tier2 (0.085)
-supported_mechanisms: compute (0.263), memory_io (0.422), thermal_power (0.139), scheduler_runtime (0.138)
+supported_tiers: tier0 (0.658), tier1_alt (0.260), tier2 (0.082)
+supported_mechanisms: compute (0.258), memory_io (0.437), thermal_power (0.132), scheduler_runtime (0.135)
 top_features: tier0:mem_used_bytes (0.000), tier0:interrupts (0.000), tier0:mem_wired_bytes (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: PY_AI__MEMBW
@@ -482,14 +482,14 @@ workload: PY_AI
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.649), tier1_alt (0.265), tier2 (0.085)
-supported_mechanisms: compute (0.263), memory_io (0.422), thermal_power (0.139), scheduler_runtime (0.138)
+supported_tiers: tier0 (0.658), tier1_alt (0.260), tier2 (0.082)
+supported_mechanisms: compute (0.258), memory_io (0.437), thermal_power (0.132), scheduler_runtime (0.135)
 top_features: tier0:mem_used_bytes (0.000), tier0:interrupts (0.000), tier0:mem_wired_bytes (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
 case_id: PY_AI__MEMBW
@@ -497,84 +497,84 @@ workload: PY_AI
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.649), tier1_alt (0.265), tier2 (0.085)
-supported_mechanisms: compute (0.263), memory_io (0.422), thermal_power (0.139), scheduler_runtime (0.138)
+supported_tiers: tier0 (0.658), tier1_alt (0.260), tier2 (0.082)
+supported_mechanisms: compute (0.258), memory_io (0.437), thermal_power (0.132), scheduler_runtime (0.135)
 top_features: tier0:mem_used_bytes (0.000), tier0:interrupts (0.000), tier0:mem_wired_bytes (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)"
-PY_AI__TLB,PY_AI,TLB,tier0,compute,0.5419018850241923,0.3520169630509648,0.1060811519248428,0.3481398359941218,0.3407981756727464,0.175439261024012,0.0918828357840979,0.0437398915250217,tier1_alt:all_power,8.453065116048956e-05,tier1_alt:memory_swap_total,8.323902806486996e-05,tier1_alt:sys_power,7.939110999250612e-05,tier1_alt:ram_power,7.231488834472981e-05,tier1_alt:ecpu_usage_0,7.004515291788362e-05,compute,0.0008355296703767,memory_io,0.0008179098107855,thermal_power,0.0004210512351048,first_persistent_alert,974.0,914.0,974.0,tier0,memory_io,tier1_alt:ane_power,0.0014277518726082,tier1_alt:memory_swap_total,0.0002130186223796,"{""case_id"": ""PY_AI__TLB"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 974.0, ""first_warning_window_end_s"": 974.0, ""first_warning_window_start_s"": 914.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier1_alt:ane_power"", ""score"": 0.0014277518726082}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0002130186223796}]}, ""mechanism_share"": {""compute"": 0.3481398359941218, ""memory_io"": 0.3407981756727464, ""platform_pressure"": 0.0437398915250217, ""scheduler_runtime"": 0.0918828357840979, ""thermal_power"": 0.175439261024012}, ""stressor"": ""TLB"", ""tier_share"": {""tier0"": 0.5419018850241923, ""tier1"": 0.3520169630509648, ""tier2"": 0.1060811519248428}, ""top_features"": [{""name"": ""tier1_alt:all_power"", ""score"": 8.453065116048956e-05}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 8.323902806486996e-05}, {""name"": ""tier1_alt:sys_power"", ""score"": 7.939110999250612e-05}, {""name"": ""tier1_alt:ram_power"", ""score"": 7.231488834472981e-05}, {""name"": ""tier1_alt:ecpu_usage_0"", ""score"": 7.004515291788362e-05}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0008355296703767}, {""name"": ""memory_io"", ""score"": 0.0008179098107855}, {""name"": ""thermal_power"", ""score"": 0.0004210512351048}], ""workload"": ""PY_AI""}","case_id: PY_AI__TLB
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.001)"
+PY_AI__TLB,PY_AI,TLB,tier0,memory_io,0.554788465192918,0.3455065520586621,0.0997049827484198,0.3406384734975226,0.3606884644398662,0.1660979795902533,0.0871708888822659,0.0454041935900919,tier1_alt:memory_swap_total,9.203776436334902e-05,tier1_alt:all_power,8.158664280451193e-05,tier1_alt:ecpu_usage_0,7.816122339856824e-05,tier1_alt:sys_power,7.70956055652442e-05,tier1_alt:ram_power,7.148362912819734e-05,memory_io,0.0009041874494614,compute,0.0008539253757906,thermal_power,0.0004163806812054,first_persistent_alert,987.0,897.0,987.0,tier0,memory_io,tier1_alt:ane_power,0.0010582254708571,tier0:mem_free_bytes,0.0002584451144652,"{""case_id"": ""PY_AI__TLB"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 987.0, ""first_warning_window_end_s"": 987.0, ""first_warning_window_start_s"": 897.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier1_alt:ane_power"", ""score"": 0.0010582254708571}, {""name"": ""tier0:mem_free_bytes"", ""score"": 0.0002584451144652}]}, ""mechanism_share"": {""compute"": 0.3406384734975226, ""memory_io"": 0.3606884644398662, ""platform_pressure"": 0.0454041935900919, ""scheduler_runtime"": 0.0871708888822659, ""thermal_power"": 0.1660979795902533}, ""stressor"": ""TLB"", ""tier_share"": {""tier0"": 0.554788465192918, ""tier1"": 0.3455065520586621, ""tier2"": 0.0997049827484198}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 9.203776436334902e-05}, {""name"": ""tier1_alt:all_power"", ""score"": 8.158664280451193e-05}, {""name"": ""tier1_alt:ecpu_usage_0"", ""score"": 7.816122339856824e-05}, {""name"": ""tier1_alt:sys_power"", ""score"": 7.70956055652442e-05}, {""name"": ""tier1_alt:ram_power"", ""score"": 7.148362912819734e-05}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0009041874494614}, {""name"": ""compute"", ""score"": 0.0008539253757906}, {""name"": ""thermal_power"", ""score"": 0.0004163806812054}], ""workload"": ""PY_AI""}","case_id: PY_AI__TLB
 workload: PY_AI
 stressor: TLB
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.542), tier1_alt (0.352), tier2 (0.106)
-supported_mechanisms: compute (0.348), memory_io (0.341), thermal_power (0.175)
-top_features: tier1_alt:all_power (0.000), tier1_alt:memory_swap_total (0.000), tier1_alt:sys_power (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 974.0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.555), tier1_alt (0.346), tier2 (0.100)
+supported_mechanisms: compute (0.341), memory_io (0.361), thermal_power (0.166)
+top_features: tier1_alt:memory_swap_total (0.000), tier1_alt:all_power (0.000), tier1_alt:ecpu_usage_0 (0.000)
+top_mechanisms: memory_io (0.001), compute (0.001)
+first_warning_s: 987.0
 warning_source: first_persistent_alert
-warning_interval_s: 914.0-974.0
-warning_features: tier1_alt:ane_power (0.001), tier1_alt:memory_swap_total (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 897.0-987.0
+warning_features: tier1_alt:ane_power (0.001), tier0:mem_free_bytes (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: PY_AI__TLB
 workload: PY_AI
 stressor: TLB
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.542), tier1_alt (0.352), tier2 (0.106)
-supported_mechanisms: compute (0.348), memory_io (0.341), thermal_power (0.175)
-top_features: tier1_alt:all_power (0.000), tier1_alt:memory_swap_total (0.000), tier1_alt:sys_power (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 974.0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.555), tier1_alt (0.346), tier2 (0.100)
+supported_mechanisms: compute (0.341), memory_io (0.361), thermal_power (0.166)
+top_features: tier1_alt:memory_swap_total (0.000), tier1_alt:all_power (0.000), tier1_alt:ecpu_usage_0 (0.000)
+top_mechanisms: memory_io (0.001), compute (0.001)
+first_warning_s: 987.0
 warning_source: first_persistent_alert
-warning_interval_s: 914.0-974.0
-warning_features: tier1_alt:ane_power (0.001), tier1_alt:memory_swap_total (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 897.0-987.0
+warning_features: tier1_alt:ane_power (0.001), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: PY_AI__TLB
 workload: PY_AI
 stressor: TLB
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.542), tier1_alt (0.352), tier2 (0.106)
-supported_mechanisms: compute (0.348), memory_io (0.341), thermal_power (0.175)
-top_features: tier1_alt:all_power (0.000), tier1_alt:memory_swap_total (0.000), tier1_alt:sys_power (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 974.0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.555), tier1_alt (0.346), tier2 (0.100)
+supported_mechanisms: compute (0.341), memory_io (0.361), thermal_power (0.166)
+top_features: tier1_alt:memory_swap_total (0.000), tier1_alt:all_power (0.000), tier1_alt:ecpu_usage_0 (0.000)
+top_mechanisms: memory_io (0.001), compute (0.001)
+first_warning_s: 987.0
 warning_source: first_persistent_alert
-warning_interval_s: 914.0-974.0
-warning_features: tier1_alt:ane_power (0.001), tier1_alt:memory_swap_total (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
+warning_interval_s: 897.0-987.0
+warning_features: tier1_alt:ane_power (0.001), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
 case_id: PY_AI__TLB
 workload: PY_AI
 stressor: TLB
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.542), tier1_alt (0.352), tier2 (0.106)
-supported_mechanisms: compute (0.348), memory_io (0.341), thermal_power (0.175)
-top_features: tier1_alt:all_power (0.000), tier1_alt:memory_swap_total (0.000), tier1_alt:sys_power (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 974.0
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.555), tier1_alt (0.346), tier2 (0.100)
+supported_mechanisms: compute (0.341), memory_io (0.361), thermal_power (0.166)
+top_features: tier1_alt:memory_swap_total (0.000), tier1_alt:all_power (0.000), tier1_alt:ecpu_usage_0 (0.000)
+top_mechanisms: memory_io (0.001), compute (0.001)
+first_warning_s: 987.0
 warning_source: first_persistent_alert
-warning_interval_s: 914.0-974.0
-warning_features: tier1_alt:ane_power (0.001), tier1_alt:memory_swap_total (0.000)"
-PY_STATS__ATOMIC,PY_STATS,ATOMIC,tier0,compute,0.5583569351003437,0.3072509859848151,0.1343920789148414,0.3065541483778803,0.2879839356291133,0.1565061421302118,0.1415696222471455,0.1073861516156491,tier1_alt:memory_swap_total,0.0002624244483479,tier0:load15,0.0001936381508016,tier0:swap_sin_bytes,0.0001877223121763,tier0:pids_count,0.0001845824968344,tier0:load5,0.0001744773754519,compute,0.0014993428975503,memory_io,0.0014085168012858,thermal_power,0.0007654646784837,first_persistent_alert,60.0,0.0,60.0,tier0,memory_io,tier0:uptime_s,0.0012272339802911,tier0:soft_interrupts,0.0006360200088519,"{""case_id"": ""PY_STATS__ATOMIC"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:uptime_s"", ""score"": 0.0012272339802911}, {""name"": ""tier0:soft_interrupts"", ""score"": 0.0006360200088519}]}, ""mechanism_share"": {""compute"": 0.3065541483778803, ""memory_io"": 0.2879839356291133, ""platform_pressure"": 0.1073861516156491, ""scheduler_runtime"": 0.1415696222471455, ""thermal_power"": 0.1565061421302118}, ""stressor"": ""ATOMIC"", ""tier_share"": {""tier0"": 0.5583569351003437, ""tier1"": 0.3072509859848151, ""tier2"": 0.1343920789148414}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0002624244483479}, {""name"": ""tier0:load15"", ""score"": 0.0001936381508016}, {""name"": ""tier0:swap_sin_bytes"", ""score"": 0.0001877223121763}, {""name"": ""tier0:pids_count"", ""score"": 0.0001845824968344}, {""name"": ""tier0:load5"", ""score"": 0.0001744773754519}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0014993428975503}, {""name"": ""memory_io"", ""score"": 0.0014085168012858}, {""name"": ""thermal_power"", ""score"": 0.0007654646784837}], ""workload"": ""PY_STATS""}","case_id: PY_STATS__ATOMIC
+warning_interval_s: 897.0-987.0
+warning_features: tier1_alt:ane_power (0.001), tier0:mem_free_bytes (0.000)"
+PY_STATS__ATOMIC,PY_STATS,ATOMIC,tier0,memory_io,0.5714833841301046,0.3024261512094586,0.1260904646604371,0.3005421742157723,0.3024587537616968,0.1486320315992443,0.1366284879948628,0.1117385524284239,tier1_alt:memory_swap_total,0.0002955158751501,tier0:load15,0.0002109739003145,tier0:swap_sin_bytes,0.0002078170173227,tier0:pids_count,0.0001993812591754,tier0:load5,0.0001905711811636,memory_io,0.0015494897560225,compute,0.0015396711598136,thermal_power,0.0007614387334323,first_persistent_alert,91.0,1.0,91.0,tier0,memory_io,tier0:uptime_s,0.0014331931257551,tier0:soft_interrupts,0.000782910571457,"{""case_id"": ""PY_STATS__ATOMIC"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:uptime_s"", ""score"": 0.0014331931257551}, {""name"": ""tier0:soft_interrupts"", ""score"": 0.000782910571457}]}, ""mechanism_share"": {""compute"": 0.3005421742157723, ""memory_io"": 0.3024587537616968, ""platform_pressure"": 0.1117385524284239, ""scheduler_runtime"": 0.1366284879948628, ""thermal_power"": 0.1486320315992443}, ""stressor"": ""ATOMIC"", ""tier_share"": {""tier0"": 0.5714833841301046, ""tier1"": 0.3024261512094586, ""tier2"": 0.1260904646604371}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0002955158751501}, {""name"": ""tier0:load15"", ""score"": 0.0002109739003145}, {""name"": ""tier0:swap_sin_bytes"", ""score"": 0.0002078170173227}, {""name"": ""tier0:pids_count"", ""score"": 0.0001993812591754}, {""name"": ""tier0:load5"", ""score"": 0.0001905711811636}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0015494897560225}, {""name"": ""compute"", ""score"": 0.0015396711598136}, {""name"": ""thermal_power"", ""score"": 0.0007614387334323}], ""workload"": ""PY_STATS""}","case_id: PY_STATS__ATOMIC
 workload: PY_STATS
 stressor: ATOMIC
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.558), tier1_alt (0.307), tier2 (0.134)
-supported_mechanisms: compute (0.307), memory_io (0.288), thermal_power (0.157), scheduler_runtime (0.142), platform_pressure (0.107)
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.571), tier1_alt (0.302), tier2 (0.126)
+supported_mechanisms: compute (0.301), memory_io (0.302), thermal_power (0.149), scheduler_runtime (0.137), platform_pressure (0.112)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:swap_sin_bytes (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+top_mechanisms: memory_io (0.002), compute (0.002)
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -582,14 +582,14 @@ case_id: PY_STATS__ATOMIC
 workload: PY_STATS
 stressor: ATOMIC
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.558), tier1_alt (0.307), tier2 (0.134)
-supported_mechanisms: compute (0.307), memory_io (0.288), thermal_power (0.157), scheduler_runtime (0.142), platform_pressure (0.107)
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.571), tier1_alt (0.302), tier2 (0.126)
+supported_mechanisms: compute (0.301), memory_io (0.302), thermal_power (0.149), scheduler_runtime (0.137), platform_pressure (0.112)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:swap_sin_bytes (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+top_mechanisms: memory_io (0.002), compute (0.002)
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -597,14 +597,14 @@ case_id: PY_STATS__ATOMIC
 workload: PY_STATS
 stressor: ATOMIC
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.558), tier1_alt (0.307), tier2 (0.134)
-supported_mechanisms: compute (0.307), memory_io (0.288), thermal_power (0.157), scheduler_runtime (0.142), platform_pressure (0.107)
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.571), tier1_alt (0.302), tier2 (0.126)
+supported_mechanisms: compute (0.301), memory_io (0.302), thermal_power (0.149), scheduler_runtime (0.137), platform_pressure (0.112)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:swap_sin_bytes (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+top_mechanisms: memory_io (0.002), compute (0.002)
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -612,27 +612,27 @@ case_id: PY_STATS__ATOMIC
 workload: PY_STATS
 stressor: ATOMIC
 dominant_tier: tier0
-dominant_mechanism: compute
-supported_tiers: tier0 (0.558), tier1_alt (0.307), tier2 (0.134)
-supported_mechanisms: compute (0.307), memory_io (0.288), thermal_power (0.157), scheduler_runtime (0.142), platform_pressure (0.107)
+dominant_mechanism: memory_io
+supported_tiers: tier0 (0.571), tier1_alt (0.302), tier2 (0.126)
+supported_mechanisms: compute (0.301), memory_io (0.302), thermal_power (0.149), scheduler_runtime (0.137), platform_pressure (0.112)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:swap_sin_bytes (0.000)
-top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+top_mechanisms: memory_io (0.002), compute (0.002)
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)"
-PY_STATS__BRANCH,PY_STATS,BRANCH,tier0,compute,0.615605003300492,0.2566867464834608,0.1277082502160471,0.3431679535271572,0.31730120792635,0.1081087894249334,0.1512135148689592,0.0802085342526001,tier0:swap_sin_bytes,0.0001173190757356,tier0:load15,9.11278089442278e-05,tier0:interrupts,8.697995262686184e-05,tier1_alt:ecpu_usage_0,8.540061453056435e-05,tier0:mem_active_bytes,8.463755776555047e-05,compute,0.0010623803367717,memory_io,0.0009823019914014,scheduler_runtime,0.0004681272339091,first_persistent_alert,702.0,642.0,702.0,tier0,memory_io,tier0:uptime_s,0.000889908826416,tier0:soft_interrupts,0.000532537866814,"{""case_id"": ""PY_STATS__BRANCH"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 702.0, ""first_warning_window_end_s"": 702.0, ""first_warning_window_start_s"": 642.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:uptime_s"", ""score"": 0.000889908826416}, {""name"": ""tier0:soft_interrupts"", ""score"": 0.000532537866814}]}, ""mechanism_share"": {""compute"": 0.3431679535271572, ""memory_io"": 0.31730120792635, ""platform_pressure"": 0.0802085342526001, ""scheduler_runtime"": 0.1512135148689592, ""thermal_power"": 0.1081087894249334}, ""stressor"": ""BRANCH"", ""tier_share"": {""tier0"": 0.615605003300492, ""tier1"": 0.2566867464834608, ""tier2"": 0.1277082502160471}, ""top_features"": [{""name"": ""tier0:swap_sin_bytes"", ""score"": 0.0001173190757356}, {""name"": ""tier0:load15"", ""score"": 9.11278089442278e-05}, {""name"": ""tier0:interrupts"", ""score"": 8.697995262686184e-05}, {""name"": ""tier1_alt:ecpu_usage_0"", ""score"": 8.540061453056435e-05}, {""name"": ""tier0:mem_active_bytes"", ""score"": 8.463755776555047e-05}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0010623803367717}, {""name"": ""memory_io"", ""score"": 0.0009823019914014}, {""name"": ""scheduler_runtime"", ""score"": 0.0004681272339091}], ""workload"": ""PY_STATS""}","case_id: PY_STATS__BRANCH
+PY_STATS__BRANCH,PY_STATS,BRANCH,tier0,compute,0.6279778072008756,0.2507557854128646,0.1212664073862595,0.3387197286067425,0.331019087585517,0.0991957963293502,0.1465515981579216,0.0845137893204681,tier0:swap_sin_bytes,0.0001294953636858,tier0:load15,9.979651560800592e-05,tier1_alt:ecpu_usage_0,9.902464370951244e-05,tier0:mem_free_bytes,9.509271501025125e-05,tier0:load5,9.08704190665785e-05,compute,0.0010901132640595,memory_io,0.0010653300282158,scheduler_runtime,0.0004716520105817,first_persistent_alert,553.0,463.0,553.0,tier0,memory_io,tier0:uptime_s,0.0009605055150717,tier0:soft_interrupts,0.000530877521494,"{""case_id"": ""PY_STATS__BRANCH"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 553.0, ""first_warning_window_end_s"": 553.0, ""first_warning_window_start_s"": 463.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:uptime_s"", ""score"": 0.0009605055150717}, {""name"": ""tier0:soft_interrupts"", ""score"": 0.000530877521494}]}, ""mechanism_share"": {""compute"": 0.3387197286067425, ""memory_io"": 0.331019087585517, ""platform_pressure"": 0.0845137893204681, ""scheduler_runtime"": 0.1465515981579216, ""thermal_power"": 0.0991957963293502}, ""stressor"": ""BRANCH"", ""tier_share"": {""tier0"": 0.6279778072008756, ""tier1"": 0.2507557854128646, ""tier2"": 0.1212664073862595}, ""top_features"": [{""name"": ""tier0:swap_sin_bytes"", ""score"": 0.0001294953636858}, {""name"": ""tier0:load15"", ""score"": 9.979651560800592e-05}, {""name"": ""tier1_alt:ecpu_usage_0"", ""score"": 9.902464370951244e-05}, {""name"": ""tier0:mem_free_bytes"", ""score"": 9.509271501025125e-05}, {""name"": ""tier0:load5"", ""score"": 9.08704190665785e-05}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0010901132640595}, {""name"": ""memory_io"", ""score"": 0.0010653300282158}, {""name"": ""scheduler_runtime"", ""score"": 0.0004716520105817}], ""workload"": ""PY_STATS""}","case_id: PY_STATS__BRANCH
 workload: PY_STATS
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.616), tier1_alt (0.257), tier2 (0.128)
-supported_mechanisms: compute (0.343), memory_io (0.317), thermal_power (0.108), scheduler_runtime (0.151)
-top_features: tier0:swap_sin_bytes (0.000), tier0:load15 (0.000), tier0:interrupts (0.000)
+supported_tiers: tier0 (0.628), tier1_alt (0.251), tier2 (0.121)
+supported_mechanisms: compute (0.339), memory_io (0.331), scheduler_runtime (0.147)
+top_features: tier0:swap_sin_bytes (0.000), tier0:load15 (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 702.0
+first_warning_s: 553.0
 warning_source: first_persistent_alert
-warning_interval_s: 642.0-702.0
+warning_interval_s: 463.0-553.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -641,13 +641,13 @@ workload: PY_STATS
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.616), tier1_alt (0.257), tier2 (0.128)
-supported_mechanisms: compute (0.343), memory_io (0.317), thermal_power (0.108), scheduler_runtime (0.151)
-top_features: tier0:swap_sin_bytes (0.000), tier0:load15 (0.000), tier0:interrupts (0.000)
+supported_tiers: tier0 (0.628), tier1_alt (0.251), tier2 (0.121)
+supported_mechanisms: compute (0.339), memory_io (0.331), scheduler_runtime (0.147)
+top_features: tier0:swap_sin_bytes (0.000), tier0:load15 (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 702.0
+first_warning_s: 553.0
 warning_source: first_persistent_alert
-warning_interval_s: 642.0-702.0
+warning_interval_s: 463.0-553.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -656,13 +656,13 @@ workload: PY_STATS
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.616), tier1_alt (0.257), tier2 (0.128)
-supported_mechanisms: compute (0.343), memory_io (0.317), thermal_power (0.108), scheduler_runtime (0.151)
-top_features: tier0:swap_sin_bytes (0.000), tier0:load15 (0.000), tier0:interrupts (0.000)
+supported_tiers: tier0 (0.628), tier1_alt (0.251), tier2 (0.121)
+supported_mechanisms: compute (0.339), memory_io (0.331), scheduler_runtime (0.147)
+top_features: tier0:swap_sin_bytes (0.000), tier0:load15 (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 702.0
+first_warning_s: 553.0
 warning_source: first_persistent_alert
-warning_interval_s: 642.0-702.0
+warning_interval_s: 463.0-553.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -671,27 +671,27 @@ workload: PY_STATS
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.616), tier1_alt (0.257), tier2 (0.128)
-supported_mechanisms: compute (0.343), memory_io (0.317), thermal_power (0.108), scheduler_runtime (0.151)
-top_features: tier0:swap_sin_bytes (0.000), tier0:load15 (0.000), tier0:interrupts (0.000)
+supported_tiers: tier0 (0.628), tier1_alt (0.251), tier2 (0.121)
+supported_mechanisms: compute (0.339), memory_io (0.331), scheduler_runtime (0.147)
+top_features: tier0:swap_sin_bytes (0.000), tier0:load15 (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 702.0
+first_warning_s: 553.0
 warning_source: first_persistent_alert
-warning_interval_s: 642.0-702.0
+warning_interval_s: 463.0-553.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)"
-PY_STATS__CACHE,PY_STATS,CACHE,tier0,compute,0.6221710076649501,0.2718827482614827,0.105946244073567,0.3767161134513033,0.3548882938722842,0.0759933257138098,0.111861986754479,0.0805402802081234,tier1_alt:memory_swap_total,0.0001266888317991,tier0:load15,7.380190755900806e-05,tier1_alt:memory_swap_usage,7.24960566853828e-05,tier1_alt:pcpu_usage_0,6.940083918589923e-05,tier0:net_sent_Bps,6.890945699639048e-05,compute,0.0009526536498968,memory_io,0.0008974546519014,scheduler_runtime,0.0002828807320984,first_persistent_alert,60.0,0.0,60.0,tier0,memory_io,tier0:soft_interrupts,0.0004455603908251,tier0:mem_free_bytes,0.0003986613483597,"{""case_id"": ""PY_STATS__CACHE"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0004455603908251}, {""name"": ""tier0:mem_free_bytes"", ""score"": 0.0003986613483597}]}, ""mechanism_share"": {""compute"": 0.3767161134513033, ""memory_io"": 0.3548882938722842, ""platform_pressure"": 0.0805402802081234, ""scheduler_runtime"": 0.111861986754479, ""thermal_power"": 0.0759933257138098}, ""stressor"": ""CACHE"", ""tier_share"": {""tier0"": 0.6221710076649501, ""tier1"": 0.2718827482614827, ""tier2"": 0.105946244073567}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001266888317991}, {""name"": ""tier0:load15"", ""score"": 7.380190755900806e-05}, {""name"": ""tier1_alt:memory_swap_usage"", ""score"": 7.24960566853828e-05}, {""name"": ""tier1_alt:pcpu_usage_0"", ""score"": 6.940083918589923e-05}, {""name"": ""tier0:net_sent_Bps"", ""score"": 6.890945699639048e-05}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0009526536498968}, {""name"": ""memory_io"", ""score"": 0.0008974546519014}, {""name"": ""scheduler_runtime"", ""score"": 0.0002828807320984}], ""workload"": ""PY_STATS""}","case_id: PY_STATS__CACHE
+PY_STATS__CACHE,PY_STATS,CACHE,tier0,compute,0.6258944931607762,0.2747532408640767,0.0993522659751469,0.3713409390619502,0.3693786548204711,0.0700478354494729,0.1064886609792031,0.0827439096889025,tier1_alt:memory_swap_total,0.0001374670451319,tier1_alt:memory_swap_usage,8.087036450593065e-05,tier1_alt:ecpu_usage_0,8.054610073789713e-05,tier0:load15,7.949887882507143e-05,tier1_alt:pcpu_usage_0,7.579149427199617e-05,compute,0.0009833776520121,memory_io,0.0009781811701083,scheduler_runtime,0.0002820011433809,first_persistent_alert,91.0,1.0,91.0,tier0,memory_io,tier0:soft_interrupts,0.0005048178973855,tier0:mem_free_bytes,0.0004590160712434,"{""case_id"": ""PY_STATS__CACHE"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0005048178973855}, {""name"": ""tier0:mem_free_bytes"", ""score"": 0.0004590160712434}]}, ""mechanism_share"": {""compute"": 0.3713409390619502, ""memory_io"": 0.3693786548204711, ""platform_pressure"": 0.0827439096889025, ""scheduler_runtime"": 0.1064886609792031, ""thermal_power"": 0.0700478354494729}, ""stressor"": ""CACHE"", ""tier_share"": {""tier0"": 0.6258944931607762, ""tier1"": 0.2747532408640767, ""tier2"": 0.0993522659751469}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001374670451319}, {""name"": ""tier1_alt:memory_swap_usage"", ""score"": 8.087036450593065e-05}, {""name"": ""tier1_alt:ecpu_usage_0"", ""score"": 8.054610073789713e-05}, {""name"": ""tier0:load15"", ""score"": 7.949887882507143e-05}, {""name"": ""tier1_alt:pcpu_usage_0"", ""score"": 7.579149427199617e-05}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0009833776520121}, {""name"": ""memory_io"", ""score"": 0.0009781811701083}, {""name"": ""scheduler_runtime"", ""score"": 0.0002820011433809}], ""workload"": ""PY_STATS""}","case_id: PY_STATS__CACHE
 workload: PY_STATS
 stressor: CACHE
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.622), tier1_alt (0.272), tier2 (0.106)
-supported_mechanisms: compute (0.377), memory_io (0.355), scheduler_runtime (0.112)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier1_alt:memory_swap_usage (0.000)
+supported_tiers: tier0 (0.626), tier1_alt (0.275), tier2 (0.099)
+supported_mechanisms: compute (0.371), memory_io (0.369), scheduler_runtime (0.106)
+top_features: tier1_alt:memory_swap_total (0.000), tier1_alt:memory_swap_usage (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.000), tier0:mem_free_bytes (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:mem_free_bytes (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: PY_STATS__CACHE
@@ -699,14 +699,14 @@ workload: PY_STATS
 stressor: CACHE
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.622), tier1_alt (0.272), tier2 (0.106)
-supported_mechanisms: compute (0.377), memory_io (0.355), scheduler_runtime (0.112)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier1_alt:memory_swap_usage (0.000)
+supported_tiers: tier0 (0.626), tier1_alt (0.275), tier2 (0.099)
+supported_mechanisms: compute (0.371), memory_io (0.369), scheduler_runtime (0.106)
+top_features: tier1_alt:memory_swap_total (0.000), tier1_alt:memory_swap_usage (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.000), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: PY_STATS__CACHE
@@ -714,14 +714,14 @@ workload: PY_STATS
 stressor: CACHE
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.622), tier1_alt (0.272), tier2 (0.106)
-supported_mechanisms: compute (0.377), memory_io (0.355), scheduler_runtime (0.112)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier1_alt:memory_swap_usage (0.000)
+supported_tiers: tier0 (0.626), tier1_alt (0.275), tier2 (0.099)
+supported_mechanisms: compute (0.371), memory_io (0.369), scheduler_runtime (0.106)
+top_features: tier1_alt:memory_swap_total (0.000), tier1_alt:memory_swap_usage (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.000), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
 case_id: PY_STATS__CACHE
@@ -729,26 +729,26 @@ workload: PY_STATS
 stressor: CACHE
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.622), tier1_alt (0.272), tier2 (0.106)
-supported_mechanisms: compute (0.377), memory_io (0.355), scheduler_runtime (0.112)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier1_alt:memory_swap_usage (0.000)
+supported_tiers: tier0 (0.626), tier1_alt (0.275), tier2 (0.099)
+supported_mechanisms: compute (0.371), memory_io (0.369), scheduler_runtime (0.106)
+top_features: tier1_alt:memory_swap_total (0.000), tier1_alt:memory_swap_usage (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
-warning_features: tier0:soft_interrupts (0.000), tier0:mem_free_bytes (0.000)"
-PY_STATS__MEMBW,PY_STATS,MEMBW,tier0,compute,0.6160013705877312,0.2652398751496191,0.1187587542626497,0.3385022631657733,0.2652917054779625,0.1306554491601876,0.1376456176636001,0.1279049645324764,tier0:load15,0.0001831674531662,tier0:load5,0.0001692285038869,tier0:swap_sin_bytes,0.0001621939405982,tier0:pids_count,0.0001620586352545,tier0:load1,0.0001535697498527,compute,0.0013390452630041,memory_io,0.001049439369215,scheduler_runtime,0.000544497725309,first_persistent_alert,60.0,0.0,60.0,tier0,memory_io,tier0:uptime_s,0.0008133461454563,tier0:mem_free_bytes,0.0004293240193449,"{""case_id"": ""PY_STATS__MEMBW"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:uptime_s"", ""score"": 0.0008133461454563}, {""name"": ""tier0:mem_free_bytes"", ""score"": 0.0004293240193449}]}, ""mechanism_share"": {""compute"": 0.3385022631657733, ""memory_io"": 0.2652917054779625, ""platform_pressure"": 0.1279049645324764, ""scheduler_runtime"": 0.1376456176636001, ""thermal_power"": 0.1306554491601876}, ""stressor"": ""MEMBW"", ""tier_share"": {""tier0"": 0.6160013705877312, ""tier1"": 0.2652398751496191, ""tier2"": 0.1187587542626497}, ""top_features"": [{""name"": ""tier0:load15"", ""score"": 0.0001831674531662}, {""name"": ""tier0:load5"", ""score"": 0.0001692285038869}, {""name"": ""tier0:swap_sin_bytes"", ""score"": 0.0001621939405982}, {""name"": ""tier0:pids_count"", ""score"": 0.0001620586352545}, {""name"": ""tier0:load1"", ""score"": 0.0001535697498527}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0013390452630041}, {""name"": ""memory_io"", ""score"": 0.001049439369215}, {""name"": ""scheduler_runtime"", ""score"": 0.000544497725309}], ""workload"": ""PY_STATS""}","case_id: PY_STATS__MEMBW
+warning_interval_s: 1.0-91.0
+warning_features: tier0:soft_interrupts (0.001), tier0:mem_free_bytes (0.000)"
+PY_STATS__MEMBW,PY_STATS,MEMBW,tier0,compute,0.6279772505918272,0.2609517616798506,0.1110709877283221,0.3324220592509356,0.2766809175423171,0.1242529993302246,0.1333567730007865,0.1332872508757361,tier0:load15,0.0001997927090407,tier0:load5,0.0001847671180805,tier0:swap_sin_bytes,0.0001792611442144,tier0:pids_count,0.0001752153425104,tier0:load1,0.0001672190444797,compute,0.0013761516389873,memory_io,0.0011453960035334,scheduler_runtime,0.0005520666773698,first_persistent_alert,91.0,1.0,91.0,tier0,memory_io,tier0:uptime_s,0.0009542025938988,tier0:mem_free_bytes,0.0004725604550097,"{""case_id"": ""PY_STATS__MEMBW"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:uptime_s"", ""score"": 0.0009542025938988}, {""name"": ""tier0:mem_free_bytes"", ""score"": 0.0004725604550097}]}, ""mechanism_share"": {""compute"": 0.3324220592509356, ""memory_io"": 0.2766809175423171, ""platform_pressure"": 0.1332872508757361, ""scheduler_runtime"": 0.1333567730007865, ""thermal_power"": 0.1242529993302246}, ""stressor"": ""MEMBW"", ""tier_share"": {""tier0"": 0.6279772505918272, ""tier1"": 0.2609517616798506, ""tier2"": 0.1110709877283221}, ""top_features"": [{""name"": ""tier0:load15"", ""score"": 0.0001997927090407}, {""name"": ""tier0:load5"", ""score"": 0.0001847671180805}, {""name"": ""tier0:swap_sin_bytes"", ""score"": 0.0001792611442144}, {""name"": ""tier0:pids_count"", ""score"": 0.0001752153425104}, {""name"": ""tier0:load1"", ""score"": 0.0001672190444797}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0013761516389873}, {""name"": ""memory_io"", ""score"": 0.0011453960035334}, {""name"": ""scheduler_runtime"", ""score"": 0.0005520666773698}], ""workload"": ""PY_STATS""}","case_id: PY_STATS__MEMBW
 workload: PY_STATS
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.616), tier1_alt (0.265), tier2 (0.119)
-supported_mechanisms: compute (0.339), memory_io (0.265), thermal_power (0.131), scheduler_runtime (0.138), platform_pressure (0.128)
+supported_tiers: tier0 (0.628), tier1_alt (0.261), tier2 (0.111)
+supported_mechanisms: compute (0.332), memory_io (0.277), thermal_power (0.124), scheduler_runtime (0.133), platform_pressure (0.133)
 top_features: tier0:load15 (0.000), tier0:load5 (0.000), tier0:swap_sin_bytes (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:uptime_s (0.001), tier0:mem_free_bytes (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -757,13 +757,13 @@ workload: PY_STATS
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.616), tier1_alt (0.265), tier2 (0.119)
-supported_mechanisms: compute (0.339), memory_io (0.265), thermal_power (0.131), scheduler_runtime (0.138), platform_pressure (0.128)
+supported_tiers: tier0 (0.628), tier1_alt (0.261), tier2 (0.111)
+supported_mechanisms: compute (0.332), memory_io (0.277), thermal_power (0.124), scheduler_runtime (0.133), platform_pressure (0.133)
 top_features: tier0:load15 (0.000), tier0:load5 (0.000), tier0:swap_sin_bytes (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:uptime_s (0.001), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -772,13 +772,13 @@ workload: PY_STATS
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.616), tier1_alt (0.265), tier2 (0.119)
-supported_mechanisms: compute (0.339), memory_io (0.265), thermal_power (0.131), scheduler_runtime (0.138), platform_pressure (0.128)
+supported_tiers: tier0 (0.628), tier1_alt (0.261), tier2 (0.111)
+supported_mechanisms: compute (0.332), memory_io (0.277), thermal_power (0.124), scheduler_runtime (0.133), platform_pressure (0.133)
 top_features: tier0:load15 (0.000), tier0:load5 (0.000), tier0:swap_sin_bytes (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:uptime_s (0.001), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -787,26 +787,26 @@ workload: PY_STATS
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.616), tier1_alt (0.265), tier2 (0.119)
-supported_mechanisms: compute (0.339), memory_io (0.265), thermal_power (0.131), scheduler_runtime (0.138), platform_pressure (0.128)
+supported_tiers: tier0 (0.628), tier1_alt (0.261), tier2 (0.111)
+supported_mechanisms: compute (0.332), memory_io (0.277), thermal_power (0.124), scheduler_runtime (0.133), platform_pressure (0.133)
 top_features: tier0:load15 (0.000), tier0:load5 (0.000), tier0:swap_sin_bytes (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:uptime_s (0.001), tier0:mem_free_bytes (0.000)"
-PY_STATS__TLB,PY_STATS,TLB,tier0,compute,0.5872981414508774,0.2805367837704111,0.1321650747787114,0.3911537021849252,0.2375651250264473,0.1112222415852317,0.1367620193272314,0.1232969118761643,tier1_alt:memory_swap_total,0.0001474458826915,tier0:load15,0.0001413653464113,tier0:load5,0.0001297743354144,tier0:pids_count,0.0001214495009149,tier0:load1,0.0001176909160793,compute,0.0012335469362456,memory_io,0.0007491881848446,scheduler_runtime,0.0004312943198377,first_persistent_alert,831.0,771.0,831.0,tier0,compute,tier0:uptime_s,0.0007855854258686,tier0:soft_interrupts,0.0006666298483453,"{""case_id"": ""PY_STATS__TLB"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 831.0, ""first_warning_window_end_s"": 831.0, ""first_warning_window_start_s"": 771.0, ""warning_dominant_mechanism"": ""compute"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:uptime_s"", ""score"": 0.0007855854258686}, {""name"": ""tier0:soft_interrupts"", ""score"": 0.0006666298483453}]}, ""mechanism_share"": {""compute"": 0.3911537021849252, ""memory_io"": 0.2375651250264473, ""platform_pressure"": 0.1232969118761643, ""scheduler_runtime"": 0.1367620193272314, ""thermal_power"": 0.1112222415852317}, ""stressor"": ""TLB"", ""tier_share"": {""tier0"": 0.5872981414508774, ""tier1"": 0.2805367837704111, ""tier2"": 0.1321650747787114}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001474458826915}, {""name"": ""tier0:load15"", ""score"": 0.0001413653464113}, {""name"": ""tier0:load5"", ""score"": 0.0001297743354144}, {""name"": ""tier0:pids_count"", ""score"": 0.0001214495009149}, {""name"": ""tier0:load1"", ""score"": 0.0001176909160793}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0012335469362456}, {""name"": ""memory_io"", ""score"": 0.0007491881848446}, {""name"": ""scheduler_runtime"", ""score"": 0.0004312943198377}], ""workload"": ""PY_STATS""}","case_id: PY_STATS__TLB
+PY_STATS__TLB,PY_STATS,TLB,tier0,compute,0.5956810464049397,0.2802414559182034,0.1240774976768569,0.3852433544438982,0.2494712604213527,0.1049809350999886,0.1321175236936039,0.1281869263411565,tier1_alt:memory_swap_total,0.0001655583829308,tier0:load15,0.0001544563261202,tier0:load5,0.0001418217478736,tier0:pids_count,0.0001292964843535,tier0:load1,0.0001281657962209,compute,0.0012755917081555,memory_io,0.00082603234435,scheduler_runtime,0.0004374585980045,first_persistent_alert,707.0,617.0,707.0,tier0,compute,tier0:uptime_s,0.0008494527924673,tier0:soft_interrupts,0.0007210964898041,"{""case_id"": ""PY_STATS__TLB"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 707.0, ""first_warning_window_end_s"": 707.0, ""first_warning_window_start_s"": 617.0, ""warning_dominant_mechanism"": ""compute"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:uptime_s"", ""score"": 0.0008494527924673}, {""name"": ""tier0:soft_interrupts"", ""score"": 0.0007210964898041}]}, ""mechanism_share"": {""compute"": 0.3852433544438982, ""memory_io"": 0.2494712604213527, ""platform_pressure"": 0.1281869263411565, ""scheduler_runtime"": 0.1321175236936039, ""thermal_power"": 0.1049809350999886}, ""stressor"": ""TLB"", ""tier_share"": {""tier0"": 0.5956810464049397, ""tier1"": 0.2802414559182034, ""tier2"": 0.1240774976768569}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001655583829308}, {""name"": ""tier0:load15"", ""score"": 0.0001544563261202}, {""name"": ""tier0:load5"", ""score"": 0.0001418217478736}, {""name"": ""tier0:pids_count"", ""score"": 0.0001292964843535}, {""name"": ""tier0:load1"", ""score"": 0.0001281657962209}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0012755917081555}, {""name"": ""memory_io"", ""score"": 0.00082603234435}, {""name"": ""scheduler_runtime"", ""score"": 0.0004374585980045}], ""workload"": ""PY_STATS""}","case_id: PY_STATS__TLB
 workload: PY_STATS
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.587), tier1_alt (0.281), tier2 (0.132)
-supported_mechanisms: compute (0.391), memory_io (0.238), thermal_power (0.111), scheduler_runtime (0.137), platform_pressure (0.123)
+supported_tiers: tier0 (0.596), tier1_alt (0.280), tier2 (0.124)
+supported_mechanisms: compute (0.385), memory_io (0.249), thermal_power (0.105), scheduler_runtime (0.132), platform_pressure (0.128)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:load5 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 831.0
+first_warning_s: 707.0
 warning_source: first_persistent_alert
-warning_interval_s: 771.0-831.0
+warning_interval_s: 617.0-707.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -815,13 +815,13 @@ workload: PY_STATS
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.587), tier1_alt (0.281), tier2 (0.132)
-supported_mechanisms: compute (0.391), memory_io (0.238), thermal_power (0.111), scheduler_runtime (0.137), platform_pressure (0.123)
+supported_tiers: tier0 (0.596), tier1_alt (0.280), tier2 (0.124)
+supported_mechanisms: compute (0.385), memory_io (0.249), thermal_power (0.105), scheduler_runtime (0.132), platform_pressure (0.128)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:load5 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 831.0
+first_warning_s: 707.0
 warning_source: first_persistent_alert
-warning_interval_s: 771.0-831.0
+warning_interval_s: 617.0-707.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -830,13 +830,13 @@ workload: PY_STATS
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.587), tier1_alt (0.281), tier2 (0.132)
-supported_mechanisms: compute (0.391), memory_io (0.238), thermal_power (0.111), scheduler_runtime (0.137), platform_pressure (0.123)
+supported_tiers: tier0 (0.596), tier1_alt (0.280), tier2 (0.124)
+supported_mechanisms: compute (0.385), memory_io (0.249), thermal_power (0.105), scheduler_runtime (0.132), platform_pressure (0.128)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:load5 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 831.0
+first_warning_s: 707.0
 warning_source: first_persistent_alert
-warning_interval_s: 771.0-831.0
+warning_interval_s: 617.0-707.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -845,26 +845,26 @@ workload: PY_STATS
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.587), tier1_alt (0.281), tier2 (0.132)
-supported_mechanisms: compute (0.391), memory_io (0.238), thermal_power (0.111), scheduler_runtime (0.137), platform_pressure (0.123)
+supported_tiers: tier0 (0.596), tier1_alt (0.280), tier2 (0.124)
+supported_mechanisms: compute (0.385), memory_io (0.249), thermal_power (0.105), scheduler_runtime (0.132), platform_pressure (0.128)
 top_features: tier1_alt:memory_swap_total (0.000), tier0:load15 (0.000), tier0:load5 (0.000)
 top_mechanisms: compute (0.001), memory_io (0.001)
-first_warning_s: 831.0
+first_warning_s: 707.0
 warning_source: first_persistent_alert
-warning_interval_s: 771.0-831.0
+warning_interval_s: 617.0-707.0
 warning_features: tier0:uptime_s (0.001), tier0:soft_interrupts (0.001)"
-VIDEO_SW__ATOMIC,VIDEO_SW,ATOMIC,tier0,compute,0.6128612079574756,0.2877378249000462,0.0994009671424779,0.3650733769673835,0.3196797416081298,0.101557632492866,0.1004524651943825,0.1132367837372378,tier1_alt:memory_swap_total,0.0004998490133747,tier0:pids_count,0.0002765285957148,tier0:load15,0.0002637908265205,tier0:load5,0.000244167347123,tier0:load1,0.0002233428711504,compute,0.0023577015629681,memory_io,0.0020645422920173,platform_pressure,0.0007313010447941,first_persistent_alert,60.0,0.0,60.0,tier0,compute,tier0:soft_interrupts,0.0006602112113658,tier0:uptime_s,0.000406566470656,"{""case_id"": ""VIDEO_SW__ATOMIC"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 60.0, ""first_warning_window_end_s"": 60.0, ""first_warning_window_start_s"": 0.0, ""warning_dominant_mechanism"": ""compute"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0006602112113658}, {""name"": ""tier0:uptime_s"", ""score"": 0.000406566470656}]}, ""mechanism_share"": {""compute"": 0.3650733769673835, ""memory_io"": 0.3196797416081298, ""platform_pressure"": 0.1132367837372378, ""scheduler_runtime"": 0.1004524651943825, ""thermal_power"": 0.101557632492866}, ""stressor"": ""ATOMIC"", ""tier_share"": {""tier0"": 0.6128612079574756, ""tier1"": 0.2877378249000462, ""tier2"": 0.0994009671424779}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0004998490133747}, {""name"": ""tier0:pids_count"", ""score"": 0.0002765285957148}, {""name"": ""tier0:load15"", ""score"": 0.0002637908265205}, {""name"": ""tier0:load5"", ""score"": 0.000244167347123}, {""name"": ""tier0:load1"", ""score"": 0.0002233428711504}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0023577015629681}, {""name"": ""memory_io"", ""score"": 0.0020645422920173}, {""name"": ""platform_pressure"", ""score"": 0.0007313010447941}], ""workload"": ""VIDEO_SW""}","case_id: VIDEO_SW__ATOMIC
+VIDEO_SW__ATOMIC,VIDEO_SW,ATOMIC,tier0,compute,0.6220652018977211,0.2857698141510062,0.0921649839512728,0.3570224268638191,0.3354278752882441,0.0946242594739122,0.0963699307742035,0.1165555075998212,tier1_alt:memory_swap_total,0.0005628101185159,tier0:pids_count,0.0002904228173478,tier0:load15,0.0002889973559221,tier0:load5,0.0002680608313864,tier0:load1,0.0002444107527294,compute,0.0024549881161412,memory_io,0.0023064978155259,platform_pressure,0.0008014689400381,first_persistent_alert,91.0,1.0,91.0,tier0,memory_io,tier0:soft_interrupts,0.0007480518671217,tier0:uptime_s,0.0004508284546427,"{""case_id"": ""VIDEO_SW__ATOMIC"", ""dominant_mechanism"": ""compute"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 91.0, ""first_warning_window_end_s"": 91.0, ""first_warning_window_start_s"": 1.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0007480518671217}, {""name"": ""tier0:uptime_s"", ""score"": 0.0004508284546427}]}, ""mechanism_share"": {""compute"": 0.3570224268638191, ""memory_io"": 0.3354278752882441, ""platform_pressure"": 0.1165555075998212, ""scheduler_runtime"": 0.0963699307742035, ""thermal_power"": 0.0946242594739122}, ""stressor"": ""ATOMIC"", ""tier_share"": {""tier0"": 0.6220652018977211, ""tier1"": 0.2857698141510062, ""tier2"": 0.0921649839512728}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0005628101185159}, {""name"": ""tier0:pids_count"", ""score"": 0.0002904228173478}, {""name"": ""tier0:load15"", ""score"": 0.0002889973559221}, {""name"": ""tier0:load5"", ""score"": 0.0002680608313864}, {""name"": ""tier0:load1"", ""score"": 0.0002444107527294}], ""top_mechanisms"": [{""name"": ""compute"", ""score"": 0.0024549881161412}, {""name"": ""memory_io"", ""score"": 0.0023064978155259}, {""name"": ""platform_pressure"", ""score"": 0.0008014689400381}], ""workload"": ""VIDEO_SW""}","case_id: VIDEO_SW__ATOMIC
 workload: VIDEO_SW
 stressor: ATOMIC
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.613), tier1_alt (0.288), tier2 (0.099)
-supported_mechanisms: compute (0.365), memory_io (0.320), thermal_power (0.102), scheduler_runtime (0.100), platform_pressure (0.113)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:pids_count (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.622), tier1_alt (0.286), tier2 (0.092)
+supported_mechanisms: compute (0.357), memory_io (0.335), platform_pressure (0.117)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:pids_count (0.000), tier0:load15 (0.000)
 top_mechanisms: compute (0.002), memory_io (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -873,13 +873,13 @@ workload: VIDEO_SW
 stressor: ATOMIC
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.613), tier1_alt (0.288), tier2 (0.099)
-supported_mechanisms: compute (0.365), memory_io (0.320), thermal_power (0.102), scheduler_runtime (0.100), platform_pressure (0.113)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:pids_count (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.622), tier1_alt (0.286), tier2 (0.092)
+supported_mechanisms: compute (0.357), memory_io (0.335), platform_pressure (0.117)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:pids_count (0.000), tier0:load15 (0.000)
 top_mechanisms: compute (0.002), memory_io (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -888,13 +888,13 @@ workload: VIDEO_SW
 stressor: ATOMIC
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.613), tier1_alt (0.288), tier2 (0.099)
-supported_mechanisms: compute (0.365), memory_io (0.320), thermal_power (0.102), scheduler_runtime (0.100), platform_pressure (0.113)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:pids_count (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.622), tier1_alt (0.286), tier2 (0.092)
+supported_mechanisms: compute (0.357), memory_io (0.335), platform_pressure (0.117)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:pids_count (0.000), tier0:load15 (0.000)
 top_mechanisms: compute (0.002), memory_io (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -903,26 +903,26 @@ workload: VIDEO_SW
 stressor: ATOMIC
 dominant_tier: tier0
 dominant_mechanism: compute
-supported_tiers: tier0 (0.613), tier1_alt (0.288), tier2 (0.099)
-supported_mechanisms: compute (0.365), memory_io (0.320), thermal_power (0.102), scheduler_runtime (0.100), platform_pressure (0.113)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:pids_count (0.000), tier0:load15 (0.000)
+supported_tiers: tier0 (0.622), tier1_alt (0.286), tier2 (0.092)
+supported_mechanisms: compute (0.357), memory_io (0.335), platform_pressure (0.117)
+top_features: tier1_alt:memory_swap_total (0.001), tier0:pids_count (0.000), tier0:load15 (0.000)
 top_mechanisms: compute (0.002), memory_io (0.002)
-first_warning_s: 60.0
+first_warning_s: 91.0
 warning_source: first_persistent_alert
-warning_interval_s: 0.0-60.0
+warning_interval_s: 1.0-91.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)"
-VIDEO_SW__BRANCH,VIDEO_SW,BRANCH,tier0,memory_io,0.6091127342771149,0.1918226409650207,0.1990646247578644,0.2998046616769989,0.3781987139537779,0.0524575131757958,0.1740556438821959,0.0954834673112313,tier2:unique_process_count,0.0001182138600026,tier0:mem_free_bytes,0.0001068970856564,tier0:swap_total_bytes,0.0001063615443669,tier1_alt:memory_swap_total,0.0001030571793719,tier2:unique_thread_count,9.467997571582464e-05,memory_io,0.0009239299188322,compute,0.0007324152264637,scheduler_runtime,0.0004252135477753,first_persistent_alert,815.0,755.0,815.0,tier0,memory_io,tier0:soft_interrupts,0.0006785752862268,tier0:uptime_s,0.0006432806643452,"{""case_id"": ""VIDEO_SW__BRANCH"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 815.0, ""first_warning_window_end_s"": 815.0, ""first_warning_window_start_s"": 755.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0006785752862268}, {""name"": ""tier0:uptime_s"", ""score"": 0.0006432806643452}]}, ""mechanism_share"": {""compute"": 0.2998046616769989, ""memory_io"": 0.3781987139537779, ""platform_pressure"": 0.0954834673112313, ""scheduler_runtime"": 0.1740556438821959, ""thermal_power"": 0.0524575131757958}, ""stressor"": ""BRANCH"", ""tier_share"": {""tier0"": 0.6091127342771149, ""tier1"": 0.1918226409650207, ""tier2"": 0.1990646247578644}, ""top_features"": [{""name"": ""tier2:unique_process_count"", ""score"": 0.0001182138600026}, {""name"": ""tier0:mem_free_bytes"", ""score"": 0.0001068970856564}, {""name"": ""tier0:swap_total_bytes"", ""score"": 0.0001063615443669}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001030571793719}, {""name"": ""tier2:unique_thread_count"", ""score"": 9.467997571582464e-05}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0009239299188322}, {""name"": ""compute"", ""score"": 0.0007324152264637}, {""name"": ""scheduler_runtime"", ""score"": 0.0004252135477753}], ""workload"": ""VIDEO_SW""}","case_id: VIDEO_SW__BRANCH
+VIDEO_SW__BRANCH,VIDEO_SW,BRANCH,tier0,memory_io,0.6249309292058172,0.1918311309236456,0.1832379398705373,0.288452488685235,0.4031695004003746,0.0488166673071896,0.1621870346187852,0.0973743089884156,tier0:mem_free_bytes,0.0001325190610635,tier0:swap_total_bytes,0.0001213204808317,tier2:unique_process_count,0.0001151568304144,tier1_alt:memory_swap_total,0.0001137087871844,tier0:load15,9.429055810748916e-05,memory_io,0.001051105455082,compute,0.0007520260934618,scheduler_runtime,0.0004228387233213,first_persistent_alert,815.0,725.0,815.0,tier0,memory_io,tier0:soft_interrupts,0.0007741056343386,tier0:uptime_s,0.0007297893268646,"{""case_id"": ""VIDEO_SW__BRANCH"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 815.0, ""first_warning_window_end_s"": 815.0, ""first_warning_window_start_s"": 725.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0007741056343386}, {""name"": ""tier0:uptime_s"", ""score"": 0.0007297893268646}]}, ""mechanism_share"": {""compute"": 0.288452488685235, ""memory_io"": 0.4031695004003746, ""platform_pressure"": 0.0973743089884156, ""scheduler_runtime"": 0.1621870346187852, ""thermal_power"": 0.0488166673071896}, ""stressor"": ""BRANCH"", ""tier_share"": {""tier0"": 0.6249309292058172, ""tier1"": 0.1918311309236456, ""tier2"": 0.1832379398705373}, ""top_features"": [{""name"": ""tier0:mem_free_bytes"", ""score"": 0.0001325190610635}, {""name"": ""tier0:swap_total_bytes"", ""score"": 0.0001213204808317}, {""name"": ""tier2:unique_process_count"", ""score"": 0.0001151568304144}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001137087871844}, {""name"": ""tier0:load15"", ""score"": 9.429055810748916e-05}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.001051105455082}, {""name"": ""compute"", ""score"": 0.0007520260934618}, {""name"": ""scheduler_runtime"", ""score"": 0.0004228387233213}], ""workload"": ""VIDEO_SW""}","case_id: VIDEO_SW__BRANCH
 workload: VIDEO_SW
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.609), tier1_alt (0.192), tier2 (0.199)
-supported_mechanisms: compute (0.300), memory_io (0.378), scheduler_runtime (0.174)
-top_features: tier2:unique_process_count (0.000), tier0:mem_free_bytes (0.000), tier0:swap_total_bytes (0.000)
+supported_tiers: tier0 (0.625), tier1_alt (0.192), tier2 (0.183)
+supported_mechanisms: compute (0.288), memory_io (0.403), scheduler_runtime (0.162)
+top_features: tier0:mem_free_bytes (0.000), tier0:swap_total_bytes (0.000), tier2:unique_process_count (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
 first_warning_s: 815.0
 warning_source: first_persistent_alert
-warning_interval_s: 755.0-815.0
+warning_interval_s: 725.0-815.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -931,13 +931,13 @@ workload: VIDEO_SW
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.609), tier1_alt (0.192), tier2 (0.199)
-supported_mechanisms: compute (0.300), memory_io (0.378), scheduler_runtime (0.174)
-top_features: tier2:unique_process_count (0.000), tier0:mem_free_bytes (0.000), tier0:swap_total_bytes (0.000)
+supported_tiers: tier0 (0.625), tier1_alt (0.192), tier2 (0.183)
+supported_mechanisms: compute (0.288), memory_io (0.403), scheduler_runtime (0.162)
+top_features: tier0:mem_free_bytes (0.000), tier0:swap_total_bytes (0.000), tier2:unique_process_count (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
 first_warning_s: 815.0
 warning_source: first_persistent_alert
-warning_interval_s: 755.0-815.0
+warning_interval_s: 725.0-815.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -946,13 +946,13 @@ workload: VIDEO_SW
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.609), tier1_alt (0.192), tier2 (0.199)
-supported_mechanisms: compute (0.300), memory_io (0.378), scheduler_runtime (0.174)
-top_features: tier2:unique_process_count (0.000), tier0:mem_free_bytes (0.000), tier0:swap_total_bytes (0.000)
+supported_tiers: tier0 (0.625), tier1_alt (0.192), tier2 (0.183)
+supported_mechanisms: compute (0.288), memory_io (0.403), scheduler_runtime (0.162)
+top_features: tier0:mem_free_bytes (0.000), tier0:swap_total_bytes (0.000), tier2:unique_process_count (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
 first_warning_s: 815.0
 warning_source: first_persistent_alert
-warning_interval_s: 755.0-815.0
+warning_interval_s: 725.0-815.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -961,27 +961,27 @@ workload: VIDEO_SW
 stressor: BRANCH
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.609), tier1_alt (0.192), tier2 (0.199)
-supported_mechanisms: compute (0.300), memory_io (0.378), scheduler_runtime (0.174)
-top_features: tier2:unique_process_count (0.000), tier0:mem_free_bytes (0.000), tier0:swap_total_bytes (0.000)
+supported_tiers: tier0 (0.625), tier1_alt (0.192), tier2 (0.183)
+supported_mechanisms: compute (0.288), memory_io (0.403), scheduler_runtime (0.162)
+top_features: tier0:mem_free_bytes (0.000), tier0:swap_total_bytes (0.000), tier2:unique_process_count (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
 first_warning_s: 815.0
 warning_source: first_persistent_alert
-warning_interval_s: 755.0-815.0
+warning_interval_s: 725.0-815.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.001)"
-VIDEO_SW__CACHE,VIDEO_SW,CACHE,tier0,memory_io,0.723321398004387,0.1958796645137322,0.0807989374818809,0.3058593611804752,0.4528326868787054,0.0642600667830321,0.0928137591537582,0.0842341260040289,tier1_alt:memory_swap_total,0.0001216654822243,tier0:mem_free_bytes,0.0001063022473676,tier0:mem_used_bytes,0.0001062032738731,tier0:interrupts,0.0001057376409791,tier0:mem_wired_bytes,9.748367804482072e-05,memory_io,0.0013584478803835,compute,0.0009175441900075,scheduler_runtime,0.0002784309923868,first_persistent_alert,816.0,756.0,816.0,tier0,memory_io,tier0:soft_interrupts,0.0005264898460165,tier0:mem_available_bytes,0.0002557778864843,"{""case_id"": ""VIDEO_SW__CACHE"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 816.0, ""first_warning_window_end_s"": 816.0, ""first_warning_window_start_s"": 756.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0005264898460165}, {""name"": ""tier0:mem_available_bytes"", ""score"": 0.0002557778864843}]}, ""mechanism_share"": {""compute"": 0.3058593611804752, ""memory_io"": 0.4528326868787054, ""platform_pressure"": 0.0842341260040289, ""scheduler_runtime"": 0.0928137591537582, ""thermal_power"": 0.0642600667830321}, ""stressor"": ""CACHE"", ""tier_share"": {""tier0"": 0.723321398004387, ""tier1"": 0.1958796645137322, ""tier2"": 0.0807989374818809}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001216654822243}, {""name"": ""tier0:mem_free_bytes"", ""score"": 0.0001063022473676}, {""name"": ""tier0:mem_used_bytes"", ""score"": 0.0001062032738731}, {""name"": ""tier0:interrupts"", ""score"": 0.0001057376409791}, {""name"": ""tier0:mem_wired_bytes"", ""score"": 9.748367804482072e-05}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0013584478803835}, {""name"": ""compute"", ""score"": 0.0009175441900075}, {""name"": ""scheduler_runtime"", ""score"": 0.0002784309923868}], ""workload"": ""VIDEO_SW""}","case_id: VIDEO_SW__CACHE
+VIDEO_SW__CACHE,VIDEO_SW,CACHE,tier0,memory_io,0.7305565626200671,0.1947706283471909,0.0746728090327419,0.2952208951026884,0.4675339509925719,0.0605933764915894,0.0883575381802027,0.0882942392329475,tier0:mem_free_bytes,0.0001315732354646,tier1_alt:memory_swap_total,0.0001289348843302,tier1_alt:ecpu_usage_0,0.0001132366786252,tier0:mem_used_bytes,0.0001048281134265,tier0:disk_write_IOPS,0.0001045228432244,memory_io,0.0014801681266751,compute,0.0009346413417288,scheduler_runtime,0.0002797315820341,first_persistent_alert,809.0,719.0,809.0,tier0,memory_io,tier0:soft_interrupts,0.0005839904859837,tier0:mem_free_bytes,0.0003146114306842,"{""case_id"": ""VIDEO_SW__CACHE"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 809.0, ""first_warning_window_end_s"": 809.0, ""first_warning_window_start_s"": 719.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0005839904859837}, {""name"": ""tier0:mem_free_bytes"", ""score"": 0.0003146114306842}]}, ""mechanism_share"": {""compute"": 0.2952208951026884, ""memory_io"": 0.4675339509925719, ""platform_pressure"": 0.0882942392329475, ""scheduler_runtime"": 0.0883575381802027, ""thermal_power"": 0.0605933764915894}, ""stressor"": ""CACHE"", ""tier_share"": {""tier0"": 0.7305565626200671, ""tier1"": 0.1947706283471909, ""tier2"": 0.0746728090327419}, ""top_features"": [{""name"": ""tier0:mem_free_bytes"", ""score"": 0.0001315732354646}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0001289348843302}, {""name"": ""tier1_alt:ecpu_usage_0"", ""score"": 0.0001132366786252}, {""name"": ""tier0:mem_used_bytes"", ""score"": 0.0001048281134265}, {""name"": ""tier0:disk_write_IOPS"", ""score"": 0.0001045228432244}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0014801681266751}, {""name"": ""compute"", ""score"": 0.0009346413417288}, {""name"": ""scheduler_runtime"", ""score"": 0.0002797315820341}], ""workload"": ""VIDEO_SW""}","case_id: VIDEO_SW__CACHE
 workload: VIDEO_SW
 stressor: CACHE
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.723), tier1_alt (0.196), tier2 (0.081)
-supported_mechanisms: compute (0.306), memory_io (0.453)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:mem_free_bytes (0.000), tier0:mem_used_bytes (0.000)
+supported_tiers: tier0 (0.731), tier1_alt (0.195), tier2 (0.075)
+supported_mechanisms: compute (0.295), memory_io (0.468)
+top_features: tier0:mem_free_bytes (0.000), tier1_alt:memory_swap_total (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
-first_warning_s: 816.0
+first_warning_s: 809.0
 warning_source: first_persistent_alert
-warning_interval_s: 756.0-816.0
-warning_features: tier0:soft_interrupts (0.001), tier0:mem_available_bytes (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 719.0-809.0
+warning_features: tier0:soft_interrupts (0.001), tier0:mem_free_bytes (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: VIDEO_SW__CACHE
@@ -989,14 +989,14 @@ workload: VIDEO_SW
 stressor: CACHE
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.723), tier1_alt (0.196), tier2 (0.081)
-supported_mechanisms: compute (0.306), memory_io (0.453)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:mem_free_bytes (0.000), tier0:mem_used_bytes (0.000)
+supported_tiers: tier0 (0.731), tier1_alt (0.195), tier2 (0.075)
+supported_mechanisms: compute (0.295), memory_io (0.468)
+top_features: tier0:mem_free_bytes (0.000), tier1_alt:memory_swap_total (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
-first_warning_s: 816.0
+first_warning_s: 809.0
 warning_source: first_persistent_alert
-warning_interval_s: 756.0-816.0
-warning_features: tier0:soft_interrupts (0.001), tier0:mem_available_bytes (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
+warning_interval_s: 719.0-809.0
+warning_features: tier0:soft_interrupts (0.001), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
 case_id: VIDEO_SW__CACHE
@@ -1004,14 +1004,14 @@ workload: VIDEO_SW
 stressor: CACHE
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.723), tier1_alt (0.196), tier2 (0.081)
-supported_mechanisms: compute (0.306), memory_io (0.453)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:mem_free_bytes (0.000), tier0:mem_used_bytes (0.000)
+supported_tiers: tier0 (0.731), tier1_alt (0.195), tier2 (0.075)
+supported_mechanisms: compute (0.295), memory_io (0.468)
+top_features: tier0:mem_free_bytes (0.000), tier1_alt:memory_swap_total (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
-first_warning_s: 816.0
+first_warning_s: 809.0
 warning_source: first_persistent_alert
-warning_interval_s: 756.0-816.0
-warning_features: tier0:soft_interrupts (0.001), tier0:mem_available_bytes (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
+warning_interval_s: 719.0-809.0
+warning_features: tier0:soft_interrupts (0.001), tier0:mem_free_bytes (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
 case_id: VIDEO_SW__CACHE
@@ -1019,26 +1019,26 @@ workload: VIDEO_SW
 stressor: CACHE
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.723), tier1_alt (0.196), tier2 (0.081)
-supported_mechanisms: compute (0.306), memory_io (0.453)
-top_features: tier1_alt:memory_swap_total (0.000), tier0:mem_free_bytes (0.000), tier0:mem_used_bytes (0.000)
+supported_tiers: tier0 (0.731), tier1_alt (0.195), tier2 (0.075)
+supported_mechanisms: compute (0.295), memory_io (0.468)
+top_features: tier0:mem_free_bytes (0.000), tier1_alt:memory_swap_total (0.000), tier1_alt:ecpu_usage_0 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
-first_warning_s: 816.0
+first_warning_s: 809.0
 warning_source: first_persistent_alert
-warning_interval_s: 756.0-816.0
-warning_features: tier0:soft_interrupts (0.001), tier0:mem_available_bytes (0.000)"
-VIDEO_SW__MEMBW,VIDEO_SW,MEMBW,tier0,memory_io,0.6855162438203616,0.1945308315073935,0.1199529246722448,0.3079001602872939,0.3566595675264393,0.0688827336401217,0.1128541974372056,0.1537033411089393,tier0:load15,0.0002377079565537,tier1_alt:memory_swap_total,0.000221338696437,tier0:load5,0.000220427054158,tier0:load1,0.0001990765032041,tier0:swap_sin_bytes,0.0001243549731566,memory_io,0.0015250206835811,compute,0.0013165330630903,platform_pressure,0.0006572115139159,first_persistent_alert,100.0,40.0,100.0,tier0,memory_io,tier0:mem_free_bytes,0.0007429955569183,tier0:ctx_switches,0.0006386037141333,"{""case_id"": ""VIDEO_SW__MEMBW"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 100.0, ""first_warning_window_end_s"": 100.0, ""first_warning_window_start_s"": 40.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:mem_free_bytes"", ""score"": 0.0007429955569183}, {""name"": ""tier0:ctx_switches"", ""score"": 0.0006386037141333}]}, ""mechanism_share"": {""compute"": 0.3079001602872939, ""memory_io"": 0.3566595675264393, ""platform_pressure"": 0.1537033411089393, ""scheduler_runtime"": 0.1128541974372056, ""thermal_power"": 0.0688827336401217}, ""stressor"": ""MEMBW"", ""tier_share"": {""tier0"": 0.6855162438203616, ""tier1"": 0.1945308315073935, ""tier2"": 0.1199529246722448}, ""top_features"": [{""name"": ""tier0:load15"", ""score"": 0.0002377079565537}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.000221338696437}, {""name"": ""tier0:load5"", ""score"": 0.000220427054158}, {""name"": ""tier0:load1"", ""score"": 0.0001990765032041}, {""name"": ""tier0:swap_sin_bytes"", ""score"": 0.0001243549731566}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0015250206835811}, {""name"": ""compute"", ""score"": 0.0013165330630903}, {""name"": ""platform_pressure"", ""score"": 0.0006572115139159}], ""workload"": ""VIDEO_SW""}","case_id: VIDEO_SW__MEMBW
+warning_interval_s: 719.0-809.0
+warning_features: tier0:soft_interrupts (0.001), tier0:mem_free_bytes (0.000)"
+VIDEO_SW__MEMBW,VIDEO_SW,MEMBW,tier0,memory_io,0.6955158221942852,0.1935432323218349,0.1109409454838798,0.2971003274557391,0.3722986234952458,0.064851162319622,0.1068049673234641,0.1589449194059291,tier0:load15,0.0002600568343823,tier1_alt:memory_swap_total,0.0002465599839146,tier0:load5,0.0002416661855008,tier0:load1,0.0002178667471617,tier0:swap_sin_bytes,0.0001375475109801,memory_io,0.001685503888727,compute,0.0013450593842314,platform_pressure,0.0007195897670449,first_persistent_alert,106.0,16.0,106.0,tier0,memory_io,tier0:mem_free_bytes,0.0006936657962062,tier0:ctx_switches,0.0005759024849588,"{""case_id"": ""VIDEO_SW__MEMBW"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 106.0, ""first_warning_window_end_s"": 106.0, ""first_warning_window_start_s"": 16.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:mem_free_bytes"", ""score"": 0.0006936657962062}, {""name"": ""tier0:ctx_switches"", ""score"": 0.0005759024849588}]}, ""mechanism_share"": {""compute"": 0.2971003274557391, ""memory_io"": 0.3722986234952458, ""platform_pressure"": 0.1589449194059291, ""scheduler_runtime"": 0.1068049673234641, ""thermal_power"": 0.064851162319622}, ""stressor"": ""MEMBW"", ""tier_share"": {""tier0"": 0.6955158221942852, ""tier1"": 0.1935432323218349, ""tier2"": 0.1109409454838798}, ""top_features"": [{""name"": ""tier0:load15"", ""score"": 0.0002600568343823}, {""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0002465599839146}, {""name"": ""tier0:load5"", ""score"": 0.0002416661855008}, {""name"": ""tier0:load1"", ""score"": 0.0002178667471617}, {""name"": ""tier0:swap_sin_bytes"", ""score"": 0.0001375475109801}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.001685503888727}, {""name"": ""compute"", ""score"": 0.0013450593842314}, {""name"": ""platform_pressure"", ""score"": 0.0007195897670449}], ""workload"": ""VIDEO_SW""}","case_id: VIDEO_SW__MEMBW
 workload: VIDEO_SW
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.686), tier1_alt (0.195), tier2 (0.120)
-supported_mechanisms: compute (0.308), memory_io (0.357), scheduler_runtime (0.113), platform_pressure (0.154)
+supported_tiers: tier0 (0.696), tier1_alt (0.194), tier2 (0.111)
+supported_mechanisms: compute (0.297), memory_io (0.372), scheduler_runtime (0.107), platform_pressure (0.159)
 top_features: tier0:load15 (0.000), tier1_alt:memory_swap_total (0.000), tier0:load5 (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 100.0
+first_warning_s: 106.0
 warning_source: first_persistent_alert
-warning_interval_s: 40.0-100.0
+warning_interval_s: 16.0-106.0
 warning_features: tier0:mem_free_bytes (0.001), tier0:ctx_switches (0.001)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -1047,13 +1047,13 @@ workload: VIDEO_SW
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.686), tier1_alt (0.195), tier2 (0.120)
-supported_mechanisms: compute (0.308), memory_io (0.357), scheduler_runtime (0.113), platform_pressure (0.154)
+supported_tiers: tier0 (0.696), tier1_alt (0.194), tier2 (0.111)
+supported_mechanisms: compute (0.297), memory_io (0.372), scheduler_runtime (0.107), platform_pressure (0.159)
 top_features: tier0:load15 (0.000), tier1_alt:memory_swap_total (0.000), tier0:load5 (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 100.0
+first_warning_s: 106.0
 warning_source: first_persistent_alert
-warning_interval_s: 40.0-100.0
+warning_interval_s: 16.0-106.0
 warning_features: tier0:mem_free_bytes (0.001), tier0:ctx_switches (0.001)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -1062,13 +1062,13 @@ workload: VIDEO_SW
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.686), tier1_alt (0.195), tier2 (0.120)
-supported_mechanisms: compute (0.308), memory_io (0.357), scheduler_runtime (0.113), platform_pressure (0.154)
+supported_tiers: tier0 (0.696), tier1_alt (0.194), tier2 (0.111)
+supported_mechanisms: compute (0.297), memory_io (0.372), scheduler_runtime (0.107), platform_pressure (0.159)
 top_features: tier0:load15 (0.000), tier1_alt:memory_swap_total (0.000), tier0:load5 (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 100.0
+first_warning_s: 106.0
 warning_source: first_persistent_alert
-warning_interval_s: 40.0-100.0
+warning_interval_s: 16.0-106.0
 warning_features: tier0:mem_free_bytes (0.001), tier0:ctx_switches (0.001)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -1077,26 +1077,26 @@ workload: VIDEO_SW
 stressor: MEMBW
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.686), tier1_alt (0.195), tier2 (0.120)
-supported_mechanisms: compute (0.308), memory_io (0.357), scheduler_runtime (0.113), platform_pressure (0.154)
+supported_tiers: tier0 (0.696), tier1_alt (0.194), tier2 (0.111)
+supported_mechanisms: compute (0.297), memory_io (0.372), scheduler_runtime (0.107), platform_pressure (0.159)
 top_features: tier0:load15 (0.000), tier1_alt:memory_swap_total (0.000), tier0:load5 (0.000)
 top_mechanisms: memory_io (0.002), compute (0.001)
-first_warning_s: 100.0
+first_warning_s: 106.0
 warning_source: first_persistent_alert
-warning_interval_s: 40.0-100.0
+warning_interval_s: 16.0-106.0
 warning_features: tier0:mem_free_bytes (0.001), tier0:ctx_switches (0.001)"
-VIDEO_SW__TLB,VIDEO_SW,TLB,tier0,memory_io,0.6295350630519004,0.1773364306824681,0.1931285062656315,0.2600870386341291,0.411562466066332,0.0437464399025384,0.1817727695410299,0.1028312858559705,tier1_alt:memory_swap_total,0.0002014376549633,tier2:unique_process_count,0.000135791233072,tier0:load15,0.0001164225308327,tier2:unique_thread_count,0.0001122366552369,tier0:load5,0.0001073583698411,memory_io,0.0012835882658092,compute,0.0008111640356096,scheduler_runtime,0.000566916114233,first_persistent_alert,632.0,572.0,632.0,tier0,memory_io,tier0:soft_interrupts,0.0006340216685553,tier0:uptime_s,0.0004108501550947,"{""case_id"": ""VIDEO_SW__TLB"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 632.0, ""first_warning_window_end_s"": 632.0, ""first_warning_window_start_s"": 572.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0006340216685553}, {""name"": ""tier0:uptime_s"", ""score"": 0.0004108501550947}]}, ""mechanism_share"": {""compute"": 0.2600870386341291, ""memory_io"": 0.411562466066332, ""platform_pressure"": 0.1028312858559705, ""scheduler_runtime"": 0.1817727695410299, ""thermal_power"": 0.0437464399025384}, ""stressor"": ""TLB"", ""tier_share"": {""tier0"": 0.6295350630519004, ""tier1"": 0.1773364306824681, ""tier2"": 0.1931285062656315}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0002014376549633}, {""name"": ""tier2:unique_process_count"", ""score"": 0.000135791233072}, {""name"": ""tier0:load15"", ""score"": 0.0001164225308327}, {""name"": ""tier2:unique_thread_count"", ""score"": 0.0001122366552369}, {""name"": ""tier0:load5"", ""score"": 0.0001073583698411}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0012835882658092}, {""name"": ""compute"", ""score"": 0.0008111640356096}, {""name"": ""scheduler_runtime"", ""score"": 0.000566916114233}], ""workload"": ""VIDEO_SW""}","case_id: VIDEO_SW__TLB
+VIDEO_SW__TLB,VIDEO_SW,TLB,tier0,memory_io,0.6379829993299306,0.1814136444632713,0.1806033562067978,0.2509769532543234,0.4296166200800721,0.0414956082301549,0.1718123999192246,0.1060984185162246,tier1_alt:memory_swap_total,0.0002245133070086,tier2:unique_process_count,0.0001325696595913,tier0:load15,0.0001261203362536,tier0:load5,0.0001163048825057,tier2:unique_thread_count,0.0001093961375271,memory_io,0.0014056440706761,compute,0.000821160657501,scheduler_runtime,0.0005621455733488,first_persistent_alert,628.0,538.0,628.0,tier0,memory_io,tier0:soft_interrupts,0.0007211452456339,tier0:uptime_s,0.0004642440705034,"{""case_id"": ""VIDEO_SW__TLB"", ""dominant_mechanism"": ""memory_io"", ""dominant_tier"": ""tier0"", ""early_warning"": {""first_warning_s"": 628.0, ""first_warning_window_end_s"": 628.0, ""first_warning_window_start_s"": 538.0, ""warning_dominant_mechanism"": ""memory_io"", ""warning_dominant_tier"": ""tier0"", ""warning_source"": ""first_persistent_alert"", ""warning_top_features"": [{""name"": ""tier0:soft_interrupts"", ""score"": 0.0007211452456339}, {""name"": ""tier0:uptime_s"", ""score"": 0.0004642440705034}]}, ""mechanism_share"": {""compute"": 0.2509769532543234, ""memory_io"": 0.4296166200800721, ""platform_pressure"": 0.1060984185162246, ""scheduler_runtime"": 0.1718123999192246, ""thermal_power"": 0.0414956082301549}, ""stressor"": ""TLB"", ""tier_share"": {""tier0"": 0.6379829993299306, ""tier1"": 0.1814136444632713, ""tier2"": 0.1806033562067978}, ""top_features"": [{""name"": ""tier1_alt:memory_swap_total"", ""score"": 0.0002245133070086}, {""name"": ""tier2:unique_process_count"", ""score"": 0.0001325696595913}, {""name"": ""tier0:load15"", ""score"": 0.0001261203362536}, {""name"": ""tier0:load5"", ""score"": 0.0001163048825057}, {""name"": ""tier2:unique_thread_count"", ""score"": 0.0001093961375271}], ""top_mechanisms"": [{""name"": ""memory_io"", ""score"": 0.0014056440706761}, {""name"": ""compute"", ""score"": 0.000821160657501}, {""name"": ""scheduler_runtime"", ""score"": 0.0005621455733488}], ""workload"": ""VIDEO_SW""}","case_id: VIDEO_SW__TLB
 workload: VIDEO_SW
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.630), tier1_alt (0.177), tier2 (0.193)
-supported_mechanisms: compute (0.260), memory_io (0.412), scheduler_runtime (0.182), platform_pressure (0.103)
+supported_tiers: tier0 (0.638), tier1_alt (0.181), tier2 (0.181)
+supported_mechanisms: compute (0.251), memory_io (0.430), scheduler_runtime (0.172), platform_pressure (0.106)
 top_features: tier1_alt:memory_swap_total (0.000), tier2:unique_process_count (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
-first_warning_s: 632.0
+first_warning_s: 628.0
 warning_source: first_persistent_alert
-warning_interval_s: 572.0-632.0
+warning_interval_s: 538.0-628.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)","You are preparing a grounded DICE diagnostic note for a silicon-reliability reviewer. Use only the supplied evidence block. Do not quote or restate full JSON. Write exactly four short bullet lines with these labels: dominant tier, dominant mechanism, key cues, reviewer note. If a first-warning time is listed, fold it into the reviewer note. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -1105,13 +1105,13 @@ workload: VIDEO_SW
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.630), tier1_alt (0.177), tier2 (0.193)
-supported_mechanisms: compute (0.260), memory_io (0.412), scheduler_runtime (0.182), platform_pressure (0.103)
+supported_tiers: tier0 (0.638), tier1_alt (0.181), tier2 (0.181)
+supported_mechanisms: compute (0.251), memory_io (0.430), scheduler_runtime (0.172), platform_pressure (0.106)
 top_features: tier1_alt:memory_swap_total (0.000), tier2:unique_process_count (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
-first_warning_s: 632.0
+first_warning_s: 628.0
 warning_source: first_persistent_alert
-warning_interval_s: 572.0-632.0
+warning_interval_s: 538.0-628.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)","Use only the supplied DICE evidence block. Write exactly five lines with these labels: severity, likely subsystem, evidence summary, follow-up 1, follow-up 2. If warning timing is listed, mention whether it suggests early-warning potential. Do not mention any tier, mechanism, or feature that is not explicitly listed.
 
 Grounded evidence:
@@ -1120,13 +1120,13 @@ workload: VIDEO_SW
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.630), tier1_alt (0.177), tier2 (0.193)
-supported_mechanisms: compute (0.260), memory_io (0.412), scheduler_runtime (0.182), platform_pressure (0.103)
+supported_tiers: tier0 (0.638), tier1_alt (0.181), tier2 (0.181)
+supported_mechanisms: compute (0.251), memory_io (0.430), scheduler_runtime (0.172), platform_pressure (0.106)
 top_features: tier1_alt:memory_swap_total (0.000), tier2:unique_process_count (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
-first_warning_s: 632.0
+first_warning_s: 628.0
 warning_source: first_persistent_alert
-warning_interval_s: 572.0-632.0
+warning_interval_s: 538.0-628.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)","Use only the supplied DICE evidence block. Recommend up to three next diagnostic steps. Each step must cite the specific listed feature or mechanism that motivated it. If warning timing is listed, allow one step to focus on validating the early-warning path. Do not mention any unsupported signals.
 
 Grounded evidence:
@@ -1135,11 +1135,11 @@ workload: VIDEO_SW
 stressor: TLB
 dominant_tier: tier0
 dominant_mechanism: memory_io
-supported_tiers: tier0 (0.630), tier1_alt (0.177), tier2 (0.193)
-supported_mechanisms: compute (0.260), memory_io (0.412), scheduler_runtime (0.182), platform_pressure (0.103)
+supported_tiers: tier0 (0.638), tier1_alt (0.181), tier2 (0.181)
+supported_mechanisms: compute (0.251), memory_io (0.430), scheduler_runtime (0.172), platform_pressure (0.106)
 top_features: tier1_alt:memory_swap_total (0.000), tier2:unique_process_count (0.000), tier0:load15 (0.000)
 top_mechanisms: memory_io (0.001), compute (0.001)
-first_warning_s: 632.0
+first_warning_s: 628.0
 warning_source: first_persistent_alert
-warning_interval_s: 572.0-632.0
+warning_interval_s: 538.0-628.0
 warning_features: tier0:soft_interrupts (0.001), tier0:uptime_s (0.000)"

@@ -1,0 +1,5 @@
+pilot_key,pilot_label,rows_written,bridge_rows_written,config,groups_analyzed,out_dir
+browser_branch,BROWSER / BRANCH,12,1,tier0_tier1_tier2,BROWSER__BRANCH,/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/workload_crash_four_pilot_feature_bridge/mixed/browser_branch
+py_ai_cache,PY_AI / CACHE,12,1,tier0_tier1_tier2,PY_AI__CACHE,/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/workload_crash_four_pilot_feature_bridge/mixed/py_ai_cache
+py_stats_atomic,PY_STATS / ATOMIC,12,1,tier0_tier1_tier2,PY_STATS__ATOMIC,/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/workload_crash_four_pilot_feature_bridge/mixed/py_stats_atomic
+video_membw,VIDEO_SW / MEMBW,12,1,tier0_tier1_tier2,VIDEO_SW__MEMBW,/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/workload_crash_four_pilot_feature_bridge/mixed/video_membw

@@ -1,2 +1,3 @@
 feature_profile,profile_label,final_features,final_detect_rate,final_benign_alert_rate,final_median_ttd_s,two_stage_policy,two_stage_budget,two_stage_detect_rate,two_stage_benign_alert_rate,feature_budget_pct,feature_budget_n_features,feature_budget_detect_rate,feature_budget_benign_alert_rate
-mixed,Mixed,64.0,0.45,0.25,62.0,Two-stage q=0.90,64.0,0.45,0.25,,,,
+mixed,Mixed,64.0,0.75,0.0,45.0,Two-stage q=0.90,49.75,0.25,0.0,10.0,7.0,0.4,0.25
+full,Full,75.0,0.95,0.0,91.0,Two-stage q=0.90,50.833333333333336,0.2,0.0,10.0,8.0,0.9,0.25

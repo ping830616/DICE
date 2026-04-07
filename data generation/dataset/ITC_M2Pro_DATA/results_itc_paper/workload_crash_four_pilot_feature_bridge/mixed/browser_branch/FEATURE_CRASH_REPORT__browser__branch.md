@@ -1,0 +1,26 @@
+# Feature-Level ITC-Study Bridge Analysis
+
+- Workload: `BROWSER`
+- Stressor family: `BRANCH`
+- Config: `Tier-0/1/2`
+- Original anomaly warning: `45.0s`
+- Crash-pilot anomaly warning: `62.0s`
+- Crash time: `167.5s`
+- Lead time: `105.5s`
+
+## ITC-study bridge feature summary
+
+| workload | base_stressor | case_id | mode | feature_name | tier | column_name | reference_warning_s | original_anomaly_warning_s | pilot_warning_s | crash_pilot_anomaly_warning_s | crash_time_s | feature_first_divergence_s | feature_value_at_warning | feature_value_pre_crash | nominal_median | nominal_scale | peak_abs_z |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| BROWSER | BRANCH | BROWSER__BRANCH_CONTROL | CONTROL | tier0:swap_total_bytes | tier0 | swap_total_bytes | 45.0 | 45.0 | 62.0 | 62.0 | -22478.0 | 0.000140905380249 | 7516192768.0 | 7516192768.0 | 8589934592.0 | 249962276.73448506 | 4.295615474572389 |
+| BROWSER | BRANCH | BROWSER__BRANCH_ABORT | ABORT | tier0:swap_total_bytes | tier0 | swap_total_bytes | 45.0 | 45.0 | 62.0 | 62.0 | 167.478639 | 0.0001158714294433 | 7516192768.0 | 7516192768.0 | 8589934592.0 | 249962276.73448506 | 4.295615474572389 |
+| BROWSER | BRANCH | BROWSER__BRANCH_CONTROL | CONTROL | tier0:swap_free_bytes | tier0 | swap_free_bytes | 45.0 | 45.0 | 62.0 | 62.0 | -22478.0 | 0.000140905380249 | 934543360.0 | 926154752.0 | 1656684544.0 | 99495601.7664 | 7.342332515513288 |
+| BROWSER | BRANCH | BROWSER__BRANCH_ABORT | ABORT | tier0:swap_free_bytes | tier0 | swap_free_bytes | 45.0 | 45.0 | 62.0 | 62.0 | 167.478639 | 0.0001158714294433 | 976486400.0 | 1001652224.0 | 1656684544.0 | 99495601.7664 | 6.8364644459058415 |
+| BROWSER | BRANCH | BROWSER__BRANCH_CONTROL | CONTROL | tier0:uptime_s | tier0 | uptime_s | 45.0 | 45.0 | 62.0 | 62.0 | -22478.0 | 100.66711688041688 | 392709.6679830551 | 392647.7639849186 | 392522.4501359463 | 90.33255989592075 | 4.090550245502499 |
+| BROWSER | BRANCH | BROWSER__BRANCH_ABORT | ABORT | tier0:uptime_s | tier0 | uptime_s | 45.0 | 45.0 | 62.0 | 62.0 | 167.478639 | 0.0001158714294433 | 392958.50132775307 | 393059.0577700138 | 392522.4501359463 | 90.33255989592075 | 6.84678726933844 |
+| BROWSER | BRANCH | BROWSER__BRANCH_CONTROL | CONTROL | tier0:load15 | tier0 | load15 | 45.0 | 45.0 | 62.0 | 62.0 | -22478.0 |  | 14.34619140625 | 13.64501953125 | 13.6943359375 | 0.58276025390625 | 1.8776817291764594 |
+| BROWSER | BRANCH | BROWSER__BRANCH_ABORT | ABORT | tier0:load15 | tier0 | load15 | 45.0 | 45.0 | 62.0 | 62.0 | 167.478639 |  | 14.38671875 | 13.52734375 | 13.6943359375 | 0.58276025390625 | 2.036878305947333 |
+| BROWSER | BRANCH | BROWSER__BRANCH_CONTROL | CONTROL | tier0:load5 | tier0 | load5 | 45.0 | 45.0 | 62.0 | 62.0 | -22478.0 | 85.37433075904846 | 15.095703125 | 13.02392578125 | 12.55322265625 | 1.1539376953125 | 3.1223759812909635 |
+| BROWSER | BRANCH | BROWSER__BRANCH_ABORT | ABORT | tier0:load5 | tier0 | load5 | 45.0 | 45.0 | 62.0 | 62.0 | 167.478639 | 1.6367061138153076 | 14.626953125 | 12.34521484375 | 12.55322265625 | 1.1539376953125 | 3.144802587471804 |
+| BROWSER | BRANCH | BROWSER__BRANCH_CONTROL | CONTROL | tier0:pids_count | tier0 | pids_count | 45.0 | 45.0 | 62.0 | 62.0 | -22478.0 | 1.0216608047485352 | 502.0 | 538.0 | 516.0 | 10.3782 | 3.276097974600605 |
+| BROWSER | BRANCH | BROWSER__BRANCH_ABORT | ABORT | tier0:pids_count | tier0 | pids_count | 45.0 | 45.0 | 62.0 | 62.0 | 167.478639 | 0.0001158714294433 | 556.0 | 544.0 | 516.0 | 10.3782 | 4.6250794935537956 |

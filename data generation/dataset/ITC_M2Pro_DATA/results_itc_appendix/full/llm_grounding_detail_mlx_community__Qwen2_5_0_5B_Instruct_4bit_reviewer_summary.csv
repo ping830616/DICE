@@ -4,12 +4,12 @@ mlx-community/Qwen2.5-0.5B-Instruct-4bit,BROWSER__BRANCH,reviewer_summary,True,T
 mlx-community/Qwen2.5-0.5B-Instruct-4bit,BROWSER__CACHE,reviewer_summary,True,True,False,True,True,0.75,False,False,False
 mlx-community/Qwen2.5-0.5B-Instruct-4bit,BROWSER__MEMBW,reviewer_summary,True,True,False,True,True,0.75,False,False,False
 mlx-community/Qwen2.5-0.5B-Instruct-4bit,BROWSER__TLB,reviewer_summary,True,True,False,True,True,0.75,False,False,False
-mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_AI__ATOMIC,reviewer_summary,True,True,False,True,True,0.75,False,False,False
+mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_AI__ATOMIC,reviewer_summary,True,False,False,False,False,0.25,False,False,False
 mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_AI__BRANCH,reviewer_summary,True,True,False,True,True,0.75,False,False,False
 mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_AI__CACHE,reviewer_summary,True,True,False,True,True,0.75,False,False,False
 mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_AI__MEMBW,reviewer_summary,True,True,False,True,True,0.75,False,False,False
-mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_AI__TLB,reviewer_summary,True,True,False,True,True,0.75,False,False,False
-mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_STATS__ATOMIC,reviewer_summary,True,True,False,True,True,0.75,False,False,False
+mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_AI__TLB,reviewer_summary,True,False,False,False,False,0.25,False,False,False
+mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_STATS__ATOMIC,reviewer_summary,True,False,False,False,False,0.25,False,False,False
 mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_STATS__BRANCH,reviewer_summary,True,True,False,True,True,0.75,False,False,False
 mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_STATS__CACHE,reviewer_summary,True,True,False,True,True,0.75,False,False,False
 mlx-community/Qwen2.5-0.5B-Instruct-4bit,PY_STATS__MEMBW,reviewer_summary,True,True,False,True,True,0.75,False,False,False

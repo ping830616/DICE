@@ -1,16 +1,32 @@
 {
-  "itc_root": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA",
-  "pilots_root": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots",
-  "out_dir": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed",
-  "profile": "mixed",
-  "pilot_roots_found": [
-    "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_py_ai_cache"
+  "itc_root": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA",
+  "original_itc_case_summary_csv": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/mixed/early_warning_case_summary.csv",
+  "comparison_profile_summary_csv": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/comparison/early_warning_profile_summary.csv",
+  "comparison_merged_events_csv": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/comparison/early_warning_merged_crash_events.csv",
+  "feature_bundle_root": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/workload_crash_four_pilot_feature_bridge/mixed",
+  "feature_bundle_candidates_checked": [
+    "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/workload_crash_four_pilot_feature_bridge/mixed"
   ],
-  "skipped_pilots": [],
-  "matched_cases": 1,
-  "summary_csv": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/itc_study_bridge_summary.csv",
-  "matched_csv": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/itc_study_bridge_matched_cases.csv",
-  "report_md": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/ITC_STUDY_CRASH_BRIDGE_REPORT.md",
-  "timeline_png": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/fig_itc_study_crash_bridge_timeline.png",
-  "feature_png": "/Users/hsiaopingni/Documents/New project/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/fig_itc_study_crash_bridge_features.png"
+  "detected_feature_dirs": [
+    "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/workload_crash_four_pilot_feature_bridge/mixed/browser_branch",
+    "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/workload_crash_four_pilot_feature_bridge/mixed/video_membw",
+    "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/workload_crash_four_pilot_feature_bridge/mixed/py_ai_cache",
+    "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/workload_crash_four_pilot_feature_bridge/mixed/py_stats_atomic"
+  ],
+  "out_dir": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed",
+  "profile": "mixed",
+  "matched_cases": 4,
+  "pilot_rows_collected": 4,
+  "pilot_dirs_used": [
+    "browser_branch",
+    "py_ai_cache",
+    "py_stats_atomic",
+    "video_membw"
+  ],
+  "summary_csv": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/itc_study_bridge_summary.csv",
+  "matched_csv": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/itc_study_bridge_matched_cases.csv",
+  "report_md": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/ITC_STUDY_CRASH_BRIDGE_REPORT.md",
+  "timeline_png": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/fig_itc_study_crash_bridge_timeline.png",
+  "timeline_legend_png": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/fig_itc_study_crash_bridge_timeline_legend.png",
+  "feature_png": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_crash_bridge/mixed/fig_itc_study_crash_bridge_features.png"
 }

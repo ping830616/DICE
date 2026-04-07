@@ -1,2 +1,2 @@
 feature_profile,profile_label,config,config_label,scope,scope_value,n_cases,n_positive,n_negative,roc_auc,pr_auc,precision,recall,f1_score,balanced_accuracy,specificity,false_alarm_rate,true_positive_rate,benign_alert_rate,anomaly_detect_rate,median_time_to_detect_s
-full,Full,tier0_tier1_tier2,Tier-0/1/2,overall,ALL,24,20,4,0.9625,0.9924874686716791,1.0,0.95,0.9743589743589743,0.975,1.0,0.0,0.95,0.0,0.95,60.0
+full,Full,tier0_tier1_tier2,Tier-0/1/2,overall,ALL,24,20,4,0.95,0.9897096908939014,1.0,0.95,0.9743589743589743,0.975,1.0,0.0,0.95,0.0,0.95,91.0

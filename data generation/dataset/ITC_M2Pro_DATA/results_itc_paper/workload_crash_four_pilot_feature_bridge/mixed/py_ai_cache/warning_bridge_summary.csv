@@ -1,0 +1,2 @@
+workload,base_stressor,original_case_id,original_anomaly_warning_s,crash_pilot_anomaly_warning_s,crash_time_s,lead_time_s,anomaly_warning_shift_s,original_top_feature_1,original_top_feature_2,pilot_control_case_id,pilot_abort_case_id,original_warning_s,pilot_warning_s,warning_shift_s
+PY_AI,CACHE,PY_AI__CACHE,45.0,62.0,214.779384,152.779384,17.0,tier1_alt:gpu_avg_freq_mhz,tier1_alt:cpu_avg_freq_mhz,PY_AI__CACHE_CONTROL,PY_AI__CACHE_ABORT,45.0,62.0,17.0

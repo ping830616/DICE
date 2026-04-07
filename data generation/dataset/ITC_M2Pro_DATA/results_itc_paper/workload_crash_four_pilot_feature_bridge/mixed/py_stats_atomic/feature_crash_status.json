@@ -1,0 +1,13 @@
+{
+  "dataset_root": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_py_stats_atomic",
+  "result_dir": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_py_stats_atomic/results_dice_workload_crash_mixed",
+  "warning_dir": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilot_real_py_stats_atomic/results_workload_crash_paper/mixed",
+  "reference_warning_csv": "/Users/hsiaopingni/Documents/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/mixed/early_warning_case_summary.csv",
+  "config": "tier0_tier1_tier2",
+  "groups_analyzed": [
+    "PY_STATS__ATOMIC"
+  ],
+  "rows_written": 12,
+  "bridge_rows_written": 1,
+  "z_threshold": 2.5
+}

@@ -41,3 +41,4 @@ data generation/dataset/*/workload_crash_pilots/**/results_*/**
 data generation/dataset/*/workload_crash_pilots/**/.DS_Store
 *.log
 !data generation/dataset/*/workload_crash_pilots/**/*.log
+**/.DS_Store
