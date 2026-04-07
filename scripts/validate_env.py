@@ -38,7 +38,7 @@ def main() -> int:
         str(args.report_path),
     ]
     return subprocess.run(cmd, check=False).returncode
-
+    
 
 if __name__ == "__main__":
     raise SystemExit(main())
