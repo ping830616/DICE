@@ -96,8 +96,8 @@ Clone DICE into any directory where you want to keep the repo and generated outp
 
 ```bash
 git lfs install
-git clone https://github.com/ping830616/DICE.git <repo-dir>
-cd <repo-dir>
+git clone https://github.com/ping830616/DICE.git 
+cd DICE
 conda env create -f environment.yml
 conda activate dice-results
 ```
