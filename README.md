@@ -1,19 +1,19 @@
 # DICE
 
-DICE is a tier-aware digital-twin analysis pipeline for anomaly detection, diagnosis, subsystem localization, crash-aware early warning, and grounded triage on the released Apple Silicon ITC study dataset.
+DICE is a digital twin-driven in-field continuous-test engine for Silicon Lifecycle Management (SLM). On the released Apple Silicon ITC study dataset, it uses tiered telemetry to support anomaly detection, diagnosis, subsystem localization, crash-aware early warning, and grounded LLM support.
 
-The main public entry point is [dice_results_analysis.ipynb](dice_results_analysis.ipynb). A top-to-bottom notebook run regenerates the paper-facing tables, figures, CSV summaries, appendix bundles, and reproducibility manifests under `data generation/dataset/ITC_M2Pro_DATA/`.
+The main public entry point is [dice_results_analysis.ipynb](dice_results_analysis.ipynb). A top-to-bottom notebook run regenerates the draft-aligned tables, figures, CSV summaries, appendix bundles, and reproducibility manifests under `data generation/dataset/ITC_M2Pro_DATA/`.
 
 ## What Is In This Repository
 
-- [dice_results_analysis.ipynb](dice_results_analysis.ipynb): the paper-aligned, end-to-end results notebook.
+- [dice_results_analysis.ipynb](dice_results_analysis.ipynb): the draft-aligned, end-to-end Results & Analysis notebook.
 - [data generation/README.md](data%20generation/README.md): dataset collection, release, and crash-pilot guidance.
 - `data generation/dataset/ITC_M2Pro_DATA/`: the released processed dataset plus the tracked result bundles used by the notebook.
 - `tools/`: reusable analysis/export helpers used by the notebook and optional scripted runs.
 - `scripts/`: lightweight validation and headless reproduction helpers.
 - [notebook-guide.md](notebook-guide.md): a shorter map of notebook sections, outputs, and checkpoints.
 - [portable-setup.md](portable-setup.md) and [asu-server-setup.md](asu-server-setup.md): machine setup guidance.
-- [itc-paper-methodology.md](itc-paper-methodology.md), [itc_results_section_package.md](itc_results_section_package.md), and [itc_appendix_rewrite.tex](itc_appendix_rewrite.tex): paper-facing drafting references.
+- [itc-paper-methodology.md](itc-paper-methodology.md), [itc_results_section_package.md](itc_results_section_package.md), and [itc_appendix_rewrite.tex](itc_appendix_rewrite.tex): draft-supporting writing references.
 
 ## Draft-Aligned Notebook Flow
 
@@ -24,26 +24,26 @@ The notebook now follows the same story as the draft:
 3. `2B. Mixed vs Full Deployment Summary`
 4. `2. Main DICE Performance`
 5. `3. Operational Alerting Reliability`
-6. `4. Diagnosis and Anomaly Localization`
+6. `4. Diagnosis and Localization`
 7. `5. Cross-Workload Robustness and Design-Space Tradeoffs`
 8. `6. Crash-Aware Early Warning and Real Crash Localization`
-9. `7. Grounded LLM Triage Support`
+9. `7. Grounded LLM Support`
 10. `Appendix A` through `Appendix F`
-11. `8. Paper Bundle and Appendix Exports`
+11. `8. Draft Bundle and Appendix Exports`
 12. `9. Reproducibility Manifest`
 
 That mapping corresponds directly to the draft results sequence:
 
 - draft result `A`: run-level monitoring -> notebook section `2. Main DICE Performance`
 - draft result `B`: operational alerting reliability -> notebook section `3. Operational Alerting Reliability`
-- draft result `C`: diagnosis and localization -> notebook section `4. Diagnosis and Anomaly Localization`
+- draft result `C`: diagnosis and localization -> notebook section `4. Diagnosis and Localization`
 - draft result `D`: cross-workload robustness and tradeoffs -> notebook section `5. Cross-Workload Robustness and Design-Space Tradeoffs`
 - draft result `E`: crash-aware early warning -> notebook section `6. Crash-Aware Early Warning and Real Crash Localization`
-- draft result `F`: grounded LLM triage -> notebook section `7. Grounded LLM Triage Support`
+- draft result `F`: grounded LLM support -> notebook section `7. Grounded LLM Support`
 
-## Reviewer Quick Start
+## Reproducibility Quick Start
 
-For a standard reviewer run on a laptop or server, clone the repo into any working directory and use:
+For a standard reproducibility run on a laptop or server, clone the repo into any working directory and use:
 
 ```bash
 git lfs install
@@ -79,9 +79,9 @@ sed -n '1,3p' "$PILOT_CSV"
 
 The clone is only complete for crash-aware workflows when that quick check prints real CSV headers such as `case_id,workload,stressor,...`. If it prints `version https://git-lfs.github.com/spec/v1`, the `workload_crash_pilots/` tree is still only partially cloned on that laptop.
 
-If GitHub returns an LFS budget or quota error, the reviewer will need either restored Git LFS access for `ping830616/DICE` or a provided local copy of `workload_crash_pilots/`. The sections that require this payload are `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`. Without that payload, those sections may fail, show no abort pilot cases, or only read Git LFS pointer stubs instead of real crash manifests, reports, and logs.
+If GitHub returns an LFS budget or quota error, you will need either restored Git LFS access for `ping830616/DICE` or a provided local copy of `workload_crash_pilots/`. The sections that require this payload are `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix`. Without that payload, those sections may fail, show no abort pilot cases, or only read Git LFS pointer stubs instead of real crash manifests, reports, and logs.
 
-Expected outputs reviewers should compare after a successful run:
+Expected outputs to compare after a successful run:
 
 - `data generation/dataset/ITC_M2Pro_DATA/results_portable/run_manifest.json`
 - `data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/comparison/main_monitoring_profile_summary.csv`
@@ -220,7 +220,7 @@ python tools/check_notebook_environment.py \
 ## What The Notebook Saves
 
 All major outputs are written automatically under `data generation/dataset/ITC_M2Pro_DATA/`.
-For `ITC_M2Pro_DATA`, the main paper-facing `results_*` folders are now tracked in Git so GitHub exposes a reproducible baseline. Re-running the notebook refreshes those folders locally.
+For `ITC_M2Pro_DATA`, the main draft-aligned `results_*` folders are now tracked in Git so GitHub exposes a reproducible baseline. Re-running the notebook refreshes those folders locally.
 
 Main destinations:
 
@@ -269,7 +269,7 @@ Useful supporting scripts include:
 - `tools/early_warning_analysis.py`: crash-aware lead-time export
 - `tools/feature_crash_analysis.py`: feature-level crash-warning traces
 - `tools/aggregate_itc_crash_bridge.py`: whole-study bridge between the ITC dataset and crash pilots
-- `tools/generate_crash_evidence_cards.py`: paper-ready crash evidence galleries
+- `tools/generate_crash_evidence_cards.py`: draft-ready crash evidence galleries
 - `tools/generate_macbook_hardware_context_figure.py`: standalone hardware-context figure generator with a repo-local output path
 - `tools/run_grounded_llm_local.py`: optional local scoring for the grounded LLM extension
 
@@ -280,7 +280,7 @@ Some crash-pilot roots are intentionally treated as local machine-generated arti
 - `data generation/data_workload_crash_*`
 - `data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/`
 
-These folders can be very large and may contain crash evidence, screenshots, logs, or pilot reruns. The repository currently tracks the four one-workload pilot roots through Git LFS, which means a normal checkout may fail if the repository LFS budget is exhausted. Use `GIT_LFS_SKIP_SMUDGE=1` for the initial clone when you only need the released ITC dataset and the tracked paper-facing result folders.
+These folders can be very large and may contain crash evidence, screenshots, logs, or pilot reruns. The repository currently tracks the four one-workload pilot roots through Git LFS, which means a normal checkout may fail if the repository LFS budget is exhausted. Use `GIT_LFS_SKIP_SMUDGE=1` for the initial clone when you only need the released ITC dataset and the tracked draft-aligned result folders.
 
 That clone mode is enough for the main released ITC dataset and tracked paper outputs, but it is not enough for notebook cells that parse crash-pilot `crash_events.csv`, copied diagnostic reports, or per-case crash logs. Those cells require the real pilot payload rather than the Git LFS pointer stubs left behind by a skip-smudge clone.
 

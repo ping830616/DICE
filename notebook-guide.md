@@ -2,14 +2,14 @@
 
 ## Purpose
 
-[`dice_results_analysis.ipynb`](dice_results_analysis.ipynb) is the main reproducible results notebook for DICE. It is organized to read like the paper draft first and like a deeper appendix second.
+[`dice_results_analysis.ipynb`](dice_results_analysis.ipynb) is the main reproducible Results & Analysis notebook for DICE. It is organized to read like the draft first and like a deeper appendix second.
 
 ## Execution Model
 
 - The first code cell owns the shared imports and notebook bootstrap.
 - Early cells resolve `REPO_ROOT`, `DATASET_ROOT`, seeds, output folders, and runtime limits.
 - `Run End-to-End` is the cell that triggers the main DICE pipeline.
-- Most later cells load saved outputs and turn them into paper-ready tables, figures, markdown snippets, and manifests.
+- Most later cells load saved outputs and turn them into draft-ready tables, figures, markdown snippets, and manifests.
 - Crash-pilot sections only work when `workload_crash_pilots/` is materialized locally. A skip-smudge clone can still run the main released ITC analysis, but crash-evidence cells will see Git LFS pointer stubs until you pull the pilot payload or point the notebook at a materialized local copy.
 
 ## Recommended Reading Order
@@ -19,22 +19,22 @@
 3. `2B. Mixed vs Full Deployment Summary`
 4. `2. Main DICE Performance`
 5. `3. Operational Alerting Reliability`
-6. `4. Diagnosis and Anomaly Localization`
+6. `4. Diagnosis and Localization`
 7. `5. Cross-Workload Robustness and Design-Space Tradeoffs`
 8. `6. Crash-Aware Early Warning and Real Crash Localization`
-9. `7. Grounded LLM Triage Support`
+9. `7. Grounded LLM Support`
 10. `Appendix A` through `Appendix F`
-11. `8. Paper Bundle and Appendix Exports`
+11. `8. Draft Bundle and Appendix Exports`
 12. `9. Reproducibility Manifest`
 
 ## Draft Mapping
 
 - draft result `A`: `2. Main DICE Performance`
 - draft result `B`: `3. Operational Alerting Reliability`
-- draft result `C`: `4. Diagnosis and Anomaly Localization`
+- draft result `C`: `4. Diagnosis and Localization`
 - draft result `D`: `5. Cross-Workload Robustness and Design-Space Tradeoffs`
 - draft result `E`: `6. Crash-Aware Early Warning and Real Crash Localization`
-- draft result `F`: `7. Grounded LLM Triage Support`
+- draft result `F`: `7. Grounded LLM Support`
 
 ## Main Output Roots
 
@@ -44,7 +44,7 @@ These output folders are generated locally and are ignored by Git, so they will 
 - `results_itc_paper/comparison/`: cross-profile tables and figures
 - `results_itc_paper/mixed/`: mixed-profile outputs
 - `results_itc_paper/full/`: full-profile outputs
-- `results_itc_appendix/`: appendix tables, figures, LLM bundles, and supporting diagnostics
+- `results_itc_appendix/`: appendix tables, figures, grounded LLM bundles, and supporting diagnostics
 - `results_itc_crash_bridge/mixed/`: whole-study crash-bridge summaries when crash pilot data is available
 - `results_portable/run_manifest.json`: portable runtime manifest
 
