@@ -54,7 +54,7 @@ python generate_dataset.py \
 
 ## Manifest Columns
 
-The collector writes these paper-facing fields:
+The collector writes these draft-aligned fields:
 
 - `case_id`
 - `workload`
@@ -93,7 +93,7 @@ The same command works for the full profile by swapping `results_dice_full_full`
 
 ## Generating Crash Evidence Cards
 
-After `early_warning_crash_alignment.csv` is available, you can generate paper-ready PNG and Markdown cards:
+After `early_warning_crash_alignment.csv` is available, you can generate draft-ready PNG and Markdown cards:
 
 ```bash
 cd DICE
@@ -107,7 +107,7 @@ This writes:
 
 - `crash_evidence_cards.csv`: index of generated cards and key timing fields
 - `CRASH_EVIDENCE_GALLERY.md`: gallery page for the selected cases
-- `figures/<case_id>.png`: paper-ready visual card
+- `figures/<case_id>.png`: draft-ready visual card
 - `cards/<case_id>.md`: per-case Markdown card with log and report excerpts
 
 If the alignment table was produced without a crash manifest, the generator still renders warning-only template cards so you can validate the layout before recollection.
@@ -118,7 +118,7 @@ If you prefer the notebook path after collection, open `dice_results_analysis.ip
 
 The early-warning analysis uses the first persistent abnormal window as the warning timestamp when available, and otherwise falls back to the first abnormal block alert. It then joins that warning to the first observed crash event in the manifest.
 
-The key paper-facing metrics are:
+The key draft-aligned metrics are:
 
 - warning recall before crash
 - warning precision

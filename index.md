@@ -5,7 +5,7 @@ title: DICE
 
 # DICE
 
-DICE is a tier-aware digital-twin analysis pipeline for anomaly detection, diagnosis, subsystem localization, crash-aware early warning, and grounded triage on the released Apple Silicon ITC study dataset.
+DICE is a digital twin-driven in-field continuous-test engine for Silicon Lifecycle Management (SLM). On the released Apple Silicon ITC study dataset, it uses tiered telemetry to support anomaly detection, diagnosis, subsystem localization, crash-aware early warning, and grounded LLM support.
 
 ## Start Here
 
@@ -15,12 +15,12 @@ The main entry point is [`dice_results_analysis.ipynb`](https://github.com/ping8
 2. abstract-ready headline metrics
 3. mixed vs full profile summary
 4. main monitoring performance
-5. alerting reliability
+5. operational alerting reliability
 6. diagnosis and localization
 7. cross-workload robustness and tradeoffs
 8. crash-aware early warning
-9. grounded LLM triage
-10. appendix exports and reproducibility manifest
+9. grounded LLM support
+10. draft bundle, appendix exports, and reproducibility manifest
 
 ## Quick Run
 
@@ -33,7 +33,7 @@ python scripts/validate_env.py --repo-root "$PWD" --dataset-root "$PWD/data gene
 jupyter lab dice_results_analysis.ipynb
 ```
 
-Run the notebook from top to bottom. It writes paper-ready outputs automatically under:
+Run the notebook from top to bottom. It writes draft-aligned outputs automatically under:
 
 - `data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/`
 - `data generation/dataset/ITC_M2Pro_DATA/results_itc_appendix/`
@@ -46,7 +46,7 @@ Run the notebook from top to bottom. It writes paper-ready outputs automatically
 - alert reliability and cross-workload robustness summaries
 - diagnosis, localization, onset, and hardware-context figures
 - crash-aware early-warning tables and evidence-card galleries when crash pilot data is available
-- grounded LLM triage bundles and audit summaries
+- grounded LLM support bundles and audit summaries
 - appendix-ready exports and reproducibility manifests
 
 ## Documentation

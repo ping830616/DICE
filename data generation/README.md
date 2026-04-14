@@ -1,6 +1,6 @@
 # DICE ITC Data Generation (macOS)
 
-DICE provides an end-to-end pipeline for generating the telemetry dataset used in the DICE paper across three observability tiers:
+DICE provides an end-to-end pipeline for generating the three-tier telemetry dataset used by the DICE draft and notebook:
 
 - `Tier-0`: unprivileged operating-system telemetry collected through `psutil`
 - `Tier-1-alt` (recommended on Apple Silicon): `macmon` telemetry with automatic `powermetrics` fallback when collection fails at runtime
@@ -132,7 +132,7 @@ python generate_dataset.py \
 ```
 
 This writes `crash_evidence/crash_events.csv` plus per-case copied diagnostic reports and filtered `log show` windows.
-After `early_warning_crash_alignment.csv` has been exported, you can also generate paper-ready crash evidence cards with `python ../tools/generate_crash_evidence_cards.py ...` as documented in [docs/crash-evidence.md](docs/crash-evidence.md).
+After `early_warning_crash_alignment.csv` has been exported, you can also generate draft-ready crash evidence cards with `python ../tools/generate_crash_evidence_cards.py ...` as documented in [docs/crash-evidence.md](docs/crash-evidence.md).
 
 If you want **real crash artifacts** without risking a full-machine crash on your laptop, use the dedicated crash harness:
 
