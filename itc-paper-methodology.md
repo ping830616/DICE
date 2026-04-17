@@ -14,16 +14,16 @@ The public workflow is notebook-first: users should run `dice_results_analysis.i
 The main paper should emphasize:
 
 1. The digital twin-driven DICE methodology:
-   - benign-only regime-conditioned micro-twin fitting
-   - residual block signatures
-   - sequential conformal decisioning
-   - mechanism-level diagnosis
+   - benign-trained behavioral micro-twin fitting
+   - anomaly evidence and block signatures
+   - sequential scoring on the decision grid with a persistence rule
+   - anomaly-category diagnosis with subsystem-path evidence
 2. The core evidence:
-   - run-level anomaly separability by tier
-   - false alarms at a fixed decision budget
-   - time-to-detect under persistent alerting
-   - final-config mechanism diagnosis metrics
-   - tier and mechanism contribution figures
+   - benign-run versus anomalous-run separability by tier
+   - benign-run alerts at a fixed decision budget
+   - time-to-detect under the selected persistence rule
+   - final-config anomaly-category diagnosis metrics
+   - dominant-tier and anomaly-category contribution figures
    - optional crash-aware early-warning lead time when a crash manifest is available
 3. The portability story:
    - released dataset
@@ -37,8 +37,8 @@ Use the generated `results_itc_paper/` bundle for this material.
 The AI appendix can carry supporting material that is useful but too detailed for the main paper:
 
 1. Strict workload-holdout evaluation as the workload/software-drift proxy
-2. Per-case diagnosis summaries and confusion matrices
-3. Tier-contribution and mechanism-group tables by stressor
+2. Per-case anomaly-category summaries and confusion matrices
+3. Dominant-tier and anomaly-category tables by stressor
 4. Reduced-telemetry robustness across Tier-0, Tier-0/1, and Tier-0/1/2
 5. Optional tuning or sensitivity runs if included
 6. Feature inventory, case quality, and reproducibility files
@@ -69,9 +69,9 @@ Run the notebook from top to bottom. It produces:
 
 The updated portable analysis path now adds:
 
-- regime-conditioned benign modeling heads through tiered-telemetry configurations
-- sequential decision metrics including false alarms and time-to-detect
-- mechanism-group diagnosis summaries in addition to raw feature attribution
+- benign-trained behavioral micro-twin heads through tiered-telemetry configurations
+- sequential decision metrics including benign-run alerts and time-to-detect
+- anomaly-category summaries in addition to raw feature attribution
 - workload-holdout robustness as a portable drift proxy
 - optional crash-aware early-warning analysis that pairs the first persistent anomaly with a reproducible crash-evidence manifest
 - packaged draft and appendix artifact folders

@@ -5,7 +5,15 @@ title: DICE
 
 # DICE
 
-DICE is a digital twin-driven in-field continuous-test engine for Silicon Lifecycle Management (SLM). On the released Apple Silicon ITC study dataset, it uses tiered telemetry to support anomaly detection, diagnosis, subsystem localization, crash-aware early warning, and grounded LLM support.
+DICE is a digital twin-driven in-field continuous-test engine for Silicon Lifecycle Management (SLM). On the released Apple Silicon ITC study dataset, it uses tiered telemetry to support anomaly detection, anomaly-category diagnosis, subsystem-path evidence, crash-aware early warning, and an LLM-based triage layer.
+
+## Terminology
+
+- `Mixed profile`: Tier-0 plus the core Tier-1 and Tier-2 features.
+- `Full profile`: Tier-0 plus the full Tier-1 and Tier-2 feature sets.
+- `Anomaly evidence`: observed telemetry minus the behavioral micro-twin prediction.
+- `Subsystem path`: system-level path associated with recurring anomaly evidence.
+- `LLM-based triage layer`: interpretation layer that summarizes structured DICE evidence without changing alerts.
 
 ## Start Here
 
@@ -19,8 +27,10 @@ The main entry point is [`dice_results_analysis.ipynb`](https://github.com/ping8
 6. diagnosis and localization
 7. cross-workload robustness and tradeoffs
 8. crash-aware early warning
-9. grounded LLM support
+9. grounded LLM support (`LLM-based triage layer`)
 10. draft bundle, appendix exports, and reproducibility manifest
+
+The notebook headings remain unchanged where they reflect the saved notebook, but the repo docs use the draft's canonical terms for public descriptions.
 
 ## Quick Run
 
@@ -44,9 +54,9 @@ Run the notebook from top to bottom. It writes draft-aligned outputs automatical
 
 - main monitoring scorecards and profile comparisons
 - alert reliability and cross-workload robustness summaries
-- diagnosis, localization, onset, and hardware-context figures
+- anomaly-category, subsystem-path, onset, and hardware-context figures
 - crash-aware early-warning tables and evidence-card galleries when crash pilot data is available
-- grounded LLM support bundles and audit summaries
+- LLM-based triage bundles and audit summaries
 - appendix-ready exports and reproducibility manifests
 
 ## Documentation

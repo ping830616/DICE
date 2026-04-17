@@ -1,8 +1,22 @@
 # DICE
 
-DICE is a digital twin-driven in-field continuous-test engine for Silicon Lifecycle Management (SLM). On the released Apple Silicon ITC study dataset, it uses tiered telemetry to support anomaly detection, diagnosis, subsystem localization, crash-aware early warning, and grounded LLM support.
+DICE is a digital twin-driven in-field continuous-test engine for Silicon Lifecycle Management (SLM). On the released Apple Silicon ITC study dataset, it uses tiered telemetry to support anomaly detection, anomaly-category diagnosis, subsystem-path evidence, crash-aware early warning, and an LLM-based triage layer.
 
 The main public entry point is [dice_results_analysis.ipynb](dice_results_analysis.ipynb). A top-to-bottom notebook run regenerates the draft-aligned tables, figures, CSV summaries, appendix bundles, and reproducibility manifests under `data generation/dataset/ITC_M2Pro_DATA/`.
+
+## Draft Terminology
+
+The public repo docs use the same terminology defined in `itc_appendix_rewrite.tex`:
+
+- `Mixed profile`: Tier-0 plus the core Tier-1 and Tier-2 features; the compact practical deployment profile.
+- `Full profile`: Tier-0 plus the full Tier-1 and Tier-2 feature sets; the richer-observability reference.
+- `Behavioral micro-twin`: benign-trained predictive model of expected telemetry behavior.
+- `Anomaly evidence`: difference between observed telemetry and the micro-twin prediction.
+- `Block signature`: mean absolute anomaly evidence aggregated over one decision block.
+- `Persistence rule`: requirement for consecutive flagged blocks before issuing a full-run alert.
+- `Anomaly category`: broader abnormal-behavior type beyond the exact stressor label.
+- `Subsystem path`: system-level path associated with recurring anomaly evidence rather than a physical defect site.
+- `LLM-based triage layer`: interpretation layer that summarizes structured DICE evidence without changing scores, thresholds, or alerts.
 
 ## What Is In This Repository
 
@@ -32,14 +46,16 @@ The notebook now follows the same story as the draft:
 11. `8. Draft Bundle and Appendix Exports`
 12. `9. Reproducibility Manifest`
 
+The notebook section names stay unchanged where they mirror saved notebook headings, but the surrounding repo docs use `anomaly category`, `subsystem path`, and `LLM-based triage layer` as the canonical public terms.
+
 That mapping corresponds directly to the draft results sequence:
 
 - draft result `A`: run-level monitoring -> notebook section `2. Main DICE Performance`
 - draft result `B`: operational alerting reliability -> notebook section `3. Operational Alerting Reliability`
-- draft result `C`: diagnosis and localization -> notebook section `4. Diagnosis and Localization`
+- draft result `C`: anomaly-category diagnosis and subsystem-path evidence -> notebook section `4. Diagnosis and Localization`
 - draft result `D`: cross-workload robustness and tradeoffs -> notebook section `5. Cross-Workload Robustness and Design-Space Tradeoffs`
 - draft result `E`: crash-aware early warning -> notebook section `6. Crash-Aware Early Warning and Real Crash Localization`
-- draft result `F`: grounded LLM support -> notebook section `7. Grounded LLM Support`
+- draft result `F`: LLM-based triage layer -> notebook section `7. Grounded LLM Support`
 
 ## Reproducibility Quick Start
 
@@ -227,7 +243,7 @@ Main destinations:
 - `results_itc_paper/comparison/`: cross-profile summary tables and figures used across the paper.
 - `results_itc_paper/mixed/`: mixed-profile paper outputs.
 - `results_itc_paper/full/`: full-profile paper outputs.
-- `results_itc_appendix/`: appendix tables, figures, LLM export bundles, and supporting diagnostics.
+- `results_itc_appendix/`: appendix tables, figures, LLM-based triage exports, and supporting diagnostics.
 - `results_itc_crash_bridge/mixed/`: whole-study crash-bridge summaries when crash pilot data is available.
 - `results_portable/run_manifest.json` and `results_itc_paper/reproducibility/run_manifest.json`: reproducibility manifests and runtime context.
 
@@ -271,7 +287,7 @@ Useful supporting scripts include:
 - `tools/aggregate_itc_crash_bridge.py`: whole-study bridge between the ITC dataset and crash pilots
 - `tools/generate_crash_evidence_cards.py`: draft-ready crash evidence galleries
 - `tools/generate_macbook_hardware_context_figure.py`: standalone hardware-context figure generator with a repo-local output path
-- `tools/run_grounded_llm_local.py`: optional local scoring for the grounded LLM extension
+- `tools/run_grounded_llm_local.py`: optional local scoring for the LLM-based triage layer
 
 ## Local-Only Collections
 
