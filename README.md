@@ -41,7 +41,7 @@ The notebook now follows the same story as the draft:
 6. `4. Diagnosis and Localization`
 7. `5. Cross-Workload Robustness and Design-Space Tradeoffs`
 8. `6. Crash-Aware Early Warning and Real Crash Localization`
-9. `7. LLM-Based Support`
+9. `7. Grounded LLM Support (LLM-based triage layer)`
 10. `Appendix A` through `Appendix F`
 11. `8. Draft Bundle and Appendix Exports`
 12. `9. Reproducibility Manifest`
