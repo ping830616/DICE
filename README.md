@@ -155,7 +155,7 @@ A complete GitHub-provided clone requires all of the following:
 
 If GitHub returns an LFS quota or LFS budget error during `git clone` or `git lfs pull`, GitHub alone cannot currently provide a 100% complete clone of this repository.
 
-Crash-aware notebook sections need more than the lightweight manifest files. If `workload_crash_pilots/` is incomplete, sections that read pilot `crash_events.csv`, copied diagnostic reports, or crash logs will still need that payload to be materialized. In practice, `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix` require either:
+Crash-aware notebook sections need more than the lightweight manifest files. If workload_crash_pilots/ is incomplete, any section that reads pilot crash_events.csv, copied diagnostic reports, or crash logs will still require those underlying files to be available locally. In practice, 6. Crash-Aware Early Warning and Real Crash Localization, the crash-evidence gallery cells, and 8G. Workload-Matched Crash Matrix requires either:
 
 - a successful `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"`
 - or a local materialized copy of `workload_crash_pilots/` with `DATASET_ROOT` or `CRASH_PILOTS_ROOT` pointed at that copy
