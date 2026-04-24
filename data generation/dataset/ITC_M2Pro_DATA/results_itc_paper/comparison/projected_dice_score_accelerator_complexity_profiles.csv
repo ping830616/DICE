@@ -1,7 +1,0 @@
-feature_profile,profile_label,operating_point,choice_label,selection_source,avg_active_features,block_B_used,detect_rate,benign_alert_rate,median_ttd_s,sample_path_ops_per_block,block_end_ops_per_block,total_state_bytes,complexity_index
-full,Full,Recommended budget,10% budget,dse_feature_budget_summary.csv,8.0,90.0,0.9,0.25,91.0,1440.0,57.0,72,1.0
-full,Full,Recommended two-stage,Two-stage q=0.90,two_stage_dice_summary.csv,50.833333333333336,90.0,0.2,0.0,91.0,9150.0,356.83333333333337,332,5.885526315789473
-full,Full,Best overall config,Tier-0/1/2,profile_best_config_by_scenario.csv,75.0,90.0,0.95,0.0,91.0,13500.0,526.0,477,8.63607456140351
-mixed,Mixed,Recommended budget,10% budget,dse_feature_budget_summary.csv,7.0,45.0,0.4,0.25,71.0,630.0,50.0,66,1.0
-mixed,Mixed,Recommended two-stage,Two-stage q=0.90,two_stage_dice_summary.csv,49.75,45.0,0.25,0.0,45.0,4477.5,349.25,326,6.522455627705627
-mixed,Mixed,Best overall config,Tier-0/1/2,profile_best_config_by_scenario.csv,64.0,45.0,0.75,0.0,45.0,5760.0,449.0,410,8.35317316017316

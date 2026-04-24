@@ -1,7 +1,7 @@
 feature_profile,profile_label,config,config_label,likely_subsystem,likely_hardware_block,total_hit_count,n_top_features,max_feature_score
-mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,Unified memory and swap path,"16 GB unified memory, memory fabric, and SSD-backed swap path",48,4,7.034893039261581e-05
-mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,Neural Engine,16-core Neural Engine power domain,30,1,6.533103067618978e-05
-mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,Network / software I/O path,Host-visible networking stack and workload I/O behavior,17,3,8.199966773653968e-06
 mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,GPU / display path,19-core integrated GPU plus display engine,5,1,97.76099508599695
-full,Full,tier0_tier1_tier2,Tier-0/1/2,Unified memory and swap path,"16 GB unified memory, memory fabric, and SSD-backed swap path",90,5,0.001215589743075
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,Network / software I/O path,Host-visible networking stack and workload I/O behavior,17,3,8.199966773653968e-06
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,Neural Engine,16-core Neural Engine power domain,30,1,6.533103067618978e-05
+mixed,Mixed,tier0_tier1_tier2,Tier-0/1/2,Unified memory and swap path,"16 GB unified memory, memory fabric, and SSD-backed swap path",48,4,7.034893039261581e-05
 full,Full,tier0_tier1_tier2,Tier-0/1/2,Neural Engine,16-core Neural Engine power domain,10,1,0.0016037631976943
+full,Full,tier0_tier1_tier2,Tier-0/1/2,Unified memory and swap path,"16 GB unified memory, memory fabric, and SSD-backed swap path",90,5,0.001215589743075

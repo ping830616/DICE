@@ -37,9 +37,9 @@
   "n_cases_discovered": 24,
   "n_base_cases_discovered": 24,
   "config_runtime_seconds": {
-    "tier0": 2.358656791038811,
-    "tier0_tier1": 2.7064658330054954,
-    "tier0_tier1_tier2": 3.0893254580441862
+    "tier0": 2.463334959000349,
+    "tier0_tier1": 2.9644550001248717,
+    "tier0_tier1_tier2": 3.3081285839434713
   },
   "diagnosis_monotonic_tokens": [
     "uptime",

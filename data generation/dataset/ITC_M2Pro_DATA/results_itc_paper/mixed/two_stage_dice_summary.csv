@@ -1,5 +1,5 @@
 detection_rate,benign_alert_rate,auc_pr,roc_auc,median_time_to_detect_s,anomaly_detect_rate,benign_run_alert_rate,policy,policy_label,trigger_quantile,trigger_threshold,benign_trigger_rate,anomaly_trigger_rate,trigger_rate,avg_feature_budget,active_feature_budget,stage1_features,stage2_features,feature_profile,profile_label,stage2_config
-0.75,0.0,0.9591804774602762,0.85,45.0,0.75,0.0,Always Tier-0/1/2,Always Tier-0/1/2,,,1.0,1.0,1.0,64.0,64.0,46.0,64.0,mixed,Mixed,tier0_tier1_tier2
+0.75,0.0,0.9591804774602762,0.85,45.0,0.75,0.0,Always Tier-0/1/2,Always Tier-0/1/2,--,--,1.0,1.0,1.0,64.0,64.0,46.0,64.0,mixed,Mixed,tier0_tier1_tier2
 0.25,0.0,0.8353198462165853,0.5625,45.0,0.25,0.0,Two-stage q=0.90,Two-stage q=0.90,0.9,0.0326165227232992,0.0,0.25,0.20833333333333334,49.75,49.75,46.0,64.0,mixed,Mixed,tier0_tier1_tier2
 0.25,0.0,0.8353198462165853,0.5625,45.0,0.25,0.0,Two-stage q=0.95,Two-stage q=0.95,0.95,0.0326165227232992,0.0,0.25,0.20833333333333334,49.75,49.75,46.0,64.0,mixed,Mixed,tier0_tier1_tier2
 0.25,0.0,0.8353198462165853,0.5625,45.0,0.25,0.0,Two-stage q=0.98,Two-stage q=0.98,0.98,0.0326165227232992,0.0,0.25,0.20833333333333334,49.75,49.75,46.0,64.0,mixed,Mixed,tier0_tier1_tier2

@@ -1,5 +1,5 @@
 detection_rate,benign_alert_rate,auc_pr,roc_auc,median_time_to_detect_s,anomaly_detect_rate,benign_run_alert_rate,policy,policy_label,trigger_quantile,trigger_threshold,benign_trigger_rate,anomaly_trigger_rate,trigger_rate,avg_feature_budget,active_feature_budget,stage1_features,stage2_features,feature_profile,profile_label,stage2_config
-0.95,0.0,0.9897096908939014,0.95,91.0,0.95,0.0,Always Tier-0/1/2,Always Tier-0/1/2,,,1.0,1.0,1.0,75.0,75.0,46.0,75.0,full,Full,tier0_tier1_tier2
+0.95,0.0,0.9897096908939014,0.95,91.0,0.95,0.0,Always Tier-0/1/2,Always Tier-0/1/2,--,--,1.0,1.0,1.0,75.0,75.0,46.0,75.0,full,Full,tier0_tier1_tier2
 0.2,0.0,0.8677320647618635,0.75,91.0,0.2,0.0,Two-stage q=0.90,Two-stage q=0.90,0.9,0.0184969382570836,0.0,0.2,0.16666666666666666,50.833333333333336,50.833333333333336,46.0,75.0,full,Full,tier0_tier1_tier2
 0.2,0.0,0.8677320647618635,0.75,91.0,0.2,0.0,Two-stage q=0.95,Two-stage q=0.95,0.95,0.0184969382570836,0.0,0.2,0.16666666666666666,50.833333333333336,50.833333333333336,46.0,75.0,full,Full,tier0_tier1_tier2
 0.2,0.0,0.8677320647618635,0.75,91.0,0.2,0.0,Two-stage q=0.98,Two-stage q=0.98,0.98,0.0184969382570836,0.0,0.2,0.16666666666666666,50.833333333333336,50.833333333333336,46.0,75.0,full,Full,tier0_tier1_tier2

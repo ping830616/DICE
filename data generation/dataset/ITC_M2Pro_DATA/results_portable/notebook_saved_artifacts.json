@@ -63,7 +63,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/config_runtime_summary.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/config_runtime_summary.csv",
     "suffix":".csv",
-    "bytes":151
+    "bytes":150
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/diagnosis_mode_comparison.csv",
@@ -93,7 +93,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/overall_metrics.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/overall_metrics.csv",
     "suffix":".csv",
-    "bytes":721
+    "bytes":720
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full\/sequential_metrics.csv",
@@ -891,7 +891,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/config_runtime_summary.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/config_runtime_summary.csv",
     "suffix":".csv",
-    "bytes":148
+    "bytes":150
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/diagnosis_mode_comparison.csv",
@@ -921,7 +921,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/overall_metrics.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/overall_metrics.csv",
     "suffix":".csv",
-    "bytes":727
+    "bytes":729
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_dice_full_holdout\/sequential_metrics.csv",
@@ -1473,19 +1473,19 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/early_warning_merged_crash_events.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/early_warning_merged_crash_events.csv",
     "suffix":".csv",
-    "bytes":10007
+    "bytes":9927
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/early_warning_profile_summary.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/early_warning_profile_summary.csv",
     "suffix":".csv",
-    "bytes":328
+    "bytes":368
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/final_head_monitoring_profile_summary.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/final_head_monitoring_profile_summary.csv",
     "suffix":".csv",
-    "bytes":692
+    "bytes":691
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/final_head_score_distribution_profiles.csv",
@@ -1497,7 +1497,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/holdout_robustness_profiles.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/holdout_robustness_profiles.csv",
     "suffix":".csv",
-    "bytes":866
+    "bytes":901
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/industry_diagnosis_strength_profiles.csv",
@@ -1581,7 +1581,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/main_monitoring_profile_summary.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/main_monitoring_profile_summary.csv",
     "suffix":".csv",
-    "bytes":1507
+    "bytes":1506
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/mechanism_attribution_profiles.csv",
@@ -1605,7 +1605,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/profile_config_comparison.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/profile_config_comparison.csv",
     "suffix":".csv",
-    "bytes":4998
+    "bytes":4997
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/projected_dice_score_accelerator_complexity_profiles.csv",
@@ -1653,7 +1653,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/two_stage_dice_profiles.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/two_stage_dice_profiles.csv",
     "suffix":".csv",
-    "bytes":1815
+    "bytes":1823
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/uncertainty_holdout_profiles.csv",
@@ -1725,7 +1725,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/early_warning_by_workload.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/early_warning_by_workload.csv",
     "suffix":".csv",
-    "bytes":764
+    "bytes":1144
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/early_warning_case_summary.csv",
@@ -1737,19 +1737,19 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/early_warning_crash_alignment.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/early_warning_crash_alignment.csv",
     "suffix":".csv",
-    "bytes":8684
+    "bytes":15145
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/early_warning_crash_alignment_pilot_cases.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/early_warning_crash_alignment_pilot_cases.csv",
     "suffix":".csv",
-    "bytes":7913
+    "bytes":8192
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/early_warning_metrics.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/early_warning_metrics.csv",
     "suffix":".csv",
-    "bytes":523
+    "bytes":626
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/industry_localization_representative_cases.csv",
@@ -1839,7 +1839,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/two_stage_dice_summary.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/two_stage_dice_summary.csv",
     "suffix":".csv",
-    "bytes":1105
+    "bytes":1109
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/uncertainty_case_predictions.csv",
@@ -1917,7 +1917,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/early_warning_by_workload.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/early_warning_by_workload.csv",
     "suffix":".csv",
-    "bytes":772
+    "bytes":1096
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/early_warning_case_summary.csv",
@@ -1929,19 +1929,19 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/early_warning_crash_alignment.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/early_warning_crash_alignment.csv",
     "suffix":".csv",
-    "bytes":8385
+    "bytes":14832
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/early_warning_crash_alignment_pilot_cases.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/early_warning_crash_alignment_pilot_cases.csv",
     "suffix":".csv",
-    "bytes":7932
+    "bytes":8211
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/early_warning_metrics.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/early_warning_metrics.csv",
     "suffix":".csv",
-    "bytes":525
+    "bytes":602
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/industry_localization_representative_cases.csv",
@@ -1971,7 +1971,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/two_stage_dice_summary.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/two_stage_dice_summary.csv",
     "suffix":".csv",
-    "bytes":1050
+    "bytes":1054
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/uncertainty_case_predictions.csv",
@@ -2061,7 +2061,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_portable\/notebook_saved_artifacts.csv",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_portable\/notebook_saved_artifacts.csv",
     "suffix":".csv",
-    "bytes":120508
+    "bytes":129720
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_analysis\/figures\/fig_af_timeseries_tier0.png",
@@ -2463,7 +2463,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_case_hotspots_profiles.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_case_hotspots_profiles.png",
     "suffix":".png",
-    "bytes":217536
+    "bytes":287194
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_case_onset_and_hotspots_profiles.png",
@@ -2475,13 +2475,13 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_case_onset_profiles.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_case_onset_profiles.png",
     "suffix":".png",
-    "bytes":281371
+    "bytes":370844
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_case_top_features_profiles.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_case_top_features_profiles.png",
     "suffix":".png",
-    "bytes":648761
+    "bytes":848414
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_conformal_reliability_profiles.png",
@@ -2511,7 +2511,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_hardware_hotspots_profiles.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_hardware_hotspots_profiles.png",
     "suffix":".png",
-    "bytes":244414
+    "bytes":384533
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_holdout_profile_comparison.png",
@@ -2523,19 +2523,19 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_llm_case_grounding_heatmap.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_llm_case_grounding_heatmap.png",
     "suffix":".png",
-    "bytes":742578
+    "bytes":758789
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_llm_dice_carryover_by_category.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_llm_dice_carryover_by_category.png",
     "suffix":".png",
-    "bytes":289603
+    "bytes":299496
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_llm_evidence_to_note_triptych.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_llm_evidence_to_note_triptych.png",
     "suffix":".png",
-    "bytes":891864
+    "bytes":900362
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_llm_evidence_to_note_triptych_legend.png",
@@ -2601,7 +2601,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_scenario_onset_profiles.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_scenario_onset_profiles.png",
     "suffix":".png",
-    "bytes":242577
+    "bytes":293720
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_tuning_parameter_sweep_diagnostics_legend.png",
@@ -2619,7 +2619,7 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_workload_transfer_profile_comparison.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/comparison\/figures\/fig_workload_transfer_profile_comparison.png",
     "suffix":".png",
-    "bytes":142803
+    "bytes":227759
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/crash_evidence_cards\/figures\/BROWSER__BRANCH.png",
@@ -2661,25 +2661,25 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/crash_evidence_cards_pilot_cases\/figures\/BROWSER__BRANCH.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/crash_evidence_cards_pilot_cases\/figures\/BROWSER__BRANCH.png",
     "suffix":".png",
-    "bytes":543988
+    "bytes":536543
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/crash_evidence_cards_pilot_cases\/figures\/PY_AI__CACHE.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/crash_evidence_cards_pilot_cases\/figures\/PY_AI__CACHE.png",
     "suffix":".png",
-    "bytes":538623
+    "bytes":530864
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/crash_evidence_cards_pilot_cases\/figures\/PY_STATS__ATOMIC.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/crash_evidence_cards_pilot_cases\/figures\/PY_STATS__ATOMIC.png",
     "suffix":".png",
-    "bytes":541348
+    "bytes":533131
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/crash_evidence_cards_pilot_cases\/figures\/VIDEO_SW__MEMBW.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/crash_evidence_cards_pilot_cases\/figures\/VIDEO_SW__MEMBW.png",
     "suffix":".png",
-    "bytes":547572
+    "bytes":539359
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_detection_latency.png",
@@ -2691,19 +2691,19 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_early_warning_by_workload.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_early_warning_by_workload.png",
     "suffix":".png",
-    "bytes":25334
+    "bytes":77292
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_early_warning_lead_time_distribution.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_early_warning_lead_time_distribution.png",
     "suffix":".png",
-    "bytes":23411
+    "bytes":69815
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_early_warning_timeline.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_early_warning_timeline.png",
     "suffix":".png",
-    "bytes":274109
+    "bytes":272393
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/fig_early_warning_timeline_pilot_cases.png",
@@ -2751,37 +2751,37 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0.png",
     "suffix":".png",
-    "bytes":1746706
+    "bytes":1778366
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_legend.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_legend.png",
     "suffix":".png",
-    "bytes":66969
+    "bytes":71581
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1.png",
     "suffix":".png",
-    "bytes":1750002
+    "bytes":1774332
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1_legend.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1_legend.png",
     "suffix":".png",
-    "bytes":66969
+    "bytes":71581
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1_tier2.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1_tier2.png",
     "suffix":".png",
-    "bytes":1772179
+    "bytes":1796031
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1_tier2_legend.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_industry_localization_tier0_tier1_tier2_legend.png",
     "suffix":".png",
-    "bytes":66969
+    "bytes":71581
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/full\/figures\/fig_tuning_parameter_sweep_diagnostics.png",
@@ -2835,43 +2835,43 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/crash_evidence_cards_pilot_cases\/figures\/BROWSER__BRANCH.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/crash_evidence_cards_pilot_cases\/figures\/BROWSER__BRANCH.png",
     "suffix":".png",
-    "bytes":550645
+    "bytes":542178
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/crash_evidence_cards_pilot_cases\/figures\/PY_AI__CACHE.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/crash_evidence_cards_pilot_cases\/figures\/PY_AI__CACHE.png",
     "suffix":".png",
-    "bytes":544761
+    "bytes":536673
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/crash_evidence_cards_pilot_cases\/figures\/PY_STATS__ATOMIC.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/crash_evidence_cards_pilot_cases\/figures\/PY_STATS__ATOMIC.png",
     "suffix":".png",
-    "bytes":544802
+    "bytes":536280
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/crash_evidence_cards_pilot_cases\/figures\/VIDEO_SW__MEMBW.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/crash_evidence_cards_pilot_cases\/figures\/VIDEO_SW__MEMBW.png",
     "suffix":".png",
-    "bytes":545887
+    "bytes":537663
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/fig_early_warning_by_workload.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/fig_early_warning_by_workload.png",
     "suffix":".png",
-    "bytes":25334
+    "bytes":77292
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/fig_early_warning_lead_time_distribution.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/fig_early_warning_lead_time_distribution.png",
     "suffix":".png",
-    "bytes":23411
+    "bytes":68954
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/fig_early_warning_timeline.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/fig_early_warning_timeline.png",
     "suffix":".png",
-    "bytes":271864
+    "bytes":270333
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/fig_early_warning_timeline_pilot_cases.png",
@@ -2889,37 +2889,37 @@
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0.png",
     "suffix":".png",
-    "bytes":1851030
+    "bytes":1874450
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_legend.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_legend.png",
     "suffix":".png",
-    "bytes":66969
+    "bytes":71581
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1.png",
     "suffix":".png",
-    "bytes":1881599
+    "bytes":1906843
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1_legend.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1_legend.png",
     "suffix":".png",
-    "bytes":66969
+    "bytes":71581
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1_tier2.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1_tier2.png",
     "suffix":".png",
-    "bytes":1912715
+    "bytes":1943319
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1_tier2_legend.png",
     "absolute_path":"\/Users\/hsiaopingni\/DICE\/data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_industry_localization_tier0_tier1_tier2_legend.png",
     "suffix":".png",
-    "bytes":66969
+    "bytes":71581
   },
   {
     "relative_path":"data generation\/dataset\/ITC_M2Pro_DATA\/results_itc_paper\/mixed\/figures\/fig_tuning_parameter_sweep_diagnostics.png",

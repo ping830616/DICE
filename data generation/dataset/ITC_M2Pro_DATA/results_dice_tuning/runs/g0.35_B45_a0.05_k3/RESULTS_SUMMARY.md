@@ -8,9 +8,9 @@
 ## Overall
 ```text
 feature_profile            config  n_cases  n_features  fit_eval_seconds  roc_auc   pr_auc  roc_auc_wc  pr_auc_wc  fpr_run_alert  tpr_run_alert  median_nominal_score  median_anomaly_score  median_nominal_score_wc  median_anomaly_score_wc
-          mixed             tier0       24          46          2.428952   0.8000 0.931899         1.0        1.0            0.0            0.3              0.005889              0.012124                      0.0                 0.006696
-          mixed       tier0_tier1       24          57          2.825465   0.8250 0.951460         1.0        1.0            0.0            0.5              0.000047              0.000116                      0.0                 0.000054
-          mixed tier0_tier1_tier2       24          64          3.143032   0.8375 0.957016         1.0        1.0            0.0            0.5              0.000049              0.000126                      0.0                 0.000061
+          mixed             tier0       24          46          2.327942   0.8000 0.931899         1.0        1.0            0.0            0.3              0.005889              0.012124                      0.0                 0.006696
+          mixed       tier0_tier1       24          57          2.851133   0.8250 0.951460         1.0        1.0            0.0            0.5              0.000047              0.000116                      0.0                 0.000054
+          mixed tier0_tier1_tier2       24          64          4.032719   0.8375 0.957016         1.0        1.0            0.0            0.5              0.000049              0.000126                      0.0                 0.000061
 ```
 
 ## Final Config Stressors

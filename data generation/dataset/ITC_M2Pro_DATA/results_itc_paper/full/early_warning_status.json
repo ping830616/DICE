@@ -3,8 +3,8 @@
   "out_dir": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/full",
   "config": "tier0_tier1_tier2",
   "feature_profile": "full",
-  "crash_manifest": "",
-  "crash_manifest_exists": false,
+  "crash_manifest": "/Users/hsiaopingni/DICE/data generation/dataset/ITC_M2Pro_DATA/results_itc_paper/comparison/early_warning_merged_crash_events.csv",
+  "crash_manifest_exists": true,
   "n_cases": 24,
-  "n_observed_crashes": 0
+  "n_observed_crashes": 4
 }

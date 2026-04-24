@@ -8,8 +8,8 @@
 - Workload: PY_STATS
 - Stressor: ATOMIC
 - Warning time: 91.0 s
-- Crash time: 196.7 s
-- Lead time: 105.7 s
+- Crash time: 194.5 s
+- Lead time: 103.5 s
 - Warning source: first_persistent_alert
 - Crash source: diagnostic_report,screenshot
 - Log evidence used: raw pilot collection log
@@ -47,4 +47,4 @@ generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/data_workload_crash_pilo
 
 ## Notes
 
-No crash manifest was supplied for this run.
+nan
