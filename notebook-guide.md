@@ -19,29 +19,42 @@
 3. `2B. Mixed vs Full Deployment Summary`
 4. `2. Main DICE Performance`
 5. `3. Operational Alerting Reliability`
-6. `4. Diagnosis and Localization`
+6. `4. Diagnosis and Anomaly Localization`
 7. `5. Cross-Workload Robustness and Design-Space Tradeoffs`
 8. `6. Crash-Aware Early Warning and Real Crash Localization`
-9. `7. Grounded LLM Support` (`LLM-based triage layer`)
+9. `7. LLM-based triage layer`
 10. `Appendix A` through `Appendix F`
 11. `8. Draft Bundle and Appendix Exports`
 12. `9. Reproducibility Manifest`
+
+## Later Optional Sections
+
+After the main draft-facing path, the notebook also includes:
+
+- `Host Platform and System-Level Interpretation`
+- `Crash Evidence Cards and Artifact Gallery`
+- `Crash Replay and Supplemental Crash Studies`
+- `Workload-Matched Crash Matrix`
+- `Feature-Level Warning and Crash Trajectories`
+- `ITC-Study Crash Bridge Overview`
+
+These sections extend the core paper story with crash-specific and system-level analysis. Some of them require a materialized `workload_crash_pilots/` payload.
 
 ## Draft Mapping
 
 - draft result `A`: `2. Main DICE Performance`
 - draft result `B`: `3. Operational Alerting Reliability`
-- draft result `C`: anomaly-category diagnosis and subsystem-path evidence -> `4. Diagnosis and Localization`
+- draft result `C`: anomaly-category diagnosis and subsystem-path evidence -> `4. Diagnosis and Anomaly Localization`
 - draft result `D`: `5. Cross-Workload Robustness and Design-Space Tradeoffs`
 - draft result `E`: `6. Crash-Aware Early Warning and Real Crash Localization`
-- draft result `F`: LLM-based triage layer -> `7. Grounded LLM Support`
+- draft result `F`: LLM-based triage layer -> `7. LLM-based triage layer`
 
 The notebook section labels remain unchanged where they match the saved notebook, but repo-facing descriptions use `anomaly category`, `subsystem path`, and `LLM-based triage layer`.
 
 ## Main Output Roots
 
 The notebook saves results automatically under `data generation/dataset/ITC_M2Pro_DATA/`.
-These output folders are generated locally and are ignored by Git, so they will appear after you run the notebook rather than in a fresh clone.
+The main draft-aligned `results_*` folders are tracked in Git as a reproducible baseline. Re-running the notebook refreshes those tracked outputs locally, while crash-pilot-dependent artifacts still depend on a materialized `workload_crash_pilots/` tree.
 
 - `results_itc_paper/comparison/`: cross-profile tables and figures
 - `results_itc_paper/mixed/`: mixed-profile outputs

@@ -29,10 +29,11 @@ Not guaranteed to be identical on every machine:
 ```bash
 cd ~/Documents
 git lfs install
-git clone https://github.com/ping830616/DICE.git
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 cd DICE
 conda env create -f environment.yml
 conda activate dice-results
+python scripts/validate_env.py --repo-root "$PWD" --dataset-root "$PWD/data generation/dataset/ITC_M2Pro_DATA"
 export DICE_REPO_ROOT="$PWD"
 export PYTHONHASHSEED=0
 export MPLCONFIGDIR="$PWD/.mplconfig"
@@ -61,6 +62,7 @@ cd DICE
 git fetch origin
 git pull --ff-only origin main
 conda env update -f environment.yml --prune
+conda run -n dice-results python scripts/validate_env.py --repo-root "$PWD" --dataset-root "$PWD/data generation/dataset/ITC_M2Pro_DATA"
 conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 ```
 
@@ -69,9 +71,11 @@ conda run -n dice-results jupyter lab dice_results_analysis.ipynb
 On the server:
 
 ```bash
-git clone https://github.com/ping830616/DICE.git
+git lfs install
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 cd DICE
 conda env create -f environment.yml
+conda run -n dice-results python scripts/validate_env.py --repo-root "$PWD" --dataset-root "$PWD/data generation/dataset/ITC_M2Pro_DATA"
 conda run -n dice-results jupyter lab --no-browser --ip 0.0.0.0 --port 8888 dice_results_analysis.ipynb
 ```
 

@@ -38,24 +38,24 @@ The notebook now follows the same story as the draft:
 3. `2B. Mixed vs Full Deployment Summary`
 4. `2. Main DICE Performance`
 5. `3. Operational Alerting Reliability`
-6. `4. Diagnosis and Localization`
+6. `4. Diagnosis and Anomaly Localization`
 7. `5. Cross-Workload Robustness and Design-Space Tradeoffs`
 8. `6. Crash-Aware Early Warning and Real Crash Localization`
-9. `7. Grounded LLM Support (LLM-based triage layer)`
+9. `7. LLM-based triage layer`
 10. `Appendix A` through `Appendix F`
 11. `8. Draft Bundle and Appendix Exports`
 12. `9. Reproducibility Manifest`
 
-The notebook section names stay unchanged where they mirror saved notebook headings, but the surrounding repo docs use `anomaly category`, `subsystem path`, and `LLM-based triage layer` as the canonical public terms.
+After the draft-facing core path, the notebook also includes optional host-platform interpretation, crash-evidence galleries, supplemental crash studies, workload-matched crash pilots, feature-level crash trajectories, and an ITC-study crash bridge. The surrounding repo docs use `anomaly category`, `subsystem path`, and `LLM-based triage layer` as the canonical public terms.
 
 That mapping corresponds directly to the draft results sequence:
 
 - draft result `A`: run-level monitoring -> notebook section `2. Main DICE Performance`
 - draft result `B`: operational alerting reliability -> notebook section `3. Operational Alerting Reliability`
-- draft result `C`: anomaly-category diagnosis and subsystem-path evidence -> notebook section `4. Diagnosis and Localization`
+- draft result `C`: anomaly-category diagnosis and subsystem-path evidence -> notebook section `4. Diagnosis and Anomaly Localization`
 - draft result `D`: cross-workload robustness and tradeoffs -> notebook section `5. Cross-Workload Robustness and Design-Space Tradeoffs`
 - draft result `E`: crash-aware early warning -> notebook section `6. Crash-Aware Early Warning and Real Crash Localization`
-- draft result `F`: LLM-based triage layer -> notebook section `7. Grounded LLM Support`
+- draft result `F`: LLM-based triage layer -> notebook section `7. LLM-based triage layer`
 
 ## Reproducibility Quick Start
 
@@ -63,7 +63,7 @@ For a standard reproducibility run on a laptop or server, clone the repo into an
 
 ```bash
 git lfs install
-GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git 
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 cd DICE
 conda env create -f environment.yml
 conda activate dice-results
@@ -112,7 +112,7 @@ Clone DICE into any directory where you want to keep the repo and generated outp
 
 ```bash
 git lfs install
-git clone https://github.com/ping830616/DICE.git 
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 cd DICE
 conda env create -f environment.yml
 conda activate dice-results
@@ -155,7 +155,7 @@ A complete GitHub-provided clone requires all of the following:
 
 If GitHub returns an LFS quota or LFS budget error during `git clone` or `git lfs pull`, GitHub alone cannot currently provide a 100% complete clone of this repository.
 
-Crash-aware notebook sections need more than the lightweight manifest files. If workload_crash_pilots/ is incomplete, any section that reads pilot crash_events.csv, copied diagnostic reports, or crash logs will still require those underlying files to be available locally. In practice, 6. Crash-Aware Early Warning and Real Crash Localization, the crash-evidence gallery cells, and 8G. Workload-Matched Crash Matrix requires either:
+Crash-aware notebook sections need more than the lightweight manifest files. If `workload_crash_pilots/` is incomplete, any section that reads pilot `crash_events.csv`, copied diagnostic reports, or crash logs will still require those underlying files to be available locally. In practice, `6. Crash-Aware Early Warning and Real Crash Localization`, the crash-evidence gallery cells, and `8G. Workload-Matched Crash Matrix` require either:
 
 - a successful `git lfs pull --include="data generation/dataset/ITC_M2Pro_DATA/workload_crash_pilots/**"`
 - or a local materialized copy of `workload_crash_pilots/` with `DATASET_ROOT` or `CRASH_PILOTS_ROOT` pointed at that copy

@@ -24,24 +24,27 @@ The main entry point is [`dice_results_analysis.ipynb`](https://github.com/ping8
 3. mixed vs full profile summary
 4. main monitoring performance
 5. operational alerting reliability
-6. diagnosis and localization
+6. diagnosis and anomaly localization
 7. cross-workload robustness and tradeoffs
 8. crash-aware early warning
-9. grounded LLM support (`LLM-based triage layer`)
+9. LLM-based triage layer
 10. draft bundle, appendix exports, and reproducibility manifest
 
-The notebook headings remain unchanged where they reflect the saved notebook, but the repo docs use the draft's canonical terms for public descriptions.
+After that core draft-facing path, the notebook also includes optional host-platform interpretation, crash-evidence galleries, supplemental crash studies, workload-matched crash pilots, feature-level crash trajectories, and an ITC-study crash bridge. The repo docs use the draft's canonical terms for public descriptions.
 
 ## Quick Run
 
 ```bash
-git clone https://github.com/ping830616/DICE.git
+git lfs install
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/ping830616/DICE.git
 cd DICE
 conda env create -f environment.yml
 conda activate dice-results
 python scripts/validate_env.py --repo-root "$PWD" --dataset-root "$PWD/data generation/dataset/ITC_M2Pro_DATA"
 jupyter lab dice_results_analysis.ipynb
 ```
+
+If you need the crash-aware sections too, materialize `workload_crash_pilots/` afterward with Git LFS as described in the main README.
 
 Run the notebook from top to bottom. It writes draft-aligned outputs automatically under:
 
