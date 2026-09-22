@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import textwrap
+import warnings
 from pathlib import Path
 
 import matplotlib
@@ -25,7 +26,83 @@ GENERIC_CRASH_COLUMNS = {"uptime_s"}
 def load_csv(path: Path) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame()
+    with path.open(encoding="utf-8") as stream:
+        if stream.readline().strip() == "version https://git-lfs.github.com/spec/v1":
+            warnings.warn(f"CSV contents unavailable (Git LFS pointer): {path}", RuntimeWarning)
+            return pd.DataFrame()
     return pd.read_csv(path)
+
+
+def resolve_direct_pilot_warning(pilot_warning_df: pd.DataFrame, abort_case: str) -> pd.Series:
+    """Resolve an exact pilot case; original-run reference rows are not pilot evidence."""
+    if pilot_warning_df.empty or "case_id" not in pilot_warning_df or not abort_case.endswith("_ABORT"):
+        return pd.Series(dtype=object)
+    matched = pilot_warning_df[pilot_warning_df["case_id"].astype(str) == abort_case]
+    if len(matched) > 1:
+        raise ValueError(f"Ambiguous pilot warning for {abort_case}: select one configuration and collection phase.")
+    return matched.iloc[0] if not matched.empty else pd.Series(dtype=object)
+
+
+def load_direct_pilot_warning(pilot_warning_csv: Path, abort_case: str) -> tuple[pd.Series, str]:
+    """Use alternate direct pilot exports, never an original-run reference fallback."""
+    candidates = [pilot_warning_csv, *[
+        pilot_warning_csv.with_name(name)
+        for name in ("early_warning_crash_alignment.csv", "early_warning_crash_alignment_display.csv")
+    ]]
+    for path in candidates:
+        row = resolve_direct_pilot_warning(load_csv(path), abort_case)
+        if not row.empty:
+            return row, str(path)
+    return pd.Series(dtype=object), ""
+
+
+def pilot_timing_provenance(
+    record: dict[str, object],
+    warning_row: pd.Series,
+    alignment_row: pd.Series | None = None,
+) -> dict[str, object]:
+    """Keep saved timing, while exposing unavailable or conflicting direct evidence."""
+    def number(value: object) -> float:
+        return float(pd.to_numeric(pd.Series([value]), errors="coerce").iloc[0])
+
+    alignment_row = alignment_row if alignment_row is not None else pd.Series(dtype=object)
+    saved_warning = number(record.get("crash_pilot_anomaly_warning_s"))
+    direct_warning = number(warning_row.get("first_warning_s"))
+    saved_crash = number(record.get("crash_time_s"))
+    direct_crash = number(alignment_row.get("crash_time_s"))
+    saved_lead = number(record.get("lead_time_s"))
+    warning_delta = direct_warning - saved_warning
+    crash_delta = direct_crash - saved_crash
+    conflicts = []
+    if np.isfinite(warning_delta) and not np.isclose(warning_delta, 0.0, atol=1e-6):
+        conflicts.append("warning_time_conflict")
+    if np.isfinite(crash_delta) and not np.isclose(crash_delta, 0.0, atol=1e-6):
+        conflicts.append("crash_time_conflict")
+    lead_delta = saved_lead - (saved_crash - saved_warning)
+    if np.isfinite(lead_delta) and not np.isclose(lead_delta, 0.0, atol=1e-6):
+        conflicts.append("lead_time_conflict")
+    direct_event = alignment_row if not alignment_row.empty else warning_row
+    return {
+        "pilot_timing_basis": "saved_pilot_analysis",
+        "pilot_warning_evidence_status": "direct_pilot_record" if not warning_row.empty else "unavailable",
+        "pilot_warning_time_status": (
+            "agrees_with_direct_pilot" if np.isfinite(warning_delta) and np.isclose(warning_delta, 0.0, atol=1e-6)
+            else "conflict" if np.isfinite(warning_delta) else "saved_value_unverified"
+        ),
+        "pilot_crash_time_status": (
+            "agrees_with_direct_pilot" if np.isfinite(crash_delta) and np.isclose(crash_delta, 0.0, atol=1e-6)
+            else "conflict" if np.isfinite(crash_delta) else "saved_value_unverified"
+        ),
+        "pilot_timing_conflicts": ";".join(conflicts),
+        "direct_pilot_warning_s": direct_warning,
+        "direct_pilot_crash_time_s": direct_crash,
+        "direct_minus_saved_warning_s": warning_delta,
+        "direct_minus_saved_crash_s": crash_delta,
+        "direct_pilot_case_id": str(direct_event.get("case_id", "")),
+        "direct_pilot_collection_phase": str(direct_event.get("phase", "")),
+        "direct_pilot_run_start_utc": str(direct_event.get("run_start_utc", "")),
+        "direct_pilot_crash_time_utc": str(direct_event.get("crash_time_utc", "")),
+    }
 
 
 def workload_key(name: str) -> tuple[int, str]:
@@ -81,6 +158,7 @@ def pick_peak_features(feature_df: pd.DataFrame) -> dict[str, object]:
         "crash_peak_feature_2_peak_abs_z": float("nan"),
         "crash_peak_feature_2_first_divergence_s": float("nan"),
         "crash_peak_feature_2_value_pre_crash": float("nan"),
+        "crash_peak_scope": "unavailable",
     }
     if feature_df.empty:
         return cols
@@ -91,7 +169,13 @@ def pick_peak_features(feature_df: pd.DataFrame) -> dict[str, object]:
 
     abort_df["is_generic"] = abort_df["column_name"].astype(str).isin(GENERIC_CRASH_COLUMNS)
     abort_df["missing_divergence"] = ~pd.to_numeric(abort_df["feature_first_divergence_s"], errors="coerce").notna()
-    abort_df["peak_abs_z"] = pd.to_numeric(abort_df["peak_abs_z"], errors="coerce")
+    # New exports explicitly bound the peak to the observed crash. Legacy
+    # peak_abs_z values cover the entire recording and must retain that label.
+    pre_crash = "pre_crash_peak_abs_z" in abort_df.columns
+    peak_column = "pre_crash_peak_abs_z" if pre_crash else "peak_abs_z"
+    cols["crash_peak_scope"] = "pre_crash" if pre_crash else "recorded_series_unrestricted"
+    abort_df["peak_abs_z"] = pd.to_numeric(abort_df[peak_column], errors="coerce")
+    abort_df = abort_df[np.isfinite(abort_df["peak_abs_z"])].copy()
     abort_df["feature_first_divergence_s"] = pd.to_numeric(abort_df["feature_first_divergence_s"], errors="coerce")
     abort_df["feature_value_pre_crash"] = pd.to_numeric(abort_df["feature_value_pre_crash"], errors="coerce")
     abort_df = abort_df.sort_values(
@@ -116,12 +200,13 @@ def collect_pilot_rows(pilot_root: Path, profile: str) -> list[dict[str, object]
     bridge_csv = feature_dir / "warning_bridge_summary.csv"
     feature_csv = feature_dir / "feature_onset_summary.csv"
     pilot_warning_csv = pilot_root / "results_workload_crash_paper" / profile / "early_warning_case_summary.csv"
+    pilot_alignment_csv = pilot_warning_csv.with_name("early_warning_crash_alignment.csv")
     if not bridge_csv.exists():
         return []
 
     bridge_df = load_csv(bridge_csv)
     feature_df = load_csv(feature_csv)
-    pilot_warning_df = load_csv(pilot_warning_csv)
+    pilot_alignment_df = load_csv(pilot_alignment_csv)
     rows: list[dict[str, object]] = []
 
     for record in bridge_df.to_dict(orient="records"):
@@ -135,8 +220,10 @@ def collect_pilot_rows(pilot_root: Path, profile: str) -> list[dict[str, object]
         ].copy()
         peak_cols = pick_peak_features(case_feature_df)
 
-        abort_warning = pilot_warning_df[pilot_warning_df["case_id"].astype(str) == abort_case]
-        abort_row = abort_warning.iloc[0] if not abort_warning.empty else pd.Series(dtype=object)
+        abort_row, warning_source_csv = load_direct_pilot_warning(pilot_warning_csv, abort_case)
+        alignment_row = resolve_direct_pilot_warning(pilot_alignment_df, abort_case)
+        if alignment_row.empty and "crash_time_s" in abort_row:
+            alignment_row = abort_row
 
         feature_storyboard_path = feature_dir / "figures" / f"fig_feature_storyboard__{workload.lower()}__{stressor.lower()}.png"
 
@@ -145,6 +232,12 @@ def collect_pilot_rows(pilot_root: Path, profile: str) -> list[dict[str, object]
                 "pilot_root_name": pilot_root.name,
                 "pilot_root_path": str(pilot_root),
                 "pilot_root_mtime": float(bridge_csv.stat().st_mtime),
+                "bridge_summary_source_csv": str(bridge_csv),
+                "pilot_warning_source_csv": warning_source_csv,
+                "pilot_alignment_source_csv": (
+                    str(pilot_alignment_csv) if not pilot_alignment_df.empty else warning_source_csv
+                ) if not alignment_row.empty else "",
+                **pilot_timing_provenance(record, abort_row, alignment_row),
                 "workload": workload,
                 "stressor": stressor,
                 "original_case_id": str(record.get("original_case_id", "") or ""),
@@ -225,6 +318,9 @@ def build_report(out_path: Path, profile: str, full_df: pd.DataFrame, matched_df
         f"- Original ITC cases: `{int(len(full_df))}`",
         f"- Matched crash-pilot cases: `{int(len(matched_df))}`",
         f"- Matched workloads: `{', '.join(sorted(matched_df['workload'].astype(str).unique()))}`" if not matched_df.empty else "- Matched workloads: none",
+        "",
+        "Pilot warning evidence uses exact abort-case records; original-run warnings are separate references.",
+        "The CSV records timing provenance and conflicts. Legacy peak features cover the whole recording unless `crash_peak_scope` is `pre_crash`.",
         "",
     ]
     if matched_df.empty:
@@ -313,7 +409,7 @@ def plot_feature_table(matched_df: pd.DataFrame, out_path: Path) -> None:
         "Case",
         "Original ITC warning\nfeatures",
         "Crash-pilot warning\nfeatures",
-        "Abort pre-crash\npeak features",
+        "Peak features\n(scope shown)",
         "Lead time",
     ]
     widths = [0.20, 0.24, 0.24, 0.24, 0.08]
@@ -333,6 +429,8 @@ def plot_feature_table(matched_df: pd.DataFrame, out_path: Path) -> None:
     for row_idx, row in enumerate(plot_df.itertuples(index=False)):
         y0 = rows - row_idx - 1
         fill = "#F8FAFC" if row_idx % 2 == 0 else "#FFFFFF"
+        peak_scope = getattr(row, "crash_peak_scope", "recorded_series_unrestricted")
+        peak_scope_label = "pre-crash" if peak_scope == "pre_crash" else "whole record"
         values = [
             f"{row.workload} / {row.stressor}",
             wrap_cell(format_feature_pair(getattr(row, "original_top_feature_1", ""), getattr(row, "original_top_feature_2", ""))),
@@ -346,7 +444,7 @@ def plot_feature_table(matched_df: pd.DataFrame, out_path: Path) -> None:
                 format_feature_pair(
                     getattr(row, "crash_peak_feature_1", ""),
                     getattr(row, "crash_peak_feature_2", ""),
-                )
+                ) + f"\n[{peak_scope_label}]"
             ),
             f"{float(getattr(row, 'lead_time_s', np.nan)):.1f}s" if np.isfinite(float(getattr(row, "lead_time_s", np.nan))) else "—",
         ]

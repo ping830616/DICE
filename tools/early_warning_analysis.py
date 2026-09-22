@@ -291,6 +291,19 @@ def normalize_crash_manifest(path: Path | None) -> pd.DataFrame:
     out["system_log_path"] = resolve("system_log_path", "log_show_path", default="")
     out["screenshot_path"] = resolve("screenshot_path", default="")
     out["evidence_note"] = resolve("evidence_note", "notes", default="")
+    # The notebook may map a separate pilot onto an original study case.
+    # Preserve that provenance, including nominal cases whose IDs are unchanged.
+    out["pilot_case_id_original"] = resolve("pilot_case_id_original", "pilot_case_id", default="").fillna("")
+    out["pilot_name"] = resolve("pilot_name", default="").fillna("")
+    alignment = resolve("timing_alignment", default="").fillna("").astype(str)
+    inferred_alignment = np.where(
+        out["pilot_case_id_original"].astype(str).str.len().gt(0),
+        "retrospective_cross_execution", "same_execution",
+    )
+    out["timing_alignment"] = alignment.where(alignment.ne(""), inferred_alignment)
+    valid_alignments = {"same_execution", "retrospective_cross_execution", "unobserved"}
+    if not set(out["timing_alignment"]).issubset(valid_alignments):
+        raise ValueError("Unknown timing_alignment in crash manifest")
 
     inferred_crash = (
         out["crash_time_s"].notna()
@@ -320,7 +333,10 @@ def normalize_crash_manifest(path: Path | None) -> pd.DataFrame:
             return crash_rows.iloc[0]
         return part.iloc[0]
 
-    grouped = [pick_case_row(part) for _, part in out.groupby("case_id", sort=False)]
+    # A remapped pilot and a directly paired outcome can share the same textual
+    # case ID. Never let the pilot's crash row replace the direct observation.
+    origin_keys = ["case_id", "timing_alignment", "pilot_case_id_original", "pilot_name"]
+    grouped = [pick_case_row(part) for _, part in out.groupby(origin_keys, sort=False, dropna=False)]
     norm = pd.DataFrame(grouped).reset_index(drop=True)
     return norm.sort_values("case_id").reset_index(drop=True)
 
@@ -349,7 +365,16 @@ def merge_warning_and_crash(warning_df: pd.DataFrame, crash_df: pd.DataFrame) ->
         merged["crash_detected"] = pd.to_numeric(merged["crash_detected"], errors="coerce").fillna(0).astype(int)
         merged["monitor_duration_s"] = pd.to_numeric(merged["monitor_duration_s"], errors="coerce")
 
-    merged["lead_time_s"] = merged["crash_time_s"] - merged["first_warning_s"]
+    if "timing_alignment" not in merged:
+        merged["timing_alignment"] = "same_execution"
+    merged["timing_alignment"] = merged["timing_alignment"].fillna("unobserved")
+    merged.loc[merged["crash_outcome_observed"].eq(0), "timing_alignment"] = "unobserved"
+    same_execution = merged["timing_alignment"].eq("same_execution")
+    offset = merged["crash_time_s"] - merged["first_warning_s"]
+    merged["retrospective_offset_s"] = offset.where(
+        merged["timing_alignment"].eq("retrospective_cross_execution")
+    )
+    merged["lead_time_s"] = offset.where(same_execution)
     merged["warning_before_crash"] = (
         merged["warning_available"].astype(bool)
         & merged["crash_detected"].astype(bool)
@@ -366,9 +391,11 @@ def merge_warning_and_crash(warning_df: pd.DataFrame, crash_df: pd.DataFrame) ->
         merged["warning_available"].astype(bool)
         & merged["crash_outcome_observed"].astype(bool)
         & ~merged["crash_detected"].astype(bool)
+        & same_execution
     ).astype(int)
     merged["missing_warning_before_crash"] = (
-        merged["crash_detected"].astype(bool) & ~merged["warning_before_crash"].astype(bool)
+        merged["crash_detected"].astype(bool) & same_execution
+        & ~merged["warning_before_crash"].astype(bool)
     ).astype(int)
     return merged
 
@@ -423,7 +450,11 @@ def compute_early_warning_metrics(merged: pd.DataFrame) -> tuple[pd.DataFrame, p
         return pd.DataFrame(), pd.DataFrame()
 
     def summarize(part: pd.DataFrame, scope: str, value: str) -> dict[str, object]:
-        observed = part[part["crash_outcome_observed"] == 1].copy()
+        alignment = part.get("timing_alignment", pd.Series("same_execution", index=part.index))
+        observed = part[(part["crash_outcome_observed"] == 1) & alignment.eq("same_execution")].copy()
+        retrospective = part[(part["crash_outcome_observed"] == 1) & alignment.eq("retrospective_cross_execution")]
+        retrospective_crashes = retrospective[retrospective["crash_detected"] == 1]
+        offsets = pd.to_numeric(retrospective_crashes.get("retrospective_offset_s", pd.Series(dtype=float)), errors="coerce")
         crash = observed[observed["crash_detected"] == 1].copy()
         noncrash = observed[observed["crash_detected"] == 0].copy()
         tp = int(crash["warning_before_crash"].sum())
@@ -440,6 +471,11 @@ def compute_early_warning_metrics(merged: pd.DataFrame) -> tuple[pd.DataFrame, p
             "scope": scope,
             "scope_value": value,
             "n_cases": int(len(part)),
+            "retrospective_alignment_cases": int(len(retrospective)),
+            "retrospective_crashes": int(len(retrospective_crashes)),
+            "median_retrospective_offset_s": finite_median(offsets),
+            "min_retrospective_offset_s": float(offsets.min()),
+            "max_retrospective_offset_s": float(offsets.max()),
             "observed_outcomes": int(len(observed)),
             "observed_crashes": int(len(crash)),
             "observed_noncrashes": int(len(noncrash)),
@@ -506,7 +542,10 @@ def plot_warning_timeline(merged: pd.DataFrame, out_png: Path) -> None:
 
     ax.set_yticks(ypos, labels)
     ax.set_xlabel("Time from run start (s)")
-    ax.set_title("First anomaly warning versus first crash event")
+    has_retrospective = plot_df.get("timing_alignment", pd.Series(dtype=str)).eq("retrospective_cross_execution").any()
+    ax.set_title("Retrospective alignment of warnings and separate pilot events" if has_retrospective else "First anomaly warning versus first crash event")
+    if has_retrospective:
+        ax.set_xlabel("Elapsed time in each source execution (s)")
     ax.grid(axis="x", color="#CBD5E1", alpha=0.35)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -583,7 +622,7 @@ def write_markdown_report(
         "",
         "## What This Export Contains",
         "",
-        "- `anomaly_detection_metrics.csv`: run-level ROC-AUC, PR-AUC, precision, recall, F1-score, and balanced accuracy for the selected DICE operating point.",
+        "- `anomaly_detection_metrics.csv`: ROC-AUC, PR-AUC, precision, recall, F1-score, and balanced accuracy for benign-or-anomalous decisions over complete executions.",
         "- `early_warning_case_summary.csv`: first warning time for each case, derived from the first persistent abnormal window when available.",
         "- `early_warning_crash_alignment.csv`: merged case-level warning and crash evidence table.",
         "- `early_warning_metrics.csv`: early-warning precision, recall-before-crash, lead-time statistics, and false-alarm measures.",
@@ -594,8 +633,9 @@ def write_markdown_report(
         "",
         "- `ROC-AUC` and `PR-AUC` measure ranking quality before an alert threshold is fixed. Higher values mean the digital twin separates benign and anomalous runs more cleanly.",
         "- `Precision`, `Recall`, and `F1-score` describe the chosen alert operating point. In a deployed system, high precision limits alarm fatigue, while high recall limits missed anomalies.",
-        "- `Warning recall before crash` measures how often the first anomaly arrives before the first observed crash. This is the core early-warning metric for predictive maintenance.",
-        "- `Median lead time` and `lead_time_ge_*` rates measure how much operator response time DICE provides after the first warning. Larger values are better.",
+        "- Crash-warning metrics include only warning and outcome records from the same execution. Scheduled process aborts do not validate prediction of spontaneous hardware failure.",
+        "- `retrospective_offset_s` subtracts an original study warning time from a separate pilot crash time. It is excluded from `lead_time_s` and crash-warning accuracy metrics.",
+        "- `Median lead time` and `lead_time_ge_*` rates summarize observed intervals after a warning within the same execution.",
         "- `False alarm rate per monitored hour` measures how often DICE would trigger on runs with an observed non-crash outcome. Lower values are better for long-lived monitoring deployments.",
         "",
     ]
@@ -637,6 +677,13 @@ def write_markdown_report(
 
     if not warning_overall.empty:
         w = warning_overall.iloc[0]
+        if int(w.get("retrospective_crashes", 0)):
+            lines.extend([
+                "## Retrospective Timing Alignment", "",
+                f"{int(w['retrospective_crashes'])} separate pilot crashes have a median offset of "
+                f"{float(w['median_retrospective_offset_s']):.1f}s from original study warnings. "
+                "These are comparisons across separate executions, not measured warning-to-crash intervals.", "",
+            ])
         observed_crashes = int(w.get("observed_crashes", 0))
         if observed_crashes > 0:
             lines.extend(

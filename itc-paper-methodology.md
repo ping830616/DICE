@@ -5,6 +5,8 @@ title: ITC Paper and Appendix Methodology
 
 # ITC Paper and Appendix Methodology
 
+For the recorded operating points, evaluation limitations, diagnosis definitions, and crash-timing provenance, use the [paper evidence notes](paper-evidence-notes.md). These supersede conflicting interpretations in older draft packages.
+
 This page defines a draft-oriented split for DICE so the main ITC paper stays focused while the AI appendix carries the extra detail allowed for AI-focused papers.
 
 The public workflow is notebook-first: users should run `dice_results_analysis.ipynb`, not the internal helper scripts directly.
