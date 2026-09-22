@@ -1,3 +1,7 @@
+# Historical draft package
+
+This writing package predates the corrected evidence interpretation. Its numerical recommendations and descriptions of diagnosis coverage and crash lead time are not authoritative. Use [paper evidence notes](paper-evidence-notes.md) and regenerated exports when preparing the final paper.
+
 # ITC Results Section Package
 
 This note distills the strongest draft-aligned claims already supported by the released DICE results, proposes a cleaner section structure, and provides a revised Results draft aligned with the current manuscript tone.

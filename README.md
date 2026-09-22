@@ -4,6 +4,8 @@ DICE is a digital twin-driven in-field continuous-test engine for Silicon Lifecy
 
 The main public entry point is [dice_results_analysis.ipynb](dice_results_analysis.ipynb). A top-to-bottom notebook run regenerates the draft-aligned tables, figures, CSV summaries, appendix bundles, and reproducibility manifests under `data generation/dataset/ITC_M2Pro_DATA/`.
 
+See [paper evidence and reproducibility notes](paper-evidence-notes.md) before interpreting the saved results. The notebook now defaults to the paper's recorded operating points; tuning is an explicit option. Its old rendered outputs have been cleared because they mixed results from different analysis versions. Saved result bundles remain available, but historical draft text and figures are not automatically validated by a source-code fix.
+
 ## Draft Terminology
 
 The public repo docs use the same terminology defined in `itc_appendix_rewrite.tex`:

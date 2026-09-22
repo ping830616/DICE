@@ -208,8 +208,33 @@ def value_pre_crash(series_df: pd.DataFrame, crash_time_s: float, lookback_s: fl
         return float("nan")
     part = series_df[(series_df["time_s"] >= crash_time_s - lookback_s) & (series_df["time_s"] <= crash_time_s)]
     if part.empty:
-        return nearest_value(series_df, crash_time_s)
+        # A nearest sample can occur after the crash. Only earlier samples are
+        # eligible for a value explicitly described as pre-crash.
+        earlier = series_df[series_df["time_s"] <= crash_time_s].dropna(subset=["value"])
+        if earlier.empty:
+            return float("nan")
+        return float(earlier.sort_values("time_s").iloc[-1]["value"])
     return float(pd.to_numeric(part["value"], errors="coerce").median())
+
+
+def peak_deviation(
+    series_df: pd.DataFrame, center: float, scale: float, end_s: float | None = None,
+) -> tuple[float, float]:
+    """Return maximum absolute standardized deviation and its sample time."""
+    if series_df.empty or not np.isfinite(scale) or scale <= 0 or not np.isfinite(center):
+        return float("nan"), float("nan")
+    sample_times = pd.to_numeric(series_df["time_s"], errors="coerce")
+    values = pd.to_numeric(series_df["value"], errors="coerce")
+    keep = np.isfinite(sample_times) & np.isfinite(values)
+    if end_s is not None:
+        if not np.isfinite(end_s):
+            return float("nan"), float("nan")
+        keep &= sample_times <= end_s
+    if not keep.any():
+        return float("nan"), float("nan")
+    deviations = np.abs((values[keep].to_numpy(dtype=float) - center) / scale)
+    peak_idx = int(np.argmax(deviations))
+    return float(deviations[peak_idx]), float(sample_times[keep].iloc[peak_idx])
 
 
 def smooth_series(series_df: pd.DataFrame, window: int = 5) -> pd.DataFrame:
@@ -627,11 +652,16 @@ def run_feature_analysis(
             if row.empty:
                 case_meta[mode] = {"case_id": case_id, "warning_s": float("nan"), "crash_s": float("nan")}
                 continue
+            if len(row) > 1:
+                raise ValueError(f"Ambiguous crash alignment for {case_id}: select one collection phase.")
             row0 = row.iloc[0]
             case_meta[mode] = {
                 "case_id": case_id,
                 "warning_s": float(pd.to_numeric(pd.Series([row0.get("first_warning_s")]), errors="coerce").iloc[0]),
                 "crash_s": float(pd.to_numeric(pd.Series([row0.get("crash_time_s")]), errors="coerce").iloc[0]),
+                "collection_phase": str(row0.get("phase", "") or ""),
+                "run_start_utc": str(row0.get("run_start_utc", "") or ""),
+                "crash_time_utc": str(row0.get("crash_time_utc", "") or ""),
             }
         if not ref_row.empty:
             ref_top_feature = str(ref_row.iloc[0].get("warning_top_feature_1", "") or "")
@@ -650,6 +680,8 @@ def run_feature_analysis(
                 series_df = case_series[case_id][feature.name]
                 warning_s = float(case_meta[mode]["warning_s"])
                 crash_s = float(case_meta[mode]["crash_s"])
+                full_peak, full_peak_time = peak_deviation(series_df, center, scale)
+                pre_peak, pre_peak_time = peak_deviation(series_df, center, scale, end_s=crash_s)
                 all_rows.append(
                     {
                         "workload": workload,
@@ -669,13 +701,11 @@ def run_feature_analysis(
                         "feature_value_pre_crash": value_pre_crash(series_df, crash_s),
                         "nominal_median": center,
                         "nominal_scale": scale,
-                        "peak_abs_z": float(
-                            np.nanmax(
-                                np.abs((pd.to_numeric(series_df["value"], errors="coerce").to_numpy(dtype=float) - center) / scale)
-                            )
-                        )
-                        if not series_df.empty
-                        else float("nan"),
+                        "peak_abs_z": full_peak,
+                        "peak_abs_z_scope": "recorded_series_unrestricted",
+                        "feature_peak_z_time_s": full_peak_time,
+                        "pre_crash_peak_abs_z": pre_peak,
+                        "pre_crash_peak_time_s": pre_peak_time,
                     }
                 )
 
@@ -696,6 +726,12 @@ def run_feature_analysis(
                 "original_top_feature_2": ref_top_feature_2,
                 "pilot_control_case_id": control_case,
                 "pilot_abort_case_id": abort_case,
+                "pilot_timing_basis": "direct_pilot_alignment",
+                "pilot_alignment_source_csv": str(warning_dir / "early_warning_crash_alignment.csv"),
+                "pilot_warning_source_csv": str(warning_dir / "early_warning_case_summary.csv"),
+                "pilot_collection_phase": case_meta["ABORT"].get("collection_phase", ""),
+                "pilot_run_start_utc": case_meta["ABORT"].get("run_start_utc", ""),
+                "pilot_crash_time_utc": case_meta["ABORT"].get("crash_time_utc", ""),
                 "pilot_warning_s": float(case_meta["ABORT"]["warning_s"]),
                 "crash_pilot_anomaly_warning_s": float(case_meta["ABORT"]["warning_s"]),
                 "crash_time_s": float(case_meta["ABORT"]["crash_s"]),

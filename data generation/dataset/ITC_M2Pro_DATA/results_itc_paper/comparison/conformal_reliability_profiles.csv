@@ -2,6 +2,6 @@ feature_profile,config,target_alpha,benign_block_false_alarm_rate,benign_persist
 mixed,tier0,0.1,0.0,0.0,0.0,1.0,0.4,45.0,Mixed,Tier-0
 mixed,tier0_tier1,0.1,0.0,0.0,0.0,1.0,0.75,84.0,Mixed,Tier-0/1
 mixed,tier0_tier1_tier2,0.1,0.0,0.0,0.0,1.0,0.75,45.0,Mixed,Tier-0/1/2
-full,tier0,0.02,0.0,0.0,0.0,1.0,0.3,91.5,Full,Tier-0
-full,tier0_tier1,0.02,0.0,0.0,0.0,1.0,0.55,91.0,Full,Tier-0/1
-full,tier0_tier1_tier2,0.02,0.0,0.0,0.0,1.0,0.95,91.0,Full,Tier-0/1/2
+full,tier0,0.05,0.0,0.0,0.0,1.0,0.3,91.5,Full,Tier-0
+full,tier0_tier1,0.05,0.0,0.0,0.0,1.0,0.55,91.0,Full,Tier-0/1
+full,tier0_tier1_tier2,0.05,0.0,0.0,0.0,1.0,0.95,91.0,Full,Tier-0/1/2
